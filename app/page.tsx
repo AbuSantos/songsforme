@@ -2,15 +2,9 @@ import { Metadata } from "next"
 import Image from "next/image"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 
-import { Button } from "@/registry/new-york/ui/button"
-import { ScrollArea, ScrollBar } from "@/registry/new-york/ui/scroll-area"
-import { Separator } from "@/registry/new-york/ui/separator"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/registry/new-york/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+
 
 // import { PodcastEmptyPlaceholder } from "./components/podcast-empty-placeholder"
 import { Menu } from "@/components/dashboard/menu"
@@ -18,6 +12,10 @@ import { Sidebar } from "@/components/dashboard/sidebar"
 import { playlists } from "@/data/playlists"
 import { listenNowAlbums, madeForYouAlbums } from "@/data/albums"
 import { AlbumArtwork } from "@/components/dashboard/album-artwork"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Separator } from "@/components/ui/separator"
+import BottomNav from "@/components/dashboard/bottom-nav"
+
 
 export const metadata: Metadata = {
   title: "songs for me",
@@ -43,13 +41,13 @@ export default function MusicPage() {
           className="hidden dark:block"
         />
       </div>
-      <div className="hidden md:block">
+      <div className="hidden md:block bg-[var(--bg-root)]">
         <Menu />
-        <div className="border-t">
-          <div className="bg-background">
+        <div className="border-t border-gray-700 py-2">
+          <div className="bg-[var(--bg-root)]">
             <div className="grid lg:grid-cols-5">
-              <Sidebar playlists={playlists} className="hidden lg:block" />
-              <div className="col-span-3 lg:col-span-4 lg:border-l">
+              <Sidebar playlists={playlists} className="hidden lg:block bg-[var(--bg-root)] text-[var(--text)]" />
+              <div className="col-span-3 lg:col-span-4 lg:border-l bg-[var(--bg-root)] text-[var(--text)]">
                 <div className="h-full px-4 py-6 lg:px-8">
                   <Tabs defaultValue="music" className="h-full space-y-6">
                     <div className="space-between flex items-center">
@@ -58,9 +56,6 @@ export default function MusicPage() {
                           Music
                         </TabsTrigger>
                         <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
-                        <TabsTrigger value="live" disabled>
-                          Live
-                        </TabsTrigger>
                       </TabsList>
                       <div className="ml-auto mr-4">
                         <Button>
@@ -151,6 +146,7 @@ export default function MusicPage() {
             </div>
           </div>
         </div>
+        <BottomNav />
       </div>
     </>
   )

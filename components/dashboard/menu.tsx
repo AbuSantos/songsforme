@@ -13,17 +13,17 @@ import {
     MenubarSubContent,
     MenubarSubTrigger,
     MenubarTrigger,
-} from "@/registry/new-york/ui/menubar"
+} from "@/components/ui/menubar"
 
 export function Menu() {
     return (
-        <Menubar className="rounded-none border-b border-none px-2 lg:px-4">
+        <Menubar className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
             <MenubarMenu>
                 <MenubarTrigger className="font-bold">Music</MenubarTrigger>
                 <MenubarContent>
-                    <MenubarItem>About Music</MenubarItem>
+                    <MenubarItem>About Songs for me</MenubarItem>
                     <MenubarSeparator />
-                    <MenubarItem>
+                    {/* <MenubarItem>
                         Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
                     </MenubarItem>
                     <MenubarSeparator />
@@ -32,7 +32,7 @@ export function Menu() {
                     </MenubarItem>
                     <MenubarItem>
                         Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
-                    </MenubarItem>
+                    </MenubarItem> */}
                     <MenubarShortcut />
                     <MenubarItem>
                         Quit Music <MenubarShortcut>⌘Q</MenubarShortcut>
@@ -58,7 +58,7 @@ export function Menu() {
                             <MenubarItem disabled>Genius Playlist</MenubarItem>
                         </MenubarSubContent>
                     </MenubarSub>
-                    <MenubarItem>
+                    {/* <MenubarItem>
                         Open Stream URL... <MenubarShortcut>⌘U</MenubarShortcut>
                     </MenubarItem>
                     <MenubarItem>
@@ -95,7 +95,7 @@ export function Menu() {
                     <MenubarItem>Page Setup...</MenubarItem>
                     <MenubarItem disabled>
                         Print... <MenubarShortcut>⌘P</MenubarShortcut>
-                    </MenubarItem>
+                    </MenubarItem> */}
                 </MenubarContent>
             </MenubarMenu>
             <MenubarMenu>
@@ -179,7 +179,7 @@ export function Menu() {
                     </MenubarItem>
                 </MenubarContent>
             </MenubarMenu>
-            <MenubarMenu>
+            {/* <MenubarMenu>
                 <MenubarTrigger className="hidden md:block">Account</MenubarTrigger>
                 <MenubarContent forceMount>
                     <MenubarLabel inset>Switch Account</MenubarLabel>
@@ -194,7 +194,7 @@ export function Menu() {
                     <MenubarSeparator />
                     <MenubarItem inset>Add Account...</MenubarItem>
                 </MenubarContent>
-            </MenubarMenu>
+            </MenubarMenu> */}
         </Menubar>
     )
 }
