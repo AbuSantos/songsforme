@@ -1,7 +1,9 @@
+"use client"
 import Image from "next/image"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 
 import { cn } from "@/lib/utils"
+import { currentTrackIdState, isPlayingState } from '@/atoms/song-atom'
 
 import {
     ContextMenu,
@@ -16,6 +18,9 @@ import {
 
 import { Album } from "@/data/albums"
 import { playlists } from "@/data/playlists"
+import { FaPlay } from "react-icons/fa"
+import { useRecoilState } from "recoil"
+import { Button } from "../ui/button"
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
     album: Album
@@ -32,8 +37,17 @@ export function AlbumArtwork({
     className,
     ...props
 }: AlbumArtworkProps) {
+    const isPlaying = useRecoilState(isPlayingState)
+
+    const playing = () => {
+        console.log(isPlaying)
+    }
     return (
         <div className={cn("space-y-3", className)} {...props}>
+            <Button onClick={playing}>
+                <FaPlay className="text-xl text-red-900" />
+            </Button>
+
             <ContextMenu>
                 <ContextMenuTrigger>
                     <div className="overflow-hidden rounded-md">
@@ -76,10 +90,11 @@ export function AlbumArtwork({
                                     {playlist}
                                 </ContextMenuItem>
                             ))}
+
                         </ContextMenuSubContent>
                     </ContextMenuSub>
                     <ContextMenuSeparator />
-                    <ContextMenuItem>Play Next</ContextMenuItem>
+                    <ContextMenuItem>Play jsjsjdjdejNext</ContextMenuItem>
                     <ContextMenuItem>Play Later</ContextMenuItem>
                     <ContextMenuItem>Create Station</ContextMenuItem>
                     <ContextMenuSeparator />

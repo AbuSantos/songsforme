@@ -1,13 +1,15 @@
+"use client"
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { RecoilRoot } from "recoil";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Bullchord",
-  description: "Listen to your favorite songs on chain and earn rewards",
-};
+// export const metadata: Metadata = {
+//   title: "Bullchord",
+//   description: "Listen to your favorite songs on chain and earn rewards",
+// };
 
 export default function RootLayout({
   children,
@@ -16,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <RecoilRoot>
+        <body className={inter.className}>{children}</body>
+      </RecoilRoot>
     </html>
   );
 }
