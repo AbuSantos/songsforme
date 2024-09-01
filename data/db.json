@@ -1,0 +1,22 @@
+{
+  "songs": [
+    {
+      "artiste": "baby",
+      "title": "baby",
+      "url": "https://actions.google.com/sounds/v1/human_voices/baby_whine.ogg",
+      "duration": "2sec"
+    },
+    {
+      "artiste": "babies",
+      "title": "coo",
+      "url": "https://actions.google.com/sounds/v1/human_voices/babies_coo.ogg",
+      "duration": "2sec"
+    },
+    {
+      "artiste": "clock",
+      "title": "alarm clock",
+      "url": "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg",
+      "duration": "2sec"
+    }
+  ]
+}

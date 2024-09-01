@@ -18,8 +18,8 @@ import {
 
 import { Album } from "@/data/albums"
 import { playlists } from "@/data/playlists"
-import { FaPlay } from "react-icons/fa"
-import { useRecoilState } from "recoil"
+import { FaPause, FaPlay } from "react-icons/fa"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { Button } from "../ui/button"
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -37,16 +37,21 @@ export function AlbumArtwork({
     className,
     ...props
 }: AlbumArtworkProps) {
-    const isPlaying = useRecoilState(isPlayingState)
+    const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
 
-    const playing = () => {
-        console.log(isPlaying)
-    }
+
+    const togglePlay = () => {
+        setIsPlaying((prev) => !prev);
+    };
     return (
         <div className={cn("space-y-3", className)} {...props}>
-            <Button onClick={playing}>
-                <FaPlay className="text-xl text-red-900" />
+            <Button onClick={togglePlay}>
+                {
+                    isPlaying ? <FaPlay className="text-xl text-red-900" /> :
+                        <FaPause className="text-xl text-red-900" />
+                }
             </Button>
+
 
             <ContextMenu>
                 <ContextMenuTrigger>
