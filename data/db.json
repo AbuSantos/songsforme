@@ -1,22 +1,18 @@
 {
   "songs": [
     {
-      "artiste": "baby",
-      "title": "baby",
-      "url": "https://actions.google.com/sounds/v1/human_voices/baby_whine.ogg",
-      "duration": "2sec"
+      "artiste": "gun",
+      "title": "auto gun",
+      "url": "https://actions.google.com/sounds/v1/weapons/automatic_gun.ogg",
+      "duration": "10sec",
+      "cover": "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"
     },
     {
-      "artiste": "babies",
-      "title": "coo",
-      "url": "https://actions.google.com/sounds/v1/human_voices/babies_coo.ogg",
-      "duration": "2sec"
-    },
-    {
-      "artiste": "clock",
-      "title": "alarm clock",
-      "url": "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg",
-      "duration": "2sec"
+      "artiste": "shots",
+      "title": "close shot",
+      "url": "https://actions.google.com/sounds/v1/weapons/big_gun_shots_close.ogg",
+      "duration": "2sec",
+      "cover": "https://images.unsplash.com/photo-1468817814611-b7edf94b5d60?w=300&dpr=2&q=80"
     }
   ]
 }
