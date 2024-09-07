@@ -22,6 +22,19 @@ export const metadata: Metadata = {
   title: "songs for me",
   description: "Earn songs as your listen to music.",
 }
+interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
+  album: {
+    cover: string;
+    name: string;
+    title: string;
+    url: string;
+    artiste: string;
+  };
+  index: number;
+  aspectRatio?: "portrait" | "square";
+  width?: number;
+  height?: number;
+}
 
 export default async function MusicPage() {
   const fetchData = async () => {
@@ -55,6 +68,7 @@ export default async function MusicPage() {
           className="hidden dark:block"
         />
       </div>
+
       <div className="hidden md:block bg-[var(--bg-root)]">
         <Menu />
         <div className="border-t border-gray-700 py-2">
@@ -71,12 +85,7 @@ export default async function MusicPage() {
                         </TabsTrigger>
                         <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
                       </TabsList>
-                      <div className="ml-auto mr-4">
-                        <Button>
-                          <PlusCircledIcon className="mr-2 h-4 w-4" />
-                          Add music
-                        </Button>
-                      </div>
+
                     </div>
                     <TabsContent
                       value="music"
@@ -95,13 +104,12 @@ export default async function MusicPage() {
                       <Separator className="my-4" />
                       <div className="relative">
                         <ScrollArea>
-                          <div className="flex space-x-4 pb-4">
-                            {NewSongs?.map((data, index) => (
+                          <div className="flex flex-wrap space-x-4 pb-4">
+                            {NewSongs?.map((data: AlbumArtworkProps, index: number) => (
                               <AlbumArtwork
                                 key={data.id}
                                 album={data}
                                 index={index}
-                                data={data}
                                 className="w-[250px]"
                                 aspectRatio="portrait"
                                 width={250}
@@ -121,7 +129,7 @@ export default async function MusicPage() {
                         </p>
                       </div>
                       <Separator className="my-4" />
-                      <div className="relative">
+                      {/* <div className="relative">
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
                             {madeForYouAlbums.map((album, index) => (
@@ -138,7 +146,7 @@ export default async function MusicPage() {
                           </div>
                           <ScrollBar orientation="horizontal" />
                         </ScrollArea>
-                      </div>
+                      </div> */}
                     </TabsContent>
                     <TabsContent
                       value="podcasts"

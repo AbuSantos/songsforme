@@ -11,7 +11,7 @@ interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
         name: string;
         title: string;
         url: string;
-        artiste: string;
+        artist: string;
     };
     index: number;
     aspectRatio?: "portrait" | "square";
@@ -40,18 +40,7 @@ export function AlbumArtwork({
 
     return (
         <div className={cn("space-y-3", className)} {...props}>
-            <Button
-                variant="secondary"
-                size="icon"
-                className="rounded-full"
-                onClick={handlePlayPause}
-            >
-                {isPlaying && currentTrackId === index ? (
-                    <FaPause className="text-xl text-red-900" />
-                ) : (
-                    <FaPlay className="text-xl text-red-900" />
-                )}
-            </Button>
+
 
             <div className="overflow-hidden rounded-md">
                 <Image
@@ -67,12 +56,27 @@ export function AlbumArtwork({
             </div>
 
             {currentTrackId === index && (
-                <audio ref={audioRef} src={album.url} autoPlay />
+                <audio ref={audioRef} src={album.url} autoPlay={false} />
             )}
 
-            <div className="space-y-1 text-sm">
-                <h3 className="font-medium leading-none capitalize">{album.title}</h3>
-                <p className="text-xs text-muted-foreground">{album.artiste}</p>
+            <div className="space-y-1 text-sm flex items-center justify-between">
+                <div>
+                    <h3 className="font-medium leading-none capitalize">{album.title}</h3>
+                    <p className="text-xs text-muted-foreground">{album.artist}</p>
+                </div>
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    className="rounded-full bg-transparent hover:bg-transparent"
+                    onClick={handlePlayPause}
+                >
+                    {isPlaying && currentTrackId === index ? (
+                        <FaPause className="text-xl text-red-900" />
+                    ) : (
+                        <FaPlay className="text-xl text-red-900" />
+                    )}
+                </Button>
+
             </div>
         </div>
     );

@@ -24,10 +24,8 @@ export function useAudioPlayer() {
     };
 
     const setTrack = (trackId: number) => {
-        // if (audioRef.current) {
         setCurrentTrackId(trackId);
         setIsPlaying(true);
-        // }
     };
 
     return {
