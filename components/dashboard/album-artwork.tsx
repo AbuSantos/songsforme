@@ -1,116 +1,79 @@
-"use client"
-import Image from "next/image"
-import { PlusCircledIcon } from "@radix-ui/react-icons"
-
-import { cn } from "@/lib/utils"
-import { currentTrackIdState, isPlayingState } from '@/atoms/song-atom'
-
-import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuSeparator,
-    ContextMenuSub,
-    ContextMenuSubContent,
-    ContextMenuSubTrigger,
-    ContextMenuTrigger,
-} from "@/components/ui/context-menu"
-
-import { Album } from "@/data/albums"
-import { playlists } from "@/data/playlists"
-import { FaPause, FaPlay } from "react-icons/fa"
-import { useRecoilState, useRecoilValue } from "recoil"
-import { Button } from "../ui/button"
+"use client";
+import Image from "next/image";
+import { FaPause, FaPlay } from "react-icons/fa";
+import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-    album: Album
-    aspectRatio?: "portrait" | "square"
-    width?: number
-    height?: number
+    album: {
+        cover: string;
+        name: string;
+        title: string;
+        url: string;
+        artiste: string;
+    };
+    index: number;
+    aspectRatio?: "portrait" | "square";
+    width?: number;
+    height?: number;
 }
 
 export function AlbumArtwork({
     album,
+    index,
     aspectRatio = "portrait",
     width,
     height,
     className,
     ...props
 }: AlbumArtworkProps) {
-    const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
+    const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
 
-
-    const togglePlay = () => {
-        setIsPlaying((prev) => !prev);
+    const handlePlayPause = () => {
+        if (currentTrackId === index) {
+            togglePlayPause();
+        } else {
+            setTrack(index);
+        }
     };
+
     return (
         <div className={cn("space-y-3", className)} {...props}>
-            <Button onClick={togglePlay}>
-                {
-                    isPlaying ? <FaPlay className="text-xl text-red-900" /> :
-                        <FaPause className="text-xl text-red-900" />
-                }
+            <Button
+                variant="secondary"
+                size="icon"
+                className="rounded-full"
+                onClick={handlePlayPause}
+            >
+                {isPlaying && currentTrackId === index ? (
+                    <FaPause className="text-xl text-red-900" />
+                ) : (
+                    <FaPlay className="text-xl text-red-900" />
+                )}
             </Button>
 
+            <div className="overflow-hidden rounded-md">
+                <Image
+                    src={album.cover}
+                    alt={album.name}
+                    width={width}
+                    height={height}
+                    className={cn(
+                        "h-auto w-auto object-cover transition-all hover:scale-105",
+                        aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
+                    )}
+                />
+            </div>
 
-            <ContextMenu>
-                <ContextMenuTrigger>
-                    <div className="overflow-hidden rounded-md">
-                        <Image
-                            src={album.cover}
-                            alt={album.name}
-                            width={width}
-                            height={height}
-                            className={cn(
-                                "h-auto w-auto object-cover transition-all hover:scale-105",
-                                aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
-                            )}
-                        />
-                    </div>
-                </ContextMenuTrigger>
-                <ContextMenuContent className="w-40">
-                    <ContextMenuItem>Add to Library</ContextMenuItem>
-                    <ContextMenuSub>
-                        <ContextMenuSubTrigger>Add to Playlist</ContextMenuSubTrigger>
-                        <ContextMenuSubContent className="w-48">
-                            <ContextMenuItem>
-                                <PlusCircledIcon className="mr-2 h-4 w-4" />
-                                New Playlist
-                            </ContextMenuItem>
-                            <ContextMenuSeparator />
-                            {playlists.map((playlist) => (
-                                <ContextMenuItem key={playlist}>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        className="mr-2 h-4 w-4"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M21 15V6M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM12 12H3M16 6H3M12 18H3" />
-                                    </svg>
-                                    {playlist}
-                                </ContextMenuItem>
-                            ))}
+            {currentTrackId === index && (
+                <audio ref={audioRef} src={album.url} autoPlay />
+            )}
 
-                        </ContextMenuSubContent>
-                    </ContextMenuSub>
-                    <ContextMenuSeparator />
-                    <ContextMenuItem>Play jsjsjdjdejNext</ContextMenuItem>
-                    <ContextMenuItem>Play Later</ContextMenuItem>
-                    <ContextMenuItem>Create Station</ContextMenuItem>
-                    <ContextMenuSeparator />
-                    <ContextMenuItem>Like</ContextMenuItem>
-                    <ContextMenuItem>Share</ContextMenuItem>
-                </ContextMenuContent>
-            </ContextMenu>
             <div className="space-y-1 text-sm">
-                <h3 className="font-medium leading-none">{album.name}</h3>
-                <p className="text-xs text-muted-foreground">{album.artist}</p>
+                <h3 className="font-medium leading-none capitalize">{album.title}</h3>
+                <p className="text-xs text-muted-foreground">{album.artiste}</p>
             </div>
         </div>
-    )
+    );
 }

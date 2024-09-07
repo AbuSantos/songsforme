@@ -1,16 +1,16 @@
 {
   "songs": [
     {
-      "artiste": "gun",
+      "artist": "guns",
       "title": "auto gun",
       "url": "https://actions.google.com/sounds/v1/weapons/automatic_gun.ogg",
       "duration": "10sec",
       "cover": "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"
     },
     {
-      "artiste": "shots",
+      "artist": "shots",
       "title": "close shot",
-      "url": "https://actions.google.com/sounds/v1/weapons/big_gun_shots_close.ogg",
+      "url": "https://actions.google.com/sounds/v1/weapons/gun_reload.ogg",
       "duration": "2sec",
       "cover": "https://images.unsplash.com/photo-1468817814611-b7edf94b5d60?w=300&dpr=2&q=80"
     }

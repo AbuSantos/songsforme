@@ -1,3 +1,4 @@
+
 import { Metadata } from "next"
 import Image from "next/image"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
@@ -22,7 +23,20 @@ export const metadata: Metadata = {
   description: "Earn songs as your listen to music.",
 }
 
-export default function MusicPage() {
+export default async function MusicPage() {
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/songs", { cache: "no-cache" });
+      const data = await response.json();
+      return data
+    }
+    catch (error) {
+      console.error("Error fetching songs:", error);
+    }
+  };
+
+  const NewSongs = await fetchData()
+
   return (
     <>
       <div className="md:hidden">
@@ -82,10 +96,12 @@ export default function MusicPage() {
                       <div className="relative">
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
-                            {listenNowAlbums.map((album) => (
+                            {NewSongs?.map((data, index) => (
                               <AlbumArtwork
-                                key={album.name}
-                                album={album}
+                                key={data.id}
+                                album={data}
+                                index={index}
+                                data={data}
                                 className="w-[250px]"
                                 aspectRatio="portrait"
                                 width={250}
@@ -108,10 +124,11 @@ export default function MusicPage() {
                       <div className="relative">
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
-                            {madeForYouAlbums.map((album) => (
+                            {madeForYouAlbums.map((album, index) => (
                               <AlbumArtwork
                                 key={album.name}
                                 album={album}
+                                index={index}
                                 className="w-[150px]"
                                 aspectRatio="square"
                                 width={150}
