@@ -7,9 +7,18 @@ export const VolumeControl = () => {
 
     return (
         <div className='flex justify-center items-center space-x-2 cursor-pointer'>
+            <div >
+                <input
+                    type="range"
+                    className='w-72'
+                    max={100}
+                    min={0}
+                    value={20}
+                />
+            </div>
             <SpeakerLoudIcon />
             <SpeakerOffIcon />
-        </div>
+        </div >
     )
 }
 

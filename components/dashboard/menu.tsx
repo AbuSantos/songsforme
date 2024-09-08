@@ -139,6 +139,5 @@ export function Menu() {
                 <AddMusicModal setIsOpen={setIsOpen} />
             }
         </div>
-
     )
 }
