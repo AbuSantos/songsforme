@@ -2,6 +2,8 @@
 import "./globals.css";
 import { RecoilRoot } from "recoil";
 import { ThirdwebProvider } from "thirdweb/react";
+import { Toaster } from "@/components/ui/sonner"
+
 
 // export const metadata: Metadata = {
 //   title: "Bullchord",
@@ -19,6 +21,7 @@ export default function RootLayout({
         <ThirdwebProvider
         >
           <body >{children}</body>
+          <Toaster />
         </ThirdwebProvider>
       </RecoilRoot>
     </html>

@@ -20,11 +20,16 @@ import { Button } from "@/components/ui/button"
 import { AddMusicModal } from "../modal/add-music"
 import { useState } from "react"
 import { ConnecttButton } from "@/web3/connect-button"
+import { AddToWhitelist } from "../modal/add-to-whitelist"
 
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const handleModal = () => {
         setIsOpen(!isOpen)
+    }
+    const handleWhiteModal = () => {
+        setIsModalOpen(!isModalOpen)
     }
     return (
         <div className="flex justify-between p-3">
@@ -127,16 +132,24 @@ export function Menu() {
                 </MenubarMenu>
 
             </Menubar>
-            <div className="ml-auto flex mr-4 justify-end">
+            <div className="ml-auto flex mr-4 justify-end space-x-2">
                 <ConnecttButton />
-                <Button onClick={handleModal}>
+                <Button onClick={handleModal} size="nav">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     Add music
+                </Button>
+                <Button onClick={handleWhiteModal} size="nav">
+                    <PlusCircledIcon className="mr-2 h-4 w-4" />
+                    Add to whitelist
                 </Button>
             </div>
             {
                 isOpen &&
                 <AddMusicModal setIsOpen={setIsOpen} />
+            }
+            {
+                isModalOpen &&
+                <AddToWhitelist setIsModalOpen={setIsModalOpen} />
             }
         </div>
     )

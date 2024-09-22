@@ -4,6 +4,7 @@ import { FaPause, FaPlay } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import AllListed from "../musicNFTs/listedNFT/all-listed";
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
     album: {
@@ -41,29 +42,13 @@ export function AlbumArtwork({
     return (
         <div className={cn("space-y-3", className)} {...props}>
 
+            <AllListed />
 
-            <div className="overflow-hidden rounded-md">
-                <Image
-                    src={album.cover}
-                    alt={album.name}
-                    width={width}
-                    height={height}
-                    className={cn(
-                        "h-auto w-auto object-cover transition-all hover:scale-105",
-                        aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
-                    )}
-                />
-            </div>
-
-            {currentTrackId === index && (
+            {/* {currentTrackId === index && (
                 <audio ref={audioRef} src={album.url} autoPlay={false} />
-            )}
+            )} */}
 
-            <div className="space-y-1 text-sm flex items-center justify-between">
-                <div>
-                    <h3 className="font-medium leading-none capitalize">{album.title}</h3>
-                    <p className="text-xs text-muted-foreground">{album.artist}</p>
-                </div>
+            {/* <div className="space-y-1 text-sm flex items-center justify-between">
                 <Button
                     variant="secondary"
                     size="icon"
@@ -77,7 +62,7 @@ export function AlbumArtwork({
                     )}
                 </Button>
 
-            </div>
+            </div> */}
         </div>
     );
 }

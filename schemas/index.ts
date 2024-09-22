@@ -17,3 +17,27 @@ export const MusicSchema = z.object({
     message: "duration is Required!",
   }),
 });
+export const ListNFTSchema = z.object({
+  price: z.string().min(1, {
+    message: "Price is Required!",
+  }),
+  address: z.string().min(1, {
+    message: "please add NFT address",
+  }),
+  tokenId: z.string().min(1, {
+    message: "Please add NFT Token Id!",
+  }),
+});
+export const whiteListSchema = z.object({
+  address: z.string().min(1, {
+    message: "please add NFT address",
+  }),
+});
+export const AcceptBidSchema = z.object({
+  address: z.string().min(1, {
+    message: "please add NFT address",
+  }),
+  tokenId: z.string().min(1, {
+    message: "please add NFT Token ID",
+  }),
+});

@@ -129,24 +129,6 @@ export default async function MusicPage() {
                         </p>
                       </div>
                       <Separator className="my-4" />
-                      {/* <div className="relative">
-                        <ScrollArea>
-                          <div className="flex space-x-4 pb-4">
-                            {madeForYouAlbums.map((album, index) => (
-                              <AlbumArtwork
-                                key={album.name}
-                                album={album}
-                                index={index}
-                                className="w-[150px]"
-                                aspectRatio="square"
-                                width={150}
-                                height={150}
-                              />
-                            ))}
-                          </div>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                      </div> */}
                     </TabsContent>
                     <TabsContent
                       value="podcasts"
