@@ -1,0 +1,17 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+model ListedNFT {
+  id          Int      @id @default(autoincrement())
+  tokenId     Int
+  seller      String
+  price       Float
+  contractAddress String
+  listedAt    DateTime @default(now())
+  sold        Boolean  @default(false)
+}

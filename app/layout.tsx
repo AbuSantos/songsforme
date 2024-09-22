@@ -1,10 +1,7 @@
 "use client"
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { RecoilRoot } from "recoil";
 import { ThirdwebProvider } from "thirdweb/react";
-const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {
 //   title: "Bullchord",
@@ -19,8 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <RecoilRoot>
-        <ThirdwebProvider>
-          <body className={inter.className}>{children}</body>
+        <ThirdwebProvider
+        >
+          <body >{children}</body>
         </ThirdwebProvider>
       </RecoilRoot>
     </html>
