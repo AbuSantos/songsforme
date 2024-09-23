@@ -33,10 +33,6 @@ export default function AllListed() {
                 <BuyNft />
             </div>
 
-
-
-
-
             <Popover>
                 <PopoverTrigger asChild>
                     <Button variant="outline" className="text-gray-800">Bid for NFT</Button>

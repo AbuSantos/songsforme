@@ -1,17 +1,11 @@
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Dispatch, SetStateAction, useState, useTransition } from "react";
-import { ListNFTSchema } from "@/schemas"; // Make sure to define this schema
 import { client, contract } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { prepareTransaction, toWei } from "thirdweb";
 import { ethers } from "ethers";
-import { Button } from "../ui/button";
-import { FormField } from "../ui/form";
 type modalTypes = {
     setListModalOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -20,46 +14,40 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
     const [isPending, startTransition] = useTransition();
     const [transaction, setTransaction] = useState()
     const [errorMessage, setErrorMessage] = useState("");
+    const [price, setPrice] = useState("");
+    const [address, setAddress] = useState("");
+    const [tokenId, setTokenId] = useState("");
 
-    // Initialize form with validation
-    const form = useForm({
-        resolver: zodResolver(ListNFTSchema),
-        defaultValues: {
-            address: "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30", // Example default values
-            tokenId: 2,
-            price: "0.01", // Example price in ETH
 
-        },
-    });
 
-    // Use sendTransaction to execute contract calls
-    const { mutate: sendTransaction } = useSendTransaction();
-
-    // Submit handler
-    const onSubmit = async (values: z.infer<typeof ListNFTSchema>) => {
-        startTransition(() => {
-            try {
-                const priceInWei = ethers.utils.parseEther(values.price); // Convert price to wei
-
-                const transaction = prepareContractCall({
-                    contract,
-                    method: "listBull",
-                    params: [values.address, values.tokenId, priceInWei],
-                    value: toWei("0.0005"),
-                });
-
-                setTransaction(transaction)
-
-            } catch (err) {
-                console.error("Error preparing transaction:", err);
-                setErrorMessage("An error occurred. Please try again.");
+    const handlelisting = async () => {
+        try {
+            // Ensure price is a valid number
+            if (!price || isNaN(Number(price)) || Number(price) <= 0) {
+                setErrorMessage("Please enter a valid price.");
+                return null;
             }
-        });
+            const priceInWei = ethers.utils.parseEther(price); // Convert price to wei
+
+            // Prepare transaction
+            const tx = prepareContractCall({
+                contract,
+                method: "listBull",
+                params: [address, tokenId, priceInWei],
+                // value: toWei(price), // Convert price to Wei
+                value: toWei("0.0005"),
+            });
+
+            return tx;
+        } catch (error) {
+            setErrorMessage("Failed to prepare transaction. Check input values.");
+            return null;
+        }
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-            <div className="relative bg-gray-900 rounded-md w-3/6 py-4 px-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 ">
+            <div className="relative bg-black rounded-md w-2/6 py-8 px-6 border-[0.7px] border-gray-600">
                 {/* Close button */}
                 <button
                     onClick={() => setListModalOpen(false)}
@@ -67,60 +55,45 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
                 >
                     <Cross1Icon className="size-4" />
                 </button>
+                <h1 className="text-center text-2xl text-gray-200 font-medium capitalize p-4">Please add Your Music NFT Details</h1>
 
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    {/* Token ID Input */}
-                    <FormField
-                        control={form.control}
-                        name="tokenId"
-                        render={({ field }) => (
-                            <Input
-                                {...field}
-                                placeholder="Token ID"
-                                disabled={isPending}
-                                className="py-3 border-none bg-gray-800 outline-none h-12"
-                            />
-                        )}
+                <div className="space-y-3">
+                    <Input
+                        value={tokenId}
+                        onChange={(e) => setTokenId(e.target.value)}
+                        placeholder="Token ID"
+                        disabled={isPending}
+                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
+
                     />
 
-                    {/* Price Input */}
-                    <FormField
-                        control={form.control}
-                        name="price"
-                        render={({ field }) => (
-                            <Input
-                                {...field}
-                                placeholder="Price in ETH"
-                                disabled={isPending}
-                                className="py-3 border-none bg-gray-800 outline-none h-12"
-                            />
-                        )}
+                    <Input
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                        placeholder="Price in ETH"
+                        disabled={isPending}
+                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
+
                     />
 
-                    {/* NFT Address Input */}
-                    <FormField
-                        control={form.control}
-                        name="address"
-                        render={({ field }) => (
-                            <Input
-                                {...field}
-                                placeholder="NFT Contract Address"
-                                disabled={isPending}
-                                className="py-3 border-none bg-gray-800 outline-none h-12"
-                            />
-                        )}
+                    <Input
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="NFT Contract Address"
+                        disabled={isPending}
+                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
+
                     />
 
                     <TransactionButton
-                        transaction={() => transaction}
+                        transaction={handlelisting}
                         onTransactionConfirmed={() => console.log("lising")}
                         onError={(error) => console.log(error, "error")}
                     >
-                        Confirm Transaction
+                        Confirm Listing
                     </TransactionButton>
-                </form>
+                </div>
 
-                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </div>
         </div>
     );
