@@ -29,6 +29,7 @@ export const ListNFTForm = ({ setIsOpen }) => {
             address: "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30", // Example default values
             tokenId: 2,
             price: "0.01", // Example price in ETH
+
         },
     });
 
@@ -45,6 +46,7 @@ export const ListNFTForm = ({ setIsOpen }) => {
                     contract,
                     method: "listBull",
                     params: [values.address, values.tokenId, priceInWei],
+                    value: "0.0005",
                 });
 
                 setTransaction(transaction)
