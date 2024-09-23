@@ -21,15 +21,20 @@ import { AddMusicModal } from "../modal/add-music"
 import { useState } from "react"
 import { ConnecttButton } from "@/web3/connect-button"
 import { AddToWhitelist } from "../modal/add-to-whitelist"
+import { ListNFTForm } from "../modal/list-nft"
 
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const [listModalOpen, setListModalOpen] = useState<boolean>(false)
     const handleModal = () => {
         setIsOpen(!isOpen)
     }
     const handleWhiteModal = () => {
         setIsModalOpen(!isModalOpen)
+    }
+    const handleListModal = () => {
+        setListModalOpen(!listModalOpen)
     }
     return (
         <div className="flex justify-between p-3">
@@ -39,16 +44,6 @@ export function Menu() {
                     <MenubarContent>
                         <MenubarItem>About Songs for me</MenubarItem>
                         <MenubarSeparator />
-                        {/* <MenubarItem>
-                        Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
-                    </MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem>
-                        Hide Music... <MenubarShortcut>⌘H</MenubarShortcut>
-                    </MenubarItem>
-                    <MenubarItem>
-                        Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
-                    </MenubarItem> */}
                         <MenubarShortcut />
                         <MenubarItem>
                             Quit Music <MenubarShortcut>⌘Q</MenubarShortcut>
@@ -136,7 +131,11 @@ export function Menu() {
                 <ConnecttButton />
                 <Button onClick={handleModal} size="nav">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
-                    Add music
+                    Mint Music
+                </Button>
+                <Button onClick={handleListModal} size="nav">
+                    <PlusCircledIcon className="mr-2 h-4 w-4" />
+                    List MusicNFT
                 </Button>
                 <Button onClick={handleWhiteModal} size="nav">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
@@ -150,6 +149,10 @@ export function Menu() {
             {
                 isModalOpen &&
                 <AddToWhitelist setIsModalOpen={setIsModalOpen} />
+            }
+            {
+                listModalOpen &&
+                <ListNFTForm setListModalOpen={setListModalOpen} />
             }
         </div>
     )

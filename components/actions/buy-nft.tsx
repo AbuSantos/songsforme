@@ -4,6 +4,7 @@ import { prepareContractCall } from "thirdweb";
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { Button } from "../ui/button";
 import { toast } from "sonner"
+import { toWei } from "thirdweb";
 
 export const BuyNft = () => {
 
@@ -19,7 +20,7 @@ export const BuyNft = () => {
                         contract,
                         method: "buyBull",
                         params: [nftAddress, tokenId],
-
+                        value: toWei("0.01"),
                     });
                     return tx;
                 }}

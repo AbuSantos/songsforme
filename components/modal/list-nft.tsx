@@ -3,22 +3,21 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { useState, useTransition } from "react";
+import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import { ListNFTSchema } from "@/schemas"; // Make sure to define this schema
 import { client, contract } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
-
+import { prepareTransaction, toWei } from "thirdweb";
 import { ethers } from "ethers";
 import { Button } from "../ui/button";
 import { FormField } from "../ui/form";
+type modalTypes = {
+    setListModalOpen: Dispatch<SetStateAction<boolean>>
+}
 
-
-export const ListNFTForm = ({ setIsOpen }) => {
+export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
     const [isPending, startTransition] = useTransition();
-    // const [nftAddress, setNftAddress] = useState("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
-    // const [tokenId, setTokenId] = useState(2);
-    // const [price, setPrice] = useState("0.01");
     const [transaction, setTransaction] = useState()
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -46,7 +45,7 @@ export const ListNFTForm = ({ setIsOpen }) => {
                     contract,
                     method: "listBull",
                     params: [values.address, values.tokenId, priceInWei],
-                    value: "0.0005",
+                    value: toWei("0.0005"),
                 });
 
                 setTransaction(transaction)
@@ -63,7 +62,7 @@ export const ListNFTForm = ({ setIsOpen }) => {
             <div className="relative bg-gray-900 rounded-md w-3/6 py-4 px-6">
                 {/* Close button */}
                 <button
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => setListModalOpen(false)}
                     className="text-red-700 cursor-pointer text-end"
                 >
                     <Cross1Icon className="size-4" />
