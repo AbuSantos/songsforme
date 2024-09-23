@@ -47,7 +47,7 @@ export const AcceptBidOffer = ({ setBidModal }: modalTypes) => {
 
                 const transaction = prepareContractCall({
                     contract,
-                    method: "acceptOffer",
+                    method: "rejectBidOffer",
                     params: [values.tokenId, values.address],
                 });
 
