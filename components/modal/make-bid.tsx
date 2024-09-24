@@ -1,5 +1,5 @@
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { contract } from "@/lib/client";
 import { prepareContractCall, toWei } from "thirdweb";
@@ -7,17 +7,56 @@ import { TransactionButton } from "thirdweb/react";
 import { Button } from "../ui/button";
 import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
+import { getContractEvents } from "thirdweb";
+import { ethers } from "ethers";
+
+async function getSigner() {
+    if (typeof window.ethereum !== "undefined") {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+        // Request wallet connection if needed
+        await provider.send("eth_requestAccounts", []);
+
+        // Get signer (connected wallet)
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+
+        console.log("Signer address:", address);
+        return signer;
+    } else {
+        console.log("Ethereum wallet is not connected.");
+        return null;
+    }
+}
 
 export const MakeBid = () => {
     const [isPending, startTransition] = useTransition();
-    const [price, setPrice] = useState<string>("");  // Fixing the state type to store string value
+    const [price, setPrice] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isSuccess, setIsSuccess] = useState<string>("");
 
-    const address = "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30";
-    const tokenId = 2;
 
-    const handleBid = () => {
+
+
+    const address = "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30";
+    const tokenId = 4;
+
+    const listenToEvent = async () => {
+        try {
+            contract.on("BidMade", (bidder, tokenId, bidAmount) => {
+                console.log(`Bidder: ${bidder}, TokenID: ${tokenId}, BidAmount: ${bidAmount}`);
+            });
+        } catch (error) {
+            console.log("Error listening to event.");
+        }
+    };
+
+    // Call this function once to start listening for events
+    useEffect(() => {
+        listenToEvent();
+    }, []);
+
+    const handleBid = async () => {
         try {
             // Ensure price is a valid number
             if (!price || isNaN(Number(price)) || Number(price) <= 0) {
@@ -34,6 +73,8 @@ export const MakeBid = () => {
             });
 
             return tx;
+
+
         } catch (error) {
             setErrorMessage("Failed to prepare transaction. Check input values.");
             return null;
@@ -50,14 +91,13 @@ export const MakeBid = () => {
                 className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
             />
 
-
             <TransactionButton
-                transaction={handleBid} 
-                onTransactionConfirmed={() => {
-                    console.log("Transaction successful");
+                transaction={handleBid}
+                onTransactionConfirmed={(receipt) => {
+                    console.log("Transaction successful", receipt);
                     setIsSuccess("Bid Made Successfully")
                 }}
-                onError={(error) => setErrorMessage(error.message)}  
+                onError={(error) => setErrorMessage(error.message)}
             >
                 Make Bid
             </TransactionButton>

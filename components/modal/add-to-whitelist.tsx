@@ -14,97 +14,63 @@ import { FormField } from "../ui/form";
 import { toast } from "sonner"
 import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
-
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 type modalTypes = {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const AddToWhitelist = ({ setIsModalOpen }: modalTypes) => {
+export const AddToWhitelist = () => {
 
     const [isPending, startTransition] = useTransition();
-    // const [nftAddress, setNftAddress] = useState("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
-    // const [tokenId, setTokenId] = useState(2);
-    // const [price, setPrice] = useState("0.01");
-    const [transaction, setTransaction] = useState()
+    const [address, setAddress] = useState<string>("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
     const [isError, setIsError] = useState("");
     const [isSuccess, setIsSuccess] = useState("");
 
-    // Initialize form with validation
-    const form = useForm({
-        resolver: zodResolver(whiteListSchema),
-        defaultValues: {
-            address: "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30"
-        },
-    });
 
-    // const handleError = (error) => {
-    //     toast({
-    //         description: error.TransactionError,
-    //     })
-    // }
-
-    // Submit handler
-    const onSubmit = async (values: z.infer<typeof whiteListSchema>) => {
-        startTransition(() => {
-            try {
-
-                const transaction = prepareContractCall({
-                    contract,
-                    method: "addToWhiteList",
-                    params: [values.address],
-                });
-
-                setTransaction(transaction)
-
-            } catch (err) {
-                console.error("Error preparing transaction:", err);
-                setErrorMessage("An error occurred. Please try again.");
-            }
-        });
-    };
 
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-            <div className="relative bg-gray-900 rounded-md w-3/6 py-4 px-6">
-                {/* Close button */}
-                <button
-                    onClick={() => setIsModalOpen(false)}
-                    className="text-red-700 cursor-pointer text-end"
-                >
-                    <Cross1Icon className="size-4" />
-                </button>
-
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    {/* NFT Address Input */}
-                    <FormField
-                        control={form.control}
-                        name="address"
-                        render={({ field }) => (
-                            <Input
-                                {...field}
-                                placeholder="NFT Contract Address"
-                                disabled={isPending}
-                                className="py-3 border-none bg-gray-800 outline-none h-12"
-                            />
-                        )}
+        <Popover>
+            <PopoverTrigger asChild>
+                <Button variant="outline" className="text-gray-800" size="nav">Whitelist </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+                <div className="flex flex-col space-y-3">
+                    <Input
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)} // Handling input
+                        placeholder="NFT Contract Address"
+                        disabled={isPending}
+                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
 
                     <TransactionButton
-                        transaction={() => transaction}
+                        transaction={() => {
+                            const tx = prepareContractCall({
+                                contract,
+                                method: "addToWhiteList",
+                                params: [address],
+                            });
+                            return tx;
+                        }}
                         onTransactionConfirmed={() => console.log("lising")}
-                        onSuccess={(success) => setIsSuccess(success)}
                         onError={(error) =>
                             setIsError(error.message)
                         }
                     >
-                        add to whitelist
+                        Save
                     </TransactionButton>
-                </form>
 
-                < FormError message={isError} />
-                < FormSuccess message={isSuccess} />
-            </div>
-        </div >
+                    < FormError message={isError} />
+                    < FormSuccess message={isSuccess} />
+                </div>
+            </PopoverContent>
+
+        </Popover>
+
     );
 };

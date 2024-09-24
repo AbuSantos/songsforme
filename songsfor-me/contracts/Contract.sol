@@ -29,14 +29,19 @@ contract BullchordMarketPlace is ReentrancyGuard {
     event ListingCanceled(uint tokenId);
     event BidMade(address bidder, uint amount);
     event UserRemovedFromWhitelist(address user);
-    event BidOfferRejected(uint tokenId,address nftAddress, address seller, address bidder, uint bidAmount);
-
+    event BidOfferRejected(
+        uint tokenId,
+        address nftAddress,
+        address seller,
+        address bidder,
+        uint bidAmount
+    );
 
     Counters.Counter private _itemsSold;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-      uint256 public platformFeeBasisPoints = 250; 
+    uint256 public platformFeeBasisPoints = 250;
     uint256 public listingFee = 0.025 ether;
     uint256 private whitelistedListingFee = 0.0005 ether;
     uint256 private listingProceeds;
@@ -60,8 +65,7 @@ contract BullchordMarketPlace is ReentrancyGuard {
     mapping(address => bool) public whiteListMapping;
     mapping(address => uint256) public withdrawableBalance;
 
-
-// platform fee:25000000000000000
+    // platform fee:25000000000000000
     // Mapping from market index to a list of marketItem
     // Mapping from market index to a list of owned marketItem
 
@@ -102,7 +106,6 @@ contract BullchordMarketPlace is ReentrancyGuard {
         _;
     }
 
-
     modifier isOwner(
         address _nftContract,
         uint256 _tokenId,
@@ -120,8 +123,10 @@ contract BullchordMarketPlace is ReentrancyGuard {
      * @notice calculates the marketplace's cut in any sale as per price
      * @param salePrice price at which an NFT is to be sold
      */
-    function calculatePlatformFee(uint256 salePrice) public view returns (uint256) {
-         return (salePrice * platformFeeBasisPoints) / 10000;
+    function calculatePlatformFee(
+        uint256 salePrice
+    ) public view returns (uint256) {
+        return (salePrice * platformFeeBasisPoints) / 10000;
     }
 
     /**
@@ -137,9 +142,10 @@ contract BullchordMarketPlace is ReentrancyGuard {
      *
      * @param _user The address to be added to the whitelist.
      */
-   function _inWhiteList(address _user) private view returns (bool) {
-    return whiteListMapping[_user]; 
-   }
+    function _inWhiteList(address _user) private view returns (bool) {
+        return whiteListMapping[_user];
+    }
+
     /**
      * @dev Add an address to the whitelist.
      *
@@ -155,28 +161,28 @@ contract BullchordMarketPlace is ReentrancyGuard {
      *
      * @param _user The address to be added to the whitelist.
      */
-  function addToWhiteList(address _user) public {
-    require(msg.sender == owner, "Not allowed!");
-    require(whiteListMapping[_user] == false, "User already registered");
+    function addToWhiteList(address _user) public {
+        require(msg.sender == owner, "Not allowed!");
+        require(whiteListMapping[_user] == false, "User already registered");
 
-    whiteListMapping[_user] = true;
-    emit UserAdded(_user);
-}
+        whiteListMapping[_user] = true;
+        emit UserAdded(_user);
+    }
 
     /**
- * @dev Remove an address from the whitelist.
- *
- * This function allows the owner of the contract to remove an address from the whitelist.
- * Once removed, the user will no longer have any whitelist privileges.
- *
- * Requirements:
- * - The caller must be the owner of the contract.
- * - The provided `_user` address must already be registered on the whitelist.
- *
- * Emits a `UserRemovedFromWhitelist` event when an address is successfully removed from the whitelist.
- *
- * @param _user The address to be removed from the whitelist.
- */
+     * @dev Remove an address from the whitelist.
+     *
+     * This function allows the owner of the contract to remove an address from the whitelist.
+     * Once removed, the user will no longer have any whitelist privileges.
+     *
+     * Requirements:
+     * - The caller must be the owner of the contract.
+     * - The provided `_user` address must already be registered on the whitelist.
+     *
+     * Emits a `UserRemovedFromWhitelist` event when an address is successfully removed from the whitelist.
+     *
+     * @param _user The address to be removed from the whitelist.
+     */
     function removeFromWhiteList(address _user) public {
         require(msg.sender == owner, "Not allowed!");
         require(whiteListMapping[_user] == true, "User is not whitelisted");
@@ -186,7 +192,6 @@ contract BullchordMarketPlace is ReentrancyGuard {
 
         emit UserRemovedFromWhitelist(_user);
     }
-
 
     function updateListingFee(uint256 _listingFee) external payable {
         require(owner == msg.sender, "only owner can change fee");
@@ -215,43 +220,41 @@ contract BullchordMarketPlace is ReentrancyGuard {
      * @param _tokenId The token ID of the Bull NFT to be listed.
      * @param _price The price at which the NFT is listed for sale.
      */
-   function listBull(
-    address _nftAddress,
-    uint256 _tokenId,
-    uint256 _price
-)
-    external
-    payable
-    isOwner(_nftAddress, _tokenId, msg.sender)
-{
-    require(_price > 0, "The price of the Item must be > 0");
+    function listBull(
+        address _nftAddress,
+        uint256 _tokenId,
+        uint256 _price
+    ) external payable isOwner(_nftAddress, _tokenId, msg.sender) {
+        require(_price > 0, "The price of the Item must be > 0");
 
-    // Determine listing fee based on whitelist status
-    uint256 actualListingFee = _inWhiteList(msg.sender) 
-        ? whitelistedListingFee 
-        : listingFee;
-    require(msg.value >= actualListingFee, "Insufficient listing fee");
+        // Determine listing fee based on whitelist status
+        uint256 actualListingFee = _inWhiteList(msg.sender)
+            ? whitelistedListingFee
+            : listingFee;
+        require(msg.value >= actualListingFee, "Insufficient listing fee");
 
-    // Check if NFT is approved for the marketplace
-    nftContract = IERC721(_nftAddress);
-    require(nftContract.getApproved(_tokenId) == address(this), "Not Approved For Marketplace");
+        // Check if NFT is approved for the marketplace
+        nftContract = IERC721(_nftAddress);
+        require(
+            nftContract.getApproved(_tokenId) == address(this),
+            "Not Approved For Marketplace"
+        );
 
-    // Add the MarketItem to the mapping (avoid duplicate array storage)
-    idToMarketItem[_tokenId] = MarketItem({
-        tokenId: _tokenId,
-        seller: msg.sender,
-        _nftContract: _nftAddress,
-        price: _price,
-        sold: false
-    });
+        // Add the MarketItem to the mapping (avoid duplicate array storage)
+        idToMarketItem[_tokenId] = MarketItem({
+            tokenId: _tokenId,
+            seller: msg.sender,
+            _nftContract: _nftAddress,
+            price: _price,
+            sold: false
+        });
 
-    // Track ownership using the mapping
-    marketItemsOwner[msg.sender].push(_tokenId);
+        // Track ownership using the mapping
+        marketItemsOwner[msg.sender].push(_tokenId);
 
-    // Emit the NFTListed event
-    emit NFTListed(_nftAddress, _tokenId, _price, msg.sender);
-}
-
+        // Emit the NFTListed event
+        emit NFTListed(_nftAddress, _tokenId, _price, msg.sender);
+    }
 
     /**
      * @dev Buy a Bull NFT from the marketplace.
@@ -271,57 +274,62 @@ contract BullchordMarketPlace is ReentrancyGuard {
      * @param _nftContract The address of the Bull NFT contract.
      */
 
-function buyBull(address _nftContract, uint256 _tokenId) public payable nonReentrant {
-    // Fetch the seller and ensure the buyer isn't the seller
-    nftContract = IERC721(_nftContract);
-    address seller = nftContract.ownerOf(_tokenId);
-    require(seller != msg.sender, "You cannot buy your own NFT");
+    function buyBull(
+        address _nftContract,
+        uint256 _tokenId
+    ) public payable nonReentrant {
+        // Fetch the seller and ensure the buyer isn't the seller
+        nftContract = IERC721(_nftContract);
+        address seller = nftContract.ownerOf(_tokenId);
+        require(seller != msg.sender, "You cannot buy your own NFT");
 
-    // Fetch the market item
-    MarketItem storage marketItem = idToMarketItem[_tokenId];
-    require(!marketItem.sold, "Item already sold");
+        // Fetch the market item
+        MarketItem storage marketItem = idToMarketItem[_tokenId];
+        require(!marketItem.sold, "Item already sold");
 
-    uint256 payPrice = msg.value;
-    require(payPrice >= marketItem.price, "Price not met");
+        uint256 payPrice = msg.value;
+        require(payPrice >= marketItem.price, "Price not met");
 
-    // Fetch royalty information and deduct royalty
-    IRentableNFT nft = IRentableNFT(_nftContract);
-    (address royaltyRecipient, uint256 royalty) = nft.royaltyInfo(_tokenId, payPrice);
-    require(royalty <= payPrice, "Royalty exceeds payment");
+        // Fetch royalty information and deduct royalty
+        IRentableNFT nft = IRentableNFT(_nftContract);
+        (address royaltyRecipient, uint256 royalty) = nft.royaltyInfo(
+            _tokenId,
+            payPrice
+        );
+        require(royalty <= payPrice, "Royalty exceeds payment");
 
-    uint256 finalPrice = payPrice;
-    if (royalty > 0) {
-        finalPrice -= royalty; // Deduct royalty from final price
+        uint256 finalPrice = payPrice;
+        if (royalty > 0) {
+            finalPrice -= royalty; // Deduct royalty from final price
+        }
+
+        // Update state before making external calls
+        marketItem.sold = true;
+        isSold[_tokenId] = true;
+
+        // Deduct platform fee from finalPrice after royalty deduction
+        uint256 _platformFee = calculatePlatformFee(finalPrice);
+        finalPrice -= _platformFee;
+        listingProceeds += _platformFee;
+
+        // Transfer funds to the seller and royalty recipient
+        proceeds[seller] += finalPrice;
+
+        // External transfers after state is updated
+        if (royalty > 0) {
+            (bool successRoyalty, ) = payable(royaltyRecipient).call{
+                value: royalty
+            }("");
+            require(successRoyalty, "Royalty transfer failed");
+            emit RoyaltySent(royaltyRecipient, royalty);
+        }
+
+        // Transfer NFT to the buyer
+        nftContract.transferFrom(seller, msg.sender, _tokenId);
+
+        // Emit the event
+        emit NFTBought(msg.sender, seller, msg.value, _tokenId);
     }
-
-    // Update state before making external calls
-    marketItem.sold = true;
-    isSold[_tokenId] = true;
-
-    // Deduct platform fee from finalPrice after royalty deduction
-    uint256 _platformFee = calculatePlatformFee(finalPrice);
-    finalPrice -= _platformFee;
-    listingProceeds += _platformFee;
-
-    // Transfer funds to the seller and royalty recipient
-    proceeds[seller] += finalPrice;
-
-    // External transfers after state is updated
-    if (royalty > 0) {
-        (bool successRoyalty, ) = payable(royaltyRecipient).call{value: royalty}("");
-        require(successRoyalty, "Royalty transfer failed");
-        emit RoyaltySent(royaltyRecipient, royalty);
-    }
-
-    // Transfer NFT to the buyer
-    nftContract.transferFrom(seller, msg.sender, _tokenId);
-
-    // Emit the event
-    emit NFTBought(msg.sender, seller, msg.value, _tokenId);
-}
-
-
-
 
     /**
      * @dev Place a bid on a Bull NFT listed in the marketplace.
@@ -344,44 +352,49 @@ function buyBull(address _nftContract, uint256 _tokenId) public payable nonReent
      * @param _nftAddress The address of the Bull NFT contract.
      */
 
-  
-function bid(uint256 _tokenId, address _nftAddress) external payable nonReentrant {
-    console.log("Starting bid process...");
-    
-    uint256 bidAmount = msg.value;
-    console.log("Bid Amount (msg.value):", bidAmount);
+    function bid(
+        uint256 _tokenId,
+        address _nftAddress
+    ) external payable nonReentrant {
+        console.log("Starting bid process...");
 
-    require(bidAmount > 0, "Bid should be > 0");
+        uint256 bidAmount = msg.value;
+        console.log("Bid Amount (msg.value):", bidAmount);
 
-    nftContract = IERC721(_nftAddress); // Access the NFT contract
-    address seller = nftContract.ownerOf(_tokenId);
-    require(seller != msg.sender, "You cannot bid on your own NFT");
+        require(bidAmount > 0, "Bid should be > 0");
 
-    uint256 bidLength = userBids[_tokenId].length;
-    uint256 previousBidAmount;
+        nftContract = IERC721(_nftAddress); // Access the NFT contract
+        address seller = nftContract.ownerOf(_tokenId);
+        require(seller != msg.sender, "You cannot bid on your own NFT");
 
-    // Check the last bid (if any)
-    if (bidLength > 0) {
-        Bid memory lastBid = userBids[_tokenId][bidLength - 1];
-        previousBidAmount = lastBid.amount;
-        console.log("Previous Bid Amount:", previousBidAmount);
+        uint256 bidLength = userBids[_tokenId].length;
+        uint256 previousBidAmount;
 
-        // Ensure new bid is higher than the last bid
-        require(bidAmount > previousBidAmount, "bid amount too low");
+        // Check the last bid (if any)
+        if (bidLength > 0) {
+            Bid memory lastBid = userBids[_tokenId][bidLength - 1];
+            previousBidAmount = lastBid.amount;
+            console.log("Previous Bid Amount:", previousBidAmount);
 
-        // Instead of refunding immediately, store the amount in withdrawableBalance
-        withdrawableBalance[lastBid.from] += lastBid.amount;
-        console.log("Previous bidder's refund stored in withdrawable balance");
+            // Ensure new bid is higher than the last bid
+            require(bidAmount > previousBidAmount, "bid amount too low");
+
+            // Instead of refunding immediately, store the amount in withdrawableBalance
+            withdrawableBalance[lastBid.from] += lastBid.amount;
+            console.log(
+                "Previous bidder's refund stored in withdrawable balance"
+            );
+        }
+
+        // Record the new bid
+        Bid memory newBid = Bid({from: payable(msg.sender), amount: bidAmount});
+        userBids[_tokenId].push(newBid);
+        console.log("New bid recorded:", bidAmount);
+
+        emit BidMade(msg.sender, bidAmount);
     }
 
-    // Record the new bid
-    Bid memory newBid = Bid({from: payable(msg.sender), amount: bidAmount});
-    userBids[_tokenId].push(newBid);
-    console.log("New bid recorded:", bidAmount);
-
-    emit BidMade(msg.sender, bidAmount);
-}
-// 2500000000000000
+    // 2500000000000000
 
     /**
      * @dev Withdraw proceeds from the marketplace.
@@ -425,7 +438,6 @@ function bid(uint256 _tokenId, address _nftAddress) external payable nonReentran
         emit FundsWithdrawn(owner, earning);
     }
 
-
     function withdrawBidFunds() external nonReentrant {
         uint256 amount = withdrawableBalance[msg.sender];
         require(amount > 0, "No funds to withdraw");
@@ -455,61 +467,74 @@ function bid(uint256 _tokenId, address _nftAddress) external payable nonReentran
      * @param _nftContract The address of the Bull NFT contract.
      */
 
-   function acceptOffer(uint _tokenId, address _nftContract) external nonReentrant {
-    MarketItem storage marketItem = idToMarketItem[_tokenId];
-    nftContract = IERC721(_nftContract);
+    function acceptOffer(
+        uint _tokenId,
+        address _nftContract
+    ) external nonReentrant {
+        MarketItem storage marketItem = idToMarketItem[_tokenId];
+        nftContract = IERC721(_nftContract);
 
-    require(msg.sender == marketItem.seller, "You're not the owner");
-    
-    uint bidsLength = userBids[_tokenId].length;
-    require(bidsLength > 0, "No bids to accept");
+        require(msg.sender == marketItem.seller, "You're not the owner");
 
-    // Get the last bid and remove it
-    Bid memory lastBid = userBids[_tokenId][bidsLength - 1];
-    userBids[_tokenId].pop(); // Removes the last bid
+        uint bidsLength = userBids[_tokenId].length;
+        require(bidsLength > 0, "No bids to accept");
 
-    console.log("Last bid amount: ", lastBid.amount);
-    
-    // Handle royalties
-    IRentableNFT nft = IRentableNFT(marketItem._nftContract);
-    (address royaltyRecipient, uint256 royalty) = nft.royaltyInfo(_tokenId, lastBid.amount);
+        // Get the last bid and remove it
+        Bid memory lastBid = userBids[_tokenId][bidsLength - 1];
+        userBids[_tokenId].pop(); // Removes the last bid
 
-    uint256 amountToSeller = lastBid.amount;
+        console.log("Last bid amount: ", lastBid.amount);
 
-    if (royalty > 0) {
-        console.log("Royalty recipient: ", royaltyRecipient);
-        console.log("Royalty amount: ", royalty);
+        // Handle royalties
+        IRentableNFT nft = IRentableNFT(marketItem._nftContract);
+        (address royaltyRecipient, uint256 royalty) = nft.royaltyInfo(
+            _tokenId,
+            lastBid.amount
+        );
 
-        amountToSeller -= royalty;
-        
-        // Transfer royalty to the recipient
-        (bool successRoyalty, ) = payable(royaltyRecipient).call{value: royalty}("");
-        require(successRoyalty, "Royalty transfer failed");
-        emit RoyaltySent(royaltyRecipient, royalty);
+        uint256 amountToSeller = lastBid.amount;
+
+        if (royalty > 0) {
+            console.log("Royalty recipient: ", royaltyRecipient);
+            console.log("Royalty amount: ", royalty);
+
+            amountToSeller -= royalty;
+
+            // Transfer royalty to the recipient
+            (bool successRoyalty, ) = payable(royaltyRecipient).call{
+                value: royalty
+            }("");
+            require(successRoyalty, "Royalty transfer failed");
+            emit RoyaltySent(royaltyRecipient, royalty);
+        }
+
+        // Handle platform fee if applicable
+        if (isItemStaked[_tokenId]) {
+            uint256 totalPlatformFee = (amountToSeller * 15) / 100;
+            amountToSeller -= totalPlatformFee;
+            listingProceeds += totalPlatformFee;
+
+            console.log("Platform fee deducted: ", totalPlatformFee);
+        }
+
+        // Transfer funds to the seller
+        console.log("Amount to seller: ", amountToSeller);
+        (bool success, ) = payable(marketItem.seller).call{
+            value: amountToSeller
+        }("");
+        require(success, "Transaction failed");
+
+        // Transfer the NFT to the highest bidder
+        console.log("Transferring NFT to the highest bidder...");
+        nftContract.transferFrom(marketItem.seller, lastBid.from, _tokenId);
+
+        emit BidAccepted(
+            marketItem.seller,
+            lastBid.from,
+            lastBid.amount,
+            _tokenId
+        );
     }
-
-    // Handle platform fee if applicable
-    if (isItemStaked[_tokenId]) {
-        uint256 totalPlatformFee = (amountToSeller * 15) / 100;
-        amountToSeller -= totalPlatformFee;
-        listingProceeds += totalPlatformFee;
-
-        console.log("Platform fee deducted: ", totalPlatformFee);
-    }
-
-    // Transfer funds to the seller
-    console.log("Amount to seller: ", amountToSeller);
-    (bool success, ) = payable(marketItem.seller).call{value: amountToSeller}("");
-    require(success, "Transaction failed");
-
-    // Transfer the NFT to the highest bidder
-    console.log("Transferring NFT to the highest bidder...");
-    nftContract.transferFrom(marketItem.seller, lastBid.from, _tokenId);
-
-    emit BidAccepted(marketItem.seller, lastBid.from, lastBid.amount, _tokenId);
-}
-
-
 
     /**
      * @dev Cancel a Bull NFT listing on the marketplace.
@@ -525,7 +550,10 @@ function bid(uint256 _tokenId, address _nftAddress) external payable nonReentran
      * @param _tokenId The token ID of the Bull NFT listing to be canceled.
      */
 
-    function cancelListing(uint256 _tokenId, address _nftAddress) external  isOwner(_nftAddress, _tokenId, msg.sender) {
+    function cancelListing(
+        uint256 _tokenId,
+        address _nftAddress
+    ) external isOwner(_nftAddress, _tokenId, msg.sender) {
         // MarketItem memory marketItem = idToMarketItem[_tokenId];
         // require(msg.sender == marketItem.seller, "This is not your product");
         isSold[_tokenId] = true;
@@ -549,34 +577,39 @@ function bid(uint256 _tokenId, address _nftAddress) external payable nonReentran
      * @param _tokenId The token ID of the Bull NFT for which the bid offer is rejected.
      * @param _nftAddress The address of the Bull NFT contract.
      */
-    function rejectBidOffer(uint256 _tokenId, address _nftAddress) external nonReentrant {
-    nftContract = IERC721(_nftAddress);
-    address seller = nftContract.ownerOf(_tokenId);
-    require(msg.sender == seller, "Only the seller can reject bid offers");
+    function rejectBidOffer(
+        uint256 _tokenId,
+        address _nftAddress
+    ) external nonReentrant {
+        nftContract = IERC721(_nftAddress);
+        address seller = nftContract.ownerOf(_tokenId);
+        require(msg.sender == seller, "Only the seller can reject bid offers");
 
-    // Ensure the NFT is listed in the marketplace
-    MarketItem storage marketItem = idToMarketItem[_tokenId];
-    require(marketItem.seller == seller, "NFT is not listed in the marketplace");
+        // Ensure the NFT is listed in the marketplace
+        MarketItem storage marketItem = idToMarketItem[_tokenId];
+        require(
+            marketItem.seller == seller,
+            "NFT is not listed in the marketplace"
+        );
 
-    // Get the last bid offer for the NFT
-    Bid[] storage bids = userBids[_tokenId];
-    require(bids.length > 0, "No bids for this NFT");
+        // Get the last bid offer for the NFT
+        Bid[] storage bids = userBids[_tokenId];
+        require(bids.length > 0, "No bids for this NFT");
 
-    // Refund the last bidder
-    Bid memory lastBid = bids[bids.length - 1];
-    address bidder = lastBid.from;
-    uint256 bidAmount = lastBid.amount;
+        // Refund the last bidder
+        Bid memory lastBid = bids[bids.length - 1];
+        address bidder = lastBid.from;
+        uint256 bidAmount = lastBid.amount;
 
-    // Transfer funds using pull payment mechanism to handle failures gracefully
-    withdrawableBalance[bidder] += bidAmount;
+        // Transfer funds using pull payment mechanism to handle failures gracefully
+        withdrawableBalance[bidder] += bidAmount;
 
-    // Remove the bid from the array
-    bids.pop();
+        // Remove the bid from the array
+        bids.pop();
 
-    // Emit the event for tracking
-    emit BidOfferRejected(_tokenId, _nftAddress, seller, bidder, bidAmount);
-}
-
+        // Emit the event for tracking
+        emit BidOfferRejected(_tokenId, _nftAddress, seller, bidder, bidAmount);
+    }
 
     function getAllMarketItems() external view returns (MarketItem[] memory) {
         uint totalItems = marketItems.length;
@@ -628,7 +661,11 @@ function bid(uint256 _tokenId, address _nftAddress) external payable nonReentran
     /**
      * @dev Disallow payments to this contract directly
      */
-    fallback() external {
+    fallback() external payable {
+        revert();
+    }
+
+    receive() external payable {
         revert();
     }
 }

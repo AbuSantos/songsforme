@@ -6,18 +6,19 @@ import { prepareContractCall } from "thirdweb";
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { prepareTransaction, toWei } from "thirdweb";
 import { ethers } from "ethers";
+import { FormError } from "../errorsandsuccess/form-error";
+import { FormSuccess } from "../errorsandsuccess/form-success";
 type modalTypes = {
     setListModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
     const [isPending, startTransition] = useTransition();
-    const [transaction, setTransaction] = useState()
     const [errorMessage, setErrorMessage] = useState("");
     const [price, setPrice] = useState("");
-    const [address, setAddress] = useState("");
-    const [tokenId, setTokenId] = useState("");
-
+    const [address, setAddress] = useState("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
+    const [tokenId, setTokenId] = useState(2);
+    const [isSuccess, setIsSuccess] = useState<string>("");
 
 
     const handlelisting = async () => {
@@ -87,13 +88,17 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
 
                     <TransactionButton
                         transaction={handlelisting}
-                        onTransactionConfirmed={() => console.log("lising")}
-                        onError={(error) => console.log(error, "error")}
+                        onTransactionConfirmed={(receipt) => {
+                            console.log("Transaction confirmed", receipt.transactionHash);
+                        }}
+                        onError={(error) => setErrorMessage(error.message)}
                     >
                         Confirm Listing
                     </TransactionButton>
                 </div>
 
+                < FormError message={errorMessage} />
+                <FormSuccess message={isSuccess} />
             </div>
         </div>
     );

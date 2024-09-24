@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import AllListed from "../musicNFTs/listedNFT/all-listed";
+import Link from "next/link";
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
     album: {
@@ -15,7 +16,6 @@ interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
         artist: string;
     };
     index: number;
-    aspectRatio?: "portrait" | "square";
     width?: number;
     height?: number;
 }
@@ -23,9 +23,6 @@ interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
 export function AlbumArtwork({
     album,
     index,
-    aspectRatio = "portrait",
-    width,
-    height,
     className,
     ...props
 }: AlbumArtworkProps) {
@@ -41,6 +38,18 @@ export function AlbumArtwork({
 
     return (
         <div className={cn("space-y-3", className)} {...props}>
+            <div className="flex space-x-2">
+                <Image
+                    src={album.cover}
+                    width={150}
+                    height={100}
+                    alt="Music"
+                    className="block dark:hidden rounded-md"
+                />
+                <div>
+                    Hello world
+                </div>
+            </div>
 
             <AllListed />
 

@@ -110,10 +110,7 @@ export default async function MusicPage() {
                                 key={data.id}
                                 album={data}
                                 index={index}
-                                className="w-[250px]"
-                                aspectRatio="portrait"
-                                width={250}
-                                height={330}
+                                className="w-[400px]"
                               />
                             ))}
                           </div>

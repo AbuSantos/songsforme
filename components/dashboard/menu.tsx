@@ -22,7 +22,17 @@ import { useState } from "react"
 import { ConnecttButton } from "@/web3/connect-button"
 import { AddToWhitelist } from "../modal/add-to-whitelist"
 import { ListNFTForm } from "../modal/list-nft"
-
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+import { DesktopNFTForm } from "../modal/list-NFTD"
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -69,44 +79,6 @@ export function Menu() {
                                 <MenubarItem disabled>Genius Playlist</MenubarItem>
                             </MenubarSubContent>
                         </MenubarSub>
-                        {/* <MenubarItem>
-                        Open Stream URL... <MenubarShortcut>⌘U</MenubarShortcut>
-                    </MenubarItem>
-                    <MenubarItem>
-                        Close Window <MenubarShortcut>⌘W</MenubarShortcut>
-                    </MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarSub>
-                        <MenubarSubTrigger>Library</MenubarSubTrigger>
-                        <MenubarSubContent>
-                            <MenubarItem>Update Cloud Library</MenubarItem>
-                            <MenubarItem>Update Genius</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Organize Library...</MenubarItem>
-                            <MenubarItem>Export Library...</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Import Playlist...</MenubarItem>
-                            <MenubarItem disabled>Export Playlist...</MenubarItem>
-                            <MenubarItem>Show Duplicate Items</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Get Album Artwork</MenubarItem>
-                            <MenubarItem disabled>Get Track Names</MenubarItem>
-                        </MenubarSubContent>
-                    </MenubarSub>
-                    <MenubarItem>
-                        Import... <MenubarShortcut>⌘O</MenubarShortcut>
-                    </MenubarItem>
-                    <MenubarItem disabled>Burn Playlist to Disc...</MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem>
-                        Show in Finder <MenubarShortcut>⇧⌘R</MenubarShortcut>{" "}
-                    </MenubarItem>
-                    <MenubarItem>Convert</MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem>Page Setup...</MenubarItem>
-                    <MenubarItem disabled>
-                        Print... <MenubarShortcut>⌘P</MenubarShortcut>
-                    </MenubarItem> */}
                     </MenubarContent>
                 </MenubarMenu>
                 <MenubarMenu>
@@ -125,7 +97,6 @@ export function Menu() {
                         </MenubarItem>
                     </MenubarContent>
                 </MenubarMenu>
-
             </Menubar>
             <div className="ml-auto flex mr-4 justify-end space-x-2">
                 <ConnecttButton />
@@ -133,22 +104,26 @@ export function Menu() {
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     Mint Music
                 </Button>
-                <Button onClick={handleListModal} size="nav">
+                <Button onClick={handleListModal} size="nav" className="lg:hidden">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     List MusicNFT
                 </Button>
-                <Button onClick={handleWhiteModal} size="nav">
-                    <PlusCircledIcon className="mr-2 h-4 w-4" />
-                    Add to whitelist
-                </Button>
+                <AddToWhitelist />
+                <Sheet >
+                    <SheetTrigger asChild>
+                        <Button variant="outline" size="nav">Open</Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                        <SheetHeader>
+                            <SheetTitle>List Music</SheetTitle>
+                        </SheetHeader>
+                        <DesktopNFTForm />
+                    </SheetContent>
+                </Sheet>
             </div>
             {
                 isOpen &&
                 <AddMusicModal setIsOpen={setIsOpen} />
-            }
-            {
-                isModalOpen &&
-                <AddToWhitelist setIsModalOpen={setIsModalOpen} />
             }
             {
                 listModalOpen &&

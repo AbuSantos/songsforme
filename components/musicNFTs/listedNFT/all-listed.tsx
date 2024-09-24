@@ -27,22 +27,18 @@ export default function AllListed() {
 
     return (
         <div>
-            <h1>List NFT on Marketplace</h1>
             <div className="space-x-3 flex items-center">
-                <button onClick={handleBid}>Accept bid</button>
+                {/* <button onClick={handleBid}>Accept bid</button> */}
                 <BuyNft />
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button variant="outline" className="text-gray-800" size="nav">Bid for NFT</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                        <MakeBid />
+                    </PopoverContent>
+                </Popover>
             </div>
-
-            <Popover>
-                <PopoverTrigger asChild>
-                    <Button variant="outline" className="text-gray-800">Bid for NFT</Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80">
-                    <MakeBid />
-                </PopoverContent>
-            </Popover>
-
-
             {
                 openBidModal &&
                 < AcceptBidOffer setBidModal={setBidModal} />

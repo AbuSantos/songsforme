@@ -26,7 +26,10 @@ export const BuyNft = () => {
                 }}
                 onTransactionConfirmed={() => console.log("lising")}
                 onError={(error) =>
-                    console.log(error.message)
+                    toast("NFT ERROR", {
+                        description: error.name
+                    })
+                    // console.log(error.message)
                 }
             >
                 Buy Nft
