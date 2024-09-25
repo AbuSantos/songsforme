@@ -16,6 +16,7 @@ import { AlbumArtwork } from "@/components/dashboard/album-artwork"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import BottomNav from "@/components/dashboard/bottom-nav"
+import { Aside } from "@/components/dashboard/my-playlist"
 
 
 export const metadata: Metadata = {
@@ -73,7 +74,7 @@ export default async function MusicPage() {
         <Menu />
         <div className="border-t border-gray-700 py-2">
           <div className="bg-[var(--bg-root)]">
-            <div className="grid lg:grid-cols-5">
+            <div className="grid lg:grid-cols-6">
               <Sidebar playlists={playlists} className="hidden lg:block bg-[var(--bg-root)] text-[var(--text)]" />
               <div className="col-span-3 lg:col-span-4 lg:border-l bg-[var(--bg-root)] text-[var(--text)]">
                 <div className="h-full px-4 py-6 lg:px-8">
@@ -110,7 +111,7 @@ export default async function MusicPage() {
                                 key={data.id}
                                 album={data}
                                 index={index}
-                                className="w-[400px]"
+                                className="w-[200px]"
                               />
                             ))}
                           </div>
@@ -130,7 +131,9 @@ export default async function MusicPage() {
                     </TabsContent>
                   </Tabs>
                 </div>
+
               </div>
+              <Aside playlists={playlists} className="hidden lg:block bg-[var(--bg-root)] text-[var(--text)]" />
             </div>
           </div>
         </div>

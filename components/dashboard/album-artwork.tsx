@@ -29,6 +29,7 @@ interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
         title: string;
         url: string;
         artist: string;
+        id: string;
     };
     index: number;
     width?: number;
@@ -44,6 +45,9 @@ export function AlbumArtwork({
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
     const [isOpen, setIsOpen] = React.useState(false)
     const [isPending, startTransition] = React.useTransition()
+    const [openTrack, setOpenTrack] = React.useState<boolean>(false)
+
+    console.log(album)
     const handlePlayPause = () => {
         if (currentTrackId === index) {
             togglePlayPause();
@@ -69,49 +73,59 @@ export function AlbumArtwork({
 
     return (
         <div className={cn("space-y-3", className)} {...props}>
-            <div className="flex space-x-2">
+            <Link className="space-y-1" href={`dashboard/tracklist/${album.id}`}>
                 <Image
                     src={album.cover}
-                    width={150}
+                    width={200}
                     height={100}
                     alt="Music"
-                    className="block dark:hidden rounded-md"
+                    className="block dark:hidden rounded-md cursor-pointer"
+                    onClick={() => setOpenTrack(!openTrack)}
                 />
-                <div>
-                    <Collapsible
-                        open={isOpen}
-                        onOpenChange={setIsOpen}
-                        className="w-[200px] space-y-2"
-                    >
-                        <CollapsibleTrigger >
-                            Each Tracklist
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="space-y-2">
-                            <div className=" flex justify-between items-center rounded-md border-[0.5px] px-4 py-3 font-mono text-[0.7rem]">
-                                <p>
-                                    <small className="space-x-2">1.</small>
-                                    Track
-                                </p>
-                                <div className="flex space-x-2">
-                                    <button className="cursor-pointer">
-                                        <CheckCircledIcon className="h-6 w-6" />
-                                    </button>
-                                    <Popover>
-                                        <PopoverTrigger>
-                                            <ChevronDownIcon className="h-6 w-6" />
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-[12rem] border-[0.5px] border-gray-600 ">
-                                            <AllListed />
-                                        </PopoverContent>
-                                    </Popover>
+                <p className="text-sm capitalize text-slate-500">
+                    {album.title}
+                </p>
+                <p className="text-[0.7rem] capitalize text-slate-500">
+                    {album.artist}
+                </p>
+            </Link>
+
+            {/* {
+                    openTrack &&
+                    <div>
+                        <Collapsible
+                            open={isOpen}
+                            onOpenChange={setIsOpen}
+                            className="w-[200px] space-y-2"
+                        >
+                            <CollapsibleTrigger >
+                                Each Tracklist
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="space-y-2">
+                                <div className=" flex justify-between items-center rounded-md border-[0.5px] px-4 py-3 font-mono text-[0.7rem]">
+                                    <p>
+                                        <small className="space-x-2">1.</small>
+                                        Track
+                                    </p>
+                                    <div className="flex space-x-2">
+                                        <button className="cursor-pointer">
+                                            <CheckCircledIcon className="h-6 w-6" />
+                                        </button>
+                                        <Popover>
+                                            <PopoverTrigger>
+                                                <ChevronDownIcon className="h-6 w-6" />
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[12rem] border-[0.5px] border-gray-600 ">
+                                                <AllListed />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+
+
                                 </div>
-
-
-                            </div>
-                        </CollapsibleContent>
-                    </Collapsible>
-                </div>
-            </div>
+                            </CollapsibleContent>
+                        </Collapsible>
+                    </div>} */}
 
 
             {/* {currentTrackId === index && (

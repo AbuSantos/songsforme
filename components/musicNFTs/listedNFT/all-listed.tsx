@@ -17,6 +17,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { AddSongToPlaylist } from "@/components/playlists/add-song-to-playlist";
 export default function AllListed() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [openBidModal, setBidModal] = useState<boolean>(false)
@@ -38,9 +39,7 @@ export default function AllListed() {
                         <MakeBid />
                     </PopoverContent>
                 </Popover>
-                <Button className="bg-gray-200 text-gray-950 hover:bg-gray-950 hover:text-gray-200">
-                    Add to playlist
-                </Button>
+                < AddSongToPlaylist />
             </div>
             {
                 openBidModal &&
