@@ -83,7 +83,7 @@ export default async function MusicPage() {
                         <TabsTrigger value="music" className="relative">
                           Music
                         </TabsTrigger>
-                        <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
+                        <TabsTrigger value="podcasts">My NFT</TabsTrigger>
                       </TabsList>
 
                     </div>
@@ -117,32 +117,16 @@ export default async function MusicPage() {
                           <ScrollBar orientation="horizontal" />
                         </ScrollArea>
                       </div>
-                      <div className="mt-6 space-y-1">
-                        <h2 className="text-2xl font-semibold tracking-tight">
-                          Made for You
-                        </h2>
-                        <p className="text-sm text-muted-foreground">
-                          Your personal playlists. Updated daily.
-                        </p>
-                      </div>
-                      <Separator className="my-4" />
+
                     </TabsContent>
                     <TabsContent
                       value="podcasts"
                       className="h-full flex-col border-none p-0 data-[state=active]:flex"
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                          <h2 className="text-2xl font-semibold tracking-tight">
-                            New Episodes
-                          </h2>
-                          <p className="text-sm text-muted-foreground">
-                            Your favorite podcasts. Updated daily.
-                          </p>
-                        </div>
-                      </div>
+                      <h2 className="text-2xl font-semibold tracking-tight">
+                        All My NFTs
+                      </h2>
                       <Separator className="my-4" />
-                      {/* <PodcastEmptyPlaceholder /> */}
                     </TabsContent>
                   </Tabs>
                 </div>

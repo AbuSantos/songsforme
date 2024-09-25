@@ -27,7 +27,7 @@ export default function AllListed() {
 
     return (
         <div>
-            <div className="space-x-3 flex items-center">
+            <div className="space-x-3 space-y-3  items-center">
                 {/* <button onClick={handleBid}>Accept bid</button> */}
                 <BuyNft />
                 <Popover>
@@ -38,6 +38,9 @@ export default function AllListed() {
                         <MakeBid />
                     </PopoverContent>
                 </Popover>
+                <Button className="bg-gray-200 text-gray-950 hover:bg-gray-950 hover:text-gray-200">
+                    Add to playlist
+                </Button>
             </div>
             {
                 openBidModal &&

@@ -33,6 +33,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { DesktopNFTForm } from "../modal/list-NFTD"
+import { CreatePlaylist } from "../playlists/create-playlist"
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -99,7 +100,7 @@ export function Menu() {
                 </MenubarMenu>
             </Menubar>
             <div className="ml-auto flex mr-4 justify-end space-x-2">
-                <ConnecttButton />
+                < CreatePlaylist />
                 <Button onClick={handleModal} size="nav">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     Mint Music
@@ -120,6 +121,8 @@ export function Menu() {
                         <DesktopNFTForm />
                     </SheetContent>
                 </Sheet>
+                <ConnecttButton />
+
             </div>
             {
                 isOpen &&

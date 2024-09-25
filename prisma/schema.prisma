@@ -6,12 +6,43 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model User {
+  id        String     @id @default(cuid())
+  username  String?    @unique
+  playlists Playlist[]
+}
+
 model ListedNFT {
-  id          Int      @id @default(autoincrement())
-  tokenId     Int
-  seller      String
-  price       Float
-  contractAddress String
-  listedAt    DateTime @default(now())
-  sold        Boolean  @default(false)
+  id                String              @id @default(cuid())
+  tokenId           String
+  seller            String
+  price             Float
+  contractAddress   String
+  uri               String?
+  listedAt          DateTime            @default(now())
+  sold              Boolean             @default(false)
+  userId            String?
+  playlist          Playlist[]
+  PlaylistListedNFT PlaylistListedNFT[]
+}
+
+model Playlist {
+  id                String              @id @default(cuid())
+  name              String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  userId            String
+  listednft         ListedNFT[]
+  owner             User                @relation(fields: [userId], references: [id])
+  PlaylistListedNFT PlaylistListedNFT[]
+}
+
+model PlaylistListedNFT {
+  playlistId  String
+  listedNFTId String
+  playlist    Playlist  @relation(fields: [playlistId], references: [id])
+  listedNFT   ListedNFT @relation(fields: [listedNFTId], references: [id])
+
+  @@id([playlistId, listedNFTId]) // Composite key
 }

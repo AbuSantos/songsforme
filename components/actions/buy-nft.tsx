@@ -12,8 +12,9 @@ export const BuyNft = () => {
     const tokenId = 2
 
     return (
-        <div >
+        <div className="max-w-[20px]">
             <TransactionButton
+                className=" w-[25px] bg-black"
                 transaction={() => {
                     // Create a transaction object and return it
                     const tx = prepareContractCall({
@@ -32,7 +33,7 @@ export const BuyNft = () => {
                     // console.log(error.message)
                 }
             >
-                Buy Nft
+                Buy NFT
             </TransactionButton>
         </div >
     );
