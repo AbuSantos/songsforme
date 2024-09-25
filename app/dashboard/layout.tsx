@@ -5,6 +5,7 @@ import BottomNav from "@/components/dashboard/bottom-nav";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { playlists } from "@/data/playlists"
 import { Aside } from "@/components/dashboard/my-playlist";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const poppins = Poppins({ weight: "500", subsets: ["latin"] });
 
@@ -18,9 +19,10 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                     <div className="grid lg:grid-cols-7">
                         <Sidebar playlists={playlists} className="hidden lg:block bg-[var(--bg-root)] text-[var(--text)]" />
                         <div className="col-span-3 lg:col-span-4 lg:border-l bg-[var(--bg-root)] text-[var(--text)]">
-                            {children}
+                            <ScrollArea >
+                                {children}
+                            </ScrollArea>
                         </div>
-
                         <Aside playlists={playlists} className="hidden lg:block lg:col-span-2 bg-[var(--bg-root)] text-[var(--text)] border-l-2 border-gray-300" />
                     </div>
                 </div>

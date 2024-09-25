@@ -7,18 +7,24 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 
-// import { PodcastEmptyPlaceholder } from "./components/podcast-empty-placeholder"
-import { Menu } from "@/components/dashboard/menu"
-import { Sidebar } from "@/components/dashboard/sidebar"
-import { playlists } from "@/data/playlists"
+
 import { listenNowAlbums, madeForYouAlbums } from "@/data/albums"
 import { AlbumArtwork } from "@/components/dashboard/album-artwork"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
-import BottomNav from "@/components/dashboard/bottom-nav"
-import { Aside } from "@/components/dashboard/my-playlist"
 
-
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+import { DesktopNFTForm } from "@/components/modal/list-NFTD"
+import { HelpComponent } from "@/components/dashboard/help"
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
@@ -56,14 +62,33 @@ export default async function MusicPage() {
             <div className="col-span-3 lg:col-span-4 lg:border-l bg-[var(--bg-root)] text-[var(--text)]">
                 <div className="h-full px-4 py-6 lg:px-8">
                     <Tabs defaultValue="music" className="h-full space-y-6">
-                        <div className="space-between flex items-center">
+                        <div className="flex items-center justify-between">
                             <TabsList>
                                 <TabsTrigger value="music" className="relative">
                                     Music
                                 </TabsTrigger>
                                 <TabsTrigger value="podcasts">My NFT</TabsTrigger>
                             </TabsList>
+                            <Sheet >
+                                <SheetTrigger asChild>
+                                    <Button variant="outline" size="nav" className="text-gray-950">Add NFT</Button>
+                                </SheetTrigger>
+                                <SheetContent>
+                                    <SheetHeader>
+                                        <SheetTitle>List Music</SheetTitle>
+                                    </SheetHeader>
+                                    <DesktopNFTForm />
 
+                                    <div className="mt-8">
+                                        <div>
+                                            <h1 className="text-2xl font-semibold">Check our FAQs</h1>
+                                            <small className="text-slate-600 capitalize" >ant find help, please contact support@songsforme</small>
+                                        </div>
+
+                                        <HelpComponent />
+                                    </div>
+                                </SheetContent>
+                            </Sheet>
                         </div>
                         <TabsContent
                             value="music"

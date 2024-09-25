@@ -1,0 +1,71 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "username" TEXT,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ListedNFT" (
+    "id" TEXT NOT NULL,
+    "tokenId" TEXT NOT NULL,
+    "seller" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "contractAddress" TEXT NOT NULL,
+    "uri" TEXT,
+    "listedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "sold" BOOLEAN NOT NULL DEFAULT false,
+    "userId" TEXT,
+
+    CONSTRAINT "ListedNFT_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Playlist" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Playlist_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PlaylistListedNFT" (
+    "playlistId" TEXT NOT NULL,
+    "listedNFTId" TEXT NOT NULL,
+
+    CONSTRAINT "PlaylistListedNFT_pkey" PRIMARY KEY ("playlistId","listedNFTId")
+);
+
+-- CreateTable
+CREATE TABLE "_ListedNFTToPlaylist" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_ListedNFTToPlaylist_AB_unique" ON "_ListedNFTToPlaylist"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_ListedNFTToPlaylist_B_index" ON "_ListedNFTToPlaylist"("B");
+
+-- AddForeignKey
+ALTER TABLE "Playlist" ADD CONSTRAINT "Playlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PlaylistListedNFT" ADD CONSTRAINT "PlaylistListedNFT_playlistId_fkey" FOREIGN KEY ("playlistId") REFERENCES "Playlist"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PlaylistListedNFT" ADD CONSTRAINT "PlaylistListedNFT_listedNFTId_fkey" FOREIGN KEY ("listedNFTId") REFERENCES "ListedNFT"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ListedNFTToPlaylist" ADD CONSTRAINT "_ListedNFTToPlaylist_A_fkey" FOREIGN KEY ("A") REFERENCES "ListedNFT"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ListedNFTToPlaylist" ADD CONSTRAINT "_ListedNFTToPlaylist_B_fkey" FOREIGN KEY ("B") REFERENCES "Playlist"("id") ON DELETE CASCADE ON UPDATE CASCADE;

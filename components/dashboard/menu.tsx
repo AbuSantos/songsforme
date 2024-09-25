@@ -22,18 +22,8 @@ import { useState } from "react"
 import { ConnecttButton } from "@/web3/connect-button"
 import { AddToWhitelist } from "../modal/add-to-whitelist"
 import { ListNFTForm } from "../modal/list-nft"
-import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
-import { DesktopNFTForm } from "../modal/list-NFTD"
-import { CreatePlaylist } from "../playlists/create-playlist"
+
+
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -100,7 +90,7 @@ export function Menu() {
                 </MenubarMenu>
             </Menubar>
             <div className="ml-auto flex mr-4 justify-end space-x-2">
-                < CreatePlaylist />
+
                 <Button onClick={handleModal} size="nav">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     Mint Music
@@ -110,17 +100,7 @@ export function Menu() {
                     List MusicNFT
                 </Button>
                 <AddToWhitelist />
-                <Sheet >
-                    <SheetTrigger asChild>
-                        <Button variant="outline" size="nav">Open</Button>
-                    </SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle>List Music</SheetTitle>
-                        </SheetHeader>
-                        <DesktopNFTForm />
-                    </SheetContent>
-                </Sheet>
+
                 <ConnecttButton />
 
             </div>

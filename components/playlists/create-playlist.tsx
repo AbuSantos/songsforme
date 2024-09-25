@@ -1,4 +1,5 @@
-import { Cross1Icon } from "@radix-ui/react-icons";
+"use client"
+import { Cross1Icon, PlusCircledIcon } from "@radix-ui/react-icons";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
@@ -38,7 +39,7 @@ export const CreatePlaylist = () => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="text-gray-800" size="nav">Create Playlist </Button>
+                <PlusCircledIcon className="w-6 h-6 text-gray-300 hover:text-gray-50 cursor-pointer" />
             </PopoverTrigger>
             <PopoverContent className="w-80">
                 <h1 className="text-gray-100 text-center p-3">Playlist Name</h1>
@@ -52,7 +53,7 @@ export const CreatePlaylist = () => {
                     />
                 </div>
                 <Button disabled={isPending} onClick={addToPlaylist} size="nav" className="mt-3 w-full bg-slate-50 text-gray-950">
-                    submit
+                    create playlist
                 </Button>
             </PopoverContent>
 
