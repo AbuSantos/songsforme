@@ -46,7 +46,7 @@ export const SelectPlaylist = ({ data }: SelectProps) => {
 
     return (
         <Select onValueChange={handleAddToPlaylist} >
-            <SelectTrigger className="w-full text-gray-950 bg-slate-50">
+            <SelectTrigger className="w-[30;x] text-gray-950 bg-slate-50">
                 <SelectValue placeholder="Select a playlist" />
             </SelectTrigger>
             <SelectContent>

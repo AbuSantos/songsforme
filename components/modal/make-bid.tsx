@@ -9,6 +9,11 @@ import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
 import { getContractEvents } from "thirdweb";
 import { ethers } from "ethers";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 async function getSigner() {
     if (typeof window.ethereum !== "undefined") {
@@ -82,27 +87,39 @@ export const MakeBid = () => {
     };
 
     return (
-        <div className="flex flex-col space-y-3">
-            <Input
-                value={price}
-                onChange={(e) => setPrice(e.target.value)} // Handling input
-                placeholder="Price in ETH"
-                disabled={isPending}
-                className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
-            />
 
-            <TransactionButton
-                transaction={handleBid}
-                onTransactionConfirmed={(receipt) => {
-                    console.log("Transaction successful", receipt);
-                    setIsSuccess("Bid Made Successfully")
-                }}
-                onError={(error) => setErrorMessage(error.message)}
-            >
-                Make Bid
-            </TransactionButton>
-            < FormError message={errorMessage} />
-            <FormSuccess message={isSuccess} />
-        </div>
+
+        <Popover>
+            <PopoverTrigger asChild>
+                <Button variant="outline" className="text-gray-800" size="nav">Bid</Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+
+                <div className="flex flex-col space-y-3">
+                    <Input
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)} // Handling input
+                        placeholder="Price in ETH"
+                        disabled={isPending}
+                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
+                    />
+
+                    <TransactionButton
+                        transaction={handleBid}
+                        onTransactionConfirmed={(receipt) => {
+                            console.log("Transaction successful", receipt);
+                            setIsSuccess("Bid Made Successfully")
+                        }}
+                        onError={(error) => setErrorMessage(error.message)}
+                    >
+                        Make Bid
+                    </TransactionButton>
+                    < FormError message={errorMessage} />
+                    <FormSuccess message={isSuccess} />
+                </div>
+            </PopoverContent>
+
+        </Popover>
+
     );
 };

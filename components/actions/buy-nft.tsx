@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { toast } from "sonner"
 import { toWei } from "thirdweb";
 
-export const BuyNft = () => {
+export const BuyNFT = () => {
 
     const nftAddress = "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30"
     const tokenId = 2
@@ -33,7 +33,7 @@ export const BuyNft = () => {
                     // console.log(error.message)
                 }
             >
-                Buy NFT
+                Buy
             </TransactionButton>
         </div >
     );

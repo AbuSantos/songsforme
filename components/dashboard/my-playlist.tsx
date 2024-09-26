@@ -1,16 +1,20 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Playlist } from "@/data/playlists"
 import { Separator } from "../ui/separator"
 import { CreatePlaylist } from "../playlists/create-playlist"
+import { useActiveAccount } from "thirdweb/react"
 
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
     playlists: Playlist[]
 }
 
-export function Aside({ className, playlists }: SidebarProps) {
+export const Aside = ({ className, playlists }: SidebarProps) => {
+    const userId = useActiveAccount()
+
     return (
         <div className={cn("pb-12", className)}>
             <div className="space-y-4 py-4">
@@ -19,7 +23,10 @@ export function Aside({ className, playlists }: SidebarProps) {
                         <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
                             My Playlists
                         </h2>
-                        < CreatePlaylist />
+                        {
+                            userId?.address &&
+                            < CreatePlaylist id={userId?.address} />
+                        }
                     </div>
                     <div className="space-y-1">
                         <Button variant="ghost" className="w-full justify-start">

@@ -9,7 +9,8 @@ export const createplaylist = async (
   nftId?: string
 ) => {
   try {
-    console.log(name);
+    console.log(userId, "id");
+
     const newPlaylist = await db.playlist.create({
       data: {
         name,

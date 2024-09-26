@@ -8,9 +8,9 @@ generator client {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  username  String?    @unique
-  playlists Playlist[]
+  id       String  @id @default(cuid())
+  username String? @unique
+  // playlists Playlist[]
 }
 
 model ListedNFT {
@@ -34,7 +34,7 @@ model Playlist {
   updatedAt         DateTime            @updatedAt
   userId            String
   listednft         ListedNFT[]
-  owner             User                @relation(fields: [userId], references: [id])
+  // owner             User                @relation(fields: [userId], references: [id])
   PlaylistListedNFT PlaylistListedNFT[]
 }
 
