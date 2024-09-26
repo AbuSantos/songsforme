@@ -1,6 +1,6 @@
 "use client"
 import { Cross1Icon, PlusCircledIcon } from "@radix-ui/react-icons";
-
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner"
@@ -20,7 +20,6 @@ type ModalProps = {
 export const CreatePlaylist = ({ id }: ModalProps) => {
     const [isPending, startTransition] = React.useTransition()
     const [playlist, setPlaylist] = useState<string>("");
-
 
     const addToPlaylist = () => {
         startTransition(() => {
@@ -50,7 +49,7 @@ export const CreatePlaylist = ({ id }: ModalProps) => {
                         value={playlist}
                         onChange={(e) => setPlaylist(e.target.value)}
                         placeholder="Playlist Name"
-                        // disabled={isPending}
+                        disabled={isPending}
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
                 </div>

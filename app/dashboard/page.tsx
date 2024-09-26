@@ -59,7 +59,7 @@ export default async function MusicPage() {
 
     return (
         <>
-            <div className="col-span-3 lg:col-span-4 lg:border-l bg-[var(--bg-root)] text-[var(--text)]">
+            <div className="col-span-3 lg:col-span-4 lg:border-l bg-[#111111] rounded-lg text-[var(--text)]">
                 <div className="h-full px-4 py-6 lg:px-8">
                     <Tabs defaultValue="music" className="h-full space-y-6">
                         <div className="flex items-center justify-between">
@@ -104,7 +104,7 @@ export default async function MusicPage() {
                                     </p>
                                 </div>
                             </div>
-                            <Separator className="my-4" />
+                            <Separator className="my-4 " />
                             <div className="relative">
                                 <ScrollArea>
                                     <div className="flex flex-wrap space-x-4 pb-4">
@@ -129,7 +129,7 @@ export default async function MusicPage() {
                             <h2 className="text-2xl font-semibold tracking-tight">
                                 All My NFTs
                             </h2>
-                            <Separator className="my-4" />
+                            <Separator className="my-4 bg-black" />
                         </TabsContent>
                     </Tabs>
                 </div>

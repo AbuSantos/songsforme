@@ -70,7 +70,7 @@ export default async function MusicPage() {
         />
       </div>
 
-      <div className="hidden md:block bg-[var(--bg-root)]">
+      <div className="hidden md:block bg-[#111111]">
         <Menu />
         <div className="border-t border-gray-700 py-2">
           <div className="bg-[var(--bg-root)]">

@@ -17,7 +17,7 @@ export const Aside = ({ className, playlists }: SidebarProps) => {
     const userId = useActiveAccount()
 
     return (
-        <div className={cn("pb-12", className)}>
+        <div className={cn("pb-12 rounded-lg", className)}>
             <div className="space-y-4 py-4">
                 <div className="px-3 py-2">
                     <div className="flex justify-between px-2 items-center">

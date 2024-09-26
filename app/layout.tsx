@@ -3,7 +3,8 @@ import "./globals.css";
 import { RecoilRoot } from "recoil";
 import { ThirdwebProvider } from "thirdweb/react";
 import { Toaster } from "@/components/ui/sonner"
-
+import '@radix-ui/themes/styles.css';
+import { Theme } from '@radix-ui/themes';
 
 // export const metadata: Metadata = {
 //   title: "Bullchord",

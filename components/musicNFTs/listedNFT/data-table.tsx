@@ -57,11 +57,15 @@ const invoices = [
     },
 ]
 
+
+
+
+
 export const Tracktable = () => {
     return (
         <Table>
-            <TableHeader>
-                <TableRow>
+            <TableHeader className="border-b-0">
+                <TableRow className="border-b-0">
                     <TableHead className="w-[20px]">Sold</TableHead>
                     <TableHead>Title</TableHead>
                     <TableHead className="text-right">Amount</TableHead>
@@ -70,9 +74,9 @@ export const Tracktable = () => {
             </TableHeader>
             <TableBody>
                 {invoices.map((invoice) => (
-                    <TableRow key={invoice.invoice} className="space-y-5">
+                    <TableRow key={invoice.invoice} className="space-y-5 border-b-0 hover:bg-[#222222] rounded-lg">
                         <TableCell className="font-medium py-4 text-slate-400">{invoice.invoice}</TableCell>
-                        <TableCell>
+                        <TableCell >
                             <div className="flex flex-col ">
                                 <p>
                                     {invoice.paymentStatus}
