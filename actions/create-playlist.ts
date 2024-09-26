@@ -27,9 +27,9 @@ export const createplaylist = async (
       },
     });
     revalidateTag("playlist");
-    // return { message: `${newPlaylist.name}  Created ` };
+    return { message: `${newPlaylist.name}  Created ` };
   } catch (error) {
     console.log(error);
-    return { error: "Error creating playlist" };
+    return { message: "Error creating playlist" };
   }
 };

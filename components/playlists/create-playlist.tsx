@@ -25,16 +25,15 @@ export const CreatePlaylist = ({ id }: ModalProps) => {
     const addToPlaylist = () => {
         startTransition(() => {
             createplaylist(id, playlist).then((data) => {
-                console.log(data)
-                // toast({
-                //     description: data.message,
-                // });
+                toast("Playlist", {
+                    description: data?.message,
+                });
                 setPlaylist("")
             }).catch((error) => {
                 console.error("Error:", error);
-                // toast({
-                //     description: "An error occurred. Please try again.",
-                // });
+                toast("Error", {
+                    description: "An error occurred. Please try again.",
+                });
             });
         })
     }

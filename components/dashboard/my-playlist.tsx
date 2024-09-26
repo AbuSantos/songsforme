@@ -6,6 +6,7 @@ import { Playlist } from "@/data/playlists"
 import { Separator } from "../ui/separator"
 import { CreatePlaylist } from "../playlists/create-playlist"
 import { useActiveAccount } from "thirdweb/react"
+import { MyPlaylist } from "../playlists/my-playlist"
 
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -48,7 +49,7 @@ export const Aside = ({ className, playlists }: SidebarProps) => {
                             </svg>
                             Playlists
                         </Button>
-
+                        <MyPlaylist />
 
                     </div>
                 </div>

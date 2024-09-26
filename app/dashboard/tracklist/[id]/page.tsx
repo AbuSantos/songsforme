@@ -27,7 +27,6 @@ const page = () => {
         }
         fetchTrack()
     }, [trackId])
-    console.log(track)
 
     return (
         <div className='text-red-50 px-3'>

@@ -47,7 +47,6 @@ export function AlbumArtwork({
     const [isPending, startTransition] = React.useTransition()
     const [openTrack, setOpenTrack] = React.useState<boolean>(false)
 
-    console.log(album)
     const handlePlayPause = () => {
         if (currentTrackId === index) {
             togglePlayPause();
