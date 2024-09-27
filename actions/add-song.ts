@@ -9,13 +9,9 @@ export const addSongToPlaylist = async (playlistId: string, nftId: string) => {
     if (!playlistId || !nftId) {
       return { message: "PlaylistId and NftId are required" };
     }
-
-    // Check if the playlist exists
     const playlist = await db.playlist.findUnique({
       where: { id: playlistId },
     });
-
-    // Check if the NFT exists
     const listedNft = await db.listedNFT.findUnique({
       where: { id: nftId },
     });
@@ -23,8 +19,6 @@ export const addSongToPlaylist = async (playlistId: string, nftId: string) => {
     if (!playlist || !listedNft) {
       return { message: "Playlist or NFT not found" };
     }
-
-    // Add the NFT to the playlist by connecting it in the join table (PlaylistListedNFT)
     await db.playlist.update({
       where: { id: playlistId },
       data: {

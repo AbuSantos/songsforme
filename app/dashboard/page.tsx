@@ -6,8 +6,6 @@ import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-
-
 import { listenNowAlbums, madeForYouAlbums } from "@/data/albums"
 import { AlbumArtwork } from "@/components/dashboard/album-artwork"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"

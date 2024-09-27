@@ -11,7 +11,15 @@ import {
 import AllListed from "./all-listed"
 import { BuyNFT } from "@/components/actions/buy-nft"
 import { MakeBid } from "@/components/modal/make-bid"
+import { AddSong } from "@/components/playlists/add-song-playlist"
 
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Text } from "@radix-ui/themes"
 const invoices = [
     {
         invoice: 10,
@@ -57,45 +65,45 @@ const invoices = [
     },
 ]
 
-
-
-
-
 export const Tracktable = () => {
     return (
-        <Table>
-            <TableHeader className="border-b-0">
-                <TableRow className="border-b-0">
-                    <TableHead className="w-[20px]">Sold</TableHead>
-                    <TableHead>Title</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                    <TableHead>Method</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {invoices.map((invoice) => (
-                    <TableRow key={invoice.invoice} className="space-y-5 border-b-0 hover:bg-[#222222] rounded-lg">
-                        <TableCell className="font-medium py-4 text-slate-400">{invoice.invoice}</TableCell>
-                        <TableCell >
-                            <div className="flex flex-col ">
-                                <p>
-                                    {invoice.paymentStatus}
+        <div>
+            <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-2">
+                <Text className="uppercase font-extralight w-10 text-[0.8rem] ">ns</Text>
+                <Text className="font-[50] capitalize text-[0.8rem] w-6/12 ">title</Text>
+                <Text className="font-[50] capitalize text-[0.8rem] w-2/12 ">price</Text>
+                <Text className="font-[50] capitalize text-[0.8rem] w-4/12 ">action</Text>
+            </header>
+            {invoices.map((invoice, index) => (
+                <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem key={index} value={String(index)} className="border-b-[0.5px] border-b-[#2A2A2A] ">
+                        <AccordionTrigger>
+                            <div className="flex items-center text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]  px-2 py-2 w-full text-start rounded-md ">
+                                <p className="w-10 ">
+                                    10
                                 </p>
-                                <small className="text-gray-600 uppercase">
-                                    FT: Santos
-                                </small>
+                                <div className="flex flex-col w-6/12">
+                                    <p className="text-[1rem] capitalize">
+                                        {invoice.paymentMethod}
+                                    </p>
+                                    <small className=" uppercase">
+                                        FT: Santos
+                                    </small>
+                                </div>
                             </div>
-                        </TableCell>
-                        <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-                        <TableCell>
-                            <div className="flex space-x-2">
+                        </AccordionTrigger>
+                        <AccordionContent className="px-4">
+                            <div className="flex items-center space-x-2">
                                 < MakeBid />
                                 <BuyNFT />
+                                < AddSong />
                             </div>
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                        </AccordionContent>
+                    </AccordionItem>
+
+                </Accordion>
+            ))}
+        </div>
+
     )
 }

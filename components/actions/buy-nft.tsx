@@ -12,9 +12,9 @@ export const BuyNFT = () => {
     const tokenId = 2
 
     return (
-        <div className="max-w-[20px]">
+        <div >
             <TransactionButton
-                className=" w-[25px] bg-black"
+                className=" w-[60px] p-2 bg-black"
                 transaction={() => {
                     // Create a transaction object and return it
                     const tx = prepareContractCall({
@@ -25,7 +25,7 @@ export const BuyNFT = () => {
                     });
                     return tx;
                 }}
-                onTransactionConfirmed={() => console.log("lising")}
+                onTransactionConfirmed={(tx) => console.log("listing", tx)}
                 onError={(error) =>
                     toast("NFT ERROR", {
                         description: error.name
