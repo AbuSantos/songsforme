@@ -1,15 +1,18 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Playlist } from "@/data/playlists"
 import { Separator } from "../ui/separator"
 
+import { useRouter } from "next/navigation";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   playlists: Playlist[]
 }
 
 export function Sidebar({ className, playlists }: SidebarProps) {
+  const router = useRouter()
   return (
     <div className={cn("pb-12", className)}>
       <div className="space-y-4 py-4">
@@ -19,7 +22,9 @@ export function Sidebar({ className, playlists }: SidebarProps) {
             Discover
           </h2>
           <div className="space-y-1">
-            <Button variant="secondary" className="w-full justify-start">
+            <Button variant="secondary" className="w-full justify-start"
+              onClick={() => router.back()}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

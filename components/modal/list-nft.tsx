@@ -8,6 +8,7 @@ import { prepareTransaction, toWei } from "thirdweb";
 import { ethers } from "ethers";
 import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
+import { listedNFT } from "@/actions/listNFT";
 type modalTypes = {
     setListModalOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -20,17 +21,29 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
     const [tokenId, setTokenId] = useState(2);
     const [isSuccess, setIsSuccess] = useState<string>("");
 
+    const saveListing = async (seller: string, tokenId: string, price: string, nftAddress: string) => {
+        startTransition(() => {
+            try {
+                listedNFT(seller, tokenId, price, nftAddress).then((data) => {
+                    console.log(data);
+                })
+
+            } catch (error) {
+                setErrorMessage("Fail to save transaction. Network.");
+                return null;
+            }
+        })
+
+    }
 
     const handlelisting = async () => {
         try {
-            // Ensure price is a valid number
             if (!price || isNaN(Number(price)) || Number(price) <= 0) {
                 setErrorMessage("Please enter a valid price.");
                 return null;
             }
-            const priceInWei = ethers.utils.parseEther(price); // Convert price to wei
+            const priceInWei = ethers.utils.parseEther(price);
 
-            // Prepare transaction
             const tx = prepareContractCall({
                 contract,
                 method: "listBull",
@@ -49,13 +62,6 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 ">
             <div className="relative bg-black rounded-md w-2/6 py-8 px-6 border-[0.7px] border-gray-600">
-                {/* Close button */}
-                <button
-                    onClick={() => setListModalOpen(false)}
-                    className="text-red-700 cursor-pointer text-end"
-                >
-                    <Cross1Icon className="size-4" />
-                </button>
                 <h1 className="text-center text-2xl text-gray-200 font-medium capitalize p-4">Please add Your Music NFT Details</h1>
 
                 <div className="space-y-3">
@@ -65,7 +71,6 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
                         placeholder="Token ID"
                         disabled={isPending}
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
-
                     />
 
                     <Input
@@ -74,7 +79,6 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
                         placeholder="Price in ETH"
                         disabled={isPending}
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
-
                     />
 
                     <Input
@@ -87,9 +91,25 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
                     />
 
                     <TransactionButton
-                        transaction={handlelisting}
-                        onTransactionConfirmed={(receipt) => {
-                            console.log("Transaction confirmed", receipt.transactionHash);
+                        transaction={() => {
+                            const priceInWei = ethers.utils.parseEther(price);
+
+                            const tx = prepareContractCall({
+                                contract,
+                                method: "listBull",
+                                params: [address, tokenId, priceInWei],
+                                // value: toWei(price), // Convert price to Wei
+                                value: toWei("0.0005"),
+                            });
+
+                            return tx
+
+                        }}
+                        onTransactionConfirmed={(tx) => {
+                            if(tx.status==="success"){
+                                
+                            }
+                            console.log("Transaction confirmed", tx);
                         }}
                         onError={(error) => setErrorMessage(error.message)}
                     >

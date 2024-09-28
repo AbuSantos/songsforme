@@ -53,3 +53,5 @@ yarn release
 ## Join our Discord!
 
 For any questions, suggestions, join our discord at [https://discord.gg/thirdweb](https://discord.gg/thirdweb).
+
+<!-- BhZqITfsIAHXeHUvA7x-cxHKfJ_dsTbJP7kEzVvW_gQIHiu5nnHZEk4tj56dEOjCmvdq3UTvZyFNMAL6D_PzxA -->

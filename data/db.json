@@ -5,7 +5,19 @@
       "title": "auto gun",
       "url": "https://actions.google.com/sounds/v1/weapons/automatic_gun.ogg",
       "duration": 30,
-      "cover": "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"
+      "cover": "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80",
+      "track": {
+        "id": "track1",
+        "name": "auto gun",
+        "artist": "guns",
+        "album": "album1",
+        "duration": 30,
+        "cover": "https://images.unsplash.com/photo-1611348586804-61bf",
+        "genres": ["rock", "metal"],
+        "release_date": "2020-01-01",
+        "url": "https://actions.google.com/sounds/v1/weapons/automatic_gun.ogg"
+      }
+      
     },
     {
       "artist": "shots",

@@ -11,13 +11,21 @@ export const addSongToPlaylist = async (playlistId: string, nftId: string) => {
     }
     const playlist = await db.playlist.findUnique({
       where: { id: playlistId },
+      include: {
+        listednft: true,
+      },
     });
+
     const listedNft = await db.listedNFT.findUnique({
       where: { id: nftId },
     });
 
     if (!playlist || !listedNft) {
       return { message: "Playlist or NFT not found" };
+    }
+
+    if (playlist.listednft) {
+      return { message: " NFT already in the Playlist" };
     }
     await db.playlist.update({
       where: { id: playlistId },

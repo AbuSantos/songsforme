@@ -41,7 +41,7 @@ const page = () => {
                 </div>
             </header>
             <div className="mt-4">
-                < Tracktable />
+                < Tracktable data={track} />
             </div>
         </div>
 
