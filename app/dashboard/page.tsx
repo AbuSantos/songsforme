@@ -22,7 +22,8 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { DesktopNFTForm } from "@/components/modal/list-NFTD"
-import { HelpComponent } from "@/components/dashboard/help"
+import { HelpComponent } from "@/components/dashboard/addnft/help"
+import { MusicType } from "@/components/dashboard/addnft/music-type"
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
@@ -75,12 +76,12 @@ export default async function MusicPage() {
                                     <SheetHeader>
                                         <SheetTitle>List Music</SheetTitle>
                                     </SheetHeader>
-                                    <DesktopNFTForm />
+                                    <MusicType />
 
                                     <div className="mt-8">
                                         <div>
                                             <h1 className="text-2xl font-semibold">Check our FAQs</h1>
-                                            <small className="text-slate-600 capitalize" >ant find help, please contact support@songsforme</small>
+                                            <small className="text-slate-600 capitalize" >Cant find help, please contact support@songsforme</small>
                                         </div>
 
                                         <HelpComponent />

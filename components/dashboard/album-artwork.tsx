@@ -8,19 +8,8 @@ import AllListed from "../musicNFTs/listedNFT/all-listed";
 import Link from "next/link";
 import * as React from "react"
 import { ChevronsUpDown, Plus, X } from "lucide-react"
+import { useContract } from "@thirdweb-dev/react";
 
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import { CheckCircledIcon, ChevronDownIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
     album: {
@@ -43,8 +32,6 @@ export function AlbumArtwork({
     ...props
 }: AlbumArtworkProps) {
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
-    const [isOpen, setIsOpen] = React.useState(false)
-    const [isPending, startTransition] = React.useTransition()
     const [openTrack, setOpenTrack] = React.useState<boolean>(false)
 
     const handlePlayPause = () => {
@@ -54,21 +41,6 @@ export function AlbumArtwork({
             setTrack(index);
         }
     };
-
-    // const addToPlaylist = (teacherId: string, busId: string) => {
-    //     startTransition(() => {
-    //         removeTeacherFromBus(teacherId, busId).then((data) => {
-    //             toast({
-    //                 description: data.message,
-    //             });
-    //         }).catch((error) => {
-    //             console.error("Error:", error);
-    //             toast({
-    //                 description: "An error occurred. Please try again.",
-    //             });
-    //         });
-    //     })
-    // }
 
     return (
         <div className={cn("space-y-3", className)} {...props}>

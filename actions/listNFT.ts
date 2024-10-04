@@ -10,21 +10,33 @@ export const listedNFT = async (
   price: string,
   nftAddress: string
 ) => {
+  // Ensure that required fields are not missing or malformed
+  if (!seller || !tokenId || !price || !nftAddress) {
+    return { message: "Invalid input. All fields are required." };
+  }
+
   try {
-    db.listedNFT.create({
+    // Parse price to float to ensure it's in the correct format
+    const parsedPrice = parseFloat(price);
+    if (isNaN(parsedPrice)) {
+      return { message: "Invalid price format." };
+    }
+
+    // Create a new record in the database for the listed NFT
+    await db.listedNFT.create({
       data: {
         tokenId: tokenId,
         seller: seller,
-        price: parseFloat(price),
+        price: parsedPrice,
         contractAddress: nftAddress,
         listedAt: new Date(),
         sold: false,
       },
     });
 
-    return { message: "NFT LISTED" };
+    return { message: "NFT listed successfully." };
   } catch (error) {
-    console.error("Error saving nft", error);
-    return { message: "Error saving nft" };
+    console.error("Error saving NFT:", error);
+    return { message: "Error saving NFT. Please try again later." };
   }
 };

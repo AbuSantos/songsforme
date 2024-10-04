@@ -10,7 +10,6 @@ import { prepareContractCall } from "thirdweb";
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { ethers } from "ethers";
 import { Button } from "../ui/button";
-import { FormField } from "../ui/form";
 import { toast } from "sonner"
 import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
@@ -52,7 +51,7 @@ export const AddToWhitelist = () => {
                         transaction={() => {
                             const tx = prepareContractCall({
                                 contract,
-                                method: "addToWhiteList",
+                                method: "function addToWhiteList(address _user)",
                                 params: [address],
                             });
                             return tx;

@@ -15,50 +15,24 @@ import { listedNFT } from "@/actions/listNFT";
 export const DesktopNFTForm = () => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
-  const [price, setPrice] = useState<number>(0);
-  const [address, setAddress] = useState("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
-  const [tokenId, setTokenId] = useState<number>(2);
+  const [price, setPrice] = useState<string>("");
+  const [address, setAddress] = useState("0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0");
+  // const [address, setAddress] = useState("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
+  const [tokenId, setTokenId] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<string>("");
 
-
-  // const handlelisting = async () => {
-  //   try {
-  //     // Ensure price is a valid number
-  //     if (!price || isNaN(Number(price)) || Number(price) <= 0) {
-  //       setErrorMessage("Please enter a valid price.");
-  //       return null;
-  //     }
-
-  //     // Prepare transaction
-  //     const tx = prepareContractCall({
-  //       contract,
-  //       method: "listBull",
-  //       params: [address, tokenId, priceInWei],
-  //       // value: toWei(price), // Convert price to Wei
-  //       value: toWei("0.0005"),
-  //     });
-
-  //     return tx;
-  //   } catch (error) {
-  //     setErrorMessage("Failed to prepare transaction. Check input values.");
-  //     return null;
-  //   }
-  // };
-  const saveListing = async (seller: string, tokenId: string, price: string, nftAddress: string) => {
+  const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string) => {
     startTransition(() => {
       try {
-        listedNFT(seller, tokenId, price, nftAddress).then((data) => {
+        listedNFT(seller, tokenId.toString(), price, nftAddress).then((data) => {
           console.log(data);
-        })
-
+        });
       } catch (error) {
-        setErrorMessage("Fail to save transaction. Network.");
+        setErrorMessage("Failed to save transaction. Network.");
         return null;
       }
-    })
-
-  }
-
+    });
+  };
 
   return (
     <div className="relative bg-black rounded-md w-full py-8 px-6 border-[0.7px] border-gray-600">
@@ -68,7 +42,7 @@ export const DesktopNFTForm = () => {
       <div className="space-y-3">
         <Input
           value={tokenId}
-          onChange={(e) => setTokenId(e.target.value)}
+          onChange={(e) => setTokenId(Number(e.target.value))}
           placeholder="Token ID"
           disabled={isPending}
           className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
@@ -100,7 +74,7 @@ export const DesktopNFTForm = () => {
 
             const tx = prepareContractCall({
               contract,
-              method: "listBull",
+              method: "function listBull(address _nftAddress, uint256 _tokenId, uint256 _price) payable",
               params: [address, tokenId, priceInWei],
               // value: toWei(price), 
               value: toWei("0.0005"),
@@ -109,12 +83,13 @@ export const DesktopNFTForm = () => {
             return tx;
           }}
           onTransactionConfirmed={(tx) => {
+            console.log(tx, "transaction")
             try {
               if (tx.status === "success") {
                 saveListing(
                   tx.from,
                   tokenId,
-                  priceInWei,
+                  price,
                   address
                 )
               }

@@ -22,37 +22,23 @@ export const MyPlaylist = () => {
     useEffect(() => {
 
         const fetchData = async () => {
-
             if (!address) return;
             try {
-
                 const res = await fetch(`/api/playlists/${address}/`);
-
                 const result = await res.json();
-
                 setData(result);
-
             } catch (error) {
-
                 console.error("Error fetching playlists:", error);
-
             } finally {
-
                 setLoading(false);
-
             }
-
         };
-
-
-
         fetchData();
 
     }, [address]);
 
 
 
-    console.log(data)
 
     return (
 

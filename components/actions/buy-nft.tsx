@@ -8,8 +8,8 @@ import { toWei } from "thirdweb";
 
 export const BuyNFT = () => {
 
-    const nftAddress = "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30"
-    const tokenId = 2
+    const nftAddress = "0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"
+    const tokenId = 0
 
     return (
         <div >
@@ -19,7 +19,7 @@ export const BuyNFT = () => {
                     // Create a transaction object and return it
                     const tx = prepareContractCall({
                         contract,
-                        method: "buyBull",
+                        method: "function buyBull(address _nftContract, uint256 _tokenId) payable",
                         params: [nftAddress, tokenId],
                         value: toWei("0.01"),
                     });

@@ -43,8 +43,8 @@ export const MakeBid = () => {
 
 
 
-    const address = "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30";
-    const tokenId = 4;
+    const address = "0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0";
+    const tokenId = 0;
 
     const listenToEvent = async () => {
         try {
@@ -76,10 +76,7 @@ export const MakeBid = () => {
                 params: [tokenId, address],
                 value: toWei(price), // Convert price to Wei
             });
-
             return tx;
-
-
         } catch (error) {
             setErrorMessage("Failed to prepare transaction. Check input values.");
             return null;

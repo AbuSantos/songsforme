@@ -1,14 +1,16 @@
 import { createThirdwebClient, defineChain } from "thirdweb";
-import { bscTestnet } from "thirdweb/chains";
 import { getContract } from "thirdweb";
 import { ethers } from "ethers";
+
 export const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
 });
 
-export const contractAddress = "0x12ccb2398E10EbBAD1E490857d891741039CE2B5";
+// export const contractAddress = "0x12ccb2398E10EbBAD1E490857d891741039CE2B5";
+export const contractAddress = "0x2A6F3F853ca5730ec85B0922b266D2D6C65e10Be";
 
-export const chain = defineChain(97);
+export const chain = defineChain(80002);
+// export const chain = defineChain(97);
 export const contractABI = [
   {
     inputs: [
@@ -928,6 +930,6 @@ export const contractABI = [
 export const contract = getContract({
   client,
   chain,
-  address: "0x12ccb2398E10EbBAD1E490857d891741039CE2B5",
+  address: "0x2A6F3F853ca5730ec85B0922b266D2D6C65e10Be",
   abi: contractABI,
 });
