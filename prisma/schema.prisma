@@ -25,6 +25,8 @@ model ListedNFT {
   userId            String?
   playlist          Playlist[]
   PlaylistListedNFT PlaylistListedNFT[]
+  Single            Single?             @relation(fields: [singleId], references: [id])
+  singleId          String?
 }
 
 model Playlist {
@@ -38,11 +40,25 @@ model Playlist {
   PlaylistListedNFT PlaylistListedNFT[]
 }
 
+model Single {
+  id              String      @id @default(cuid())
+  song_name       String?
+  artist_name     String?
+  song_cover      String?
+  album_name      String?
+  uri             String?
+  owner           String
+  contractAddress String?
+  tokenId         String?
+  listednftId     String?
+  listedNft       ListedNFT[]
+}
+
 model PlaylistListedNFT {
   playlistId  String
   listedNFTId String
   playlist    Playlist  @relation(fields: [playlistId], references: [id])
   listedNFT   ListedNFT @relation(fields: [listedNFTId], references: [id])
 
-  @@id([playlistId, listedNFTId]) // Composite key
+  @@id([playlistId, listedNFTId])
 }

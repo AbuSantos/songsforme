@@ -39,8 +39,9 @@ export const PlayTrack = ({ address }) => {
                 <div>Loading...</div>
             ) : (
                 <MediaRenderer
-                    client={client}   // Provide the client prop if necessary
-                    src={correctURI(data)} // Use the corrected URI here
+                    mimeType="mp3"
+                    client={client}
+                    src={correctURI(data)}
                 />
             )}
         </>

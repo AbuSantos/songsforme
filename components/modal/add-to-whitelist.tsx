@@ -30,8 +30,6 @@ export const AddToWhitelist = () => {
     const [isSuccess, setIsSuccess] = useState("");
 
 
-
-
     return (
         <Popover>
             <PopoverTrigger asChild>

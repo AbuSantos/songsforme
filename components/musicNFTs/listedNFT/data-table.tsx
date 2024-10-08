@@ -35,8 +35,8 @@ const invoices = [
     }
 ]
 
-export const Tracktable = () => {
-
+export const Tracktable = ({ data }) => {
+    console.log(data)
     return (
         <div>
             <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-2">
@@ -47,7 +47,7 @@ export const Tracktable = () => {
             </header>
 
             {invoices.map((invoice, index) => (
-                <Accordion type="single" collapsib le className="w-full">
+                <Accordion type="single" collapsible className="w-full">
                     <AccordionItem key={index} value={String(index)} className="border-b-[0.5px] border-b-[#2A2A2A] ">
                         <AccordionTrigger>
                             <div className="flex items-center text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]  px-2 py-2 w-full text-start rounded-md ">

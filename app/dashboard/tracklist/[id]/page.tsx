@@ -1,35 +1,23 @@
-"use client"
-
 import { Tracktable } from "@/components/musicNFTs/listedNFT/data-table"
+import { db } from "@/lib/db"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
 
 type dataProps = {
-    cover: string;
-    name: string;
-    title: string;
-    url: string;
-    artist: string;
     id: string;
+    tokenId: string;
+    seller: string;
+    price: string;
+    contractAddress: string;
+    sold: boolean;
 }
-const page = () => {
-    const getPathname = usePathname()
-    const trackId = getPathname.split("/").pop()
-    const [track, setTrack] = useState<dataProps>()
+const page = async ({ params }: { params: { id: string } }) => {
+    const id = params.id
 
-    useEffect(() => {
-        const fetchTrack = async () => {
-            const response = await fetch(`http://localhost:4000/songs/${trackId}`)
-            const data = await response.json();
-            setTrack(data)
-            return data
+    const track = await db.listedNFT.findUnique({
+        where: {
+            id
         }
-        fetchTrack()
-    }, [trackId])
-
-
-    console.log(track)
+    })
 
     return (
         <div className='text-red-50 px-3'>

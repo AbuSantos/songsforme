@@ -24,17 +24,20 @@ import {
 import { DesktopNFTForm } from "@/components/modal/list-NFTD"
 import { HelpComponent } from "@/components/dashboard/addnft/help"
 import { MusicType } from "@/components/dashboard/addnft/music-type"
+import { db } from "@/lib/db"
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
 }
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
     album: {
-        cover: string;
-        name: string;
-        title: string;
-        url: string;
-        artiste: string;
+        contract: string;
+        price: string;
+        seller: string;
+        tokenId: string;
+        sold: boolean;
+        uri: string | null
+        userId: string | null
     };
     index: number;
     aspectRatio?: "portrait" | "square";
@@ -54,6 +57,9 @@ export default async function MusicPage() {
         }
     };
 
+    const listedData = await db.listedNFT.findMany()
+
+    console.log(listedData)
     const NewSongs = await fetchData()
 
     return (
@@ -107,7 +113,7 @@ export default async function MusicPage() {
                             <div className="relative">
                                 <ScrollArea>
                                     <div className="flex flex-wrap space-x-4 pb-4">
-                                        {NewSongs?.map((data: AlbumArtworkProps, index: number) => (
+                                        {listedData?.map((data: AlbumArtworkProps, index: number) => (
                                             <AlbumArtwork
                                                 key={data.id}
                                                 album={data}

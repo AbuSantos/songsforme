@@ -34,6 +34,8 @@ export function AlbumArtwork({
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
     const [openTrack, setOpenTrack] = React.useState<boolean>(false)
 
+
+    console.log(album)
     const handlePlayPause = () => {
         if (currentTrackId === index) {
             togglePlayPause();
@@ -46,7 +48,7 @@ export function AlbumArtwork({
         <div className={cn("space-y-3", className)} {...props}>
             <Link className="space-y-1" href={`dashboard/tracklist/${album.id}`}>
                 <Image
-                    src={album.cover}
+                    src="https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"
                     width={200}
                     height={100}
                     alt="Music"
