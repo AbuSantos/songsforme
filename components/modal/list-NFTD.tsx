@@ -23,7 +23,7 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
   const [tokenId, setTokenId] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<string>("");
 
-  const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string) => {
+  const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {
 
     startTransition(() => {
       try {
@@ -93,7 +93,8 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
                   tx.from,
                   tokenId,
                   price,
-                  address
+                  address,
+                  singleId
                 )
               }
             } catch (error) {

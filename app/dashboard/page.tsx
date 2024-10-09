@@ -25,6 +25,7 @@ import { DesktopNFTForm } from "@/components/modal/list-NFTD"
 import { HelpComponent } from "@/components/dashboard/addnft/help"
 import { MusicAccordion } from "@/components/dashboard/addnft/music-type"
 import { db } from "@/lib/db"
+import { revalidateTag } from "next/cache"
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
@@ -46,24 +47,15 @@ interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default async function MusicPage() {
-    const fetchData = async () => {
-        try {
-            const response = await fetch("http://localhost:4000/songs", { cache: "no-cache" });
-            const data = await response.json();
-            return data
-        }
-        catch (error) {
-            console.error("Error fetching songs:", error);
-        }
-    };
+ 
 
     const listedData = await db.listedNFT.findMany()
-
+    revalidateTag("nft");
+    
     if (!listedData) {
         console.log("no nft");
 
     }
-    const NewSongs = await fetchData()
 
     return (
         <>

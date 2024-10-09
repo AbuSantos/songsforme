@@ -1,21 +1,30 @@
-"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Playlist } from "@/data/playlists"
 import { Separator } from "../ui/separator"
 import { CreatePlaylist } from "../playlists/create-playlist"
-import { useActiveAccount } from "thirdweb/react"
 import { MyPlaylist } from "../playlists/my-playlist"
+import { getSession } from "@/lib/helper"
+import { db } from "@/lib/db"
+import { revalidateTag } from "next/cache"
 
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
     playlists: Playlist[]
 }
 
-export const Aside = ({ className, playlists }: SidebarProps) => {
-    const userId = useActiveAccount()
+export const Aside = async ({ className, playlists }: SidebarProps) => {
+    // const userId =o useActiveAccount()
+    const userId = await getSession()
 
+    const playlist = await db.playlist.findMany({
+        where: { userId },
+        include: {
+            listednft: true,
+        },
+    });
+    revalidateTag('playlist')
     return (
         <div className={cn("pb-12 rounded-lg", className)}>
             <div className="space-y-4 py-4">
@@ -25,8 +34,8 @@ export const Aside = ({ className, playlists }: SidebarProps) => {
                             My Playlists
                         </h2>
                         {
-                            userId?.address &&
-                            < CreatePlaylist id={userId?.address} />
+                            userId &&
+                            < CreatePlaylist id={userId} />
                         }
                     </div>
                     <div className="space-y-1">
@@ -49,7 +58,7 @@ export const Aside = ({ className, playlists }: SidebarProps) => {
                             </svg>
                             Playlists
                         </Button>
-                        <MyPlaylist />
+                        <MyPlaylist data={playlist} />
 
                     </div>
                 </div>

@@ -18,9 +18,6 @@ export const createSingleSong = async (
   songname: string,
   nftId?: string
 ) => {
-  // Log the inputs for debugging purposes
-  console.log("Creating Single with data: ", { userId, name, songname, nftId });
-
   try {
     // Input validation to ensure required fields are present
     if (
