@@ -11,8 +11,10 @@ import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
 import { listedNFT } from "@/actions/listNFT";
 
-
-export const DesktopNFTForm = () => {
+interface singleIdProps {
+  singleId?: string
+}
+export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
   const [price, setPrice] = useState<string>("");
@@ -22,6 +24,7 @@ export const DesktopNFTForm = () => {
   const [isSuccess, setIsSuccess] = useState<string>("");
 
   const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string) => {
+
     startTransition(() => {
       try {
         listedNFT(seller, tokenId.toString(), price, nftAddress).then((data) => {

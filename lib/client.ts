@@ -1,6 +1,10 @@
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { getContract } from "thirdweb";
 import { ethers } from "ethers";
+import { cache } from "react";
+import { useActiveAccount } from "thirdweb/react";
+import { redirect } from "next/navigation";
+
 
 export const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
@@ -933,3 +937,5 @@ export const contract = getContract({
   address: "0x2A6F3F853ca5730ec85B0922b266D2D6C65e10Be",
   abi: contractABI,
 });
+
+

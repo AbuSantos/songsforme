@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/sheet"
 import { DesktopNFTForm } from "@/components/modal/list-NFTD"
 import { HelpComponent } from "@/components/dashboard/addnft/help"
-import { MusicType } from "@/components/dashboard/addnft/music-type"
+import { MusicAccordion } from "@/components/dashboard/addnft/music-type"
 import { db } from "@/lib/db"
 export const metadata: Metadata = {
     title: "songs for me",
@@ -59,7 +59,10 @@ export default async function MusicPage() {
 
     const listedData = await db.listedNFT.findMany()
 
-    console.log(listedData)
+    if (!listedData) {
+        console.log("no nft");
+
+    }
     const NewSongs = await fetchData()
 
     return (
@@ -82,7 +85,7 @@ export default async function MusicPage() {
                                     <SheetHeader>
                                         <SheetTitle>List Music</SheetTitle>
                                     </SheetHeader>
-                                    <MusicType />
+                                    <MusicAccordion />
 
                                     <div className="mt-8">
                                         <div>

@@ -17,6 +17,7 @@ CREATE TABLE "ListedNFT" (
     "listedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "sold" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT,
+    "singleId" TEXT,
 
     CONSTRAINT "ListedNFT_pkey" PRIMARY KEY ("id")
 );
@@ -30,6 +31,22 @@ CREATE TABLE "Playlist" (
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "Playlist_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Single" (
+    "id" TEXT NOT NULL,
+    "song_name" TEXT,
+    "artist_name" TEXT,
+    "song_cover" TEXT,
+    "album_name" TEXT,
+    "uri" TEXT,
+    "owner" TEXT NOT NULL,
+    "contractAddress" TEXT,
+    "tokenId" TEXT,
+    "listednftId" TEXT,
+
+    CONSTRAINT "Single_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -56,7 +73,7 @@ CREATE UNIQUE INDEX "_ListedNFTToPlaylist_AB_unique" ON "_ListedNFTToPlaylist"("
 CREATE INDEX "_ListedNFTToPlaylist_B_index" ON "_ListedNFTToPlaylist"("B");
 
 -- AddForeignKey
-ALTER TABLE "Playlist" ADD CONSTRAINT "Playlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ListedNFT" ADD CONSTRAINT "ListedNFT_singleId_fkey" FOREIGN KEY ("singleId") REFERENCES "Single"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PlaylistListedNFT" ADD CONSTRAINT "PlaylistListedNFT_playlistId_fkey" FOREIGN KEY ("playlistId") REFERENCES "Playlist"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
