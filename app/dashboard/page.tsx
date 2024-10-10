@@ -26,6 +26,7 @@ import { HelpComponent } from "@/components/dashboard/addnft/help"
 import { MusicAccordion } from "@/components/dashboard/addnft/music-type"
 import { db } from "@/lib/db"
 import { revalidateTag } from "next/cache"
+import MarketPlace from "@/components/marketplace/market"
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
@@ -67,11 +68,8 @@ export default async function MusicPage() {
         }
     })
 
-    console.log(singleNft[0], "singles")
-    // console.log(listedData, "nft")
-
     if (!listedData) {
-        console.log("no nft");
+        return
     }
 
     return (
@@ -153,7 +151,15 @@ export default async function MusicPage() {
                                     </small>
                                 </div>
                             </div>
-                            <Separator className="my-4 bg-black" />
+                            <Separator className="my-4 bg-[#7B7B7B]" />
+                            <div className="relative">
+                                <ScrollArea>
+                                    <div className="flex flex-wrap space-x-4 pb-4">
+                                        < MarketPlace data={listedData} />
+                                    </div>
+                                    <ScrollBar orientation="horizontal" />
+                                </ScrollArea>
+                            </div>
                         </TabsContent>
                     </Tabs>
                 </div>

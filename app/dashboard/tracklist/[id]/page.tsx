@@ -21,8 +21,6 @@ const page = async ({ params }: { params: { id: string } }) => {
         }
     })
 
-    console.log(track, "single nft")
-
     return (
         <div className='text-red-50 px-3'>
             <header className=" flex space-x-2 items-end px-4">
@@ -33,7 +31,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 </div>
             </header>
             <div className="mt-4">
-                < Tracktable data={track?.listedNft} artiste_name={track?.artist_name} songName={track?.song_name} />
+                < Tracktable data={track?.listedNft} />
             </div>
         </div>
 

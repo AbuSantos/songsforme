@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { client } from "@/lib/client"
 import { polygonAmoy, sepolia } from "thirdweb/chains"
 import { PlayTrack } from "./get-track"
+import { SelectPlaylist } from "@/components/playlists/selectplaylist";
 
 
 
@@ -24,8 +25,8 @@ export const Tracktable = ({ data }) => {
                 <Text className="font-[50] capitalize text-[0.8rem] w-4/12 ">action</Text>
             </header>
 
-            {data.map((track, index) => (
-                <div key={index} className="flex items-center border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]  px-2 py-2 w-full text-start rounded-md ">
+            {data.map((track, index: number) => (
+                <div key={index} className="flex items-center border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
                     <p className="w-10 ">
                         {track?.tokenId}
                     </p>
@@ -43,10 +44,11 @@ export const Tracktable = ({ data }) => {
                     <div className="flex items-center space-x-2">
                         < MakeBid nftAddress={track?.contractAddress} tokenId={track?.tokenId} />
                         <BuyNFT nftAddress={track?.contractAddress} tokenId={track?.tokenId} price={track?.price} />
-                        < AddSong />
+                        <SelectPlaylist nftId={track?.id} />
                     </div>
                     {/* < PlayTrack address={"0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"} /> */}
                 </div>
+
             ))}
         </div>
 

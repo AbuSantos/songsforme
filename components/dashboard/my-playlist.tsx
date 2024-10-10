@@ -15,7 +15,6 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Aside = async ({ className, playlists }: SidebarProps) => {
-    // const userId =o useActiveAccount()
     const userId = await getSession()
 
     const playlist = await db.playlist.findMany({
@@ -24,6 +23,12 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
             listednft: true,
         },
     });
+
+    console.log(userId, "session id")
+
+    if (!playlist) {
+        return
+    }
     revalidateTag('playlist')
     return (
         <div className={cn("pb-12 rounded-lg", className)}>
