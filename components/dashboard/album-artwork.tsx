@@ -36,6 +36,7 @@ export function AlbumArtwork({
 
 
     console.log(album)
+
     const handlePlayPause = () => {
         if (currentTrackId === index) {
             togglePlayPause();

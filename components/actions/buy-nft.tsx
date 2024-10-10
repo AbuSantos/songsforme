@@ -6,11 +6,12 @@ import { Button } from "../ui/button";
 import { toast } from "sonner"
 import { toWei } from "thirdweb";
 
-export const BuyNFT = () => {
-
-    const nftAddress = "0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"
-    const tokenId = 0
-
+interface NFTProps {
+    nftAddress: string
+    tokenId: number
+    price: GLfloat
+}
+export const BuyNFT = ({ nftAddress, tokenId, price }: NFTProps) => {
     return (
         <div >
             <TransactionButton
@@ -21,7 +22,7 @@ export const BuyNFT = () => {
                         contract,
                         method: "function buyBull(address _nftContract, uint256 _tokenId) payable",
                         params: [nftAddress, tokenId],
-                        value: toWei("0.01"),
+                        value: toWei(price as unknown as string),
                     });
                     return tx;
                 }}

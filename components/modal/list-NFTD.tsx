@@ -10,6 +10,7 @@ import { ethers } from "ethers";
 import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
 import { listedNFT } from "@/actions/listNFT";
+import { Button } from "../ui/button";
 
 interface singleIdProps {
   singleId?: string
@@ -23,11 +24,14 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
   const [tokenId, setTokenId] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<string>("");
 
+
+
   const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {
 
     startTransition(() => {
       try {
-        listedNFT(seller, tokenId.toString(), price, nftAddress).then((data) => {
+        listedNFT(seller, tokenId.toString(), price, nftAddress, singleId).then((data) => {
+
           console.log(data);
         });
       } catch (error) {
@@ -105,6 +109,7 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
         >
           Confirm Listing
         </TransactionButton>
+
       </div>
 
       < FormError message={errorMessage} />

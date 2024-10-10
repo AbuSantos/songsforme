@@ -34,32 +34,19 @@ async function getSigner() {
     }
 }
 
-export const MakeBid = () => {
+interface NFTProps {
+    nftAddress: string
+    tokenId: number
+
+}
+
+export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
     const [isPending, startTransition] = useTransition();
     const [price, setPrice] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isSuccess, setIsSuccess] = useState<string>("");
 
 
-
-
-    const address = "0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0";
-    const tokenId = 0;
-
-    const listenToEvent = async () => {
-        try {
-            contract.on("BidMade", (bidder, tokenId, bidAmount) => {
-                console.log(`Bidder: ${bidder}, TokenID: ${tokenId}, BidAmount: ${bidAmount}`);
-            });
-        } catch (error) {
-            console.log("Error listening to event.");
-        }
-    };
-
-    // Call this function once to start listening for events
-    useEffect(() => {
-        listenToEvent();
-    }, []);
 
     const handleBid = async () => {
         try {
@@ -73,7 +60,7 @@ export const MakeBid = () => {
             const tx = prepareContractCall({
                 contract,
                 method: "bid",
-                params: [tokenId, address],
+                params: [tokenId, nftAddress],
                 value: toWei(price), // Convert price to Wei
             });
             return tx;

@@ -47,14 +47,31 @@ interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default async function MusicPage() {
- 
 
-    const listedData = await db.listedNFT.findMany()
+
+    const listedData = await db.listedNFT.findMany({
+        include: {
+            Single: {
+                include: {
+                    listedNft: true,
+                },
+            },
+        },
+    });
+
     revalidateTag("nft");
-    
+
+    const singleNft = await db.single.findMany({
+        include: {
+            listedNft: true
+        }
+    })
+
+    console.log(singleNft[0], "singles")
+    // console.log(listedData, "nft")
+
     if (!listedData) {
         console.log("no nft");
-
     }
 
     return (
@@ -67,7 +84,7 @@ export default async function MusicPage() {
                                 <TabsTrigger value="music" className="relative">
                                     Music
                                 </TabsTrigger>
-                                <TabsTrigger value="podcasts">My NFT</TabsTrigger>
+                                <TabsTrigger value="podcasts">Market Place</TabsTrigger>
                             </TabsList>
                             <Sheet >
                                 <SheetTrigger asChild>
@@ -108,7 +125,7 @@ export default async function MusicPage() {
                             <div className="relative">
                                 <ScrollArea>
                                     <div className="flex flex-wrap space-x-4 pb-4">
-                                        {listedData?.map((data: AlbumArtworkProps, index: number) => (
+                                        {singleNft?.map((data: AlbumArtworkProps, index: number) => (
                                             <AlbumArtwork
                                                 key={data.id}
                                                 album={data}
@@ -126,9 +143,16 @@ export default async function MusicPage() {
                             value="podcasts"
                             className="h-full flex-col border-none p-0 data-[state=active]:flex"
                         >
-                            <h2 className="text-2xl font-semibold tracking-tight">
-                                All My NFTs
-                            </h2>
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-1">
+                                    <h2 className="text-2xl font-semibold tracking-tight text-[#B4B4B4]">
+                                        Buy and Sell Music NFTS
+                                    </h2>
+                                    <small className="text-sm text-[#6E6E6E]">
+                                        create playlist and earn
+                                    </small>
+                                </div>
+                            </div>
                             <Separator className="my-4 bg-black" />
                         </TabsContent>
                     </Tabs>
