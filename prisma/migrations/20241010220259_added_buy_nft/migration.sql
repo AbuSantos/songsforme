@@ -1,9 +1,25 @@
+-- CreateEnum
+CREATE TYPE "PurchaseStatus" AS ENUM ('PENDING', 'COMPLETE', 'FAILED', 'NONE');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "username" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BuyNFT" (
+    "id" TEXT NOT NULL,
+    "buyer" TEXT NOT NULL,
+    "listedNftId" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "purchaseDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "transactionHash" TEXT,
+    "status" "PurchaseStatus" DEFAULT 'NONE',
+
+    CONSTRAINT "BuyNFT_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -71,6 +87,9 @@ CREATE UNIQUE INDEX "_ListedNFTToPlaylist_AB_unique" ON "_ListedNFTToPlaylist"("
 
 -- CreateIndex
 CREATE INDEX "_ListedNFTToPlaylist_B_index" ON "_ListedNFTToPlaylist"("B");
+
+-- AddForeignKey
+ALTER TABLE "BuyNFT" ADD CONSTRAINT "BuyNFT_listedNftId_fkey" FOREIGN KEY ("listedNftId") REFERENCES "ListedNFT"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ListedNFT" ADD CONSTRAINT "ListedNFT_singleId_fkey" FOREIGN KEY ("singleId") REFERENCES "Single"("id") ON DELETE SET NULL ON UPDATE CASCADE;

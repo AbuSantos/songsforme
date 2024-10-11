@@ -17,14 +17,17 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Aside = async ({ className, playlists }: SidebarProps) => {
     const userId = await getSession()
 
-    const playlist = await db.playlist.findMany({
-        where: { userId },
-        include: {
-            listednft: true,
-        },
-    });
+    let playlist = [];
 
-    console.log(userId, "session id")
+    // Fetch playlists only if the user is connected
+    if (userId) {
+        playlist = await db.playlist.findMany({
+            where: { userId },
+            include: {
+                listednft: true,
+            },
+        });
+    }
 
     if (!playlist) {
         return

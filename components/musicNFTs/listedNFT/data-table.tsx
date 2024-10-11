@@ -1,7 +1,6 @@
 "use client"
-import { BuyNFT } from "@/components/actions/buy-nft"
+import { BuyNFT } from "@/components/buy-folder/buy-nft"
 import { MakeBid } from "@/components/modal/make-bid"
-import { AddSong } from "@/components/playlists/add-song-playlist"
 import { getContractMetadata } from "thirdweb/extensions/common";
 import { useReadContract } from "thirdweb/react";
 import { getContract } from "thirdweb";
@@ -43,7 +42,7 @@ export const Tracktable = ({ data }) => {
                     </div>
                     <div className="flex items-center space-x-2">
                         < MakeBid nftAddress={track?.contractAddress} tokenId={track?.tokenId} />
-                        <BuyNFT nftAddress={track?.contractAddress} tokenId={track?.tokenId} price={track?.price} />
+                        <BuyNFT nftAddress={track?.contractAddress} tokenId={track?.tokenId} price={track?.price} listedNftId={track?.id} />
                         <SelectPlaylist nftId={track?.id} />
                     </div>
                     {/* < PlayTrack address={"0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"} /> */}

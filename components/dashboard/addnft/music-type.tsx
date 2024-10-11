@@ -5,13 +5,13 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import { DesktopNFTForm } from "@/components/modal/list-NFTD";
 import { AllMySingle } from "./singles/all-singles";
 import { useActiveAccount } from "thirdweb/react";
 import SingleMusic from "./singles/single-music";
 import { getSession } from "@/lib/helper";
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
+import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
 
 export const MusicAccordion = async () => {
 

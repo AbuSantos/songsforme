@@ -17,10 +17,21 @@ const page = async ({ params }: { params: { id: string } }) => {
             id
         },
         include: {
-            listedNft: true
+            listedNft: {
+                where: {
+                    sold: false
+                }
+            }
         }
     })
-
+    // Handle case where track is not found
+    if (!track) {
+        return (
+            <div className="text-red-50 px-3">
+                <h1 className="text-2xl capitalize">Track not found</h1>
+            </div>
+        );
+    }
     return (
         <div className='text-red-50 px-3'>
             <header className=" flex space-x-2 items-end px-4">

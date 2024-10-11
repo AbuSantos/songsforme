@@ -7,10 +7,28 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum PurchaseStatus {
+  PENDING
+  COMPLETE
+  FAILED
+  NONE
+}
+
 model User {
   id       String  @id @default(cuid())
   username String? @unique
   // playlists Playlist[]
+}
+
+model BuyNFT {
+  id              String          @id @default(cuid())
+  buyer           String // Wallet address of the buyer
+  listedNftId     String
+  listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
+  price           Float // Purchase price
+  purchaseDate    DateTime        @default(now()) // Date of purchase
+  transactionHash String? // Blockchain transaction hash, optional
+  status          PurchaseStatus? @default(NONE)
 }
 
 model ListedNFT {
@@ -27,6 +45,7 @@ model ListedNFT {
   PlaylistListedNFT PlaylistListedNFT[]
   Single            Single?             @relation(fields: [singleId], references: [id])
   singleId          String?
+  purchases         BuyNFT[]
 }
 
 model Playlist {

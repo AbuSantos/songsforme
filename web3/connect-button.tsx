@@ -2,7 +2,7 @@ import { client } from "@/lib/client";
 import { createThirdwebClient } from "thirdweb";
 import { ConnectButton } from "thirdweb/react";
 import { createWallet, inAppWallet } from "thirdweb/wallets";
-import { setsession } from "@/actions/set-sessions"; // Your session management function
+import { deleteSession, setsession } from "@/actions/set-sessions";
 
 export const ConnecttButton = () => {
     const wallets = [
@@ -30,6 +30,10 @@ export const ConnecttButton = () => {
                 } catch (error) {
                     console.error("Error during wallet connection or session setup:", error);
                 }
+            }}
+
+            onDisconnect={async () => {
+                await deleteSession()
             }}
         />
     );

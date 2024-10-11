@@ -7,11 +7,11 @@ import { prepareContractCall, toEther } from "thirdweb";
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { prepareTransaction, toWei } from "thirdweb";
 import { ethers } from "ethers";
-import { FormError } from "../errorsandsuccess/form-error";
-import { FormSuccess } from "../errorsandsuccess/form-success";
+import { FormError } from "../../errorsandsuccess/form-error";
+import { FormSuccess } from "../../errorsandsuccess/form-success";
 import { listedNFT } from "@/actions/listNFT";
-import { Button } from "../ui/button";
-
+import { Button } from "../../ui/button";
+import { toast } from "sonner";
 interface singleIdProps {
   singleId?: string
 }
@@ -24,14 +24,14 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
   const [tokenId, setTokenId] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<string>("");
 
-
+  const seller = "0xC7fe86c79f9598C0a5A3874D075A1607686944D3"
 
   const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {
 
     startTransition(() => {
       try {
         listedNFT(seller, tokenId.toString(), price, nftAddress, singleId).then((data) => {
-
+          toast.success("NFT listed successfully!");
           console.log(data);
         });
       } catch (error) {
@@ -74,7 +74,7 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
 
         />
 
-        <TransactionButton
+        {/* <TransactionButton
 
           transaction={() => {
             const priceInWei = ethers.utils.parseEther(price);
@@ -108,8 +108,13 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
           onError={(error) => setErrorMessage(error.message)}
         >
           Confirm Listing
-        </TransactionButton>
+        </TransactionButton> */}
 
+        <Button
+          onClick={() => saveListing(seller, tokenId, price, address, singleId)}
+        >
+          save listing
+        </Button>
       </div>
 
       < FormError message={errorMessage} />

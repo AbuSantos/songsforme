@@ -6,8 +6,8 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { DesktopNFTForm } from "@/components/modal/list-NFTD";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
 
 export const AllMySingle = ({ singles }: { singles: any[] }) => {
     return (
