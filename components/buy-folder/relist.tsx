@@ -1,4 +1,4 @@
-
+"use client"
 import { Input } from "@/components/ui/input";
 import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import { contract } from "@/lib/client";
@@ -17,17 +17,17 @@ import {
 import { Button } from "../ui/button";
 import { ethers } from "ethers";
 import { listedNFT } from "@/actions/listNFT";
+import Image from "next/image";
+import { relistSong } from "@/actions/relist-song";
 type listingProps = {
-    nftAddress: string
-    tokenId: number
-    seller: string
+    nft: any
 
 }
 
-export const RelistNft = ({ address, tokenId, seller, nftAddress }: listingProps) => {
+export const RelistNft = ({ nft }: listingProps) => {
 
     const [isPending, startTransition] = useTransition();
-    const [price, setPrice] = useState<string>("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
+    const [price, setPrice] = useState<string>(0);
     const [isError, setIsError] = useState("");
     const [isSuccess, setIsSuccess] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -37,7 +37,7 @@ export const RelistNft = ({ address, tokenId, seller, nftAddress }: listingProps
 
         startTransition(() => {
             try {
-                listedNFT(seller, tokenId.toString(), price, nftAddress, singleId).then((data) => {
+                relistSong(seller, tokenId.toString(), price, nftAddress, nft?.id, singleId).then((data) => {
                     toast.success("NFT listed successfully!");
                     console.log(data);
                 });
@@ -50,7 +50,23 @@ export const RelistNft = ({ address, tokenId, seller, nftAddress }: listingProps
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="text-gray-800" size="nav">List NFT </Button>
+
+                <div>
+                    <Image
+                        src="https://unsplash.com/photos/a-woman-in-a-fur-coat-singing-into-a-microphone-TlvLy_OmqHA"
+                        width={100}
+                        height={100}
+                        alt="Music"
+                        className="block dark:hidden rounded-md cursor-pointer"
+                    // onClick={() => setOpenTrack(!openTrack)}
+                    />
+                    <p className="text-sm capitalize text-slate-500">
+                        {nft.price}
+                    </p>
+                    <p className="text-[0.7rem] capitalize text-slate-500">
+                        {nft.status}
+                    </p>
+                </div>
             </PopoverTrigger>
             <PopoverContent className="w-80">
                 <div className="flex flex-col space-y-3">
@@ -96,7 +112,7 @@ export const RelistNft = ({ address, tokenId, seller, nftAddress }: listingProps
                         Confirm Listing
                     </TransactionButton> */}
                     <Button
-                        onClick={() => saveListing(seller, tokenId, price, address)}
+                        onClick={() => saveListing(nft.buyer, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress)}
                     >
                         save listing
                     </Button>

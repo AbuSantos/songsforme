@@ -29,6 +29,7 @@ model BuyNFT {
   purchaseDate    DateTime        @default(now()) // Date of purchase
   transactionHash String? // Blockchain transaction hash, optional
   status          PurchaseStatus? @default(NONE)
+  relisted        Boolean         @default(false)
 }
 
 model ListedNFT {

@@ -483,7 +483,6 @@ contract BullchordMarketPlace is ReentrancyGuard {
         Bid memory lastBid = userBids[_tokenId][bidsLength - 1];
         userBids[_tokenId].pop(); // Removes the last bid
 
-        console.log("Last bid amount: ", lastBid.amount);
 
         // Handle royalties
         IRentableNFT nft = IRentableNFT(marketItem._nftContract);
@@ -518,7 +517,6 @@ contract BullchordMarketPlace is ReentrancyGuard {
         }
 
         // Transfer funds to the seller
-        console.log("Amount to seller: ", amountToSeller);
         (bool success, ) = payable(marketItem.seller).call{
             value: amountToSeller
         }("");
