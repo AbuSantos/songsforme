@@ -16,13 +16,14 @@ import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
 export const MusicAccordion = async () => {
 
     const address = await getSession()
-
-    const singles = await db.single.findMany({
-        where: {
-            owner: address
-        },
-    });
-
+    let singles
+    if (address) {
+        singles = await db.single.findMany({
+            where: {
+                owner: address
+            },
+        });
+    }
     revalidateTag("single")
 
     if (!singles) {

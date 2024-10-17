@@ -8,6 +8,8 @@ import { MyPlaylist } from "../playlists/my-playlist"
 import { getSession } from "@/lib/helper"
 import { db } from "@/lib/db"
 import { revalidateTag } from "next/cache"
+import { Playlisten } from "../startlistening/play-listen"
+import { PauseListen } from "../startlistening/pause-listen"
 
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,9 +18,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Aside = async ({ className, playlists }: SidebarProps) => {
     const userId = await getSession()
-
     let playlist = [];
-
     // Fetch playlists only if the user is connected
     if (userId) {
         playlist = await db.playlist.findMany({
@@ -32,6 +32,9 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
     if (!playlist) {
         return
     }
+    console.log(userId, "user Id")
+
+
     revalidateTag('playlist')
     return (
         <div className={cn("pb-12 rounded-lg", className)}>
@@ -41,10 +44,17 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
                         <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
                             My Playlists
                         </h2>
-                        {
+                        <div>
+                            <PauseListen
+                                userId={userId}
+                            />
+                            <Playlisten userId={userId} nftId={"cm2dl9nx3000g9hrgiua8xekh"
+                            } />
+                        </div>
+                        {/* {
                             userId &&
                             < CreatePlaylist id={userId} />
-                        }
+                        } */}
                     </div>
                     <div className="space-y-1">
                         <Button variant="ghost" className="w-full justify-start">

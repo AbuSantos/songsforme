@@ -1,5 +1,28 @@
 "use server";
 import { cookies } from "next/headers";
+import { SignJWT, jwtVerify } from "jose";
+
+const secretKey = process.env.AUTH_SECRET;
+const encodedKey = new TextEncoder().encode(secretKey);
+
+export async function encrypt(payload: any) {
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("5d")
+    .sign(encodedKey);
+}
+
+export async function decrypt(session: string | undefined = "") {
+  try {
+    const { payload } = await jwtVerify(session, encodedKey, {
+      algorithms: ["HS256"],
+    });
+    return payload;
+  } catch (error) {
+    console.log("Failed to verify session");
+  }
+}
 
 // Function to set a session using the wallet address
 export const setsession = async (address: string) => {
@@ -9,18 +32,19 @@ export const setsession = async (address: string) => {
         "Error occurred while session, please connect wallet again. Please try again.",
     };
   }
-
   try {
     // Set cookie expiration to 5 days from now
     const expiresAt = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+    const sessionPayload = { userId: address }; 
+    const session = await encrypt(sessionPayload);
 
     // Set the session cookie with provided configurations
-    cookies().set("session", address, {
-      httpOnly: true, // Prevent JavaScript access to the cookie for security
-      secure: process.env.NODE_ENV === "production", // Use secure flag only in production
-      expires: expiresAt, // Set the cookie to expire in 5 days
-      sameSite: "none", // Allow cross-site requests with credentials
-      path: "/", // Set the cookie path to be accessible site-wide
+    cookies().set("session", session, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: expiresAt,
+      sameSite: "none",
+      path: "/",
     });
 
     return { message: "Session set successfully" };

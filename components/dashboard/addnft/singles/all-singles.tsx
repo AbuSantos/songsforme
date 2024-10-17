@@ -19,7 +19,7 @@ export const AllMySingle = ({ singles }: { singles: any[] }) => {
                 <CreateSingle />
             </header>
             <ul>
-                {singles.map((single) => (
+                {singles && singles?.map((single) => (
                     <li key={single.id} className="capitalize p-2 ">
                         <div className="flex justify-between cursor-pointer">
                             <p className="flex flex-col">

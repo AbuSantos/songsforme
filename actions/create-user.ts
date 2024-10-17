@@ -1,19 +1,21 @@
 "use server";
 import { db } from "@/lib/db"; // Import the db instance
 import { revalidateTag } from "next/cache";
+import { setsession } from "./set-sessions";
 
-export const createUser = async (
-  userId: string | undefined,
-  username: string
-) => {
+export const createUser = async (address: string, username: string) => {
   try {
     const newUser = await db.user.create({
       data: {
-        id: userId,
+        userId: address,
         username,
+        listenTimeThreshold: 600000,
+        accumulatedTime: 0,
       },
     });
-    revalidateTag("playlist");
+
+    await setsession(address);
+    revalidateTag("user");
     return { message: `${newUser.username}  added` };
   } catch (error) {
     console.log(error);

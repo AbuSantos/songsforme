@@ -15,21 +15,26 @@ enum PurchaseStatus {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  username String? @unique
-  // playlists Playlist[]
+  id                        String             @id @default(cuid())
+  username                  String?            @unique
+  userId                    String             @unique
+  listenTimeThreshold       Int
+  accumulatedTime           Int                @default(0) // Aggregated total listening time for the user
+  lastListeningTime         DateTime? // Last time the user listened
+  listeningSessionStartTime DateTime? // The start time of the current listening session
+  currentNftId              String? // Store the NFT ID for the current listening session
+  nftListeningTimes         NFTListeningTime[]
 }
 
-model BuyNFT {
-  id              String          @id @default(cuid())
-  buyer           String // Wallet address of the buyer
-  listedNftId     String
-  listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
-  price           Float // Purchase price
-  purchaseDate    DateTime        @default(now()) // Date of purchase
-  transactionHash String? // Blockchain transaction hash, optional
-  status          PurchaseStatus? @default(NONE)
-  relisted        Boolean         @default(false)
+model NFTListeningTime {
+  id              String    @id @default(cuid())
+  nftId           String // Foreign key to ListedNFT
+  userId          String // Foreign key to User
+  accumulatedTime Int       @default(0) // Time spent listening to this NFT
+  nft             ListedNFT @relation(fields: [nftId], references: [id])
+  user            User      @relation(fields: [userId], references: [userId])
+
+  @@unique([nftId, userId])
 }
 
 model ListedNFT {
@@ -47,6 +52,20 @@ model ListedNFT {
   Single            Single?             @relation(fields: [singleId], references: [id])
   singleId          String?
   purchases         BuyNFT[]
+  accumulatedTime   Int?                @default(0)
+  listeningSession  ListeningSession[]
+  NFTListeningTime  NFTListeningTime[]
+}
+
+model ListeningSession {
+  id        String     @id @default(cuid())
+  userId    String?
+  nft       ListedNFT? @relation(fields: [nftId], references: [id])
+  nftId     String?
+  startTime DateTime
+  endTime   DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Playlist {
@@ -58,6 +77,18 @@ model Playlist {
   listednft         ListedNFT[]
   // owner             User                @relation(fields: [userId], references: [id])
   PlaylistListedNFT PlaylistListedNFT[]
+}
+
+model BuyNFT {
+  id              String          @id @default(cuid())
+  buyer           String // Wallet address of the buyer
+  listedNftId     String
+  listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
+  price           Float // Purchase price
+  purchaseDate    DateTime        @default(now()) // Date of purchase
+  transactionHash String? // Blockchain transaction hash, optional
+  status          PurchaseStatus? @default(NONE)
+  relisted        Boolean         @default(false)
 }
 
 model Single {

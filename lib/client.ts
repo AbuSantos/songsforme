@@ -5,7 +5,6 @@ import { cache } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { redirect } from "next/navigation";
 
-
 export const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
 });
@@ -938,4 +937,29 @@ export const contract = getContract({
   abi: contractABI,
 });
 
+let currentRate = 10;
+const REDUCTION_PER_1000 = 0.05;
+const MINIMUM_RATE = 0.5;
+/**
+ * @dev Checks and updates the current reward rate based on the number of registered users.
+ * The rate is reduced by 0.05 tokens for every 1000 users, but the rate will not fall below the minimum rate of 0.5 tokens.
+ * @param userCount The current number of registered users.
+ */
+export const _checkAndUpdateRate = (userCount: number) => {
+  if (userCount % 1000 === 0) {
+    // Calculate the total reduction based on the number of 1000-user blocks
+    const reductionAmount = (userCount / 1000) * REDUCTION_PER_1000;
 
+    // Ensure the rate doesn't drop below the minimum rate
+    const newRate =
+      currentRate > reductionAmount
+        ? currentRate - reductionAmount
+        : MINIMUM_RATE;
+
+    currentRate = newRate < MINIMUM_RATE ? MINIMUM_RATE : newRate;
+    return currentRate;
+  }
+};
+
+
+ 
