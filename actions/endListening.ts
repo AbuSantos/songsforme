@@ -7,11 +7,13 @@ import { trackListeningTime } from "./tracklistening-time";
  * @param {string} userId - The ID of the user ending the session.
  */
 export const endListening = async (userId: string) => {
+  const startOverallTime = Date.now(); // Start overall timer
   try {
-    // Step 1: Retrieve the user and ensure they have an active session
-    const user = await db.user.findUnique({
-      where: { userId: userId },
-    });
+    console.log(`[START] Ending listening session for user: ${userId}`);
+
+    const userStartTime = Date.now(); // Start user query timer
+    const user = await db.user.findUnique({ where: { userId } });
+    console.log(`[DB Query] User fetch time: ${Date.now() - userStartTime}ms`);
 
     if (!user) throw new Error("User not found.");
     if (!user.listeningSessionStartTime || !user.currentNftId) {
@@ -30,9 +32,11 @@ export const endListening = async (userId: string) => {
     }
 
     // Step 3: Fetch the NFT details (including rewardRatio)
+    const nftStartTime = Date.now(); // Start NFT query timer
     const nft = await db.listedNFT.findUnique({
       where: { id: user.currentNftId },
     });
+    console.log(`[DB Query] NFT fetch time: ${Date.now() - nftStartTime}ms`);
 
     if (!nft) throw new Error(`NFT with id ${user.currentNftId} not found.`);
 
@@ -45,36 +49,47 @@ export const endListening = async (userId: string) => {
     );
 
     // Step 4: Perform the updates using a Prisma transaction
-    await db.$transaction(async (prisma) => {
-      // Update user's accumulated time and clear the session info
-      await prisma.user.update({
+    const transactionStartTime = Date.now(); // Start transaction timer
+    await db.$transaction([
+      db.user.update({
         where: { userId: userId },
         data: {
           accumulatedTime: { increment: listenerListeningTime },
           listeningSessionStartTime: null,
           currentNftId: null,
         },
-      });
-
-      // Update the NFT's accumulated time for the owner
-      await prisma.listedNFT.update({
-        where: { id: user.currentNftId || undefined },
+      }),
+      db.listedNFT.update({
+        where: { id: user.currentNftId },
         data: {
           accumulatedTime: { increment: ownerListeningTime },
-          // Optional: If `totalAccumulatedTime` exists in schema
           totalAccumulatedTime: { increment: listeningDuration },
         },
-      });
+      }),
+    ]);
 
-      // Track listening time for the NFT and user
-      await trackListeningTime(user.id, user.currentNftId, listeningDuration);
-    });
+    console.log(
+      `[DB Transaction] Total transaction time: ${
+        Date.now() - transactionStartTime
+      }ms`
+    );
+
+    // Move tracking outside transaction
+    await trackListeningTime(user.id, user.currentNftId, listeningDuration);
+
+    console.log(
+      `[END] Listening session ended for user: ${userId} in ${
+        Date.now() - startOverallTime
+      }ms`
+    );
 
     return {
       message: "Listening session ended and times updated successfully.",
     };
   } catch (error) {
-    console.error("Error ending listening session:", error);
+    console.error(
+      `[ERROR] Ending listening session for user: ${userId} - ${error.message}`
+    );
     throw new Error("Failed to end the listening session.");
   }
 };
