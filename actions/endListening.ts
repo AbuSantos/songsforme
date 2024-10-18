@@ -13,10 +13,7 @@ export const endListening = async (userId: string) => {
       where: { userId: userId },
     });
 
-    if (!user) {
-      throw new Error("User not found.");
-    }
-
+    if (!user) throw new Error("User not found.");
     if (!user.listeningSessionStartTime || !user.currentNftId) {
       throw new Error("No active session or invalid session details.");
     }
@@ -25,44 +22,52 @@ export const endListening = async (userId: string) => {
     const startTime = new Date(user.listeningSessionStartTime);
     const endTime = new Date();
     const listeningDuration = Math.floor(
-      (endTime.getTime() - startTime.getTime()) / 1000
-    ); // in seconds
+      (endTime.getTime() - startTime.getTime()) / 1000 // Duration in seconds
+    );
 
-    // Step 3: Perform the updates using a Prisma transaction
+    if (listeningDuration <= 0) {
+      throw new Error("Listening duration is too short to calculate.");
+    }
+
+    // Step 3: Fetch the NFT details (including rewardRatio)
+    const nft = await db.listedNFT.findUnique({
+      where: { id: user.currentNftId },
+    });
+
+    if (!nft) throw new Error(`NFT with id ${user.currentNftId} not found.`);
+
+    const rewardRatio = nft.rewardRatio || 0.2;
+    const ownerListeningTime = Math.floor(listeningDuration * rewardRatio); // Owner's share
+    const listenerListeningTime = listeningDuration - ownerListeningTime; // Listener's share
+
+    console.log(
+      `Owner Time: ${ownerListeningTime}, Listener Time: ${listenerListeningTime}, Total Duration: ${listeningDuration}`
+    );
+
+    // Step 4: Perform the updates using a Prisma transaction
     await db.$transaction(async (prisma) => {
       // Update user's accumulated time and clear the session info
       await prisma.user.update({
         where: { userId: userId },
         data: {
-          accumulatedTime: {
-            increment: listeningDuration, // Increment user's accumulated listening time
-          },
-          listeningSessionStartTime: null, // Clear session start time
-          currentNftId: null, // Clear the current NFT being listened to
+          accumulatedTime: { increment: listenerListeningTime },
+          listeningSessionStartTime: null,
+          currentNftId: null,
         },
       });
 
-      // Fetch the NFT before updating to ensure it exists
-      const nft = await prisma.listedNFT.findUnique({
-        where: { id: user.currentNftId || undefined }, // Use the NFT ID stored in the user's record
-      });
-
-      if (!nft) {
-        throw new Error(`NFT with id ${user.currentNftId} not found.`);
-      }
-
-      // Update the NFT's accumulated time
+      // Update the NFT's accumulated time for the owner
       await prisma.listedNFT.update({
         where: { id: user.currentNftId || undefined },
         data: {
-          accumulatedTime: {
-            increment: listeningDuration, // Increment NFT's accumulated listening time
-          },
+          accumulatedTime: { increment: ownerListeningTime },
+          // Optional: If `totalAccumulatedTime` exists in schema
+          totalAccumulatedTime: { increment: listeningDuration },
         },
       });
 
-      // Track listening time for the NFT and user (call with necessary params)
-      await trackListeningTime(userId, user.currentNftId, listeningDuration);
+      // Track listening time for the NFT and user
+      await trackListeningTime(user.id, user.currentNftId, listeningDuration);
     });
 
     return {

@@ -1,6 +1,5 @@
 "use server";
-
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"; // Ensure correct import of Prisma client
 
 // Update the accumulated time for the specific NFT in the NFTListeningTime table
 export const trackListeningTime = async (
@@ -9,23 +8,32 @@ export const trackListeningTime = async (
   listeningDuration: number
 ) => {
   // Validate inputs
-  if (!userId || !nftId || !listeningDuration || listeningDuration <= 0) {
+  if (!userId || !nftId || listeningDuration <= 0) {
     throw new Error("Invalid input parameters.");
   }
 
   try {
-    // Check if the user has an existing record for this NFT
-    const existingRecord = await db.nFTListeningTime.findUnique({
-      where: { nftId_userId: { nftId, userId } }, // Unique compound index
+    console.log("Tracking listening time for user:", userId, "NFT:", nftId);
+
+    // Check if the user has an existing record for this NFT (using findFirst with separate fields for nftId and userId)
+    const existingRecord = await db.nFTListeningTime.findFirst({
+      where: {
+        nftId: nftId, // Filter by NFT ID
+        userId: userId, // Filter by User ID
+      },
     });
 
-    console.log(existingRecord, "existing recoed from tracking");
+    console.log("Existing record found:", existingRecord);
 
     if (existingRecord) {
-      // Increment the accumulated time
+      // Increment the accumulated time if the record exists
       await db.nFTListeningTime.update({
         where: { id: existingRecord.id },
-        data: { accumulatedTime: { increment: listeningDuration } },
+        data: {
+          accumulatedTime: {
+            increment: listeningDuration, // Increment the listening time
+          },
+        },
       });
       return "Updated existing record";
     } else {
@@ -34,7 +42,7 @@ export const trackListeningTime = async (
         data: {
           nftId,
           userId,
-          accumulatedTime: listeningDuration,
+          accumulatedTime: listeningDuration, // Set the initial listening duration
         },
       });
       return "Created new record";

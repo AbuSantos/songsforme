@@ -32,29 +32,31 @@ model NFTListeningTime {
   userId          String // Foreign key to User
   accumulatedTime Int       @default(0) // Time spent listening to this NFT
   nft             ListedNFT @relation(fields: [nftId], references: [id])
-  user            User      @relation(fields: [userId], references: [userId])
+  user            User      @relation(fields: [userId], references: [id])
 
   @@unique([nftId, userId])
 }
 
 model ListedNFT {
-  id                String              @id @default(cuid())
-  tokenId           String
-  seller            String
-  price             Float
-  contractAddress   String
-  uri               String?
-  listedAt          DateTime            @default(now())
-  sold              Boolean             @default(false)
-  userId            String?
-  playlist          Playlist[]
-  PlaylistListedNFT PlaylistListedNFT[]
-  Single            Single?             @relation(fields: [singleId], references: [id])
-  singleId          String?
-  purchases         BuyNFT[]
-  accumulatedTime   Int?                @default(0)
-  listeningSession  ListeningSession[]
-  NFTListeningTime  NFTListeningTime[]
+  id                   String              @id @default(cuid())
+  tokenId              String
+  seller               String
+  price                Float
+  contractAddress      String
+  uri                  String?
+  listedAt             DateTime            @default(now())
+  sold                 Boolean             @default(false)
+  userId               String?
+  playlist             Playlist[]
+  PlaylistListedNFT    PlaylistListedNFT[]
+  Single               Single?             @relation(fields: [singleId], references: [id])
+  singleId             String?
+  purchases            BuyNFT[]
+  accumulatedTime      Int?                @default(0)
+  rewardRatio          Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
+  totalAccumulatedTime Int?                 @default(0)
+  listeningSession     ListeningSession[]
+  NFTListeningTime     NFTListeningTime[]
 }
 
 model ListeningSession {

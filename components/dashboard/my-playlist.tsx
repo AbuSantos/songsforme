@@ -48,7 +48,7 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
                             <PauseListen
                                 userId={userId}
                             />
-                            <Playlisten userId={userId} nftId={"cm2dl9nx3000g9hrgiua8xekh"
+                            <Playlisten userId={userId} nftId={"cm2f7pf79000yhd04ukc268zx"
                             } />
                         </div>
                         {/* {
