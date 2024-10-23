@@ -23,6 +23,7 @@ model User {
   lastListeningTime         DateTime? // Last time the user listened
   listeningSessionStartTime DateTime? // The start time of the current listening session
   currentNftId              String? // Store the NFT ID for the current listening session
+  playlistId                String?
   nftListeningTimes         NFTListeningTime[]
   playlist                  Playlist[]
 
@@ -38,7 +39,7 @@ model NFTListeningTime {
   user            User      @relation(fields: [userId], references: [id])
 
   @@unique([nftId, userId])
-  @@index([nftId])
+  @@index([nftId, userId])
 }
 
 model ListedNFT {
@@ -58,6 +59,7 @@ model ListedNFT {
   purchases            BuyNFT[]
   accumulatedTime      Int?                @default(0)
   rewardRatio          Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
+  playlistRewardRatio  Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   totalAccumulatedTime Int?                @default(0)
   listeningSession     ListeningSession[]
   NFTListeningTime     NFTListeningTime[]
@@ -83,8 +85,10 @@ model Playlist {
   updatedAt         DateTime            @updatedAt
   userId            String
   listednft         ListedNFT[]
-  owner             User                @relation(fields: [userId], references: [id])
+  owner             User                @relation(fields: [userId], references: [userId])
+  accumulatedTime   Int?                @default(0)
   PlaylistListedNFT PlaylistListedNFT[]
+  rewardRatio       Float?               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
 }
 
 model BuyNFT {

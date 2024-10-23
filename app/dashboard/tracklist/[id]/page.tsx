@@ -12,6 +12,7 @@ type dataProps = {
 }
 const page = async ({ params }: { params: { id: string } }) => {
     const id = params.id
+    if (!id) return
     const track = await db.single.findUnique({
         where: {
             id

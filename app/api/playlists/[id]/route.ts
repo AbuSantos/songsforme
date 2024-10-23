@@ -13,7 +13,7 @@ export const GET = async (
 ) => {
   const { id } = params;
 
-
+  console.log(id);
   // Check if user ID is provided
   if (!id) {
     return new Response(JSON.stringify({ message: "UserId is required" }), {

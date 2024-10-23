@@ -14,7 +14,8 @@ import { SelectPlaylist } from "@/components/playlists/selectplaylist";
 
 
 
-export const Tracktable = ({ data }) => {
+export const Tracktable = ({ data, userId }) => {
+
     return (
         <div>
             <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-2">
@@ -43,7 +44,7 @@ export const Tracktable = ({ data }) => {
                     <div className="flex items-center space-x-2">
                         < MakeBid nftAddress={track?.contractAddress} tokenId={track?.tokenId} />
                         <BuyNFT nftAddress={track?.contractAddress} tokenId={track?.tokenId} price={track?.price} listedNftId={track?.id} />
-                        <SelectPlaylist nftId={track?.id} />
+                        <SelectPlaylist nftId={track?.id} userId={userId} />
                     </div>
                     {/* < PlayTrack address={"0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"} /> */}
                 </div>

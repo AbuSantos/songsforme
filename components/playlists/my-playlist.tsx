@@ -5,8 +5,10 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { PauseListen } from "../startlistening/pause-listen"
+import { Playlisten } from "../startlistening/play-listen"
 
-export const MyPlaylist = ({ data }: any) => {
+export const MyPlaylist = ({ data, userId }: any) => {
     console.log(data)
     return (
         <Accordion type="single" collapsible className="w-full">
@@ -24,7 +26,15 @@ export const MyPlaylist = ({ data }: any) => {
                             </div>
                         </AccordionTrigger>
                         <AccordionContent className="px-4">
-                            Track Details:  tracks
+                            {
+                                item.listednft.length === 0 ? <small>NO Songs here</small> : item.listednft?.map((song) => (
+                                    <div key={song.id} className="flex flex-col gap-2">
+                                        {/* <small>{song.id}</small> */}
+                                        <PauseListen userId={userId} />
+                                        <Playlisten userId={userId} nftId={song?.id} />
+                                    </div>
+                                ))
+                            }
                         </AccordionContent>
                     </AccordionItem>
                 ))

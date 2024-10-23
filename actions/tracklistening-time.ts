@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/lib/db"; // Ensure correct import of Prisma client
 
-// Update the accumulated time for the specific NFT in the NFTListeningTime table
+// Update the accumulated time for the specific NFT in the NFTListeningTime table with locking
 export const trackListeningTime = async (
   userId: string,
   nftId: string,
@@ -13,42 +13,45 @@ export const trackListeningTime = async (
   }
 
   try {
-    console.log("Tracking listening time for user:", userId, "NFT:", nftId);
+    // Start a transaction to ensure row-level consistency
+    await db.$transaction(async (transaction) => {
+      // Step 1: Check if the record exists
+      const existingRecord = await transaction.nFTListeningTime.findFirst({
+        where: {
+          nftId: nftId,
+          userId: userId,
+        },
+      });
 
-    // Check if the user has an existing record for this NFT (using findFirst with separate fields for nftId and userId)
-    const existingRecord = await db.nFTListeningTime.findFirst({
-      where: {
-        nftId: nftId, // Filter by NFT ID
-        userId: userId, // Filter by User ID
-      },
+      console.log("Existing record found:", existingRecord);
+
+      if (existingRecord) {
+        // Step 2: Update the existing record's accumulated time
+        await transaction.nFTListeningTime.update({
+          where: { id: existingRecord.id },
+          data: {
+            accumulatedTime: {
+              increment: listeningDuration,
+            },
+          },
+        });
+        console.log("Updated existing record with incremented time.");
+      } else {
+        // Step 3: If no record exists, create a new one
+        await transaction.nFTListeningTime.create({
+          data: {
+            nftId,
+            userId,
+            accumulatedTime: listeningDuration,
+          },
+        });
+        console.log("Created new record for user and NFT.");
+      }
     });
 
-    console.log("Existing record found:", existingRecord);
-
-    if (existingRecord) {
-      // Increment the accumulated time if the record exists
-      await db.nFTListeningTime.update({
-        where: { id: existingRecord.id },
-        data: {
-          accumulatedTime: {
-            increment: listeningDuration, // Increment the listening time
-          },
-        },
-      });
-      return "Updated existing record";
-    } else {
-      // Create a new record if this is the first time listening to this NFT
-      await db.nFTListeningTime.create({
-        data: {
-          nftId,
-          userId,
-          accumulatedTime: listeningDuration, // Set the initial listening duration
-        },
-      });
-      return "Created new record";
-    }
+    return "Listening time tracked successfully.";
   } catch (error) {
     console.error("Error tracking listening time:", error);
-    throw new Error("Failed to track listening time.");
+    throw new Error("Failed to track listening time due to concurrency.");
   }
 };
