@@ -30,7 +30,7 @@ export const endListening = async (userId: string, playlistId?: string) => {
       (endTime.getTime() - startTime.getTime()) / 1000 // Duration in seconds
     );
 
-    if (listeningDuration <= 0) {
+    if (listeningDuration <= 0 || listeningDuration < 30) {
       throw new Error("Listening duration is too short to calculate.");
     }
     if (playlistId) {

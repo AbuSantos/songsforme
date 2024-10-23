@@ -1,12 +1,16 @@
 "use client"
 import React from 'react'
 import { Button } from '../ui/button'
-import { startListening } from '@/actions/startListening'
 import { endListening } from '@/actions/endListening'
 
-export const PauseListen = ({ userId }: { userId: string }) => {
+type PauseIdTypes = {
+    userId: string
+    playlistId: string
+}
+
+export const PauseListen = ({ userId, playlistId }: PauseIdTypes) => {
     const handlePause = () => {
-        endListening(userId).then((data) => {
+        endListening(userId, playlistId).then((data) => {
             console.log(data)
         }).catch((error) => {
             console.error("Error:", error);

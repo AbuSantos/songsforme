@@ -17,7 +17,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Aside = async ({ className, playlists }: SidebarProps) => {
-  const userId = await getSession();
+  const userId: string = (await getSession() as string);
   let playlist
 
 
@@ -40,13 +40,7 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
               My Playlists
             </h2>
             <div>
-              {userId && (
-                <>
-                  <PauseListen userId={userId} />
-                  <Playlisten userId={userId} nftId={"cm2f7pf79000yhd04ukc268zx"} />
-                  <CreatePlaylist id={userId} />
-                </>
-              )}
+              <CreatePlaylist id={userId} />
             </div>
           </div>
 

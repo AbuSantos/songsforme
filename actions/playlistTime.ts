@@ -4,7 +4,7 @@ import { db } from "@/lib/db"; // Ensure correct import of Prisma client
 // Update the accumulated time for the specific NFT in the NFTListeningTime table with locking
 export const playListTime = async (user: any, listeningDuration: number) => {
   // Validate inputs
-  if (!user || listeningDuration <= 0) {
+  if (!user || listeningDuration <= 0 || listeningDuration < 30) {
     throw new Error("Invalid input parameters.");
   }
   const nft = await db.listedNFT.findUnique({
@@ -17,6 +17,8 @@ export const playListTime = async (user: any, listeningDuration: number) => {
       id: user.playlistId,
     },
   });
+
+  console.log(user);
 
   if (!playlist) throw new Error(`NFT with id ${user.playlistId} not found.`);
 

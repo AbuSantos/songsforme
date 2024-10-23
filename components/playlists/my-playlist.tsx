@@ -7,9 +7,13 @@ import {
 } from "@/components/ui/accordion"
 import { PauseListen } from "../startlistening/pause-listen"
 import { Playlisten } from "../startlistening/play-listen"
+import { ListedNFT, Playlist } from "@/types"
+type PlaylistTypes = {
+    data: Playlist[]
+    userId: string
+}
 
-export const MyPlaylist = ({ data, userId }: any) => {
-    console.log(data)
+export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
     return (
         <Accordion type="single" collapsible className="w-full">
             {
@@ -27,11 +31,16 @@ export const MyPlaylist = ({ data, userId }: any) => {
                         </AccordionTrigger>
                         <AccordionContent className="px-4">
                             {
-                                item.listednft.length === 0 ? <small>NO Songs here</small> : item.listednft?.map((song) => (
-                                    <div key={song.id} className="flex flex-col gap-2">
+                                item.listednft.length === 0 ? <small>NO Songs here</small> : item.listednft?.map((song: ListedNFT) => (
+                                    <div key={song.id} className="flex items-center justify-between gap-2 space-y-2">
                                         {/* <small>{song.id}</small> */}
-                                        <PauseListen userId={userId} />
-                                        <Playlisten userId={userId} nftId={song?.id} />
+                                        <div>
+                                            <small>{song.tokenId}</small>
+                                        </div>
+                                        <div className="flex space-x-1">
+                                            <PauseListen userId={userId} playlistId={item.id} />
+                                            <Playlisten userId={userId} nftId={song?.id} playlistId={item.id} />
+                                        </div>
                                     </div>
                                 ))
                             }
