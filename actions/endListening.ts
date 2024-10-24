@@ -19,8 +19,9 @@ export const endListening = async (userId: string, playlistId?: string) => {
     console.log(`[DB Query] User fetch time: ${Date.now() - userStartTime}ms`);
 
     if (!user) throw new Error("User not found.");
+
     if (!user.listeningSessionStartTime || !user.currentNftId) {
-      throw new Error("No active session or invalid session details.");
+      return { message: "play on" };
     }
 
     // Step 2: Calculate the listening duration
@@ -30,7 +31,7 @@ export const endListening = async (userId: string, playlistId?: string) => {
       (endTime.getTime() - startTime.getTime()) / 1000 // Duration in seconds
     );
 
-    if (listeningDuration <= 0 || listeningDuration < 30) {
+    if (listeningDuration <= 0) {
       throw new Error("Listening duration is too short to calculate.");
     }
     if (playlistId) {
@@ -55,23 +56,36 @@ export const endListening = async (userId: string, playlistId?: string) => {
 
       // Step 4: Perform the updates using a Prisma transaction
       const transactionStartTime = Date.now(); // Start transaction timer
-      await db.$transaction([
-        db.user.update({
-          where: { userId: userId },
-          data: {
-            accumulatedTime: { increment: listenerListeningTime },
-            listeningSessionStartTime: null,
-            currentNftId: null,
-          },
-        }),
-        db.listedNFT.update({
-          where: { id: user.currentNftId },
-          data: {
-            accumulatedTime: { increment: ownerListeningTime },
-            totalAccumulatedTime: { increment: listeningDuration },
-          },
-        }),
-      ]);
+
+      if (listeningDuration < 30) {
+        await db.$transaction([
+          db.user.update({
+            where: { userId: userId },
+            data: {
+              listeningSessionStartTime: null,
+              currentNftId: null,
+            },
+          }),
+        ]);
+      } else {
+        await db.$transaction([
+          db.user.update({
+            where: { userId: userId },
+            data: {
+              accumulatedTime: { increment: listenerListeningTime },
+              listeningSessionStartTime: null,
+              currentNftId: null,
+            },
+          }),
+          db.listedNFT.update({
+            where: { id: user.currentNftId },
+            data: {
+              accumulatedTime: { increment: ownerListeningTime },
+              totalAccumulatedTime: { increment: listeningDuration },
+            },
+          }),
+        ]);
+      }
 
       console.log(
         `[DB Transaction] Total transaction time: ${
@@ -92,10 +106,10 @@ export const endListening = async (userId: string, playlistId?: string) => {
     return {
       message: "Listening session ended and times updated successfully.",
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error(
       `[ERROR] Ending listening session for user: ${userId} - ${error.message}`
     );
-    throw new Error("Failed to end the listening session.");
+    throw new Error(error.message || "Failed to end the listening session.");
   }
 };

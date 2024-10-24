@@ -4,7 +4,7 @@ import { db } from "@/lib/db"; // Ensure correct import of Prisma client
 // Update the accumulated time for the specific NFT in the NFTListeningTime table with locking
 export const playListTime = async (user: any, listeningDuration: number) => {
   // Validate inputs
-  if (!user || listeningDuration <= 0 || listeningDuration < 30) {
+  if (!user || listeningDuration <= 0 ) {
     throw new Error("Invalid input parameters.");
   }
   const nft = await db.listedNFT.findUnique({
@@ -18,11 +18,10 @@ export const playListTime = async (user: any, listeningDuration: number) => {
     },
   });
 
-  console.log(user);
-
   if (!playlist) throw new Error(`NFT with id ${user.playlistId} not found.`);
 
   const nftRewardRatio = nft.rewardRatio || 0.2;
+  //@ts-ignore
   const playlistRewardRatio = playlist.rewardRatio || 0.1;
 
   const ownerListeningTime = Math.round(listeningDuration * nftRewardRatio); // Owner's share
@@ -32,32 +31,42 @@ export const playListTime = async (user: any, listeningDuration: number) => {
 
   try {
     // Start a transaction to ensure row-level consistency
-    await db.$transaction([
-      db.user.update({
+    if (listeningDuration < 30) {
+      await db.user.update({
         where: { id: user.id },
         data: {
-          accumulatedTime: { increment: listenerListeningTime },
           listeningSessionStartTime: null,
           currentNftId: null,
-          playlistId: null,
         },
-      }),
-      db.listedNFT.update({
-        where: { id: user.currentNftId },
-        data: {
-          accumulatedTime: { increment: ownerListeningTime },
-          totalAccumulatedTime: { increment: listeningDuration },
-        },
-      }),
-      db.playlist.update({
-        where: { id: user.playlistId },
-        data: {
-          accumulatedTime: {
-            increment: playlisterTime,
+      });
+    } else {
+      await db.$transaction([
+        db.user.update({
+          where: { id: user.id },
+          data: {
+            accumulatedTime: { increment: listenerListeningTime },
+            listeningSessionStartTime: null,
+            currentNftId: null,
+            playlistId: null,
           },
-        },
-      }),
-    ]);
+        }),
+        db.listedNFT.update({
+          where: { id: user.currentNftId },
+          data: {
+            accumulatedTime: { increment: ownerListeningTime },
+            totalAccumulatedTime: { increment: listeningDuration },
+          },
+        }),
+        db.playlist.update({
+          where: { id: user.playlistId },
+          data: {
+            accumulatedTime: {
+              increment: playlisterTime,
+            },
+          },
+        }),
+      ]);
+    }
 
     return "Listening time tracked successfully.";
   } catch (error) {

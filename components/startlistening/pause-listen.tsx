@@ -1,26 +1,24 @@
-"use client"
-import React from 'react'
-import { Button } from '../ui/button'
-import { endListening } from '@/actions/endListening'
+import { endListening } from "@/actions/endListening";
 
-type PauseIdTypes = {
-    userId: string
-    playlistId: string
-}
+type PauseListenProps = {
+    userId: string;
+    playlistId: string;
+};
 
-export const PauseListen = ({ userId, playlistId }: PauseIdTypes) => {
-    const handlePause = () => {
-        endListening(userId, playlistId).then((data) => {
-            console.log(data)
-        }).catch((error) => {
-            console.error("Error:", error);
-        })
-    }
+export const PauseListen = ({ userId, playlistId }: PauseListenProps) => {
+    const handlePause = async () => {
+        try {
+            // End the current listening session
+            await endListening(userId, playlistId);
+            console.log("Paused the current song");
+        } catch (error) {
+            console.error("Error pausing the listening session:", error);
+        }
+    };
+
     return (
-        <div>
-            <Button onClick={handlePause}>
-                stop
-            </Button>
-        </div>
-    )
-}
+        <button onClick={handlePause}>
+            Pause
+        </button>
+    );
+};

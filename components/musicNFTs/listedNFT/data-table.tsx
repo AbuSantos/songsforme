@@ -11,10 +11,15 @@ import { client } from "@/lib/client"
 import { polygonAmoy, sepolia } from "thirdweb/chains"
 import { PlayTrack } from "./get-track"
 import { SelectPlaylist } from "@/components/playlists/selectplaylist";
+import { ListedNFT } from "@/types";
+
+type TrackTableType = {
+    data: ListedNFT[]
+    userId?: string
+}
 
 
-
-export const Tracktable = ({ data, userId }) => {
+export const Tracktable = ({ data, userId }: TrackTableType) => {
 
     return (
         <div>

@@ -1,5 +1,6 @@
 import { Tracktable } from "@/components/musicNFTs/listedNFT/data-table"
 import { db } from "@/lib/db"
+import { ListedNFT, Single } from "@/types";
 import Image from "next/image"
 
 type dataProps = {
@@ -13,7 +14,7 @@ type dataProps = {
 const page = async ({ params }: { params: { id: string } }) => {
     const id = params.id
     if (!id) return
-    const track = await db.single.findUnique({
+    const track: Single| null = await db.single.findUnique({
         where: {
             id
         },

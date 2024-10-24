@@ -39,7 +39,7 @@ export enum PurchaseStatus {
     sold: boolean;
     userId?: string | null;
     playlist: Playlist[];
-    PlaylistListedNFT: PlaylistListedNFT[];
+    PlaylistListedNFT?: PlaylistListedNFT[];
     Single?: Single | null;
     singleId?: string | null;
     purchases: BuyNFT[];
@@ -47,8 +47,8 @@ export enum PurchaseStatus {
     rewardRatio: number;
     playlistRewardRatio: number;
     totalAccumulatedTime?: number | null;
-    listeningSession: ListeningSession[];
-    NFTListeningTime: NFTListeningTime[];
+    listeningSession?: ListeningSession[];
+    NFTListeningTime?: NFTListeningTime[];
   }
   
   export interface ListeningSession {

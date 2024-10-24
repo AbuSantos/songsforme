@@ -2,7 +2,6 @@
 import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { listenNowAlbums, madeForYouAlbums } from "@/data/albums"
 import { AlbumArtwork } from "@/components/dashboard/album-artwork"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
@@ -16,7 +15,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { DesktopNFTForm } from "@/components/modal/list-NFTD"
 import { HelpComponent } from "@/components/dashboard/addnft/help"
 import { MusicAccordion } from "@/components/dashboard/addnft/music-type"
 import { db } from "@/lib/db"
@@ -25,31 +23,17 @@ import MarketPlace from "@/components/marketplace/market"
 import { Filter } from "@/components/marketplace/filter"
 import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
 import BoughtNFT from "@/components/buy-folder/my-bought-nft"
+import { ListedNFT, Single } from "@/types"
 
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
 }
-interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-    album: {
-        contract: string;
-        price: string;
-        seller: string;
-        tokenId: string;
-        sold: boolean;
-        uri: string | null
-        userId: string | null
-    };
-    index: number;
-    aspectRatio?: "portrait" | "square";
-    width?: number;
-    height?: number;
-}
 
 export default async function MusicPage() {
 
 
-    const listedData = await db.listedNFT.findMany({
+    const listedData: ListedNFT[] = await db.listedNFT.findMany({
         where: {
             sold: false
         }
@@ -57,7 +41,7 @@ export default async function MusicPage() {
 
     revalidateTag("nft");
 
-    const singleNft = await db.single.findMany({
+    const singleNft: Single[] = await db.single.findMany({
         include: {
             listedNft: true
         }
@@ -119,7 +103,7 @@ export default async function MusicPage() {
                             <div className="relative">
                                 <ScrollArea>
                                     <div className="flex flex-wrap space-x-4 pb-4">
-                                        {singleNft?.map((data: AlbumArtworkProps, index: number) => (
+                                        {singleNft?.map((data: Single, index: number) => (
                                             <AlbumArtwork
                                                 key={data.id}
                                                 album={data}
