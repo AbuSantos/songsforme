@@ -12,7 +12,7 @@ interface IERC20 {
     function burn(uint256 _value) external returns (bool);
 }
 
-contract ListenToEarn is Ownable(msg.sender), ReentrancyGuard {
+contract ListenToEarn is Ownable, ReentrancyGuard {
     IERC20 public token;  // ERC20 token used for payments and rewards
     uint256 public immutable i_registrationFee;  // Registration fee for users, immutable after deployment
     uint256 public currentRate;  // Rate used to calculate rewards
