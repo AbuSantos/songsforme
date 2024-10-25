@@ -25,7 +25,7 @@ import "hardhat/console.sol";
     error ListenerRewardMustBeGreaterThanZero();
     error InvalidSignature();
 
-contract BullchordMarketPlace is ReentrancyGuard {
+contract BullchordMarketPlaceListen is ReentrancyGuard {
     IERC721 public nftContract;
     uint256 private platformFee;
 
@@ -723,53 +723,6 @@ contract BullchordMarketPlace is ReentrancyGuard {
 
         // Emit the event for tracking
         emit BidOfferRejected(_tokenId, _nftAddress, seller, bidder, bidAmount);
-    }
-
-    function getAllMarketItems() external view returns (MarketItem[] memory) {
-        uint totalItems = marketItems.length;
-        uint unsoldItemCount = 0;
-
-        // get all the item not sold,
-        for (uint i = 0; i < totalItems; i++) {
-            if (!isSold[marketItems[i].tokenId]) {
-                unsoldItemCount++;
-            }
-        }
-        // we instantiate and instance of marketItem array and we use the unsoldItem to get all items not sold.
-        MarketItem[] memory allMarketItems = new MarketItem[](unsoldItemCount);
-        uint currentIndex = 0;
-        for (uint i = 0; i < totalItems; i++) {
-            //first we check for all the items unsold
-            if (!isSold[marketItems[i].tokenId]) {
-                allMarketItems[currentIndex] = marketItems[i];
-                currentIndex++;
-            }
-        }
-
-        return allMarketItems;
-    }
-
-    function getMarketItemsByUser(
-        address user
-    ) external view returns (MarketItem[] memory) {
-        uint[] memory userListingIds = marketItemsOwner[user];
-        MarketItem[] memory userMarketItems = new MarketItem[](
-            userListingIds.length
-        );
-
-        for (uint i = 0; i < userListingIds.length; i++) {
-            uint tokenId = userListingIds[i];
-            MarketItem storage item = idToMarketItem[tokenId];
-            userMarketItems[i] = MarketItem({
-                tokenId: item.tokenId,
-                seller: item.seller,
-                _nftContract: item._nftContract,
-                price: item.price,
-                sold: item.sold
-            });
-        }
-
-        return userMarketItems;
     }
 
     /**

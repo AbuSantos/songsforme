@@ -11,7 +11,7 @@ const BoughtNFT = async () => {
     if (address) {
         nfts = await db.buyNFT.findMany({
             where: {
-                buyer: address,  // Filter by buyer's wallet address
+                buyer: address,  
                 relisted: false
             },
             include: {
@@ -24,7 +24,7 @@ const BoughtNFT = async () => {
             },
         });
     }
-
+    console.log(nfts, "my bought nft")
 
     if (!nfts) {
         return <div>You own no nft</div>

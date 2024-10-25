@@ -17,14 +17,15 @@ import {
 } from "@/components/ui/menubar"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
-import { AddMusicModal } from "../modal/add-music"
+import { AddMusicModal } from "../../modal/add-music"
 import { useState } from "react"
 import { ConnecttButton } from "@/web3/connect-button"
-import { AddToWhitelist } from "../modal/add-to-whitelist"
-import { ListNFTForm } from "../modal/list-nft"
+import { AddToWhitelist } from "../../modal/add-to-whitelist"
+import { ListNFTForm } from "../../modal/list-nft"
+import { WithdrawRewards } from "@/components/withdraw/withdrawal"
 
 
-export function Menu() {
+export function Menu({ userId }) {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [listModalOpen, setListModalOpen] = useState<boolean>(false)
@@ -103,6 +104,9 @@ export function Menu() {
 
                 <ConnecttButton />
 
+            </div>
+            <div>
+                <WithdrawRewards userId={userId} />
             </div>
             {
                 isOpen &&

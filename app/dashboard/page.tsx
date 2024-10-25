@@ -23,7 +23,8 @@ import MarketPlace from "@/components/marketplace/market"
 import { Filter } from "@/components/marketplace/filter"
 import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
 import BoughtNFT from "@/components/buy-folder/my-bought-nft"
-import { ListedNFT, Single } from "@/types"
+import { ListedNFT, PlaylistListedNFT, Single } from "@/types"
+import { AllPlaylist } from "@/components/playlists/all-playlist"
 
 export const metadata: Metadata = {
     title: "songs for me",
@@ -31,7 +32,6 @@ export const metadata: Metadata = {
 }
 
 export default async function MusicPage() {
-
 
     const listedData: ListedNFT[] = await db.listedNFT.findMany({
         where: {
@@ -46,6 +46,8 @@ export default async function MusicPage() {
             listedNft: true
         }
     })
+
+
 
     if (!listedData) {
         return
@@ -62,6 +64,7 @@ export default async function MusicPage() {
                                     Music
                                 </TabsTrigger>
                                 <TabsTrigger value="podcasts">Market Place</TabsTrigger>
+                                <TabsTrigger value="trendingPlaylist">Trending Playlist</TabsTrigger>
                                 <TabsTrigger value="mynft">My NFT</TabsTrigger>
                             </TabsList>
                             <Sheet >
@@ -150,6 +153,28 @@ export default async function MusicPage() {
                             className="border-none p-0 outline-none"
                         >
                             <BoughtNFT />
+                        </TabsContent>
+                        <TabsContent
+                            value="trendingPlaylist"
+                            className="border-none p-0 outline-none"
+                        >
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-1">
+                                    <h2 className="text-2xl font-semibold tracking-tight">
+                                        All Playlist
+                                    </h2>
+                                    <p className="text-sm text-muted-foreground">
+                                        Top picks for you. Updated daily.
+                                    </p>
+                                </div>
+                                <div>
+                                    <FilterByName items={listedData} />
+                                </div>
+                            </div>
+                            <Separator className="my-4 " />
+
+                            <AllPlaylist />
+
                         </TabsContent>
                     </Tabs>
                 </div>

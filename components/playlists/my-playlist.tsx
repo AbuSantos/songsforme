@@ -31,14 +31,14 @@ export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
                         </AccordionTrigger>
                         <AccordionContent className="px-4">
                             {
-                                item.listednft.length === 0 ? <small>NO Songs here</small> : item.listednft?.map((song: ListedNFT) => (
+                                item.listednft?.length === 0 ? <small>NO Songs here</small> : item.listednft?.map((song: ListedNFT) => (
                                     <div key={song.id} className="flex items-center justify-between gap-2 space-y-2">
                                         {/* <small>{song.id}</small> */}
                                         <div>
                                             <small>{song.tokenId}</small>
                                         </div>
                                         <div className="flex space-x-1">
-                                            <PauseListen userId={userId} playlistId={item.id} />
+                                            {/* <PauseListen userId={userId} playlistId={item.id} /> */}
                                             <Playlisten userId={userId} nftId={song?.id} playlistId={item.id} />
                                         </div>
                                     </div>

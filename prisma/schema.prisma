@@ -93,12 +93,12 @@ model Playlist {
 
 model BuyNFT {
   id              String          @id @default(cuid())
-  buyer           String // Wallet address of the buyer
+  buyer           String 
   listedNftId     String
   listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
-  price           Float // Purchase price
+  price           Float 
   purchaseDate    DateTime        @default(now()) // Date of purchase
-  transactionHash String? // Blockchain transaction hash, optional
+  transactionHash String? 
   status          PurchaseStatus? @default(NONE)
   relisted        Boolean         @default(false)
 }

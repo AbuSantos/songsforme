@@ -1,17 +1,19 @@
 import { Poppins } from "next/font/google";
-import { Menu } from "@/components/dashboard/menu";
+import { Menu } from "@/components/dashboard/menu/menu";
 import BottomNav from "@/components/dashboard/bottom-nav";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { playlists } from "@/data/playlists";
 import { Aside } from "@/components/dashboard/my-playlist";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getSession } from "@/lib/helper";
 
 const poppins = Poppins({ weight: "500", subsets: ["latin"] });
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+    const userId = await getSession()
     return (
         <div className={`h-screen hidden md:block bg-[var(--bg-root)] ${poppins.className}`}>
-            <Menu />
+            <Menu userId={userId} />
             <div className="border-t border-gray-700 py-2 h-full flex flex-col">
                 <div className="bg-[var(--bg-root)] flex-1">
                     <div className="grid lg:grid-cols-7 h-full">

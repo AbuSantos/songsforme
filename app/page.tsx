@@ -8,7 +8,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 
 // import { PodcastEmptyPlaceholder } from "./components/podcast-empty-placeholder"
-import { Menu } from "@/components/dashboard/menu"
+import { Menu } from "@/components/dashboard/menu/menu"
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { playlists } from "@/data/playlists"
 import { listenNowAlbums, madeForYouAlbums } from "@/data/albums"
