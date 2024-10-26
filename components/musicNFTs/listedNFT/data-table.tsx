@@ -36,10 +36,10 @@ export const Tracktable = ({ data, userId }: TrackTableType) => {
                         {track?.tokenId}
                     </p>
                     <div className="flex flex-col w-6/12">
-                        <p className="text-[1rem] capitalize">
+                        <p className="text-[0.8rem] md:text-[1rem] capitalize">
 
                         </p>
-                        <small className="uppercase">
+                        <small className="uppercase text-[0.7rem] ">
                             FT: Santos
                         </small>
                     </div>

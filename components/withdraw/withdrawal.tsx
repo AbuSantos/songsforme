@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { withdrawRewards } from '@/actions/withdraw-reward';
 import { toast } from 'sonner'; // If using a toast notification library
 import { getUserAccumulatedTIme } from '@/lib/helper';
 import { TransactionButton, useSendTransaction } from "thirdweb/react";

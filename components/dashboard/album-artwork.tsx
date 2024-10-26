@@ -35,8 +35,6 @@ export function AlbumArtwork({
     const [openTrack, setOpenTrack] = React.useState<boolean>(false)
 
 
-    console.log(album)
-
     const handlePlayPause = () => {
         if (currentTrackId === index) {
             togglePlayPause();

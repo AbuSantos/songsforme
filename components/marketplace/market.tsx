@@ -10,9 +10,8 @@ const MarketPlace = async ({ data }) => {
     return (
         <div className='w-full'>
             <div>
-
             </div>
-            <div className=''>
+            <div className='w-full'>
                 < Tracktable data={data} userId={address} />
             </div>
         </div>

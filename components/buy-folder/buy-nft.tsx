@@ -9,7 +9,7 @@ import { buyNFT } from "@/actions/buy-song";
 // Interface defining the props for the BuyNFT component
 interface NFTProps {
     nftAddress: string; // The address of the NFT contract
-    tokenId: number;    // The unique identifier for the NFT being purchased
+    tokenId: string;    // The unique identifier for the NFT being purchased
     price: number;      // The price of the NFT in Ether (as a number)
     listedNftId: string
 }
@@ -40,7 +40,7 @@ export const BuyNFT = ({ nftAddress, tokenId, price, listedNftId }: NFTProps) =>
 
 
             <TransactionButton
-                className="w-[60px] p-2 bg-black" // Styling for the button
+                className="w-[60px] p-2 bg-black" 
                 // Function to prepare the contract call and create the transaction
                 transaction={() => {
                     // Prepare the contract call using the contract and method provided
