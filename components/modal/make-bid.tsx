@@ -36,7 +36,7 @@ async function getSigner() {
 
 interface NFTProps {
     nftAddress: string
-    tokenId: number
+    tokenId: string
 
 }
 

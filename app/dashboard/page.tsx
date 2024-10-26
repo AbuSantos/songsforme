@@ -47,8 +47,6 @@ export default async function MusicPage() {
         }
     })
 
-
-
     if (!listedData) {
         return
     }

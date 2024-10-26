@@ -6,8 +6,8 @@ import { endListening } from '@/actions/endListening';
 import Image from 'next/image';
 
 type PlaylistIdTypes = {
-    userId: string;
-    playlistId: string;
+    userId: string | undefined;
+    playlistId?: string;
     nftId: string;
 };
 

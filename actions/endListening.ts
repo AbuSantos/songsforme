@@ -7,7 +7,7 @@ import { playListTime } from "./playlistTime";
  * Ends the current active listening session for a user and updates both the user and the NFT's accumulated time atomically.
  * @param {string} userId - The ID of the user ending the session.
  */
-export const endListening = async (userId: string, playlistId?: string) => {
+export const endListening = async (userId?: string, playlistId?: string) => {
   const startOverallTime = Date.now(); // Start overall timer
   try {
     console.log(`[START] Ending listening session for user: ${userId}`);

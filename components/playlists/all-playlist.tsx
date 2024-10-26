@@ -14,7 +14,6 @@ export const AllPlaylist = async () => {
     if (!userId) {
         return
     }
-    console.log(playlist, "from all playlist")
     return (
         <div>
             <MyPlaylist data={playlist} userId={userId} />

@@ -18,7 +18,7 @@ import { toast } from 'sonner'; // Toast library for notifications
 
 type SelectProps = {
     nftId: string;
-    userId: string
+    userId: string | undefined
 };
 
 type PlaylistData = {
