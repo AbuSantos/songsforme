@@ -25,6 +25,7 @@ import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
 import BoughtNFT from "@/components/buy-folder/my-bought-nft"
 import { ListedNFT, PlaylistListedNFT, Single } from "@/types"
 import { AllPlaylist } from "@/components/playlists/all-playlist"
+import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
 
 export const metadata: Metadata = {
     title: "songs for me",
@@ -53,7 +54,7 @@ export default async function MusicPage() {
 
     return (
         <>
-            <div className="col-span-3 lg:col-span-4 lg:border-l bg-[#111111] rounded-lg text-[var(--text)]">
+            <div className=" lg:block md:block col-span-3 lg:col-span-4 lg:border-l bg-[#111111] rounded-lg text-[var(--text)]">
                 <div className="h-full px-4 py-6 lg:px-8">
                     <Tabs defaultValue="music" className="h-full space-y-6 border-0">
                         <div className="flex items-center justify-between">
@@ -80,7 +81,6 @@ export default async function MusicPage() {
                                             <h1 className="text-2xl font-semibold">Check our FAQs</h1>
                                             <small className="text-slate-600 capitalize" >Cant find help, please contact support@songsforme</small>
                                         </div>
-
                                         <HelpComponent />
                                     </div>
                                 </SheetContent>

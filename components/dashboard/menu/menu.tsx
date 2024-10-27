@@ -39,7 +39,7 @@ export function Menu({ userId }) {
         setListModalOpen(!listModalOpen)
     }
     return (
-        <div className="flex justify-between p-3">
+        <div className=" justify-between p-3 hidden md:flex">
             <Menubar className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
                 <MenubarMenu>
                     <MenubarTrigger className="font-bold">Music</MenubarTrigger>

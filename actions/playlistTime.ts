@@ -1,10 +1,11 @@
 "use server";
 import { db } from "@/lib/db"; // Ensure correct import of Prisma client
+import { revalidateTag } from "next/cache";
 
 // Update the accumulated time for the specific NFT in the NFTListeningTime table with locking
 export const playListTime = async (user: any, listeningDuration: number) => {
   // Validate inputs
-  if (!user || listeningDuration <= 0 ) {
+  if (!user || listeningDuration <= 0) {
     throw new Error("Invalid input parameters.");
   }
   const nft = await db.listedNFT.findUnique({
@@ -67,6 +68,7 @@ export const playListTime = async (user: any, listeningDuration: number) => {
         }),
       ]);
     }
+    revalidateTag("track");
 
     return "Listening time tracked successfully.";
   } catch (error) {

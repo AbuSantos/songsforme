@@ -22,7 +22,6 @@ type TrackTableType = {
 
 
 export const Tracktable = ({ data, userId }: TrackTableType) => {
-    console.log(data, "from track table")
     return (
         <div>
             <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-2">

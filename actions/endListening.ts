@@ -2,6 +2,7 @@
 import { db } from "@/lib/db";
 import { trackListeningTime } from "./tracklistening-time";
 import { playListTime } from "./playlistTime";
+import { revalidateTag } from "next/cache";
 
 /**
  * Ends the current active listening session for a user and updates both the user and the NFT's accumulated time atomically.
@@ -102,7 +103,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
         Date.now() - startOverallTime
       }ms`
     );
-
+    revalidateTag("track");
     return {
       message: "Listening session ended and times updated successfully.",
     };

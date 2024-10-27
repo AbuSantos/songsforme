@@ -14,7 +14,7 @@ type dataProps = {
 const page = async ({ params }: { params: { id: string } }) => {
     const id = params.id
     if (!id) return
-    const track: Single| null = await db.single.findUnique({
+    const track: Single | null = await db.single.findUnique({
         where: {
             id
         },
@@ -26,6 +26,9 @@ const page = async ({ params }: { params: { id: string } }) => {
             }
         }
     })
+
+    console.log("hello from tracklist");
+
     // Handle case where track is not found
     if (!track) {
         return (
@@ -42,6 +45,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                     <h1 className="text-2xl capitalize">{track?.song_name}</h1>
                     <p className="text-[#7B7B7B]">{track?.artist_name}</p>
                 </div>
+                <p>Hellow world</p>
             </header>
             <div className="mt-4">
                 < Tracktable data={track?.listedNft} />
