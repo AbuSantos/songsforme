@@ -3,7 +3,10 @@ import { db } from "@/lib/db";
 import { trackListeningTime } from "./helper/tracklistening-time";
 import { playListTime } from "./playlistTime";
 import { revalidateTag } from "next/cache";
-
+import { calculateRecentPlays } from "./helper/calculate-playcount";
+import { ListedNFT, User } from "@/types";
+import { calculateReward } from "./helper/calculate-reward";
+// import { calculateReward } from "../helper/calculate-reward";
 /**
  * Ends the current active listening session for a user and updates both the user and the NFT's accumulated time atomically.
  * @param {string} userId - The ID of the user ending the session.
@@ -16,7 +19,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
     const userStartTime = Date.now(); // Start user query timer
 
     //find user
-    const user = await db.user.findUnique({ where: { userId } });
+    const user: User = await db.user.findUnique({ where: { userId } });
     console.log(`[DB Query] User fetch time: ${Date.now() - userStartTime}ms`);
 
     if (!user) throw new Error("User not found.");
@@ -41,7 +44,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
     } else {
       // Step 3: Fetch the NFT details (including rewardRatio)
       const nftStartTime = Date.now(); // Start NFT query timer
-      const nft = await db.listedNFT.findUnique({
+      const nft: ListedNFT = await db.listedNFT.findUnique({
         where: { id: user.currentNftId },
         select: {
           rewardRatio: true,
@@ -52,10 +55,8 @@ export const endListening = async (userId?: string, playlistId?: string) => {
 
       if (!nft) throw new Error(`NFT with id ${user.currentNftId} not found.`);
 
-      const rewardRatio = nft.rewardRatio || 0.2;
-      const ownerListeningTime = Math.floor(listeningDuration * rewardRatio); // Owner's share
-      const listenerListeningTime = listeningDuration - ownerListeningTime; // Listener's share
-
+      const { listenerListeningTime, ownerListeningTime } =
+        await calculateReward(listeningDuration, nft.rewardRatio || 0.2);
       console.log(
         `Owner Time: ${ownerListeningTime}, Listener Time: ${listenerListeningTime}, Total Duration: ${listeningDuration}`
       );
@@ -75,6 +76,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
         ]);
       } else {
         await trackListeningTime(user.id, user.currentNftId, listeningDuration);
+        await calculateRecentPlays(user, nft);
         await db.$transaction([
           db.user.update({
             where: { userId: userId },
