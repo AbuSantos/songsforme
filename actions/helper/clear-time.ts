@@ -22,8 +22,11 @@ export const clearAccumulatedTime = async (userId: string) => {
     }
 
     return { message: "Accumulated time cleared successfully", user };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error clearing accumulated time:", error);
-    return { message: "Failed to clear accumulated time", error: error.message };
+    return {
+      message: "Failed to clear accumulated time",
+      error: error.message,
+    };
   }
 };

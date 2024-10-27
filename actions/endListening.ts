@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/lib/db";
-import { trackListeningTime } from "./tracklistening-time";
+import { trackListeningTime } from "./helper/tracklistening-time";
 import { playListTime } from "./playlistTime";
 import { revalidateTag } from "next/cache";
 
@@ -35,6 +35,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
     if (listeningDuration <= 0) {
       throw new Error("Listening duration is too short to calculate.");
     }
+
     if (playlistId) {
       await playListTime(user, listeningDuration);
     } else {
@@ -42,6 +43,10 @@ export const endListening = async (userId?: string, playlistId?: string) => {
       const nftStartTime = Date.now(); // Start NFT query timer
       const nft = await db.listedNFT.findUnique({
         where: { id: user.currentNftId },
+        select: {
+          rewardRatio: true,
+          recentPlays: true,
+        },
       });
       console.log(`[DB Query] NFT fetch time: ${Date.now() - nftStartTime}ms`);
 
@@ -69,6 +74,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
           }),
         ]);
       } else {
+        await trackListeningTime(user.id, user.currentNftId, listeningDuration);
         await db.$transaction([
           db.user.update({
             where: { userId: userId },
@@ -96,7 +102,6 @@ export const endListening = async (userId?: string, playlistId?: string) => {
     }
 
     // Move tracking outside transaction
-    await trackListeningTime(user.id, user.currentNftId, listeningDuration);
 
     console.log(
       `[END] Listening session ended for user: ${userId} in ${

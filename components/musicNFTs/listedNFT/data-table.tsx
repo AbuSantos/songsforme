@@ -14,6 +14,7 @@ import { SelectPlaylist } from "@/components/playlists/selectplaylist";
 import { ListedNFT } from "@/types";
 import Link from "next/link";
 import { Playlisten } from "@/components/startlistening/play-listen";
+import { Actions } from "@/components/actions/actions";
 
 type TrackTableType = {
     data: ListedNFT[]
@@ -49,11 +50,14 @@ export const Tracktable = ({ data, userId }: TrackTableType) => {
                             {track?.price}
                         </div>
                     </Link>
-                    <div className=" items-center space-x-2 hidden md:flex w-4/12">
-                        < MakeBid nftAddress={track?.contractAddress} tokenId={track?.tokenId} />
-                        <BuyNFT nftAddress={track?.contractAddress} tokenId={track?.tokenId} price={track?.price} listedNftId={track?.id} />
-                        <SelectPlaylist nftId={track?.id} userId={userId} />
-                    </div>
+                    < Actions
+                        nftAddress={track?.contractAddress}
+                        nftId={track?.id}
+                        userId={userId}
+                        tokenId={track?.tokenId}
+                        price={track?.price}
+                        listedNftId={track?.id}
+                    />
                     <div className="items-center space-x-2 flex md:hidden ">
                         <Playlisten userId={userId} nftId={track.id} />
                     </div>

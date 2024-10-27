@@ -37,6 +37,7 @@ model NFTListeningTime {
   accumulatedTime Int       @default(0) // Time spent listening to this NFT
   nft             ListedNFT @relation(fields: [nftId], references: [id])
   user            User      @relation(fields: [userId], references: [id])
+  playedAt        DateTime?
 
   @@unique([nftId, userId])
   @@index([nftId, userId])
@@ -61,6 +62,8 @@ model ListedNFT {
   rewardRatio          Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   playlistRewardRatio  Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   totalAccumulatedTime Int?                @default(0)
+  recentPlays          Json? //Array of { timestamp: DateTime, count: Int }
+  lastPlayTimestamp    DateTime
   listeningSession     ListeningSession[]
   NFTListeningTime     NFTListeningTime[]
 
@@ -88,17 +91,17 @@ model Playlist {
   owner             User                @relation(fields: [userId], references: [userId])
   accumulatedTime   Int?                @default(0)
   PlaylistListedNFT PlaylistListedNFT[]
-  rewardRatio       Float?               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
+  rewardRatio       Float?              @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
 }
 
 model BuyNFT {
   id              String          @id @default(cuid())
-  buyer           String 
+  buyer           String
   listedNftId     String
   listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
-  price           Float 
+  price           Float
   purchaseDate    DateTime        @default(now()) // Date of purchase
-  transactionHash String? 
+  transactionHash String?
   status          PurchaseStatus? @default(NONE)
   relisted        Boolean         @default(false)
 }

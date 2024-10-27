@@ -18,7 +18,7 @@ export const TrackInfo = ({ data }: ListedNFT) => {
             </div>
             <div className="flex flex-col items-center justify-center p-2 space-x-2">
                 <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">amount </small>
-                <p className="text-[1rem] uppercase font-medium">amount generated</p>
+                <p className="text-[1rem] uppercase font-medium">{amount}</p>
             </div>
             <div className="flex flex-col items-center justify-center p-2 space-x-2">
                 <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">creator</small>

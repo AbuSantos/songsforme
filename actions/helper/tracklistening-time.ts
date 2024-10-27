@@ -23,8 +23,6 @@ export const trackListeningTime = async (
         },
       });
 
-      console.log("Existing record found:", existingRecord);
-
       if (existingRecord) {
         // Step 2: Update the existing record's accumulated time
         await transaction.nFTListeningTime.update({

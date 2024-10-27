@@ -7,7 +7,7 @@ import { getUserAccumulatedTIme } from '@/lib/helper';
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { prepareContractCall } from 'thirdweb';
 import { contract } from '@/lib/client';
-import { clearAccumulatedTime } from '@/actions/clear-time';
+import { clearAccumulatedTime } from '@/actions/helper/clear-time';
 
 export const WithdrawRewards = ({ userId }: { userId: string }) => {
     const [isLoading, setIsLoading] = useState(false);
