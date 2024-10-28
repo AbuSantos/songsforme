@@ -6,6 +6,7 @@ import { calculateDynamicPrice } from "@/dynamic-price/main";
 import { ListedNFT } from "@/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import LineChart from "./chart/line-chart";
 
 export const TrackChart = ({ track }: { track: ListedNFT }) => {
   const [unikListeners, setUnikListeners] = useState(0);
@@ -51,6 +52,6 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
   console.log(price, ":price", unikListeners, "listeners")
 
   return <div>
-
+    <LineChart />
   </div>;
 };

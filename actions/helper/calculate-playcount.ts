@@ -1,17 +1,18 @@
 import { db } from "@/lib/db";
 import { LastPlayEntry, ListedNFT, User } from "@/types";
+type plays = {
+  timestamp: string; // UNIX timestamp
+  count: number; // Price of the NFT at that timestamp
+}[];
 
-export const calculateRecentPlays = async (
-  user: User,
-  nft: ListedNFT,
-) => {
+
+export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
   const now = new Date();
-  const recentPlays = nft.recentPlays || [];
+  const recentPlays: plays = nft.recentPlays || [];
 
   // Check if the last entry in recentPlays is from today
   const lastPlayEntry = recentPlays[recentPlays.length - 1];
   const today = now.toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
-
   if (lastPlayEntry && lastPlayEntry.timestamp.startsWith(today)) {
     // If today's entry exists, increment the count
     lastPlayEntry.count += 1;
