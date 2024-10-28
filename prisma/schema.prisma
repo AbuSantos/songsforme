@@ -37,10 +37,25 @@ model NFTListeningTime {
   accumulatedTime Int       @default(0) // Time spent listening to this NFT
   nft             ListedNFT @relation(fields: [nftId], references: [id])
   user            User      @relation(fields: [userId], references: [id])
-  playedAt        DateTime?
+  date            DateTime  @default(now())
+  listenerIds     String[]
+  listenerCount   Int
 
-  @@unique([nftId, userId])
-  @@index([nftId, userId])
+  @@unique([nftId, userId, date])
+  @@index([nftId, date, userId], name: "nft_date_id")
+}
+
+model UniqueListener {
+  id            String   @id @default(cuid())
+  nftId         String
+  date          DateTime @default(now())
+  listenerIds   String[] // Array of listener IDs for this day
+  listenerCount Int      @default(0)
+
+  nft ListedNFT @relation(fields: [nftId], references: [id])
+
+  @@unique([nftId, date]) // Compound unique constraint
+  @@index([nftId, date], name: "nft_date_idx") // Index for fast lookups
 }
 
 model ListedNFT {
@@ -65,6 +80,7 @@ model ListedNFT {
   recentPlays          Json? //Array of { timestamp: DateTime, count: Int }
   lastPlayTimestamp    DateTime
   listeningSession     ListeningSession[]
+  uniqueListener       UniqueListener[]
   NFTListeningTime     NFTListeningTime[]
 
   @@index([id])
