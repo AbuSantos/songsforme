@@ -1,10 +1,10 @@
 import { db } from "@/lib/db";
 import { LastPlayEntry, ListedNFT, User } from "@/types";
+
 type plays = {
   timestamp: string; // UNIX timestamp
   count: number; // Price of the NFT at that timestamp
 }[];
-
 
 export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
   const now = new Date();
