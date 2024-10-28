@@ -21,7 +21,7 @@ export const calculateDynamicPrice = async (
     currentTime
   );
 
-  console.log(decayedPlayCount, "decayed coubt");
+  console.log(decayedPlayCount, recentPlays, "decayed coubt");
 
   // Logarithmic growth modifiers for playlists and unique listeners
   // const playlistFactor = 1 + alpha * Math.sqrt(recentPlaylists);

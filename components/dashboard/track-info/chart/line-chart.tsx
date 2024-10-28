@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
+type PriceDataType = {
+    timestamp: number; // UNIX timestamp in seconds
+    price: number; // Price of the NFT at that timestamp
+};
 
 export const LineChart = ({ priceData }) => {
     const [chartData, setChartData] = useState({});

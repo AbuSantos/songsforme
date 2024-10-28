@@ -17,7 +17,7 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
   const [unikListeners, setUnikListeners] = useState(0);
   const [playlistListing, setPlaylistListing] = useState(0);
   const [price, setPrice] = useState(0);
-  const [priceData, setPriceData] = useState<PriceDataType>([]);
+  const [priceData, setPriceData] = useState<PriceDataType>([]); 
 
   if (!track) {
     toast.error("Please connect your wallet!");
@@ -59,7 +59,7 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
 
       setPriceData((prevData) => {
         const lastEntry = prevData[prevData.length - 1];
-        
+
         // Check if today's data is already stored
         if (lastEntry && new Date(lastEntry.timestamp * 1000).toISOString().startsWith(today)) {
           return prevData.map((entry, index) =>
@@ -71,11 +71,13 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
     }
   }, [price]);
 
-  console.log(price, ":price", unikListeners, "listeners");
-
   return (
     <div>
-      <LineChart priceData={priceData} />
+      {priceData.length > 0 ? (
+        <LineChart priceData={priceData} /> // Render only if data exists
+      ) : (
+        <p>Loading chart data...</p>
+      )}
     </div>
   );
 };
