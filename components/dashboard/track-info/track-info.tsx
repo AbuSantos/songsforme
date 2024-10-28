@@ -1,4 +1,4 @@
-import { amountGenerated, countPlays } from '@/lib/utils'
+import { amountGenerated, countPlays } from '@/dynamic-price/helper/play-count'
 import { ListedNFT } from '@/types'
 
 export const TrackInfo = ({ data }: ListedNFT) => {

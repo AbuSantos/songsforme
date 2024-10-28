@@ -58,7 +58,7 @@ export const Tracktable = ({ data, userId }: TrackTableType) => {
                         price={track?.price}
                         listedNftId={track?.id}
                     />
-                    <div className="items-center space-x-2 flex md:hidden ">
+                    <div className="items-center space-x-2 flex ">
                         <Playlisten userId={userId} nftId={track.id} />
                     </div>
                     {/* < PlayTrack address={"0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"} /> */}

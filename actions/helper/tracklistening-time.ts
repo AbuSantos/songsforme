@@ -16,7 +16,7 @@ export const trackListeningTime = async (
 
   try {
     // Start a transaction to ensure row-level consistency
-    const dailyListener = await db.$transaction(async (transaction) => {
+     await db.$transaction(async (transaction) => {
       return transaction.uniqueListener.upsert({
         where: { nftId_date: { nftId, date: today } },
         update: {
@@ -32,7 +32,7 @@ export const trackListeningTime = async (
       });
     });
 
-    return dailyListener;
+    return { message: "listener added" };
   } catch (error) {
     console.error("Error tracking listening time:", error);
     throw new Error("Failed to track listening time due to concurrency.");

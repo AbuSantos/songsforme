@@ -4,7 +4,7 @@ export const countPlays = (accumulatedTime: number) => {
   console.log(accumulatedTime);
 
   if (accumulatedTime < 30) return 0;
-  return Math.round(accumulatedTime / 30);
+  return Math.round(accumulatedTime / 160);
 };
 const DEFAULT_REWARD_RATE_PER_TIME = 1152830775970;
 

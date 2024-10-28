@@ -14,14 +14,18 @@ export const addSongToPlaylist = async (playlistId: string, nftId: string) => {
     // Retrieve the playlist by its ID, including the listed NFTs
     const playlist = await db.playlist.findUnique({
       where: { id: playlistId },
-      include: {
-        listednft: true, // Fetch existing NFTs in the playlist
+      select: {
+        listednft: true,
+        nftIds: true,
       },
     });
 
     // Retrieve the NFT by its ID
     const listedNft = await db.listedNFT.findUnique({
       where: { id: nftId },
+      select: {
+        id: true,
+      },
     });
 
     // Check if either the playlist or the NFT is not found
@@ -42,8 +46,9 @@ export const addSongToPlaylist = async (playlistId: string, nftId: string) => {
       where: { id: playlistId },
       data: {
         listednft: {
-          connect: { id: nftId }, // Use Prisma's `connect` to link the NFT
+          connect: { id: nftId },
         },
+        nftIds: { push: nftId },
       },
     });
 

@@ -20,6 +20,7 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
   const userId: string = (await getSession() as string);
   let playlist
 
+  console.log("userid from aside", userId)
 
   // Fetch playlists only if the user is connected
   if (userId) {
