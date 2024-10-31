@@ -1,6 +1,7 @@
 import { Actions } from "@/components/actions/actions"
 import { TrackChart } from "@/components/dashboard/track-info/track-chart"
 import { TrackInfo } from "@/components/dashboard/track-info/track-info"
+import { Separator } from "@/components/ui/separator"
 import { db } from "@/lib/db"
 import { getSession } from "@/lib/helper"
 import { ListedNFT } from "@/types"
@@ -24,10 +25,10 @@ const page = async ({ params }: { params: { id: string } }) => {
     revalidateTag("track")
     if (!track) return
 
-    console.log(track, "track")
     return (
-        <div>
+        <div className="flex items-center justify-center flex-col space-y-2">
             <TrackChart track={track} />
+            <Separator className="my-4 w-full  " />
             <TrackInfo data={track} />
             < Actions
                 nftAddress={track?.contractAddress}

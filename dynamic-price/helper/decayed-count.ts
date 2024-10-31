@@ -17,12 +17,11 @@ function unixTimestamp(date: Date) {
 
 export const calculateDecayedPlayCount = (
   plays: [],
-  decayRate,
-  currentTime
+  decayRate: GLfloat,
+  currentTime: Number
 ) => {
   return plays.reduce((total, play) => {
     const timeSincePlay = currentTime - unixTimestamp(play.timestamp);
-
     const decayedPlay = play.count * Math.exp(-decayRate * timeSincePlay);
     return total + decayedPlay;
   }, 0);

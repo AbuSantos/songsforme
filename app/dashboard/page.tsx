@@ -170,9 +170,7 @@ export default async function MusicPage() {
                                 </div>
                             </div>
                             <Separator className="my-4 " />
-
                             <AllPlaylist />
-
                         </TabsContent>
                     </Tabs>
                 </div>

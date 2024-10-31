@@ -13,7 +13,7 @@ type ActionsProps = {
 }
 export const Actions = ({ nftAddress, tokenId, price, nftId, userId, listedNftId }: ActionsProps) => {
   return (
-    <div className=" items-center space-x-2 hidden md:flex w-4/12">
+    <div className=" justify-center items-center space-x-2 flex md:flex w-4/12">
       < MakeBid nftAddress={nftAddress} tokenId={tokenId} />
       <BuyNFT nftAddress={nftAddress} tokenId={tokenId} price={price} listedNftId={listedNftId} />
       <SelectPlaylist nftId={nftId} userId={userId} />

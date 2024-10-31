@@ -10,9 +10,10 @@ export const AllPlaylist = async () => {
             listednft: true
         }
     })
+    console.log(playlist, "playlist from playlist")
     const userId = await getSession()
     if (!userId) {
-        return
+        console.log("userid ", userId)
     }
     return (
         <div>

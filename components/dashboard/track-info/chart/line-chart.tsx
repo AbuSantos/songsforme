@@ -1,55 +1,27 @@
-"use client"
+// ./chart/line-chart.tsx
 import { Line } from 'react-chartjs-2';
-import { useEffect, useState } from 'react';
-import { Chart, registerables } from 'chart.js';
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend } from 'chart.js';
 
-Chart.register(...registerables);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 type PriceDataType = {
-    timestamp: number; // UNIX timestamp in seconds
+    timestamp: string; // UNIX timestamp
     price: number; // Price of the NFT at that timestamp
 };
-
-export const LineChart = ({ priceData }) => {
-    const [chartData, setChartData] = useState({});
-
-    useEffect(() => {
-        const labels = priceData.map(data => new Date(data.timestamp * 1000).toLocaleDateString());
-        const prices = priceData.map(data => data.price);
-
-        setChartData({
-            labels,
-            datasets: [
-                {
-                    label: 'NFT Price Over Time',
-                    data: prices,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: true,
-                },
-            ],
-        });
-    }, [priceData]);
-
-    const options = {
-        responsive: true,
-
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Date',
-                },
+const LineChart = ({ priceData }: { priceData: PriceDataType[] }) => {
+    const data = {
+        labels: priceData.map((point) => new Date(point.timestamp).toLocaleDateString()),
+        datasets: [
+            {
+                label: 'NFT Price',
+                data: priceData.map((point) => point.price),
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1,
             },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Price (in tokens)',
-                },
-            },
-        },
+        ],
     };
 
-    return <Line data={chartData} options={options} />;
+    return <Line data={data} />;
 };
 
 export default LineChart;
