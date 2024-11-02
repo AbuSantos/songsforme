@@ -15,6 +15,7 @@ import { ListedNFT } from "@/types";
 import Link from "next/link";
 import { Playlisten } from "@/components/startlistening/play-listen";
 import { Actions } from "@/components/actions/actions";
+import Image from "next/image";
 
 type TrackTableType = {
     data: ListedNFT[]
@@ -33,7 +34,7 @@ export const Tracktable = ({ data, userId }: TrackTableType) => {
             </header>
 
             {data.map((track, index: number) => (
-                <div key={index} className="flex items-center border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
+                <div key={index} className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
                     <Link href={`dashboard/trackinfo/${track.id}`} className="flex w-8/12">
                         <p className="w-10 ">
                             {track?.tokenId}
@@ -46,19 +47,27 @@ export const Tracktable = ({ data, userId }: TrackTableType) => {
                                 FT: Santos
                             </small>
                         </div>
-                        <div className="flex flex-col w-2/12">
-                            {track?.price}
+                        <div className="flex items-center justify-center  w-2/12">
+                            <span>
+                                {track?.price}
+                            </span>
+                            <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className='ml-2' />
+
                         </div>
                     </Link>
-                    < Actions
+                    <div >
+                        <BuyNFT nftAddress={track?.contractAddress} tokenId={track?.tokenId} price={track?.price} listedNftId={track?.id} />
+
+                    </div>
+                    {/* < Actions
                         nftAddress={track?.contractAddress}
                         nftId={track?.id}
                         userId={userId}
                         tokenId={track?.tokenId}
                         price={track?.price}
                         listedNftId={track?.id}
-                    />
-                    <div className="items-center space-x-2 flex ">
+                    /> */}
+                    <div className="items-center space-x-2 flex ml-2">
                         <Playlisten userId={userId} nftId={track.id} />
                     </div>
                     {/* < PlayTrack address={"0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"} /> */}

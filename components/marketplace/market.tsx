@@ -4,6 +4,11 @@ import { getSession } from '@/lib/helper'
 import { ListedNFT } from '@/types'
 
 const MarketPlace = async ({ data }) => {
+    try {
+        
+    } catch (error) {
+        
+    }
     const address = await getSession()
     if (!address) return
 

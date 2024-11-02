@@ -61,7 +61,7 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 ">
-            <div className="relative bg-black rounded-md w-2/6 py-8 px-6 border-[0.7px] border-gray-600">
+            <div className="relative bg-black rounded-md w-[95%] md:w-2/6 py-8 px-6 border-[0.7px] border-gray-600">
                 <h1 className="text-center text-2xl text-gray-200 font-medium capitalize p-4">Please add Your Music NFT Details</h1>
 
                 <div className="space-y-3">
@@ -106,8 +106,8 @@ export const ListNFTForm = ({ setListModalOpen }: modalTypes) => {
 
                         }}
                         onTransactionConfirmed={(tx) => {
-                            if(tx.status==="success"){
-                                
+                            if (tx.status === "success") {
+
                             }
                             console.log("Transaction confirmed", tx);
                         }}

@@ -20,55 +20,59 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
   const userId: string = (await getSession() as string);
   let playlist
 
-  console.log("userid from aside", userId)
+  try {
+    // Fetch playlists only if the user is connected
+    if (userId) {
+      playlist = await db.playlist.findMany({
+        where: { userId },
+        include: { listednft: true },
+      });
+    }
 
-  // Fetch playlists only if the user is connected
-  if (userId) {
-    playlist = await db.playlist.findMany({
-      where: { userId },
-      include: { listednft: true },
-    });
-  }
+    revalidateTag("playlist");
 
-  revalidateTag("playlist");
-
-  return (
-    <div className={cn("pb-12 rounded-lg", className)}>
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <div className="flex justify-between px-2 items-center">
-            <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-              My Playlists
-            </h2>
-            <div>
-              <CreatePlaylist id={userId} />
+    return (
+      <div className={cn("pb-12 rounded-lg", className)}>
+        <div className="space-y-4 py-4">
+          <div className="px-3 py-2">
+            <div className="flex justify-between px-2 items-center">
+              <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                My Playlists
+              </h2>
+              <div>
+                <CreatePlaylist id={userId} />
+              </div>
             </div>
-          </div>
 
-          <div className="space-y-1">
-            <Button variant="ghost" className="w-full justify-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mr-2 h-4 w-4"
-              >
-                <path d="M21 15V6" />
-                <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                <path d="M12 12H3" />
-                <path d="M16 6H3" />
-                <path d="M12 18H3" />
-              </svg>
-              Playlists
-            </Button>
-            <MyPlaylist data={playlist} userId={userId} />
+            <div className="space-y-1">
+              <Button variant="ghost" className="w-full justify-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6" />
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                  <path d="M12 12H3" />
+                  <path d="M16 6H3" />
+                  <path d="M12 18H3" />
+                </svg>
+                Playlists
+              </Button>
+              <MyPlaylist data={playlist} userId={userId} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.log(error)
+  }
+
+
 };
