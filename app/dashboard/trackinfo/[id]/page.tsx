@@ -8,8 +8,8 @@ import { ListedNFT } from "@/types"
 import { revalidateTag } from "next/cache"
 
 const page = async ({ params }: { params: { id: string } }) => {
-    const id = params.id
-    const userId = await getSession()
+    const id = params.id || "cm2sxwgz600016erljp42zyxz"
+    const userId = await getSession() || "0xE9933f0F1F4DDdb07Ffd43560542b37C884024e9"
 
     if (!id || !userId) return
     const track: ListedNFT = await db.listedNFT.findUnique({

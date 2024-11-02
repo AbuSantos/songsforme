@@ -27,9 +27,6 @@ const page = async ({ params }: { params: { id: string } }) => {
         }
     })
 
-    console.log("hello from tracklist");
-
-    // Handle case where track is not found
     if (!track) {
         return (
             <div className="text-red-50 px-3">

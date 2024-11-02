@@ -27,7 +27,7 @@ type FilterByNameProps = {
     placeholder?: string;
 };
 
-export const FilterByName = ({ items, placeholder = "Filter by artiste name..." }: FilterByNameProps) => {
+export const FilterByName = ({ items, placeholder = "Filter..." }: FilterByNameProps) => {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
 
@@ -40,7 +40,7 @@ export const FilterByName = ({ items, placeholder = "Filter by artiste name..." 
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-[200px] justify-between bg-black border-0"
+                    className="w-[150px] justify-between bg-black border-0"
                 >
                     {value
                         ? items.find((item) => item.value === value)?.label
