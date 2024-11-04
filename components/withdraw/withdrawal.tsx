@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { toast } from 'sonner'; // If using a toast notification library
-import { getUserAccumulatedTIme } from '@/lib/helper';
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { prepareContractCall } from 'thirdweb';
 import { contract } from '@/lib/client';
 import { clearAccumulatedTime } from '@/actions/helper/clear-time';
+import { getUserAccumulatedTime } from '@/lib/helper';
 
-export const WithdrawRewards = ({ userId }: { userId: string }) => {
+export const WithdrawRewards = ({ userId }: { userId: string | unknown }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [totalTime, setTotalTime] = useState(0)
@@ -18,7 +18,9 @@ export const WithdrawRewards = ({ userId }: { userId: string }) => {
         const handleWithdrawal = async () => {
             setIsLoading(true); // Start loading before the action
             try {
-                const time = await getUserAccumulatedTIme(userId) as number
+
+                //@ts-ignore
+                const time = await getUserAccumulatedTime(userId) as number
                 setTotalTime(time)
                 console.log(time)
                 // toast.success("Rewards withdrawn successfully!");

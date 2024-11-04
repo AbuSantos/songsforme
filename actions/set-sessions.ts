@@ -26,6 +26,7 @@ export async function decrypt(session: string | undefined = "") {
 
 // Function to set a session using the wallet address
 export const setsession = async (address: string) => {
+  console.log(address, "from connect button");
   if (!address) {
     return {
       message:
@@ -35,11 +36,11 @@ export const setsession = async (address: string) => {
   try {
     // Set cookie expiration to 5 days from now
     const expiresAt = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
-    const sessionPayload = { userId: address }; 
+    const sessionPayload = { userId: address };
     const session = await encrypt(sessionPayload);
 
     // Set the session cookie with provided configurations
-    cookies().set("session", session, {
+    cookies().set("bullchord-session", session, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       expires: expiresAt,

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { WithdrawRewards } from "@/components/withdraw/withdrawal"
 import { ConnecttButton } from "@/web3/connect-button"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
     Sheet,
     SheetClose,
@@ -17,10 +17,13 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-export const MobileNav = ({ userId }: { userId: string }) => {
+import { MobilePlaylist } from "../m-playlist/mobile-playlist"
+
+export const MobileNav = ({ userId }: { userId: string | unknown }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [listModalOpen, setListModalOpen] = useState<boolean>(false)
+    const [userIds, setUserId] = useState<string | null>(null);
 
     const handleModal = () => {
         setIsOpen(!isOpen)
@@ -31,9 +34,22 @@ export const MobileNav = ({ userId }: { userId: string }) => {
     const handleListModal = () => {
         setListModalOpen(!listModalOpen)
     }
+    useEffect(() => {
+        // Fetch session on initial load
+        const fetchSession = async () => {
+            const response = await fetch("/api/session");
+            if (response.ok) {
+                const data = await response.json();
+                setUserId(data.userId);
+            } else {
+                console.log("Session not found or could not be decrypted.");
+            }
+        };
+        fetchSession();
+    }, []);
 
     return (
-        <Sheet>
+        <Sheet >
             <SheetTrigger asChild>
                 <Button variant="outline">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: "rgba(0, 0, 0, 1)", transform: "msFilter", marginLeft: "2px" }}>
@@ -41,7 +57,7 @@ export const MobileNav = ({ userId }: { userId: string }) => {
                     </svg>
                 </Button>
             </SheetTrigger>
-            <SheetContent className=" ">
+            <SheetContent className="w-full ">
 
                 <div className="flex flex-col justify-between h-full">
                     <div className="flex flex-col mt-8 space-y-4">
@@ -56,8 +72,11 @@ export const MobileNav = ({ userId }: { userId: string }) => {
                         <AddToWhitelist />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 mb-3">
                         <WithdrawRewards userId={userId} />
+                    </div>
+                    <div >
+                        <MobilePlaylist userId={userId} />
                     </div>
 
                     <div className="mt-auto w-full">
@@ -67,8 +86,6 @@ export const MobileNav = ({ userId }: { userId: string }) => {
                     {isOpen && <AddMusicModal setIsOpen={setIsOpen} />}
                     {listModalOpen && <ListNFTForm setListModalOpen={setListModalOpen} />}
                 </div>
-
-
 
             </SheetContent>
         </Sheet>

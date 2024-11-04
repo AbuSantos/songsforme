@@ -4,37 +4,51 @@ import { decrypt } from "@/actions/set-sessions"; // Adjust the import according
 import { cache } from "react";
 import { db } from "./db";
 
-export const getSession = cache(async () => {
-  const sessionValue = cookies().get("session")?.value; // Retrieve the session cookie
+// Define a more descriptive type for the decrypted session
+interface DecryptedSession {
+  userId: string;
+}
 
+// Cached session retrieval with improved error handling and type checking
+export const getSession = cache(async (): Promise<string | null> => {
+  const sessionValue = cookies().get("bullchord-session")?.value;
+
+  console.log(sessionValue, "Retrieved session cookie");
   if (!sessionValue) {
-    console.log("No session found, please connect your wallet");
-    return null; // Return null if no session exists
+    console.warn("No session found. Prompting user to connect wallet.");
+    return null;
   }
+
   try {
-    const decryptedValue = await decrypt(sessionValue); // Decrypt the session value
+    const decryptedValue: DecryptedSession | null = await decrypt(sessionValue);
+    console.log(decryptedValue?.userId, "Decrypted session value");
 
-    console.log(decryptedValue?.userId, "decrypted session value th");
-
-    return decryptedValue?.userId; // Return the decrypted session value
+    return decryptedValue?.userId ?? null;
   } catch (error) {
-    console.error("Error decrypting session:", error);
-    return null; // Return null if decryption fails
+    console.error("Failed to decrypt session:", error);
+    return null;
   }
 });
 
-export const getUserAccumulatedTIme = async (userId: string) => {
-  const user = await db.user.findUnique({
-    where: {
-      userId,
-    },
-    select: { accumulatedTime: true },
-  });
-  console.log(user, "user");
-  const accumulatedTime = user?.accumulatedTime;
-  if (!accumulatedTime || accumulatedTime <= 0) {
-    return { message: "No rewards available to withdraw." };
-  }
+export const getUserAccumulatedTime = async (
+  userId: string
+): Promise<number | { message: string }> => {
+  try {
+    const user = await db.user.findUnique({
+      where: { userId },
+      select: { accumulatedTime: true },
+    });
 
-  return accumulatedTime;
+    console.log(user, "Retrieved user data");
+    const accumulatedTime = user?.accumulatedTime;
+
+    if (!accumulatedTime || accumulatedTime <= 0) {
+      return { message: "No rewards available to withdraw." };
+    }
+
+    return accumulatedTime;
+  } catch (error) {
+    console.error("Error retrieving accumulated time for user:", error);
+    return { message: "Error retrieving user data." };
+  }
 };

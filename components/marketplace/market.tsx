@@ -1,26 +1,33 @@
-import React from 'react'
-import { Tracktable } from '../musicNFTs/listedNFT/data-table'
-import { getSession } from '@/lib/helper'
-import { ListedNFT } from '@/types'
+"use server";
+import React, { useEffect, useState } from 'react';
+import { Tracktable } from '../musicNFTs/listedNFT/data-table';
+import { ListedNFT } from '@/types';
+import { useSession } from '@/hooks/useSession';
+import { useRecoilValue } from 'recoil';
+import { isConnected } from '@/atoms/session-atom';
+import { db } from '@/lib/db';
+import { revalidateTag } from 'next/cache';
 
-const MarketPlace = async ({ data }) => {
-    try {
-        
-    } catch (error) {
-        
-    }
-    const address = await getSession()
-    if (!address) return
+interface MarketPlaceProps {
+    data: ListedNFT[];
+}
+
+const MarketPlace: React.FC<MarketPlaceProps> = async () => {
+    const listedData: ListedNFT[] = await db.listedNFT.findMany({
+        where: {
+            sold: false
+        }
+    });
+    revalidateTag("bought");
 
     return (
         <div className='w-full'>
-            <div>
-            </div>
+
             <div className='w-full'>
-                < Tracktable data={data} userId={address} />
+                <Tracktable data={listedData} />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MarketPlace
+export default MarketPlace;

@@ -30,10 +30,6 @@ export const GET = async (
       },
     });
 
-    // Revalidate cache for the given path or default to root
-    const path = req.nextUrl.searchParams.get("path") || "/";
-    revalidatePath(path);
-
     // Return the fetched playlists as a JSON response
     return new Response(JSON.stringify(playlists), {
       status: 200,

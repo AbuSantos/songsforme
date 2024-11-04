@@ -8,9 +8,16 @@ import { ListedNFT } from "@/types"
 import { revalidateTag } from "next/cache"
 
 const page = async ({ params }: { params: { id: string } }) => {
-    const id = params.id || "cm2sxwgz600016erljp42zyxz"
-    const userId = await getSession() || "0xE9933f0F1F4DDdb07Ffd43560542b37C884024e9"
+    // const id = params.id || "cm2sxwgz600016erljp42zyxz"
+    // const userId = await getSession() || "0xE9933f0F1F4DDdb07Ffd43560542b37C884024e9"
+    const userId = await getSession()
+    const id = params.id
+
+    console.log(userId, "from track info")
+
     if (!id || !userId) return
+
+
 
     try {
         //@ts-ignore

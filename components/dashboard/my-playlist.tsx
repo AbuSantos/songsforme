@@ -1,4 +1,4 @@
-"use server";
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -11,25 +11,29 @@ import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 import { Playlisten } from "../startlistening/play-listen";
 import { PauseListen } from "../startlistening/pause-listen";
+import { useRecoilValue } from "recoil";
+import { isConnected } from "@/atoms/session-atom";
+import useSWR from "swr";
+import { Skeleton } from "../ui/skeleton";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   playlists: Playlist[];
 }
 
-export const Aside = async ({ className, playlists }: SidebarProps) => {
-  const userId: string = (await getSession() as string);
-  let playlist
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+export const Aside = ({ className }: SidebarProps) => {
+  const userId = useRecoilValue(isConnected)
 
+  const { data: playlist, error, isLoading } = useSWR(
+    `/api/playlists/${userId}`,
+    fetcher
+  );
+
+
+  console.log(playlist, "from aside")
   try {
     // Fetch playlists only if the user is connected
-    if (userId) {
-      playlist = await db.playlist.findMany({
-        where: { userId },
-        include: { listednft: true },
-      });
-    }
 
-    revalidateTag("playlist");
 
     return (
       <div className={cn("pb-12 rounded-lg", className)}>
@@ -64,7 +68,17 @@ export const Aside = async ({ className, playlists }: SidebarProps) => {
                 </svg>
                 Playlists
               </Button>
-              <MyPlaylist data={playlist} userId={userId} />
+              {/* @ts-ignore */}
+
+              {
+                isLoading ?
+                  <>
+                    <Skeleton className="h-12 w-full mt-2 bg-gray-800" />
+                    <Skeleton className="h-12 w-full mt-2 bg-gray-800" />
+                    <Skeleton className="h-12 w-full mt-2 bg-gray-800" />
+                  </> :
+                  <MyPlaylist data={playlist} userId={userId} />
+              }
             </div>
           </div>
         </div>

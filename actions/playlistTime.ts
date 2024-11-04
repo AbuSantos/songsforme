@@ -11,6 +11,7 @@ export const playListTime = async (user: User, listeningDuration: number) => {
   if (!user || listeningDuration <= 0) {
     throw new Error("Invalid input parameters.");
   }
+  //@ts-ignore
   const nft: ListedNFT = await db.listedNFT.findUnique({
     where: { id: user.currentNftId as string },
   });
@@ -25,6 +26,7 @@ export const playListTime = async (user: User, listeningDuration: number) => {
   if (!playlist) throw new Error(`NFT with id ${user.playlistId} not found.`);
 
   const nftRewardRatio = nft.rewardRatio || 0.2;
+  //@ts-ignore
   const playlistRewardRatio = playlist.rewardRatio || 0.1;
 
   const ownerListeningTime = Math.round(listeningDuration * nftRewardRatio); // Owner's share
@@ -43,12 +45,8 @@ export const playListTime = async (user: User, listeningDuration: number) => {
         },
       });
     } else {
-      await trackListeningTime(
-        user.id,
-        user.currentNftId as string,
-        listeningDuration
-      );
-      await calculateRecentPlays(user, nft, listeningDuration);
+      await trackListeningTime(user.id, user.currentNftId as string);
+      await calculateRecentPlays(user, nft);
       await db.$transaction([
         db.user.update({
           where: { id: user.id },

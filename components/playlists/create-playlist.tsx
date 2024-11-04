@@ -40,7 +40,7 @@ export const CreatePlaylist = ({ id }: ModalProps) => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <PlusCircledIcon className="w-6 h-6 text-gray-300 hover:text-gray-50 cursor-pointer" />
+                <PlusCircledIcon className="w-6 h-6 text-[#111111] md:text-gray-300 hover:text-gray-50 cursor-pointer" />
             </PopoverTrigger>
             <PopoverContent className="w-80">
                 <h1 className="text-gray-100 text-center p-3">Playlist Name</h1>

@@ -32,9 +32,9 @@ export const CreateUsername = (
         startTransition(() => {
             createUser(address, username).then((data) => {
                 console.log(data)
-                // toast({
-                //     data.message,
-                // });
+                toast(
+                    data.message,
+                );
                 setUsername("")
                 setIsOpen(false)
             }).catch((error) => {

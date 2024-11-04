@@ -1,6 +1,8 @@
 import { Tracktable } from "@/components/musicNFTs/listedNFT/data-table"
 import { db } from "@/lib/db"
-import { ListedNFT, Single } from "@/types";
+import { truncate } from "@/lib/utils";
+import { ListedNFT, Playlist, Single } from "@/types";
+import { shortenIfAddress } from "@thirdweb-dev/react";
 import Image from "next/image"
 
 type dataProps = {
@@ -17,18 +19,17 @@ const page = async ({ params }: { params: { id: string } }) => {
 
     try {
         //@ts-ignore
-        const track: Single | null = await db.single.findUnique({
+        const track: Playlist | null = await db.playlist.findUnique({
             where: {
                 id
             },
             include: {
-                listedNft: {
-                    where: {
-                        sold: false
-                    }
-                }
+                listednft: true,
+                owner: true
+
             }
         })
+        console.log(track)
 
         if (!track) {
             return (
@@ -37,18 +38,32 @@ const page = async ({ params }: { params: { id: string } }) => {
                 </div>
             );
         }
+
+
         return (
             <div className='text-red-50 px-3'>
                 <header className=" flex space-x-2 items-end px-4">
 
                     <Image src={track?.cover || "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"} width={150} height={200} alt="cover" className="rounded-md" />
                     <div className="text-gray-100">
-                        <h1 className="text-2xl capitalize">{track?.song_name}</h1>
-                        <p className="text-[#7B7B7B]">{track?.artist_name}</p>
+                        <h1 className="text-2xl capitalize">{track?.name}</h1>
+                        <p className="text-[#7B7B7B] flex space-x-2">
+                            <small className="">
+                                {track?.owner?.username}
+                            </small>
+                            <small className="truncate">
+                                {
+                                    truncate(track?.owner?.userId)
+                                }
+                            </small>
+                        </p>
                     </div>
                 </header>
                 <div className="mt-4">
-                    < Tracktable data={track?.listedNft} />
+                    {
+                        track?.listednft &&
+                        < Tracktable data={track?.listednft} />
+                    }
                 </div>
             </div>
 
