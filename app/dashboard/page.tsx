@@ -35,8 +35,22 @@ export const metadata: Metadata = {
     description: "Earn songs as your listen to music.",
 }
 
-export default async function MusicPage() {
+export default async function MusicPage({ searchParams }: { searchParams: { filter?: string } }) {
     const userId = await getSession()
+    const filter = searchParams.filter || "ratio";
+
+    const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
+    // const playlists: Playlist[] = await db.playlist.findMany({
+    //     select: {
+    //         rewardRatio: true,
+    //         accumulatedTime: true,
+    //         name: true,
+    //         id: true,
+
+    //     },
+    //     ...(orderBy ? { orderBy } : {})
+    // })
+
 
 
     try {
@@ -65,10 +79,11 @@ export default async function MusicPage() {
                         id: true
                     }
                 }
-            }
-
-
+            },
+            ...(orderBy ? { orderBy } : {})
         })
+
+
 
         // Sort playlists by the lowest `rewardRatio` of their `listednft`
 
@@ -83,7 +98,6 @@ export default async function MusicPage() {
             })
         }
         const sortedPlaylists = getSortedPlaylists();
-        console.log(sortedPlaylists)
         if (!listedData) {
             return
         }
@@ -258,7 +272,7 @@ export default async function MusicPage() {
                                     </div>
                                 </div>
                                 <Separator className="my-4 " />
-                                <AllPlaylist />
+                                <AllPlaylist data={playlists} />
                             </TabsContent>
                         </Tabs>
                     </div>

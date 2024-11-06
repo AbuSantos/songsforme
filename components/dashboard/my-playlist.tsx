@@ -24,17 +24,16 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export const Aside = ({ className }: SidebarProps) => {
   const userId = useRecoilValue(isConnected)
 
+  if (!userId) return
+
   const { data: playlist, error, isLoading } = useSWR(
     `/api/playlists/${userId}`,
     fetcher
   );
 
 
-  console.log(playlist, "from aside")
   try {
     // Fetch playlists only if the user is connected
-
-
     return (
       <div className={cn("pb-12 rounded-lg", className)}>
         <div className="space-y-4 py-4">

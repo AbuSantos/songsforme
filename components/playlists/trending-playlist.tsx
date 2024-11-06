@@ -17,7 +17,6 @@ interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
         cover: string;
         name: string;
         title: string;
-        listedNft: ListedNFT
         artist: string;
         id: string;
     };
@@ -43,12 +42,7 @@ export function TrendingPlaylist({
                     className="block dark:hidden rounded-md cursor-pointer shadow-lg"
                     onClick={() => setOpenTrack(!openTrack)}
                 />
-                <p className="text-sm capitalize text-slate-500">
-                    {album.title}
-                </p>
-                <p className="text-[0.7rem] capitalize text-slate-500">
-                    {album.artist}
-                </p>
+
             </Link>
             <small className="text-[#B4B4B4] tracking-tight leading-tight capitalize">{album.name}, Your favorite playlist created by me</small>
         </div>
