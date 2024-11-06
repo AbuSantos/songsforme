@@ -23,11 +23,12 @@ import MarketPlace from "@/components/marketplace/market"
 import { Filter } from "@/components/marketplace/filter"
 import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
 import BoughtNFT from "@/components/buy-folder/my-bought-nft"
-import { ListedNFT, PlaylistListedNFT, Single } from "@/types"
+import { ListedNFT, Playlist, PlaylistListedNFT, Single } from "@/types"
 import { AllPlaylist } from "@/components/playlists/all-playlist"
 import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
 import { getSession } from "@/lib/helper"
 import { TrendingPlaylist } from "@/components/playlists/trending-playlist"
+import { FilterPlace } from "@/components/playlists/filter-playlist"
 
 export const metadata: Metadata = {
     title: "songs for me",
@@ -53,25 +54,48 @@ export default async function MusicPage() {
             }
         })
 
-        const playlists: PlaylistListedNFT[] = await db.playlist.findMany({
-            include: {
-                listednft: true
+        const playlists: Playlist[] = await db.playlist.findMany({
+            select: {
+                rewardRatio: true,
+                accumulatedTime: true,
+                name: true,
+                id: true,
+                listednft: {
+                    select: {
+                        id: true
+                    }
+                }
             }
+
+
         })
 
+        // Sort playlists by the lowest `rewardRatio` of their `listednft`
+
+        const getSortedPlaylists = () => {
+            if (!playlists || playlists.length === 0) return [];
+
+            return playlists.sort((a, b) => {
+                const aRewardRatio = a?.rewardRatio || Infinity
+                const bRewardRatio = b?.rewardRatio || Infinity
+
+                return aRewardRatio - bRewardRatio
+            })
+        }
+        const sortedPlaylists = getSortedPlaylists();
+        console.log(sortedPlaylists)
         if (!listedData) {
             return
         }
 
         return (
             <>
-                <div className=" lg:block md:block col-span-3 lg:col-span-4 lg:border-l bg-[#111111] rounded-lg text-[var(--text)]">
+                <div className="w-[100vw] md:max-w-full lg:block md:block col-span-3 lg:col-span-4 lg:border-l bg-[#111111] rounded-lg text-[var(--text)]">
                     <div className="h-full px-4 py-6 lg:px-8">
                         <Tabs defaultValue="music" className="h-full space-y-6 border-0">
                             <div className="flex items-center justify-between">
                                 <TabsList>
                                     <div className="hidden md:block">
-
                                         <TabsTrigger value="music" className="relative">
                                             Music
                                         </TabsTrigger>
@@ -115,63 +139,67 @@ export default async function MusicPage() {
                                             </div>
                                         </SheetContent>
                                     </Sheet>
-                                    <MobileNav userId={userId} />
-
+                                    <div className="md:hidden">
+                                        <MobileNav userId={userId} />
+                                    </div>
                                 </div>
-
                             </div>
+
                             <TabsContent
                                 value="music"
-                                className="border-none p-0 outline-none"
+                                className="border-none p-0 outline-none "
                             >
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-1">
-                                        <h2 className="text-2xl font-semibold tracking-tight">
-                                            Trending playlist
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                           Good ratios. Updated daily.
-                                        </p>
+                                <div className="w-full">
+                                    <div className="flex items-center justify-between">
+                                        <div className="space-y-1">
+                                            <h2 className="text-xl md:text-2xl font-semibold tracking-normal">
+                                                Trending playlist
+                                            </h2>
+                                            <p className="text-sm hidden text-muted-foreground">
+                                                Good ratios. Updated daily.
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <Separator className="my-4 " />
+                                    <Separator className="my-4 " />
 
-                                <div className="flex overflow-x-scroll space-x-2 pb-4">
-                                    {playlists?.map((playlist: PlaylistListedNFT, index: number) => (
-                                        < TrendingPlaylist album={playlist} key={playlist.id}
-                                            className="w-[180px]"
-                                        />
-                                    ))}
-                                </div>
-
-
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-1">
-                                        <h2 className="text-2xl font-semibold tracking-tight">
-                                            Listen Now
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                            Top picks for you. Updated daily.
-                                        </p>
-                                    </div>
-                                </div>
-                                <Separator className="my-4 " />
-                                <div className="relative">
-
-
-                                    <ScrollArea>
-                                        <div className="flex flex-wrap space-x-4 pb-4">
-                                            {singleNft?.map((data: Single, index: number) => (
-                                                <AlbumArtwork
-                                                    key={data.id}
-                                                    album={data}
-                                                    index={index}
-                                                    className="w-[200px]"
+                                    <div className="max-w-[100vw] overflow-auto " >
+                                        <div className="flex flex-nowrap overflow-auto pb-4 snap-x snap-mandatory scroll-smooth ">
+                                            {sortedPlaylists.map((playlist) => (
+                                                <TrendingPlaylist
+                                                    key={playlist.id}
+                                                    album={playlist}
+                                                    className="w-[180px] snap-start flex-shrink-0"
                                                 />
                                             ))}
                                         </div>
-                                        <ScrollBar orientation="horizontal" />
-                                    </ScrollArea>
+                                    </div>
+
+                                    <div className="flex items-center justify-between">
+                                        <div className="space-y-1">
+                                            <h2 className="text-xl md:text-2xl font-semibold tracking-normal">
+                                                Listen Now
+                                            </h2>
+                                            <p className="text-sm hidden text-muted-foreground">
+                                                Top picks for you. Updated daily.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <Separator className="my-4 " />
+                                    <div className="relative">
+                                        <ScrollArea>
+                                            <div className="flex flex-wrap space-x-4 pb-4">
+                                                {singleNft?.map((data: Single, index: number) => (
+                                                    <AlbumArtwork
+                                                        key={data.id}
+                                                        album={data}
+                                                        index={index}
+                                                        className="w-[200px]"
+                                                    />
+                                                ))}
+                                            </div>
+                                            <ScrollBar orientation="horizontal" />
+                                        </ScrollArea>
+                                    </div>
                                 </div>
 
                             </TabsContent>
@@ -224,8 +252,9 @@ export default async function MusicPage() {
                                         </p>
                                     </div>
                                     <div>
+                                        <FilterPlace />
                                         {/* @ts-ignore */}
-                                        <FilterByName items={listedData} />
+                                        {/* <FilterByName items={listedData} /> */}
                                     </div>
                                 </div>
                                 <Separator className="my-4 " />
@@ -233,7 +262,6 @@ export default async function MusicPage() {
                             </TabsContent>
                         </Tabs>
                     </div>
-
                 </div>
             </>
         )

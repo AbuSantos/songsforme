@@ -27,12 +27,12 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                     <div className="bg-[var(--bg-root)] flex-1">
                         <div className="grid lg:grid-cols-7 h-full">
 
-                            <div className="hidden lg:block  bg-[#111111] text-[var(--text)] rounded-lg">
+                            {/* <div className="hidden lg:block  bg-[#111111] text-[var(--text)] rounded-lg">
                                 <ScrollArea>
                                     <Sidebar playlists={playlists} />
                                 </ScrollArea>
-                            </div>
-                            <div className="col-span-3 lg:col-span-4 lg:border-l bg-[#111111] text-[var(--text)]">
+                            </div> */}
+                            <div className="col-span-3 lg:col-span-5 lg:border-l bg-[#111111] text-[var(--text)]">
                                 <ScrollArea>
                                     {children}
                                 </ScrollArea>
