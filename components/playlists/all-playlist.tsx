@@ -4,14 +4,18 @@ import { useSearchParams } from "next/navigation"
 import { Playlist } from "@/types"
 import { TrendingPlaylist } from "./trending-playlist"
 import { Skeleton } from "../ui/skeleton"
+import { MyPlaylist } from "./my-playlist"
+import { useRecoilValue } from "recoil"
+import { isConnected } from "@/atoms/session-atom"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export const AllPlaylist = () => {
     const searchParams = useSearchParams()
+    const userId = useRecoilValue(isConnected);
 
     // Retrieve filters from the search params
-    const filter = searchParams.get("filter") // e.g., "desc" or "asc"
+    const filter = searchParams.get("filter")
 
     // Build API URL with dynamic filters based on search parameters
     const apiUrl = `/api/playlists?${new URLSearchParams({
@@ -30,14 +34,21 @@ export const AllPlaylist = () => {
     </div>
 
     return (
-        <div className="flex flex-wrap space-x-2 pb-4">
-            {playlists.map((playlist: Playlist) => (
-                <TrendingPlaylist
-                    album={playlist}
-                    key={playlist.id}
-                    className="w-[180px]"
-                />
-            ))}
+        <div >
+            <div className="md:hidden">
+                <MyPlaylist data={playlists} userId={userId} />
+            </div>
+
+            <div className="hidden md:flex flex-wrap space-x-2 pb-4">
+                {playlists.map((playlist: Playlist) => (
+                    <TrendingPlaylist
+                        album={playlist}
+                        key={playlist.id}
+                        className="w-[180px]"
+                    />
+                ))}
+            </div>
         </div>
+
     )
 }

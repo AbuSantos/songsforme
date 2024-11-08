@@ -221,12 +221,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             >
                                 <div className="flex items-center justify-between ">
                                     <div className="space-y-1">
-                                        <h2 className=" font-medium text-2xl  md:font-semibold tracking-tight text-[#B4B4B4]">
+                                        <h2 className=" font-medium text-[1rem] md:text-2xl  md:font-semibold tracking-tight text-[#B4B4B4]">
                                             Buy and Sell NFTs
                                         </h2>
-                                        <small className="text-sm text-[#6E6E6E]">
-                                            create playlist and earn
-                                        </small>
                                     </div>
 
                                     <div>
@@ -256,7 +253,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             >
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
-                                        <h2 className="text-2xl font-semibold tracking-tight">
+                                        <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
                                             All Playlist
                                         </h2>
                                         <p className="text-sm text-muted-foreground">

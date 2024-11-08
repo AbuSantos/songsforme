@@ -23,7 +23,6 @@ export const Aside = ({ className }: SidebarProps) => {
     fetcher
   );
 
-  console.log(playlist, "playlist from aside")
 
   if (error) {
     return (
