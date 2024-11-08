@@ -14,7 +14,6 @@ import { revalidateTag } from "next/cache";
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
 
 export const MusicAccordion = async () => {
-
     const address = await getSession()
     let singles
     if (address) {
@@ -24,6 +23,7 @@ export const MusicAccordion = async () => {
             },
         });
     }
+    console.log(singles, "address");
     revalidateTag("single")
 
     if (!singles) {
@@ -40,7 +40,7 @@ export const MusicAccordion = async () => {
             <AccordionItem value="item-2">
                 <AccordionTrigger>Add Single Track</AccordionTrigger>
                 <AccordionContent>
-                    <AllMySingle singles={singles} />
+                    <AllMySingle data={singles} />
                 </AccordionContent>
             </AccordionItem>
         </Accordion>

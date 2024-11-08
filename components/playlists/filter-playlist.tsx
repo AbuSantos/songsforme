@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 export const FilterPlace = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentFilter = searchParams.get("filter") || ("amount") || "ratio";
 
   const handleValueChange = (value: string) => {
     const params = new URLSearchParams(window.location.search);
@@ -26,10 +25,7 @@ export const FilterPlace = () => {
         <RadioGroupItem value="playtime" id="r2" />
         <Label htmlFor="r2">play time</Label>
       </div>
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="date" id="r3" />
-        <Label htmlFor="r3">Date Added</Label>
-      </div>
+
     </RadioGroup >
   )
 }

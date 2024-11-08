@@ -25,7 +25,7 @@ import { ListNFTForm } from "../../modal/list-nft"
 import { WithdrawRewards } from "@/components/withdraw/withdrawal"
 
 
-export function Menu({ userId }) {
+export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [listModalOpen, setListModalOpen] = useState<boolean>(false)
@@ -106,7 +106,7 @@ export function Menu({ userId }) {
 
             </div>
             <div>
-                <WithdrawRewards userId={userId} />
+                <WithdrawRewards  />
             </div>
             {
                 isOpen &&

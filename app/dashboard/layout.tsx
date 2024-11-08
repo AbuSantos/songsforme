@@ -22,7 +22,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
             <div className=" md:block">
 
-                <Menu userId={userId} />
+                <Menu />
                 <div className="border-t border-gray-700 py-2 h-full flex flex-col">
                     <div className="bg-[var(--bg-root)] flex-1">
                         <div className="grid lg:grid-cols-7 h-full">
@@ -39,7 +39,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                             </div>
                             <div className="hidden lg:block lg:col-span-2 text-[var(--text)] bg-[#111111] rounded-lg border-l-8 border-black">
                                 <ScrollArea>
-                                    <Aside playlists={playlists} />
+                                    <Aside  />
                                 </ScrollArea>
                             </div>
                         </div>

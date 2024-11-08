@@ -12,7 +12,7 @@ interface MarketPlaceProps {
     data: ListedNFT[];
 }
 
-const MarketPlace: React.FC<MarketPlaceProps> = async () => {
+const MarketPlace: React.FC = async () => {
     const listedData: ListedNFT[] = await db.listedNFT.findMany({
         where: {
             sold: false

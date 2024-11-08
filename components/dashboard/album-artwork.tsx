@@ -38,9 +38,9 @@ export function AlbumArtwork({
         <div className={cn("space-y-3", className)} {...props}>
             <Link className="space-y-1" href={`dashboard/tracklist/${album.id}`}>
                 <Image
-                    src="https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"
-                    width={150}
-                    height={100}
+                    src="/images/playlisty.jpg"
+                    width={190}
+                    height={150}
                     alt="Music"
                     className="block dark:hidden rounded-md cursor-pointer"
                     onClick={() => setOpenTrack(!openTrack)}

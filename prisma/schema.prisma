@@ -110,6 +110,7 @@ model Playlist {
   PlaylistListedNFT PlaylistListedNFT[]
   rewardRatio       Float?              @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   date              DateTime            @default(now())
+  description       String?
 }
 
 model BuyNFT {

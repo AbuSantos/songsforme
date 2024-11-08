@@ -84,9 +84,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
         })
 
 
-
         // Sort playlists by the lowest `rewardRatio` of their `listednft`
-
         const getSortedPlaylists = () => {
             if (!playlists || playlists.length === 0) return [];
 
@@ -191,7 +189,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-1">
                                             <h2 className="text-xl md:text-2xl font-semibold tracking-normal">
-                                                Listen Now
+                                                Singles and Albums
                                             </h2>
                                             <p className="text-sm hidden text-muted-foreground">
                                                 Top picks for you. Updated daily.
@@ -201,13 +199,13 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <Separator className="my-4 " />
                                     <div className="relative">
                                         <ScrollArea>
-                                            <div className="flex flex-wrap space-x-4 pb-4">
+                                            <div className="flex flex-wrap space-x-2 pb-4 gap-2">
                                                 {singleNft?.map((data: Single, index: number) => (
                                                     <AlbumArtwork
                                                         key={data.id}
                                                         album={data}
                                                         index={index}
-                                                        className="w-[200px]"
+                                                        className="w-[180px]"
                                                     />
                                                 ))}
                                             </div>

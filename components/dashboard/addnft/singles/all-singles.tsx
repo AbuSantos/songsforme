@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
 
-export const AllMySingle = ({ singles }: { singles: any[] }) => {
+export const AllMySingle = ({ data }: { data: any[] }) => {
+    console.log(data, "singles")
     return (
         <div>
             <header className="flex items-center justify-between">
@@ -19,7 +20,7 @@ export const AllMySingle = ({ singles }: { singles: any[] }) => {
                 <CreateSingle />
             </header>
             <ul>
-                {singles && singles?.map((single) => (
+                {data && data?.map((single) => (
                     <li key={single.id} className="capitalize p-2 ">
                         <div className="flex justify-between cursor-pointer">
                             <p className="flex flex-col">
