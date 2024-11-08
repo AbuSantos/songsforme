@@ -82,6 +82,7 @@ model ListedNFT {
   listeningSession     ListeningSession[]
   uniqueListener       UniqueListener[]
   NFTListeningTime     NFTListeningTime[]
+  priceData            Json? //Array of { timestamp: DateTime, price: Int }
 
   @@index([id])
 }

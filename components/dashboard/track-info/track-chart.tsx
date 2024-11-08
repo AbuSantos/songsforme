@@ -1,64 +1,61 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import LineChart from "./chart/line-chart";
 import { calculateDecayedPlaylistCount } from "@/actions/helper/calculate-playlist";
 import { calculateDecayedUniqueListeners } from "@/actions/helper/calculate-uniquelisterner";
 import { calculateDynamicPrice } from "@/dynamic-price/main";
 import { ListedNFT } from "@/types";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import LineChart from "./chart/line-chart";
-
 
 type PriceDataType = {
-  timestamp: string; // UNIX timestamp
+  timestamp: string; // ISO date string
   price: number; // Price of the NFT at that timestamp
 };
 
 export const TrackChart = ({ track }: { track: ListedNFT }) => {
   const [unikListeners, setUnikListeners] = useState(0);
   const [playlistListing, setPlaylistListing] = useState(0);
-  const [price, setPrice] = useState(0);
-  const [priceData, setPriceData] = useState<PriceDataType[]>([]); // Initialize as empty array
+  const [priceData, setPriceData] = useState<PriceDataType[]>([]);
 
+  // Check for `track` availability before fetching data
   if (!track) {
     toast.error("Please connect your wallet!");
   }
 
-  // Fetch unique listeners
+  // Combined data fetch for listeners and playlists
   useEffect(() => {
-    const fetchUniqueListeners = async () => {
-      const listeners = await calculateDecayedUniqueListeners(track?.id);
-      setUnikListeners(listeners);
+    const fetchData = async () => {
+      try {
+        const [listeners, playlists] = await Promise.all([
+          calculateDecayedUniqueListeners(track.id),
+          calculateDecayedPlaylistCount(track.id),
+        ]);
+        setUnikListeners(listeners);
+        setPlaylistListing(playlists);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
     };
-    fetchUniqueListeners();
-  }, [track?.id]);
+    fetchData();
+  }, [track.id]);
 
-  // Fetch playlist listings
+  // Calculate dynamic price and update `priceData`
   useEffect(() => {
-    const fetchPlaylistListings = async () => {
-      const uniquePlaylist = await calculateDecayedPlaylistCount(track?.id);
-      setPlaylistListing(uniquePlaylist);
-    };
-    fetchPlaylistListings();
-  }, [track?.id]);
-
-  // Calculate dynamic price
-  useEffect(() => {
-    const fetchDynamicPrice = async () => {
+    const updatePriceData = async () => {
       const calculatedPrice = await calculateDynamicPrice(
-        track?.price,
-        track?.recentPlays,
-        // playlistListing,
+        track.price,
+        track.recentPlays,
         unikListeners
       );
-      setPrice(calculatedPrice);
 
       const now = new Date().toISOString();
+
       setPriceData((prevData) => {
         const today = now.slice(0, 10);
         const lastEntry = prevData[prevData.length - 1];
 
-        // Only update today's entry, or add a new one
+        // Only update today's entry or add a new one
         if (lastEntry && lastEntry.timestamp.startsWith(today)) {
           return prevData.map((entry, index) =>
             index === prevData.length - 1 ? { ...entry, price: calculatedPrice } : entry
@@ -68,12 +65,15 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
         }
       });
     };
-    fetchDynamicPrice();
-  }, [track?.id, playlistListing, unikListeners]);
+    updatePriceData();
+  }, [unikListeners, playlistListing, track.recentPlays]);
 
-  // Conditionally render LineChart only if priceData has entries
+
+
+
+  console.log(priceData, "price data")
   return (
-    <div className="w-11/12 md:w-full  p-2">
+    <div className="w-11/12 md:w-full p-2">
       {priceData.length > 0 ? (
         <LineChart priceData={priceData} />
       ) : (

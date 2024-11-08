@@ -3,10 +3,12 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
+
 type PriceDataType = {
-    timestamp: string; // UNIX timestamp
-    price: number; // Price of the NFT at that timestamp
+    timestamp: string;
+    price: number;
 };
+
 const LineChart = ({ priceData }: { priceData: PriceDataType[] }) => {
     const data = {
         labels: priceData.map((point) => new Date(point.timestamp).toLocaleDateString()),
@@ -16,7 +18,11 @@ const LineChart = ({ priceData }: { priceData: PriceDataType[] }) => {
                 data: priceData.map((point) => point.price),
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 tension: 0.1,
+                pointBackgroundColor: 'rgb(75, 192, 192)',
+                pointBorderColor: '#fff',
+                pointRadius: 4, 
             },
         ],
     };

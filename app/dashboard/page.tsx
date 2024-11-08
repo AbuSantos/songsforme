@@ -29,6 +29,7 @@ import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
 import { getSession } from "@/lib/helper"
 import { TrendingPlaylist } from "@/components/playlists/trending-playlist"
 import { FilterPlace } from "@/components/playlists/filter-playlist"
+import { Search } from "@/components/dashboard/search/search-songs"
 
 export const metadata: Metadata = {
     title: "songs for me",
@@ -227,8 +228,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
 
                                     <div>
-                                        {/* @ts-ignore */}
-                                        <FilterByName items={listedData} />
+                                        <Search placeholder="Search songs..." />
+                                        {/* <FilterByName items={listedData} /> */}
                                     </div>
                                 </div>
                                 <Separator className="my-4 bg-[#7B7B7B]" />

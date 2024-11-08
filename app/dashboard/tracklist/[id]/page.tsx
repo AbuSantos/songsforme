@@ -30,6 +30,8 @@ const page = async ({ params }: { params: { id: string } }) => {
             }
         })
 
+        console.log(track)
+
         if (!track) {
             return (
                 <div className="text-red-50 px-3">

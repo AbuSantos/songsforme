@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn, fetcher } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "../ui/skeleton";
 import { CreatePlaylist } from "../playlists/create-playlist";
@@ -10,7 +10,6 @@ import useSWR from "swr";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const Aside = ({ className }: SidebarProps) => {
   const userId = useRecoilValue(isConnected);
