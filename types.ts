@@ -47,6 +47,7 @@ export interface ListedNFT {
   rewardRatio: number;
   playlistRewardRatio: number;
   recentPlays?: [];
+  priceData?: [];
   totalAccumulatedTime?: number | null;
   listeningSession?: ListeningSession[];
   NFTListeningTime?: NFTListeningTime[];
@@ -74,6 +75,7 @@ export interface Playlist {
   accumulatedTime?: number | null;
   PlaylistListedNFT: PlaylistListedNFT[];
   rewardRatio?: number | null;
+  cover?: string;
 }
 
 export interface BuyNFT {

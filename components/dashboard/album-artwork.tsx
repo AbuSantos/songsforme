@@ -45,12 +45,12 @@ export function AlbumArtwork({
                     className="block dark:hidden rounded-md cursor-pointer"
                     onClick={() => setOpenTrack(!openTrack)}
                 />
-                <p className="text-sm capitalize text-slate-500">
-                    {album.title}
+                <p className="text-[1rem] capitalize text-slate-500">
+                    {album.song_name}
                 </p>
-                <p className="text-[0.7rem] capitalize text-slate-500">
-                    {album.artist}
-                </p>
+                <small className="text-[#B4B4B4] tracking-tight leading-tight capitalize">{album.artist_name}</small>
+
+
             </Link>
         </div>
     );

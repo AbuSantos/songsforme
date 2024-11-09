@@ -55,6 +55,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
 
 
     try {
+
+        {/* @ts-ignore */ }
         const listedData: ListedNFT[] = await db.listedNFT.findMany({
             where: {
                 sold: false
@@ -63,12 +65,14 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
 
         revalidateTag("nft");
 
+        {/* @ts-ignore */ }
         const singleNft: Single[] = await db.single.findMany({
             include: {
                 listedNft: true
             }
         })
 
+        {/* @ts-ignore */ }
         const playlists: Playlist[] = await db.playlist.findMany({
             select: {
                 rewardRatio: true,
@@ -264,7 +268,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <div>
                                         <FilterPlace />
                                         {/* @ts-ignore */}
-                                        {/* <FilterByName items={listedData} /> */}
                                     </div>
                                 </div>
                                 <Separator className="my-4 " />

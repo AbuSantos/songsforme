@@ -30,16 +30,29 @@ const MarketPlace: React.FC = () => {
         apiUrl,
         fetcher
     );
-    console.log(songs, "from client")
-
     return (
         <div className='w-full'>
             {
                 isLoading ? (
-                    <div className="flex space-x-2 items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
-                        <Skeleton className='w-10 h-12 bg-[#111113]' />
-                        <Skeleton className='w-8/12 h-12 bg-[#111113]' />
-                        <Skeleton className='w-1/12 h-12' />
+                    <div className='flex flex-col space-y-2'>
+                        <div className="flex space-x-1 items-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A]  bg-[#FFFFFF22]  px-2 py-2 w-full mt-2 rounded-md ">
+                            <Skeleton className='w-12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-8/12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-2/12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-1/12 h-12 bg-[#111113]' />
+                        </div>
+                        <div className="flex space-x-1 items-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A]  bg-[#FFFFFF22]  px-2 py-2 w-full mt-2 rounded-md ">
+                            <Skeleton className='w-12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-8/12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-2/12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-1/12 h-12 bg-[#111113]' />
+                        </div>
+                        <div className="flex space-x-1 items-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A]  bg-[#FFFFFF22]  px-2 py-2 w-full mt-2 rounded-md ">
+                            <Skeleton className='w-12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-8/12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-2/12 h-12 bg-[#111113]' />
+                            <Skeleton className='w-1/12 h-12 bg-[#111113]' />
+                        </div>
                     </div>
                 ) :
                     <Tracktable data={songs} />

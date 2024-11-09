@@ -34,7 +34,6 @@ export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
                                     </small>
                                 </div>
                             </Link>
-
                         </AccordionTrigger>
                         <AccordionContent className="px-4 hidden md:block">
                             {

@@ -6,12 +6,16 @@ type SavePriceParams = {
   priceData: RecentPrice;
   trackId: string;
 };
-type RecentPrice = {
-  timestamp: string; // UNIX timestamp
-  price: number; // Price of the NFT at that timestamp
-}[];
 
-export const savePrice = async ({ priceData, trackId }: SavePriceParams) => {
+type RecentPriceEntry = {
+  timestamp: string; // UNIX timestamp as a string
+  price: number;
+};
+
+type RecentPrice = RecentPriceEntry[];
+
+export const savePrice = async (priceData: RecentPrice, trackId: string) => {
+  console.log(trackId, "from save price");
   if (!trackId) {
     return { message: "Song ID is required!" };
   }
@@ -28,19 +32,26 @@ export const savePrice = async ({ priceData, trackId }: SavePriceParams) => {
 
     const now = new Date();
     const recentPrice: RecentPrice = listedNft.priceData || [];
-
-    // Check if the last entry in recentPrice is from today
-    const lastPriceEntry = recentPrice[recentPrice.length - 1];
     const today = now.toISOString().slice(0, 10);
 
-    if (lastPriceEntry && lastPriceEntry.timestamp.startsWith(today)) {
-      lastPriceEntry.price = priceData.price;
+    // Check if there's already an entry for today
+    const lastPriceEntry =
+      recentPrice.length > 0 ? recentPrice[recentPrice.length - 1] : null;
+
+    if (lastPriceEntry && lastPriceEntry.timestamp?.startsWith(today)) {
+      // Update the existing entry for today
+      lastPriceEntry.price = priceData[0].price;
+      console.log("Price already updated for the day");
     } else {
-      recentPrice.push(priceData);
+      // Add a new entry for today
+      recentPrice.push({
+        timestamp: now.toISOString(), // Store current timestamp in ISO format
+        price: priceData[0].price,
+      });
+      console.log("Added new price entry for today.");
     }
 
-    // Combine existing price data with new data to preserve historical records
-
+    // Update with new price data
     await db.listedNFT.update({
       where: { id: trackId },
       data: { priceData: recentPrice },

@@ -20,7 +20,7 @@ export const calculateDecayedPlayCount = (
   decayRate: GLfloat,
   currentTime: Number
 ) => {
-  return plays.reduce((total, play) => {
+  return plays?.reduce((total, play) => {
     const timeSincePlay = currentTime - unixTimestamp(play.timestamp);
     const decayedPlay = play.count * Math.exp(-decayRate * timeSincePlay);
     return total + decayedPlay;

@@ -7,6 +7,7 @@ import { calculateDecayedPlaylistCount } from "@/actions/helper/calculate-playli
 import { calculateDecayedUniqueListeners } from "@/actions/helper/calculate-uniquelisterner";
 import { calculateDynamicPrice } from "@/dynamic-price/main";
 import { ListedNFT } from "@/types";
+import { savePrice } from "@/actions/save-price";
 
 type PriceDataType = {
   timestamp: string; // ISO date string
@@ -64,9 +65,21 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
           return [...prevData, { timestamp: now, price: calculatedPrice }];
         }
       });
+
     };
+
+
     updatePriceData();
   }, [unikListeners, playlistListing, track.recentPlays]);
+
+  useEffect(() => {
+    const addPrice = async () => {
+      if (priceData) {
+        await savePrice(priceData, track?.id)
+      }
+    }
+    addPrice()
+  }, [priceData])
 
 
 
@@ -74,8 +87,8 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
   console.log(priceData, "price data")
   return (
     <div className="w-11/12 md:w-full p-2">
-      {priceData.length > 0 ? (
-        <LineChart priceData={priceData} />
+      {track?.priceData && track?.priceData?.length > 0 ? (
+        <LineChart priceData={track?.priceData} />
       ) : (
         <p>Loading chart data...</p>
       )}
