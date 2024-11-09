@@ -45,7 +45,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                         </div>
                     </div>
                 </div>
-                <BottomNav />
+                {/* <BottomNav /> */}
             </div>
 
         </div>

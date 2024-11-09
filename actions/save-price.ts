@@ -31,6 +31,7 @@ export const savePrice = async (priceData: RecentPrice, trackId: string) => {
     }
 
     const now = new Date();
+    //@ts-ignore
     const recentPrice: RecentPrice = listedNft.priceData || [];
     const today = now.toISOString().slice(0, 10);
 
@@ -58,7 +59,7 @@ export const savePrice = async (priceData: RecentPrice, trackId: string) => {
     });
 
     return { message: "Price updated successfully." };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating price:", error);
     return { message: "Error updating price data.", error: error.message };
   }

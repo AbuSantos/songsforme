@@ -1,6 +1,7 @@
 import { amountGenerated, countPlays, totalPlayTime } from '@/dynamic-price/helper/play-count'
 import { Playlist } from '@/types'
 import Image from 'next/image'
+import { EditRatio } from './edit-ratio'
 
 export const PlaylistInfo = ({ data }: { data: Playlist }) => {
 
@@ -10,10 +11,16 @@ export const PlaylistInfo = ({ data }: { data: Playlist }) => {
     return (
         <div className=" justify-center p-2 items-center space-x-2 space-y-2 w-full grid  grid-cols-2 gap-1">
             <div className="flex flex-col items-center justify-center p-2 space-x-2 border-[0.5px] w-full border-[#222222] rounded-md">
-                <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">current ratio</small>
+                <div className='flex w-full'>
+                    <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">current ratio</small>
+                    <span className='cursor-pointer '>
+                        <EditRatio playlistId={data?.id} mode='playlist' />
+                    </span>
+                </div>
                 <p className="text-[1rem] uppercase font-medium flex items-center space-x-1 justify-center">
                     {data?.rewardRatio}
                 </p>
+
             </div>
             <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[0.5px] border-[#222222] rounded-md">
                 <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">plays</small>
@@ -43,11 +50,6 @@ export const PlaylistInfo = ({ data }: { data: Playlist }) => {
                 <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">listeners</small>
                 <p className="text-[1rem] uppercase font-medium"> {data?.owner?.username} </p>
             </div>
-
-
-
-
-
         </div>
     )
 }
