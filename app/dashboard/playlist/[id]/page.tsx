@@ -17,10 +17,7 @@ type dataProps = {
 }
 const page = async ({ params }: { params: { id: string } }) => {
     const id = params.id
-
-    console.log(id, "from playlist")
-    // if (!id) return
-    console.log("hellofkwsnsbvkjwbdvkjbsdkjvbsdkjbvkjsdbvkjsdbvkjsb");
+    if (!id) return
 
     try {
         revalidateTag("playlist")
@@ -32,10 +29,8 @@ const page = async ({ params }: { params: { id: string } }) => {
             include: {
                 listednft: true,
                 owner: true
-
             }
         })
-        console.log(track)
 
         if (!track) {
             return (
@@ -44,8 +39,6 @@ const page = async ({ params }: { params: { id: string } }) => {
                 </div>
             );
         }
-
-
 
         return (
             <div className='text-red-50 px-3'>

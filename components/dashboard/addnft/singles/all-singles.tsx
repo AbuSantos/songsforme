@@ -10,7 +10,6 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
 
 export const AllMySingle = ({ data }: { data: any[] }) => {
-    console.log(data, "singles")
     return (
         <div>
             <header className="flex items-center justify-between">
@@ -19,7 +18,7 @@ export const AllMySingle = ({ data }: { data: any[] }) => {
                 </p>
                 <CreateSingle />
             </header>
-            <ul>
+            <ul className="h-auto overflow-y-scroll">
                 {data && data?.map((single) => (
                     <li key={single.id} className="capitalize p-2 ">
                         <div className="flex justify-between cursor-pointer">

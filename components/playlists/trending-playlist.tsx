@@ -9,17 +9,12 @@ import Link from "next/link";
 import * as React from "react"
 import { ChevronsUpDown, Plus, X } from "lucide-react"
 import { useContract } from "@thirdweb-dev/react";
-import { ListedNFT } from "@/types";
+import { ListedNFT, Playlist } from "@/types";
 
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-    album: {
-        cover: string;
-        name: string;
-        title: string;
-        artist: string;
-        id: string;
-    };
+    album: Playlist
+    className: string
 
 }
 
@@ -33,7 +28,7 @@ export function TrendingPlaylist({
 
     return (
         <div className={cn("space-y-3 hover:bg-[#2A2A2A] rounded-md py-4 px-[0.8rem]", className)} {...props}>
-            <Link className="space-y-1" href={`dashboard/playlist/${album.id}`}>
+            <Link className="space-y-1" href={`/dashboard/playlist/${album.id}`}>
                 <Image
                     src="/images/playlist.jpg"
                     width={180}

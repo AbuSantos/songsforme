@@ -1,4 +1,4 @@
-"use server";
+"use client";
 import {
     Accordion,
     AccordionContent,
@@ -9,26 +9,18 @@ import { AllMySingle } from "./singles/all-singles";
 import { useActiveAccount } from "thirdweb/react";
 import SingleMusic from "./singles/single-music";
 import { getSession } from "@/lib/helper";
-import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
+import { useRecoilValue } from "recoil";
+import { isConnected } from "@/atoms/session-atom";
+import useSWR from "swr";
+import { fetcher } from "@/lib/utils";
 
-export const MusicAccordion = async () => {
-    const address = await getSession()
-    let singles
-    if (address) {
-        singles = await db.single.findMany({
-            where: {
-                owner: address
-            },
-        });
-    }
-    console.log(singles, "address");
-    revalidateTag("single")
+export const MusicAccordion = () => {
+    const userId = useRecoilValue(isConnected)
 
-    if (!singles) {
-        console.log("no single")
-    }
+    const { data, error, isLoading } = useSWR(`/api/singles/${userId}`, fetcher)
+
     return (
         <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
@@ -40,7 +32,7 @@ export const MusicAccordion = async () => {
             <AccordionItem value="item-2">
                 <AccordionTrigger>Add Single Track</AccordionTrigger>
                 <AccordionContent>
-                    <AllMySingle data={singles} />
+                    <AllMySingle data={data} />
                 </AccordionContent>
             </AccordionItem>
         </Accordion>

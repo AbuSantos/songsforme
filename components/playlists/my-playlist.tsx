@@ -21,7 +21,7 @@ export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
             {
                 data && data?.map((item: any, index: number) => (
                     <AccordionItem key={item.id} value={String(index)} className="border-none md:border-b-[0.5px] md:border-b-[#2A2A2A]">
-                        <AccordionTrigger className="md:py-4">
+                        <AccordionTrigger className="md:py-1">
                             <Link href={`dashboard/playlist/${item.id}`} className="w-full">
                                 <div className="flex justify-between text-[#7B7B7B] items-center md:bg-[#FFFFFF22] md:hover:bg-[#353232] hover:text-[#EEEEEE]  px-2 md:py-4 w-full text-start rounded-md ">
                                     <div className="flex spacee-x-3 items-center justify-center">

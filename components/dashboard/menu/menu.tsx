@@ -42,60 +42,20 @@ export function Menu() {
         <div className=" justify-between p-3 hidden md:flex">
             <Menubar className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
                 <MenubarMenu>
-                    <MenubarTrigger className="font-bold">Music</MenubarTrigger>
+                    <MenubarTrigger className="font-bold text-xl">Music</MenubarTrigger>
                     <MenubarContent>
                         <MenubarItem>About Songs for me</MenubarItem>
                         <MenubarSeparator />
                         <MenubarShortcut />
-                        <MenubarItem>
-                            Quit Music <MenubarShortcut>⌘Q</MenubarShortcut>
-                        </MenubarItem>
-                    </MenubarContent>
-                </MenubarMenu>
-                <MenubarMenu>
-                    <MenubarTrigger className="relative">File</MenubarTrigger>
-                    <MenubarContent>
-                        <MenubarSub>
-                            <MenubarSubTrigger>New</MenubarSubTrigger>
-                            <MenubarSubContent className="w-[230px]">
-                                <MenubarItem>
-                                    Playlist <MenubarShortcut>⌘N</MenubarShortcut>
-                                </MenubarItem>
-                                <MenubarItem disabled>
-                                    Playlist from Selection <MenubarShortcut>⇧⌘N</MenubarShortcut>
-                                </MenubarItem>
-                                <MenubarItem>
-                                    Smart Playlist... <MenubarShortcut>⌥⌘N</MenubarShortcut>
-                                </MenubarItem>
-                                <MenubarItem>Playlist Folder</MenubarItem>
-                                <MenubarItem disabled>Genius Playlist</MenubarItem>
-                            </MenubarSubContent>
-                        </MenubarSub>
-                    </MenubarContent>
-                </MenubarMenu>
-                <MenubarMenu>
-                    <MenubarTrigger>View</MenubarTrigger>
-                    <MenubarContent>
-                        <MenubarCheckboxItem>Show Playing Next</MenubarCheckboxItem>
-                        <MenubarCheckboxItem checked>Show Lyrics</MenubarCheckboxItem>
-                        <MenubarSeparator />
-                        <MenubarItem inset disabled>
-                            Show Status Bar
-                        </MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem inset>Hide Sidebar</MenubarItem>
-                        <MenubarItem disabled inset>
-                            Enter Full Screen
-                        </MenubarItem>
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
             <div className="ml-auto flex mr-4 justify-end space-x-2">
 
-                <Button onClick={handleModal} size="nav">
+                {/* <Button onClick={handleModal} size="nav">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     Mint Music
-                </Button>
+                </Button> */}
                 <Button onClick={handleListModal} size="nav" className="lg:hidden">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     List MusicNFT
@@ -106,7 +66,7 @@ export function Menu() {
 
             </div>
             <div>
-                <WithdrawRewards  />
+                <WithdrawRewards />
             </div>
             {
                 isOpen &&

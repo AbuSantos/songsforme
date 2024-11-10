@@ -30,6 +30,8 @@ import { getSession } from "@/lib/helper"
 import { TrendingPlaylist } from "@/components/playlists/trending-playlist"
 import { FilterPlace } from "@/components/playlists/filter-playlist"
 import { Search } from "@/components/dashboard/search/search-songs"
+import { MarketSkeleton } from "@/components/marketplace/marketplace-skeleton"
+import { Suspense } from "react"
 
 export const metadata: Metadata = {
     title: "songs for me",
@@ -146,7 +148,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                                 <SheetTitle>List Music</SheetTitle>
                                             </SheetHeader>
                                             <MusicAccordion />
-
                                             <div className="mt-8">
                                                 <div>
                                                     <h1 className="text-2xl font-semibold">Check our FAQs</h1>
@@ -157,7 +158,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         </SheetContent>
                                     </Sheet>
                                     <div className="md:hidden">
-                                        <MobileNav userId={userId} />
+                                        <MobileNav />
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +210,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                                     <AlbumArtwork
                                                         key={data.id}
                                                         album={data}
-                                                        index={index}
                                                         className="w-[180px]"
                                                     />
                                                 ))}
@@ -239,9 +239,11 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 <Separator className="my-4 bg-[#7B7B7B]" />
                                 <div className="relative">
                                     <ScrollArea>
-                                        <div className="flex flex-wrap space-x-4 pb-4">
-                                            < MarketPlace />
-                                        </div>
+                                        <Suspense fallback={<MarketSkeleton />}>
+                                            <div className="flex flex-wrap space-x-4 pb-4">
+                                                < MarketPlace />
+                                            </div>
+                                        </Suspense>
                                         <ScrollBar orientation="horizontal" />
                                     </ScrollArea>
                                 </div>
@@ -271,7 +273,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
                                 </div>
                                 <Separator className="my-4 " />
-                                <AllPlaylist data={playlists} />
+                                <AllPlaylist />
                             </TabsContent>
                         </Tabs>
                     </div>

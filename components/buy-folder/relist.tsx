@@ -21,10 +21,12 @@ import Image from "next/image";
 import { relistSong } from "@/actions/relist-song";
 type listingProps = {
     nft: any
+    seller: string
 
 }
 
 export const RelistNft = ({ nft }: listingProps) => {
+    console.log(nft, "from relisting")
 
     const [isPending, startTransition] = useTransition();
     const [price, setPrice] = useState<string>(0);
@@ -33,40 +35,35 @@ export const RelistNft = ({ nft }: listingProps) => {
     const [errorMessage, setErrorMessage] = useState("");
 
 
-    const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {
-
-        startTransition(() => {
+    const saveListing = async (
+        seller: string,
+        tokenId: number,
+        price: string,
+        nftAddress: string
+    ) => {
+        console.log(seller, tokenId, price, "from selling")
+        startTransition(async () => {
             try {
-                relistSong(seller, tokenId.toString(), price, nftAddress, nft?.id, singleId).then((data) => {
+                const response = await relistSong(seller, tokenId.toString(), price, nftAddress, nft?.id);
+                if (response?.message) {
+                    setIsSuccess(response.message);
                     toast.success("NFT listed successfully!");
-                    console.log(data);
-                });
+                } else {
+                    setErrorMessage("Failed to list NFT.");
+                }
             } catch (error) {
-                setErrorMessage("Failed to save transaction. Network.");
-                return null;
+                setErrorMessage("Failed to save transaction. Network error.");
             }
         });
     };
+
+
     return (
         <Popover>
             <PopoverTrigger asChild>
-
-                <div>
-                    <Image
-                        src="https://unsplash.com/photos/a-woman-in-a-fur-coat-singing-into-a-microphone-TlvLy_OmqHA"
-                        width={100}
-                        height={100}
-                        alt="Music"
-                        className="block dark:hidden rounded-md cursor-pointer"
-                    // onClick={() => setOpenTrack(!openTrack)}
-                    />
-                    <p className="text-sm capitalize text-slate-500">
-                        {nft.price}
-                    </p>
-                    <p className="text-[0.7rem] capitalize text-slate-500">
-                        {nft.status}
-                    </p>
-                </div>
+                <Button className="bg-slate-100 text-black ">
+                    relist
+                </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
                 <div className="flex flex-col space-y-3">
@@ -112,7 +109,7 @@ export const RelistNft = ({ nft }: listingProps) => {
                         Confirm Listing
                     </TransactionButton> */}
                     <Button
-                        onClick={() => saveListing(nft.buyer, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress)}
+                        onClick={() => saveListing(nft?.buyer, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress, nft?.id)}
                     >
                         save listing
                     </Button>

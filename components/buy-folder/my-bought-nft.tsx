@@ -1,42 +1,40 @@
-import { db } from '@/lib/db';
-import { getSession } from '@/lib/helper';
+"use client"
 import React from 'react'
 import SingleNft from './bought-single';
 import { RelistNft } from './relist';
+import { useRecoilValue } from 'recoil';
+import { isConnected } from '@/atoms/session-atom';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/utils';
+import { BoughtTable } from './bought-table';
+import { MarketSkeleton } from '../marketplace/marketplace-skeleton';
+import { BuyNFT } from '@/types';
 
-const BoughtNFT = async () => {
-    const address = await getSession()
+const BoughtNFT = () => {
+    const userId = useRecoilValue(isConnected);
 
-    let nfts = []
-    if (address) {
-        nfts = await db.buyNFT.findMany({
-            where: {
-                buyer: address,  
-                relisted: false
-            },
-            include: {
-                listedNft: {
-                    include: {
-                        Single: true,
 
-                    }
-                },
-            },
-        });
-    }
-    console.log(nfts, "my bought nft")
+    const apiUrl = `/api/buynft/${userId}`;
 
-    if (!nfts) {
-        return <div>You own no nft</div>
-    }
+    const { data: nfts, error, isLoading } = useSWR(apiUrl, fetcher);
+
+
     return (
         <div>
             <h2 className='text-center p-2'>My NFTs</h2>
-            <div className="flex flex-wrap space-x-4 pb-4">
+            <div className="flex flex-wrap space-x-4 pb-4 w-full">
                 {
-                    nfts && nfts.map((nft, index) => (
-                        < RelistNft key={index} nft={nft} />
-                    ))
+                    isLoading ? <MarketSkeleton /> :
+                        nfts &&
+                        nfts?.map((nft:BuyNFT, index) => (
+                            <div className='w-full' key={index}>
+                                < BoughtTable
+                                    data={nft}
+                                />
+                            </div>
+                        ))
+
+
                 }
             </div>
 

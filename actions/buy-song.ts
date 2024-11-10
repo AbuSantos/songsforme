@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
+import { mutate } from "swr";
 
 export const buyNFT = async (
   buyer: string,
@@ -9,6 +10,7 @@ export const buyNFT = async (
   listedNftId: string,
   transactionHash?: string
 ) => {
+  console.log(buyer, "from bouhght");
   // Ensure that required fields are provided
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };
@@ -57,6 +59,7 @@ export const buyNFT = async (
 
     // Revalidate cached data
     revalidateTag("bought");
+    mutate("bought");
     revalidateTag("nft");
 
     return { message: "NFT bought successfully." };

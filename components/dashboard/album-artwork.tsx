@@ -9,17 +9,12 @@ import Link from "next/link";
 import * as React from "react"
 import { ChevronsUpDown, Plus, X } from "lucide-react"
 import { useContract } from "@thirdweb-dev/react";
+import { Single } from "@/types";
 
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-    album: {
-        cover: string;
-        song_name: string;
-        title: string;
-        url: string;
-        artist_name: string;
-        id: string;
-    };
+    album: Single
+    className: string
 }
 
 export function AlbumArtwork({

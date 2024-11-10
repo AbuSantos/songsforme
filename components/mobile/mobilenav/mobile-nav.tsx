@@ -51,18 +51,18 @@ export const MobileNav = () => {
 
                 <div className="flex flex-col justify-between h-full">
                     <div className="flex flex-col mt-8 space-y-4">
-                        <Button onClick={handleModal} size="nav" className="p-3">
+                        {/* <Button onClick={handleModal} size="nav" className="p-3">
                             <PlusCircledIcon className="mr-2 h-4 w-4" />
                             Mint Music
-                        </Button>
+                        </Button> */}
                         <Button onClick={handleListModal} size="nav" className="p-3">
                             <PlusCircledIcon className="mr-2 h-4 w-4" />
                             List MusicNFT
                         </Button>
-                        <AddToWhitelist />
+                        {/* <AddToWhitelist /> */}
                     </div>
 
-                    <div className="mt-4 mb-3">
+                    <div className="mt-4 mb-3 w-full">
                         <WithdrawRewards />
                     </div>
                     <div >

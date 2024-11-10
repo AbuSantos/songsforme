@@ -14,9 +14,6 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 export const Aside = ({ className }: SidebarProps) => {
   const userId = useRecoilValue(isConnected);
 
-  console.log(userId, "from aside login")
-  // if (!userId) return null;
-
   const { data: playlist, error, isLoading } = useSWR(
     userId ? `/api/playlists/${userId}` : null,
     fetcher
