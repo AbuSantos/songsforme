@@ -14,20 +14,16 @@ import { useContract } from "@thirdweb-dev/react";
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
     album: {
         cover: string;
-        name: string;
+        song_name: string;
         title: string;
         url: string;
-        artist: string;
+        artist_name: string;
         id: string;
     };
-    index: number;
-    width?: number;
-    height?: number;
 }
 
 export function AlbumArtwork({
     album,
-    index,
     className,
     ...props
 }: AlbumArtworkProps) {

@@ -15,8 +15,6 @@ export const GET = async (req: NextRequest) => {
 
   const searchQuery = url.get("filter");
 
-  console.log(searchQuery, "search from market");
-
   // Determine ordering based on query parameters
   const orderBy =
     searchQuery === "ratio"
@@ -33,6 +31,18 @@ export const GET = async (req: NextRequest) => {
           contractAddress: { contains: searchQuery, mode: "insensitive" },
         }),
       },
+      select: {
+        id: true,
+        tokenId: true,
+        seller: true,
+        price: true,
+        contractAddress: true,
+        uri: true,
+        accumulatedTime: true,
+        rewardRatio: true,
+        sold: true,
+      },
+
       ...(orderBy ? { orderBy } : {}),
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (page - 1),

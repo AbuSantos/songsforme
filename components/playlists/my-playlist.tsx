@@ -15,6 +15,7 @@ type PlaylistTypes = {
 }
 
 export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
+
     return (
         <Accordion type="single" collapsible className="w-full">
             {

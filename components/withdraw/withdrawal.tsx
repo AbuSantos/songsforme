@@ -21,7 +21,7 @@ export const WithdrawRewards = () => {
         const fetchAccumulatedTime = async () => {
             setIsLoading(true);
             try {
-                const time = await getUserAccumulatedTime(userId);
+                const time = await getUserAccumulatedTime(userId) as number;
                 setTotalTime(time);
             } catch (error) {
                 console.error("Error fetching accumulated time:", error);
@@ -43,6 +43,7 @@ export const WithdrawRewards = () => {
                         return prepareContractCall({
                             contract,
                             method: "distributeRewards",
+                            // @ts-ignore
                             params: [userId, totalTime],
                         });
                     } catch (error) {
@@ -70,7 +71,6 @@ export const WithdrawRewards = () => {
                     toast.error(errorMessage);
                     console.error("Transaction error:", error);
                 }}
-                isLoading={isLoading}
             >
                 Withdraw Earnings
             </TransactionButton>

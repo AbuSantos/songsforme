@@ -9,7 +9,6 @@ export const buyNFT = async (
   listedNftId: string,
   transactionHash?: string
 ) => {
-  console.log(buyer, price, listedNftId);
   // Ensure that required fields are provided
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };

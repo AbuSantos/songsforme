@@ -17,7 +17,10 @@ type dataProps = {
 }
 const page = async ({ params }: { params: { id: string } }) => {
     const id = params.id
-    if (!id) return
+
+    console.log(id, "from playlist")
+    // if (!id) return
+    console.log("hellofkwsnsbvkjwbdvkjbsdkjvbsdkjbvkjsdbvkjsdbvkjsb");
 
     try {
         revalidateTag("playlist")
@@ -41,6 +44,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 </div>
             );
         }
+
 
 
         return (

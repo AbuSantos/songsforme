@@ -18,12 +18,14 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { MobilePlaylist } from "../m-playlist/mobile-playlist"
+import { useRecoilValue } from "recoil"
+import { isConnected } from "@/atoms/session-atom"
 
-export const MobileNav = ({ userId }: { userId: string | unknown }) => {
+export const MobileNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [listModalOpen, setListModalOpen] = useState<boolean>(false)
-    const [userIds, setUserId] = useState<string | null>(null);
+    const userId = useRecoilValue(isConnected);
 
     const handleModal = () => {
         setIsOpen(!isOpen)
@@ -34,19 +36,7 @@ export const MobileNav = ({ userId }: { userId: string | unknown }) => {
     const handleListModal = () => {
         setListModalOpen(!listModalOpen)
     }
-    useEffect(() => {
-        // Fetch session on initial load
-        const fetchSession = async () => {
-            const response = await fetch("/api/session");
-            if (response.ok) {
-                const data = await response.json();
-                setUserId(data.userId);
-            } else {
-                console.log("Session not found or could not be decrypted.");
-            }
-        };
-        fetchSession();
-    }, []);
+
 
     return (
         <Sheet >
@@ -73,7 +63,7 @@ export const MobileNav = ({ userId }: { userId: string | unknown }) => {
                     </div>
 
                     <div className="mt-4 mb-3">
-                        <WithdrawRewards userId={userId} />
+                        <WithdrawRewards />
                     </div>
                     <div >
                         <MobilePlaylist userId={userId} />

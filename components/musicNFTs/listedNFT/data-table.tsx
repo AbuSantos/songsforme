@@ -28,7 +28,7 @@ export const Tracktable = ({ data }: TrackTableType) => {
 
             {data && data.map((track, index: number) => (
                 <div key={index} className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
-                    <Link href={`dashboard/trackinfo/${track.id}`} className="flex w-8/12 items-center ">
+                    <Link href={`/dashboard/trackinfo/${track.id}`} className="flex w-8/12 items-center ">
                         <p className="w-10 ">
                             {track?.tokenId}
                         </p>
