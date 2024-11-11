@@ -10,7 +10,6 @@ import { listedNFT } from "./listNFT";
  * @param {string} price - The price at which the NFT is being relisted.
  * @param {string} nftAddress - The contract address of the NFT.
  * @param {string} boughtNFTId - The ID of the NFT in the `buyNFT` table.
- * @param {string} [singleId] - Optional single ID if required for processing.
  * @returns {Promise<{ message: string }>} Response message indicating the result of the relisting.
  */
 export const relistSong = async (
@@ -19,7 +18,7 @@ export const relistSong = async (
   price: string,
   nftAddress: string,
   boughtNFTId: string
-) => {
+): Promise<{ message: string }> => {
   console.log(
     `Attempting to relist NFT with tokenId: ${tokenId} by seller: ${seller}`
   );
