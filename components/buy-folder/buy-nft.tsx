@@ -21,15 +21,16 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId }: NFTPr
     const transactionHash = "0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0"
 
     const handleBuyNft = () => {
-        startTransition(() => {
+        startTransition(async () => {
             try {
-                buyNFT(buyer, price, listedNftId, transactionHash).then((data) => {
-                    toast.success("NFT purchased successfully!");
-                })
-            } catch (error) {
-                console.log(error)
-                toast.error("Something went wrong", error)
-                return null;
+                const res = await buyNFT(buyer, price, listedNftId, transactionHash)
+                if (res.message) {
+                    toast.success(res.message)
+                } else {
+                    toast.error("Purchase failed, try again!")
+                }
+            } catch (error: any) {
+                toast.error("Something went wrong", error.message)
             }
         })
     }

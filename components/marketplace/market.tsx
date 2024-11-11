@@ -35,9 +35,8 @@ const MarketPlace = async () => {
     }
 
     return (
-
         <div className="w-full">
-
+            {/* @ts-ignore */}
             <Tracktable data={listedNFTs} />
         </div>
     );

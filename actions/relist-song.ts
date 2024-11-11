@@ -45,6 +45,7 @@ export const relistSong = async (
 
     // Try to list the NFT for sale
     try {
+      //@ts-ignore
       await listedNFT(seller, tokenId, parsedPrice, nftAddress);
       console.log(`NFT relisted successfully with price: ${parsedPrice}`);
     } catch (listError) {

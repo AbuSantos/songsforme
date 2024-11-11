@@ -6,7 +6,7 @@ import { mutate } from "swr";
 
 export const buyNFT = async (
   buyer: string,
-  price: string,
+  price: number,
   listedNftId: string,
   transactionHash?: string
 ) => {
@@ -18,10 +18,10 @@ export const buyNFT = async (
 
   try {
     // Parse price to ensure it's a valid number
-    const parsedPrice = parseFloat(price);
-    if (isNaN(parsedPrice)) {
-      return { message: "Invalid price format." };
-    }
+    // const parsedPrice = parseFloat(price);
+    // if (isNaN(parsedPrice)) {
+    //   return { message: "Invalid price format." };
+    // }
 
     // Check if the NFT exists and if it's already sold
     const listedNFT = await db.listedNFT.findUnique({
@@ -48,7 +48,7 @@ export const buyNFT = async (
       const listed = await prisma.buyNFT.create({
         data: {
           buyer,
-          price: parsedPrice,
+          price: price,
           listedNftId,
           purchaseDate: new Date(),
           ...(transactionHash && { transactionHash }),
