@@ -1,7 +1,7 @@
 import { Network, Alchemy } from "alchemy-sdk";
 
 const settings = {
-  apiKey: "Bgl1yhzD-eN0JQKZcp1lQmSzMassO6ZK", // Replace with your Alchemy API Key.
+  // Replace with your Alchemy API Key.
   network: Network.ETH_SEPOLIA, // Replace with the network your NFT is on.
 };
 
