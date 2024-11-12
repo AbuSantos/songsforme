@@ -117,7 +117,7 @@ model Playlist {
 
 model BuyNFT {
   id              String          @id @default(cuid())
-  buyer           String          @unique
+  buyer           String          
   listedNftId     String
   listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
   price           Float

@@ -25,26 +25,23 @@ type listingProps = {
 
 }
 
-export const RelistNft = ({ nft }: listingProps) => {
+export const RelistNft = ({ nft, seller }: listingProps) => {
     console.log(nft, "from relisting")
 
     const [isPending, startTransition] = useTransition();
-    const [price, setPrice] = useState<string>(0);
+    const [price, setPrice] = useState<string>("");
     const [isError, setIsError] = useState("");
     const [isSuccess, setIsSuccess] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    console.log(nft?.listedNft?.contractAddress, nft?.listedNft?.tokenId, "from selling")
 
     const saveListing = async (
-        seller: string,
-        tokenId: number,
         price: string,
-        nftAddress: string
     ) => {
-        console.log(seller, tokenId, price, "from selling")
         startTransition(async () => {
             try {
-                const response = await relistSong(seller, tokenId.toString(), price, nftAddress, nft?.id);
+                const response = await relistSong(seller, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress, nft?.id);
                 if (response?.message) {
                     setIsSuccess(response.message);
                     toast.success("NFT listed successfully!");
@@ -75,14 +72,14 @@ export const RelistNft = ({ nft }: listingProps) => {
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
 
-                    {/* <TransactionButton
+                    <TransactionButton
                         transaction={() => {
                             const priceInWei = ethers.utils.parseEther(price);
-
                             const tx = prepareContractCall({
                                 contract,
+                                //@ts-ignore
                                 method: "function listBull(address _nftAddress, uint256 _tokenId, uint256 _price) payable",
-                                params: [address, tokenId, priceInWei],
+                                params: [nft?.listedNft?.contractAddress, nft?.listedNft?.tokenId, priceInWei],
                                 // value: toWei(price), 
                                 value: toWei("0.0005"),
                             });
@@ -94,31 +91,32 @@ export const RelistNft = ({ nft }: listingProps) => {
                             try {
                                 if (tx.status === "success") {
                                     saveListing(
-                                        tx.from,
-                                        tokenId,
                                         price,
-                                        address,
                                     )
                                 }
                             } catch (error) {
                                 console.log(error, "error saving")
                             }
                         }}
-                        onError={(error) => setErrorMessage(error.message)}
+                        onError={(error) =>
+
+                            console.log(error)
+
+                        }
                     >
                         Confirm Listing
-                    </TransactionButton> */}
-                    <Button
+                    </TransactionButton>
+                    {/* <Button
                         onClick={() => saveListing(nft?.buyer, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress, nft?.id)}
                     >
                         save listing
-                    </Button>
+                    </Button> */}
                     < FormError message={isError} />
                     < FormSuccess message={isSuccess} />
                 </div>
             </PopoverContent>
 
-        </Popover>
+        </Popover >
 
     );
 };

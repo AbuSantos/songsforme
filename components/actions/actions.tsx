@@ -15,7 +15,7 @@ export const Actions = ({ nftAddress, tokenId, price, nftId, userId, listedNftId
   return (
     <div className=" justify-center items-center space-x-2 flex md:flex w-4/12">
       < MakeBid nftAddress={nftAddress} tokenId={tokenId} />
-      {/* <BuyNFT nftAddress={nftAddress} tokenId={tokenId} price={price} listedNftId={listedNftId} /> */}
+      <BuyNFT buyer={userId} nftAddress={nftAddress} tokenId={tokenId} price={price} listedNftId={listedNftId} />
       <SelectPlaylist nftId={nftId} userId={userId} />
     </div>
   )

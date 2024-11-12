@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 // Start listening: Store start time and NFT ID in user's record
 export const startListening = async (
-  userId: string,
+  userId: string | undefined,
   nftId: string,
   playlistId?: string
 ) => {

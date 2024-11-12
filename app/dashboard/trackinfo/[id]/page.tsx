@@ -31,7 +31,6 @@ const page = async ({ params }: { params: { id: string } }) => {
 
         return (
             <div className="flex items-center justify-center flex-col space-y-2">
-
                 <TrackChart track={track} />
                 <Separator className="my-4 w-full  " />
                 <TrackInfo data={track} />

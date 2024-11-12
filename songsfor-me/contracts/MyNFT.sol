@@ -29,7 +29,7 @@ contract BullchordNFT is ERC721A, Ownable {
     /**
      * @dev Mints 10 NFTs to the owner if minting is enabled and the max supply is not reached.
      */
-    function mint() public onlyOwner {
+    function mint() external {
         require(mintEnabled, "Minting is Disabled");
         require(
             totalSupply() + 10 <= i_MAX_SUPPLY,

@@ -11,13 +11,13 @@ import { MarketSkeleton } from '../marketplace/marketplace-skeleton';
 import { BuyNFT } from '@/types';
 
 const BoughtNFT = () => {
-    const userId = useRecoilValue(isConnected);
-
+    //DELETE THE CASE CONVERSION
+    const userId = useRecoilValue(isConnected).toLocaleLowerCase();
 
     const apiUrl = `/api/buynft/${userId}`;
-
     const { data: nfts, error, isLoading } = useSWR(apiUrl, fetcher);
 
+    console.log(nfts, "from my bought nft")
 
     return (
         <div>
@@ -26,7 +26,7 @@ const BoughtNFT = () => {
                 {
                     isLoading ? <MarketSkeleton /> :
                         nfts &&
-                        nfts?.map((nft:BuyNFT, index) => (
+                        nfts?.map((nft: BuyNFT, index: number) => (
                             <div className='w-full' key={index}>
                                 < BoughtTable
                                     data={nft}

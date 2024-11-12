@@ -19,24 +19,22 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
   const [price, setPrice] = useState<string>("");
-  const [address, setAddress] = useState("0x1e2E9727b494AE01Cf8a99292869462AAe3CeCd0");
-  // const [address, setAddress] = useState("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
+  const [address, setAddress] = useState("");
   const [tokenId, setTokenId] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<string>("");
-
+  // 0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9
   const seller = "0xC7fe86c79f9598C0a5A3874D075A1607686944D3"
 
-  const saveListing = async (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {
-
-    startTransition(() => {
+  const saveListing = (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {
+    startTransition(async () => {
       try {
-        listedNFT(seller, tokenId.toString(), price, nftAddress, singleId).then((data) => {
+        const response = await listedNFT(seller, tokenId.toString(), price, nftAddress, singleId)
+        if (response.message) {
           toast.success("NFT listed successfully!");
-          console.log(data);
-        });
-      } catch (error) {
+        }
+      } catch (error: any) {
         setErrorMessage("Failed to save transaction. Network.");
-        return null;
+        toast.error("Something went wrong", error.message)
       }
     });
   };
@@ -74,13 +72,13 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
 
         />
 
-        {/* <TransactionButton
+        <TransactionButton
 
           transaction={() => {
             const priceInWei = ethers.utils.parseEther(price);
-
             const tx = prepareContractCall({
               contract,
+              //@ts-ignore
               method: "function listBull(address _nftAddress, uint256 _tokenId, uint256 _price) payable",
               params: [address, tokenId, priceInWei],
               // value: toWei(price), 
@@ -105,16 +103,19 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
               console.log(error, "error saving")
             }
           }}
-          onError={(error) => setErrorMessage(error.message)}
+          onError={(error: any) =>
+            // toast.error("Something went wrong", error.message)
+            console.log(error)
+          }
         >
           Confirm Listing
-        </TransactionButton> */}
+        </TransactionButton>
 
-        <Button
+        {/* <Button
           onClick={() => saveListing(seller, tokenId, price, address, singleId)}
         >
           save listing
-        </Button>
+        </Button> */}
       </div>
 
       < FormError message={errorMessage} />

@@ -15,6 +15,8 @@ type TrackTableType = {
 
 export const Tracktable = ({ data }: TrackTableType) => {
     const userId = useRecoilValue(isConnected)
+    console.log(data, "from my track table")
+
     try {
         return (
             <div>
@@ -51,7 +53,7 @@ export const Tracktable = ({ data }: TrackTableType) => {
                             <BuyNFT buyer={userId} nftAddress={track?.contractAddress} tokenId={track?.tokenId} price={track?.price} listedNftId={track?.id} />
                         </div>
                         <div className="items-center space-x-2 flex ml-2">
-                            <Playlisten userId={userId} nftId={track.id} />
+                            <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
                         </div>
                     </div>
 

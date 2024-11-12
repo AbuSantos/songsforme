@@ -18,7 +18,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
 
     const userStartTime = Date.now(); // Start user query timer
 
-    //find user
+    //@ts-ignore
     const user: User = await db.user.findUnique({ where: { userId } });
     console.log(`[DB Query] User fetch time: ${Date.now() - userStartTime}ms`);
 
@@ -44,6 +44,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
     } else {
       // Step 3: Fetch the NFT details (including rewardRatio)
       const nftStartTime = Date.now(); // Start NFT query timer
+      //@ts-ignore
       const nft: ListedNFT = await db.listedNFT.findUnique({
         where: { id: user.currentNftId },
         select: {
@@ -75,7 +76,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
           }),
         ]);
       } else {
-        await trackListeningTime(user.id, user.currentNftId, listeningDuration);
+        await trackListeningTime(user.id, user.currentNftId);
         await calculateRecentPlays(user, nft);
         await db.$transaction([
           db.user.update({

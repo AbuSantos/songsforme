@@ -22,7 +22,7 @@ export const GET = async (
   }
 
   try {
-    // Fetch all playlists for the given user ID, including listed NFTs
+    // Fetch all nfts for the given user ID, including listed NFTs
     const nfts = await db.buyNFT.findMany({
       where: {
         buyer: id,
@@ -36,6 +36,8 @@ export const GET = async (
         },
       },
     });
+
+    console.log(nfts, "from my bought");
 
     // Return the fetched playlists as a JSON response
     return new Response(JSON.stringify(nfts), {

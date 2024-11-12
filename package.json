@@ -32,6 +32,7 @@
     "@thirdweb-dev/react": "^4.9.4",
     "@thirdweb-dev/sdk": "^4.0.99",
     "@types/js-cookie": "^3.0.6",
+    "alchemy-sdk": "^3.4.7",
     "chart.js": "^4.4.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
