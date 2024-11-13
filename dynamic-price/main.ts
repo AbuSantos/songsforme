@@ -1,10 +1,17 @@
 "use server";
 import { calculateDecayedPlayCount } from "./helper/decayed-count";
 
+//@ts-ignore
 export const calculateDynamicPrice = async (
+  //@ts-ignore
+
   basePrice,
+  //@ts-ignore
+
   recentPlays,
   // recentPlaylists,
+  //@ts-ignore
+
   recentListeners
 ) => {
   console.log(basePrice, recentPlays, recentListeners, "from dynamic price");

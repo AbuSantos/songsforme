@@ -21,7 +21,9 @@ export const calculateDecayedPlayCount = (
   currentTime: Number
 ) => {
   return plays?.reduce((total, play) => {
+    //@ts-ignore
     const timeSincePlay = currentTime - unixTimestamp(play.timestamp);
+    //@ts-ignore
     const decayedPlay = play.count * Math.exp(-decayRate * timeSincePlay);
     return total + decayedPlay;
   }, 0);

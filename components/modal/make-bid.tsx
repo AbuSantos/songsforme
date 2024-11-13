@@ -60,6 +60,7 @@ export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
             const tx = prepareContractCall({
                 contract,
                 method: "bid",
+                //@ts-ignore
                 params: [tokenId, nftAddress],
                 value: toWei(price), // Convert price to Wei
             });
@@ -89,6 +90,7 @@ export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
                     />
 
                     <TransactionButton
+                        //@ts-ignore
                         transaction={handleBid}
                         onTransactionConfirmed={(receipt) => {
                             console.log("Transaction successful", receipt);

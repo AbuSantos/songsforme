@@ -49,6 +49,7 @@ export const AddToWhitelist = () => {
                         transaction={() => {
                             const tx = prepareContractCall({
                                 contract,
+                                //@ts-ignore
                                 method: "function addToWhiteList(address _user)",
                                 params: [address],
                             });

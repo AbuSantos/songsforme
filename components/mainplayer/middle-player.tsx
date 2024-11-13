@@ -38,6 +38,7 @@ const MiddlePlayer: React.FC = () => {
 
     const playNextTrack = () => {
         if (songs.length > 0) {
+            //@ts-ignore
             const nextTrackId = (currentTrackId + 1) % songs.length;
             setTrack(nextTrackId);
             setIsPlaying(true)
@@ -46,6 +47,8 @@ const MiddlePlayer: React.FC = () => {
 
     const playPreviousTrack = () => {
         if (songs.length > 0) {
+            //@ts-ignore
+
             const prevTrackId = (currentTrackId - 1 + songs.length) % songs.length;
             setTrack(prevTrackId);
             setIsPlaying(true)
@@ -55,6 +58,7 @@ const MiddlePlayer: React.FC = () => {
 
     return (
         <div className="flex justify-center items-center space-x-6 text-xl cursor-pointer">
+            {/* @ts-ignore */}
             <audio ref={audioRef} src={songs[currentTrackId]?.url || ""} />
             <FaStepBackward onClick={playPreviousTrack} />
             <Button variant="secondary" size="icon" className="rounded-full" onClick={togglePlayPause}>

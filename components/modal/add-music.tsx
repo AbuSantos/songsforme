@@ -8,9 +8,10 @@ import { Input } from "@/components/ui/input"
 import { useTransition } from "react"
 import { MusicSchema } from "@/schemas"
 
+//@ts-ignore
 export const AddMusicModal = ({ setIsOpen }) => {
     const [isPending, startTransition] = useTransition()
-    
+
     const form = useForm<z.infer<typeof MusicSchema>>({
         resolver: zodResolver(MusicSchema),
         defaultValues: {
