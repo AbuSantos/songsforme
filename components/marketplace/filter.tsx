@@ -5,9 +5,9 @@ import { FilterByName } from "./filter/filter-by-name"
 
 export const Filter = () => {
     return (
-        < div>   
+        < div>
+            {/* @ts-ignore */}
             <FilterByName />
-            {/*   */}
         </div>
 
     )
