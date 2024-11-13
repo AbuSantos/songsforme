@@ -5,21 +5,35 @@ import { trackListeningTime } from "./helper/tracklistening-time";
 import { calculateRecentPlays } from "./helper/calculate-playcount";
 import { ListedNFT, User } from "@/types";
 
+type NFTTypes = {
+  id: string;
+  rewardRatio: number;
+  recentPlays: JSON;
+};
+
 // Update the accumulated time for the specific NFT in the NFTListeningTime table with locking
 export const playListTime = async (user: User, listeningDuration: number) => {
   // Validate inputs
   if (!user || listeningDuration <= 0) {
     throw new Error("Invalid input parameters.");
   }
-  //@ts-ignore
-  const nft: ListedNFT = await db.listedNFT.findUnique({
+
+  const nft = await db.listedNFT.findUnique({
     where: { id: user.currentNftId as string },
+    select: {
+      id: true,
+      rewardRatio: true,
+      recentPlays: true,
+    },
   });
   if (!nft) throw new Error(`NFT with id ${user.currentNftId} not found.`);
 
   const playlist = db.playlist.findUnique({
     where: {
       id: user.playlistId as string,
+    },
+    select: {
+      rewardRatio: true,
     },
   });
 
@@ -46,6 +60,7 @@ export const playListTime = async (user: User, listeningDuration: number) => {
       });
     } else {
       await trackListeningTime(user.id, user.currentNftId as string);
+      //@ts-ignore
       await calculateRecentPlays(user, nft);
       await db.$transaction([
         db.user.update({

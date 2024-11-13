@@ -18,8 +18,14 @@ export const endListening = async (userId?: string, playlistId?: string) => {
 
     const userStartTime = Date.now(); // Start user query timer
 
-    //@ts-ignore
-    const user: User = await db.user.findUnique({ where: { userId } });
+    const user = await db.user.findUnique({
+      where: { userId },
+      select: {
+        id: true,
+        currentNftId: true,
+        listeningSessionStartTime: true,
+      },
+    });
     console.log(`[DB Query] User fetch time: ${Date.now() - userStartTime}ms`);
 
     if (!user) throw new Error("User not found.");
@@ -40,12 +46,12 @@ export const endListening = async (userId?: string, playlistId?: string) => {
     }
 
     if (playlistId) {
+      //@ts-ignore
       await playListTime(user, listeningDuration);
     } else {
       // Step 3: Fetch the NFT details (including rewardRatio)
       const nftStartTime = Date.now(); // Start NFT query timer
-      //@ts-ignore
-      const nft: ListedNFT = await db.listedNFT.findUnique({
+      const nft = await db.listedNFT.findUnique({
         where: { id: user.currentNftId },
         select: {
           rewardRatio: true,
@@ -77,6 +83,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
         ]);
       } else {
         await trackListeningTime(user.id, user.currentNftId);
+        //@ts-ignore
         await calculateRecentPlays(user, nft);
         await db.$transaction([
           db.user.update({

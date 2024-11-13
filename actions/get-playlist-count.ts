@@ -10,12 +10,13 @@ import { db } from "@/lib/db";
  */
 export const getPlaylistsWithNFT = async (nftId: string): Promise<number> => {
   try {
-    if(!nftId){
+    if (!nftId) {
       throw new Error("NFT ID is required");
     }
     // Count the number of PlaylistListedNFT records where the specific NFT is listed
     const totalPlaylists = await db.playlistListedNFT.count({
       where: {
+        //@ts-ignore
         nftId: nftId, // Filter by the NFT ID
       },
     });
@@ -23,6 +24,8 @@ export const getPlaylistsWithNFT = async (nftId: string): Promise<number> => {
     return totalPlaylists;
   } catch (error) {
     console.error("Error fetching playlists with the NFT:", error);
-    throw new Error("Failed to get the number of playlists containing the NFT.");
+    throw new Error(
+      "Failed to get the number of playlists containing the NFT."
+    );
   }
 };

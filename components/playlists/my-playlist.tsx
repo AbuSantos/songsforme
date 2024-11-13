@@ -17,26 +17,12 @@ import { fetcher } from "@/lib/utils"
 type PlaylistTypes = {
     data: Playlist[]
     userId: string
-    filter: string | null
+    filter?: string | null
     mode?: string
 }
 
 export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
-    const [nftData, setNftData] = useState<any>()
-
-    useEffect(() => {
-        const fetchMetaData = async () => {
-            const response = await getNFTMetadata(
-                "0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9",
-                "0"
-            );
-            setNftData(response.raw.metadata)
-            console.log("NFT Metadata:\n", response.raw.metadata);
-        }
-
-        fetchMetaData()
-
-    }, [userId]) //USE THE ADDRESS
+   
 
     const apiUrl = `/api/playlists?${new URLSearchParams({
         ratio: filter || "",
@@ -101,7 +87,7 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
                                             </div>
                                             <div className="hidden md:flex space-x-1">
                                                 {/* <PauseListen userId={userId} playlistId={item.id} /> */}
-                                                <Playlisten userId={userId} nftId={song?.id} playlistId={item.id} nftData={nftData} nftContractAddress={song?.contractAddress} tokenId={song?.tokenId} />
+                                                <Playlisten userId={userId} nftId={song?.id} playlistId={item.id}  nftContractAddress={song?.contractAddress} tokenId={song?.tokenId} />
                                             </div>
                                         </div>
                                     ))

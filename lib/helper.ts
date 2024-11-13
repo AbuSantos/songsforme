@@ -3,27 +3,33 @@ import { cookies } from "next/headers";
 import { decrypt } from "@/actions/set-sessions"; // Adjust the import according to your structure
 import { cache } from "react";
 import { db } from "./db";
-
-// Define a more descriptive type for the decrypted session
-interface DecryptedSession {
-  userId: string;
-}
+import { JWTPayload } from "jose";
 
 // Cached session retrieval with improved error handling and type checking
-export const getSession = cache(async (): Promise<string | null> => {
+export const getSession = cache(async (): Promise<JWTPayload | null> => {
   const sessionValue = cookies().get("bullchord-session")?.value;
-
   console.log(sessionValue, "Retrieved session cookie");
+
   if (!sessionValue) {
     console.warn("No session found. Prompting user to connect wallet.");
     return null;
   }
 
   try {
-    const decryptedValue: DecryptedSession | null = await decrypt(sessionValue);
-    console.log(decryptedValue?.userId, "Decrypted session value");
+    const decryptedValue: JWTPayload | undefined = await decrypt(sessionValue);
+    if (!decryptedValue) {
+      console.error("Decryption returned no value.");
+      return null;
+    }
 
-    return decryptedValue?.userId ?? null;
+    // Optional: Validate expiration if present
+    if (decryptedValue.exp && Date.now() >= decryptedValue.exp * 1000) {
+      console.warn("Session token has expired.");
+      return null;
+    }
+
+    console.log(decryptedValue.userId, "Decrypted session value");
+    return decryptedValue.userId ?? undefined;
   } catch (error) {
     console.error("Failed to decrypt session:", error);
     return null;

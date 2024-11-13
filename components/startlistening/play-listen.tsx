@@ -11,7 +11,6 @@ type PlaylistIdTypes = {
     userId: string | undefined;
     playlistId?: string;
     nftId: string;
-    nftData: NFTTypes
     nftContractAddress: string
     tokenId: string
 };
