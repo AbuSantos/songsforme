@@ -19,7 +19,6 @@ export const MobilePlaylist = async () => {
                 </div>
             </div>
             <Separator className="my-4 w-full" />
-
             <AllPlaylist />
         </div>
     )

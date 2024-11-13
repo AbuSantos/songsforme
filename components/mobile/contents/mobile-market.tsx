@@ -7,6 +7,7 @@ import { ListedNFT } from '@/types'
 import React from 'react'
 
 export const MobileMarket = async () => {
+    //@ts-ignore
     const listedData: ListedNFT[] = await db.listedNFT.findMany({
         where: {
             sold: false
@@ -25,6 +26,7 @@ export const MobileMarket = async () => {
                 </div>
 
                 <div>
+                    {/* @ts-ignore */}
                     <FilterByName items={listedData} />
                 </div>
             </div>
@@ -32,7 +34,7 @@ export const MobileMarket = async () => {
             <div className="relative">
                 <ScrollArea>
                     <div className="flex flex-wrap space-x-4 pb-4">
-                        < MarketPlace data={listedData} />
+                        < MarketPlace />
                     </div>
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
