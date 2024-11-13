@@ -7,7 +7,7 @@ import { revalidateTag } from "next/cache"
 
 export const Discovery = async () => {
 
-    const singleNft: Single[] = await db.single.findMany({
+    const singleNft = await db.single.findMany({
         include: {
             listedNft: true
         }
@@ -19,11 +19,11 @@ export const Discovery = async () => {
             <div className="relative">
                 <ScrollArea>
                     <div className="flex flex-wrap space-x-4 pb-4 w-full">
-                        {singleNft?.map((data: Single, index: number) => (
+                        {singleNft?.map((data, index: number) => (
                             <AlbumArtwork
                                 key={data.id}
+                                //@ts-ignore
                                 album={data}
-                                index={index}
                                 className="w-[150px] md:w-[200px]"
                             />
                         ))}
