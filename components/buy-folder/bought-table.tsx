@@ -16,7 +16,6 @@ type TrackTableType = {
 
 
 export const BoughtTable = ({ data }: TrackTableType) => {
-
     const userId = useRecoilValue(isConnected)
     console.log(data, "bought table");
     try {

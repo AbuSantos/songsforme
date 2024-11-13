@@ -55,7 +55,7 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
     //     return uri.startsWith("ipfs://")
     //         ? uri.replace("ipfs://", "https://ipfs.io/ipfs/")
     //         : uri;
-    // }
+    // } 
     try {
         return (
             <Accordion type="single" collapsible className="w-full">
