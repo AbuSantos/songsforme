@@ -109,6 +109,7 @@ export default async function MusicPage() {
                             {NewSongs?.map((data: AlbumArtworkProps, index: number) => (
                               <AlbumArtwork
                                 key={data.id}
+                                // @ts-ignore 
                                 album={data}
                                 index={index}
                                 className="w-[200px]"
@@ -133,6 +134,8 @@ export default async function MusicPage() {
                 </div>
 
               </div>
+              {/* @ts-ignore */}
+
               <Aside playlists={playlists} className="hidden lg:block bg-[var(--bg-root)] text-[var(--text)]" />
             </div>
           </div>
