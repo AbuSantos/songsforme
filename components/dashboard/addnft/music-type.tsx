@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/accordion";
 import { AllMySingle } from "./singles/all-singles";
 import { useActiveAccount } from "thirdweb/react";
-import SingleMusic from "./singles/single-music";
 import { getSession } from "@/lib/helper";
 import { revalidateTag } from "next/cache";
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
@@ -32,7 +31,10 @@ export const MusicAccordion = () => {
             <AccordionItem value="item-2">
                 <AccordionTrigger>Add Single Track</AccordionTrigger>
                 <AccordionContent>
-                    <AllMySingle data={data} />
+                    {
+                        isLoading ? <p>loading...</p> :
+                            <AllMySingle data={data} />
+                    }
                 </AccordionContent>
             </AccordionItem>
         </Accordion>
