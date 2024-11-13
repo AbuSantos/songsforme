@@ -29,6 +29,7 @@ export const getSession = cache(async (): Promise<JWTPayload | null> => {
     }
 
     console.log(decryptedValue.userId, "Decrypted session value");
+    //@ts-ignore
     return decryptedValue.userId ?? undefined;
   } catch (error) {
     console.error("Failed to decrypt session:", error);

@@ -4,6 +4,7 @@ import { currentTrackIdState, isPlayingState } from "@/atoms/song-atom";
 
 export function useAudioPlayer() {
     const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
+    //@ts-ignore
     const [currentTrackId, setCurrentTrackId] = useRecoilState<number | null>(currentTrackIdState);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 

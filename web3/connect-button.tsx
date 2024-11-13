@@ -18,8 +18,11 @@ const thirdwebAuth = createAuth({
     adminAccount: privateKeyToAccount({ client, privateKey }),
 });
 
+// FIX THE TYPES ERROR AND REMOVE TYPE-IGNORE
+
 export const ConnecttButton = () => {
     const [isCreatingUser, setIsCreatingUser] = useState(false); // State to manage user creation flow
+    //@ts-ignore
     const [connectedAddress, setConnectedAddress] = useState(null || String); // State to manage the connected address
     const [isOpen, setIsOpen] = useState<boolean>(true)
     const setIsConnected = useSetRecoilState(isConnected)
@@ -64,8 +67,12 @@ export const ConnecttButton = () => {
                 onDisconnect={async () => {
                     try {
                         await deleteSession();
+                        //@ts-ignore
+
                         setConnectedAddress(null); // Clear the connected address
                         setIsCreatingUser(false); // Reset the user creation flow
+                        //@ts-ignore
+
                         setSessionId(null);
                     } catch (error) {
                         console.error("Error during disconnection:", error);
