@@ -3,6 +3,7 @@ import { getContract } from "thirdweb";
 import { polygonAmoy } from "thirdweb/chains"
 import { MediaRenderer, useReadContract } from "thirdweb/react";
 
+//@ts-ignore
 export const PlayTrack = ({ address }) => {
     const contract = getContract({
         client,
@@ -41,6 +42,7 @@ export const PlayTrack = ({ address }) => {
                 <MediaRenderer
                     mimeType="mp3"
                     client={client}
+                    //@ts-ignore
                     src={correctURI(data)}
                 />
             )}
