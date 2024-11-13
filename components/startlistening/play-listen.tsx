@@ -53,42 +53,48 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     console.log(nftData?.animation_url)
 
     // Initialize audio element with the NFT's audio URL
-    // useEffect(() => {
-    //     if (nftData?.animation_url) {
-    //         const formattedUrl = formatIpfsUrl(nftData.animation_url);
-
-    //         audioRef.current = new Audio(formattedUrl);
-
-    //         audioRef.current.addEventListener('canplaythrough', () => {
-    //             console.log("Audio is ready to play");
-    //         });
-
-    //         audioRef.current.addEventListener('error', (error) => {
-    //             console.error("Error loading audio:", error);
-    //             toast.error("Failed to load audio. Check the link.");
-    //         });
-    //     }
-
-    //     console.log(audioRef.current)
-    //     return () => {
-    //         audioRef.current?.pause(); // Clean up on component unmount
-    //     };
-    // }, [nftData]);
-
     useEffect(() => {
         if (nftData?.animation_url) {
-            audioRef.current = new Audio(nftData.animation_url);
+            const formattedUrl = formatIpfsUrl(nftData.animation_url);
+
+            audioRef.current = new Audio(formattedUrl);
             const handleEnded = async () => {
                 setIsPlaying(false);
                 await endListening(userId, playlistId);
             };
             audioRef.current.addEventListener('ended', handleEnded);
+
+            audioRef.current.addEventListener('canplaythrough', () => {
+                console.log("Audio is ready to play");
+            });
+
+            audioRef.current.addEventListener('error', (error) => {
+                console.error("Error loading audio:", error);
+                toast.error("Failed to load audio. Check the link.");
+            });
+
+            console.log(audioRef.current)
             return () => {
                 audioRef.current?.removeEventListener('ended', handleEnded);
-                audioRef.current?.pause();
-            };
-        }
-    }, [nftData, userId, playlistId]);
+                audioRef.current?.pause(); // Clean up on component unmount
+            }
+        };
+    }, [nftData]);
+
+    // useEffect(() => {
+    //     if (nftData?.animation_url) {
+    //         audioRef.current = new Audio(nftData.animation_url);
+    //         const handleEnded = async () => {
+    //             setIsPlaying(false);
+    //             await endListening(userId, playlistId);
+    //         };
+    //         audioRef.current.addEventListener('ended', handleEnded);
+    //         return () => {
+    //             audioRef.current?.removeEventListener('ended', handleEnded);
+    //             audioRef.current?.pause();
+    //         };
+    //     }
+    // }, [nftData, userId, playlistId]);
 
 
     const handlePlayPause = async () => {

@@ -12,34 +12,41 @@ import { BuyNFT } from '@/types';
 
 const BoughtNFT = () => {
     //DELETE THE CASE CONVERSION
-    const userId = useRecoilValue(isConnected).toLocaleLowerCase();
-
-    const apiUrl = `/api/buynft/${userId}`;
-    const { data: nfts, error, isLoading } = useSWR(apiUrl, fetcher);
-
-    console.log(nfts, "from my bought nft")
-
-    return (
-        <div>
-            <h2 className='text-center p-2'>My NFTs</h2>
-            <div className="flex flex-wrap space-x-4 pb-4 w-full">
-                {
-                    isLoading ? <MarketSkeleton /> :
-                        nfts &&
-                        nfts?.map((nft: BuyNFT, index: number) => (
-                            <div className='w-full' key={index}>
-                                < BoughtTable
-                                    data={nft}
-                                />
-                            </div>
-                        ))
+    try {
 
 
-                }
+        const userId = useRecoilValue(isConnected).toLocaleLowerCase();
+
+        const apiUrl = `/api/buynft/${userId}`;
+        const { data: nfts, error, isLoading } = useSWR(apiUrl, fetcher);
+
+        console.log(nfts, "from my bought nft")
+
+        return (
+            <div>
+                <h2 className='text-center p-2'>My NFTs</h2>
+                <div className="flex flex-wrap space-x-4 pb-4 w-full">
+                    {
+                        isLoading ? <MarketSkeleton /> :
+                            nfts &&
+                            nfts?.map((nft: BuyNFT, index: number) => (
+                                <div className='w-full' key={index}>
+                                    < BoughtTable
+                                        data={nft}
+                                    />
+                                </div>
+                            ))
+
+
+                    }
+                </div>
+
             </div>
+        )
 
-        </div>
-    )
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 export default BoughtNFT
