@@ -33,6 +33,7 @@ export const EditRatio = ({ playlistId, trackId, mode }: ModalProps) => {
         }
 
         startTransition(() => {
+            //@ts-ignore
             editRatio({ userId, mode, data: ratio, playlistId, trackId })
                 .then((data) => {
                     toast("RATIO", {
