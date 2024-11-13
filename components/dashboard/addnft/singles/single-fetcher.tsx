@@ -18,7 +18,7 @@ export const MusicFetcher = () => {
     return (
         <div>
             {address ? (
-                <SingleMusic userId={address} />
+                <SingleMusic />
             ) : (
                 <p>Account Not Connected</p>
             )}
