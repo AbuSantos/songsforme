@@ -84,6 +84,7 @@ model ListedNFT {
   NFTListeningTime     NFTListeningTime[]
   priceData            Json? //Array of { timestamp: DateTime, price: Int }
 
+  @@unique([tokenId, contractAddress])
   @@index([id])
 }
 
@@ -117,7 +118,7 @@ model Playlist {
 
 model BuyNFT {
   id              String          @id @default(cuid())
-  buyer           String          
+  buyer           String
   listedNftId     String
   listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
   price           Float
