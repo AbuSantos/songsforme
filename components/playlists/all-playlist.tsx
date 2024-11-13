@@ -42,7 +42,7 @@ export const AllPlaylist = () => {
             <div className="md:hidden">
                 {
                     playlists &&
-                    <MyPlaylist data={playlists} userId={userId} />
+                    <MyPlaylist data={playlists} userId={userId} filter={filter} />
                 }
             </div>
 

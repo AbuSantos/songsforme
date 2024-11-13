@@ -1,7 +1,7 @@
 import { Network, Alchemy } from "alchemy-sdk";
 
 const settings = {
-  // Replace with your Alchemy API Key.
+  apiKey: "Bgl1yhzD-eN0JQKZcp1lQmSzMassO6ZK", // Replace with your Alchemy API Key.
   network: Network.ETH_SEPOLIA, // Replace with the network your NFT is on.
 };
 
@@ -13,9 +13,9 @@ export async function getNFTMetadata(
 ) {
   // const nfts = await alchemy.nft.getNftsForOwner(nftContractAddress);
   // Making a call to the Alchemy API to get the metadata
-    const response = await alchemy.nft.getNftMetadata(
-      nftContractAddress,
-      tokenId
-    );
+  const response = await alchemy.nft.getNftMetadata(
+    nftContractAddress,
+    tokenId
+  );
   return response; // returning the metadata
 }

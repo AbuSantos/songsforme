@@ -18,7 +18,7 @@ export const Aside = ({ className }: SidebarProps) => {
     userId ? `/api/playlists/${userId}` : null,
     fetcher
   );
-
+  console.log("playlist, from aside", playlist)
 
   if (error) {
     return (
@@ -81,7 +81,7 @@ export const Aside = ({ className }: SidebarProps) => {
               </div>
 
             ) : (
-              <MyPlaylist data={playlist} userId={userId} />
+              <MyPlaylist data={playlist} userId={userId} mode="aside" />
             )}
           </div>
         </div>

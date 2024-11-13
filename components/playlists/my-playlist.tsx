@@ -11,12 +11,17 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getNFTMetadata } from "@/actions/helper/get-metadata"
+import { Skeleton } from "../ui/skeleton"
+import useSWR from "swr"
+import { fetcher } from "@/lib/utils"
 type PlaylistTypes = {
     data: Playlist[]
     userId: string
+    filter: string | null
+    mode: string
 }
 
-export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
+export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
     const [nftData, setNftData] = useState<any>()
 
     useEffect(() => {
@@ -33,6 +38,31 @@ export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
 
     }, [userId]) //USE THE ADDRESS
 
+    const apiUrl = `/api/playlists?${new URLSearchParams({
+        ratio: filter || "",
+    })}`;
+
+
+
+
+    const { data: playlists, error, isLoading } = useSWR(apiUrl, fetcher);
+
+    const useData = mode === "aside" ? data : playlists
+
+    if (error) return <div>Failed to load playlists</div>;
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col space-y-3">
+                <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                </div>
+            </div>
+        );
+    }
+
     console.log(data, "from my playlist")
 
     // function convertIpfsToHttp(uri: string) {
@@ -44,7 +74,7 @@ export const MyPlaylist = ({ data, userId }: PlaylistTypes) => {
         return (
             <Accordion type="single" collapsible className="w-full">
                 {
-                    data && data?.map((item: any, index: number) => (
+                    useData && useData?.map((item: any, index: number) => (
                         <AccordionItem key={item.id} value={String(index)} className="border-none md:border-b-[0.5px] md:border-b-[#2A2A2A]">
                             <AccordionTrigger className="md:py-1">
                                 <Link href={`dashboard/playlist/${item.id}`} className="w-full">

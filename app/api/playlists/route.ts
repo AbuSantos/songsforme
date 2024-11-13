@@ -8,7 +8,7 @@ type ParamProp = {
 
 // Function to handle GET request to fetch playlists for a given user
 export const GET = async (req: NextRequest) => {
-  const ITEM_PER_PAGE = 4;
+  const ITEM_PER_PAGE = 20;
   const url = new URL(req.url).searchParams;
 
   const searchParams = req.nextUrl.searchParams;
