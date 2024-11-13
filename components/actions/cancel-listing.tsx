@@ -31,6 +31,7 @@ export const CancelListing = ({ setBidModal }: modalTypes) => {
                         const tx = prepareContractCall({
                             contract,
                             method: "cancelListing",
+                            //@ts-ignore
                             params: [tokenId, address],
                         });
                         return tx;

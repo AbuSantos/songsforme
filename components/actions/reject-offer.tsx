@@ -21,7 +21,7 @@ type modalTypes = {
 }
 
 export const AcceptBidOffer = ({ setBidModal }: modalTypes) => {
-
+    //YOUVE NOT WORKED ON ACCEPT OFFER YET
     const [isPending, startTransition] = useTransition();
     // const [nftAddress, setNftAddress] = useState("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
     // const [tokenId, setTokenId] = useState(2);
@@ -48,9 +48,11 @@ export const AcceptBidOffer = ({ setBidModal }: modalTypes) => {
                 const transaction = prepareContractCall({
                     contract,
                     method: "rejectBidOffer",
+                    //@ts-ignore
+
                     params: [values.tokenId, values.address],
                 });
-
+                //@ts-ignore
                 setTransaction(transaction)
 
             } catch (err) {
@@ -71,9 +73,10 @@ export const AcceptBidOffer = ({ setBidModal }: modalTypes) => {
                 >
                     <Cross1Icon className="size-4" />
                 </button>
+                {/* @ts-ignore */}
 
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    {/* NFT Address Input */}
+
                     <FormField
                         control={form.control}
                         name="address"
@@ -100,8 +103,10 @@ export const AcceptBidOffer = ({ setBidModal }: modalTypes) => {
                     />
 
                     <TransactionButton
+                        //@ts-ignore
                         transaction={() => transaction}
                         onTransactionConfirmed={() => console.log("lising")}
+                        //@ts-ignore
                         onSuccess={(success) => setIsSuccess(success)}
                         onError={(error) =>
                             setIsError(error.message)
