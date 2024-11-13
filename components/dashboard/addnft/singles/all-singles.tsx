@@ -19,7 +19,7 @@ export const AllMySingle = ({ data }: { data: any[] }) => {
                 <CreateSingle />
             </header>
             <ul className="h-auto overflow-y-scroll">
-                {data && data?.map((single) => (
+                {data && data?.map((single: any) => (
                     <li key={single.id} className="capitalize p-2 ">
                         <div className="flex justify-between cursor-pointer">
                             <p className="flex flex-col">
@@ -39,7 +39,6 @@ export const AllMySingle = ({ data }: { data: any[] }) => {
                                 <PopoverContent className="w-full">
                                     <DesktopNFTForm singleId={single.id} />
                                 </PopoverContent>
-
                             </Popover>
                         </div>
                     </li>
