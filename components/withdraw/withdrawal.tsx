@@ -35,7 +35,7 @@ export const WithdrawRewards = () => {
 
     return (
         <div>
-            {/* <TransactionButton
+            <TransactionButton
                 transaction={() => {
                     try {
                         // Prepare transaction for reward distribution
@@ -72,13 +72,13 @@ export const WithdrawRewards = () => {
                 }}
             >
                 Withdraw Earnings
-            </TransactionButton> */}
+            </TransactionButton>
 
 
 
-            <button onClick={() => console.log(totalTime)} className='text-gray-200'>
+            {/* <button onClick={() => console.log(totalTime)} className='text-gray-200'>
                 withdraw
-            </button>
+            </button> */}
             {message && <p className="mt-2 text-sm">{message}</p>}
         </div>
     );
