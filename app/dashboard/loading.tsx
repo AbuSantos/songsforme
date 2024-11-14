@@ -9,7 +9,7 @@ const Loader = () => {
                 <div className=" flex space-x-2 items-end px-4 w-full md:w-5/12 ">
                     < Skeleton className='w-[150] h-[150] rounded-md' />
                     <div className="text-gray-100">
-                        < Skeleton className='w-[80] h-[50] rounded-md bg-slate-600' />
+                        < Skeleton className='w-[80] h-[50] rounded-md' />
                         < Skeleton className='w-[80] h-[50] rounded-md' />
                     </div>
                 </div>

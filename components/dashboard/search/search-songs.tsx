@@ -29,7 +29,7 @@ export const Search = ({ placeholder, classname }: SearchProps) => {
 
     }, 300)
     return (
-        <Input placeholder={placeholder} className={`${classname} border-[1px] border-[#19191B]`} onChange={handleSearch} />
+        <Input placeholder={placeholder} className={`${classname} border-[1px] border-[#19191B] p-2`} onChange={handleSearch} />
 
     )
 }

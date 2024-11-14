@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { toggleState } from "@/actions/toggle-buy-sell";
 import { toast } from "sonner";
+import { Playlisten } from "@/components/startlistening/play-listen";
 
 type TrackTableType = {
     data: ListedNFT[];
@@ -95,7 +96,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                         ))}
                     </div>
                     <div className="items-center space-x-2 flex ml-2">
-                        {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}
+                        <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
                     </div>
                 </div>
             ))}

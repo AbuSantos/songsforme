@@ -25,8 +25,11 @@ const MarketPlace = async () => {
             contractAddress: true,
             accumulatedTime: true,
             rewardRatio: true,
+            isSaleEnabled: true
         },
     });
+
+    console.log(listedNFTs)
 
     revalidateTag("bought")
 

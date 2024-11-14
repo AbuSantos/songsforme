@@ -32,6 +32,7 @@ import { FilterPlace } from "@/components/playlists/filter-playlist"
 import { Search } from "@/components/dashboard/search/search-songs"
 import { MarketSkeleton } from "@/components/marketplace/marketplace-skeleton"
 import { Suspense } from "react"
+import { FilterByTime } from "@/components/marketplace/filter/filter-by-time"
 
 export const metadata: Metadata = {
     title: "songs for me",
@@ -170,7 +171,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 <div className="w-full">
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-1">
-                                            <h2 className="text-xl md:text-2xl font-semibold tracking-normal">
+                                            <h2 className="text-[1rem] md:text-2xl font-semibold tracking-normal">
                                                 Trending playlist
                                             </h2>
                                             <p className="text-sm hidden text-muted-foreground">
@@ -194,8 +195,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <div className="space-y-1">
-                                            <h2 className="text-xl md:text-2xl font-semibold tracking-normal">
+                                        <div className="">
+                                            <h2 className="text-[1rem] md:text-2xl font-semibold tracking-normal">
                                                 Singles and Albums
                                             </h2>
                                             <p className="text-sm hidden text-muted-foreground">
@@ -226,13 +227,14 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 className="h-full flex-col border-none p-0 data-[state=active]:flex"
                             >
                                 <div className="flex items-center justify-between ">
-                                    <div className="space-y-1">
+                                    <div className="space-y-1 hidden md:block">
                                         <h2 className=" font-medium text-[1rem] md:text-2xl  md:font-semibold tracking-tight text-[#B4B4B4]">
                                             Buy and Sell NFTs
                                         </h2>
                                     </div>
 
-                                    <div>
+                                    <div className="flex items-center">
+                                        <FilterByTime />
                                         <Search placeholder="Search songs..." />
                                         {/* <FilterByName items={listedData} /> */}
                                     </div>
