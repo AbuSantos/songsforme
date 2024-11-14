@@ -23,12 +23,12 @@ const page = async ({ params }: { params: { id: string } }) => {
             where: {
                 id
             },
-            include: {
-                listedNft: {
-                    where: {
-                        sold: false
-                    }
-                }
+            select: {
+                id: true,
+                song_cover: true,
+                song_name: true,
+                artist_name: true,
+                listedNft: true
             }
         })
 

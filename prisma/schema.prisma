@@ -14,6 +14,11 @@ enum PurchaseStatus {
   NONE
 }
 
+enum isSaleEnabled {
+  false
+  true
+}
+
 model User {
   id                        String             @id @default(cuid())
   username                  String?            @unique
@@ -83,6 +88,7 @@ model ListedNFT {
   uniqueListener       UniqueListener[]
   NFTListeningTime     NFTListeningTime[]
   priceData            Json? //Array of { timestamp: DateTime, price: Int }
+  isSaleEnabled        isSaleEnabled?      @default(false)
 
   @@unique([tokenId, contractAddress])
   @@index([id])
