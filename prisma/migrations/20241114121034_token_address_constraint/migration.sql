@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "PurchaseStatus" AS ENUM ('PENDING', 'COMPLETE', 'FAILED', 'NONE');
 
+-- CreateEnum
+CREATE TYPE "isSaleEnabled" AS ENUM ('false', 'true');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -57,7 +60,9 @@ CREATE TABLE "ListedNFT" (
     "playlistRewardRatio" DOUBLE PRECISION NOT NULL DEFAULT 0.2,
     "totalAccumulatedTime" INTEGER DEFAULT 0,
     "recentPlays" JSONB,
-    "lastPlayTimestamp" TIMESTAMP(3) NOT NULL,
+    "lastPlayTimestamp" TIMESTAMP(3),
+    "priceData" JSONB,
+    "isSaleEnabled" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "ListedNFT_pkey" PRIMARY KEY ("id")
 );
@@ -86,6 +91,8 @@ CREATE TABLE "Playlist" (
     "accumulatedTime" INTEGER DEFAULT 0,
     "rewardRatio" DOUBLE PRECISION DEFAULT 0.2,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "description" TEXT,
+    "cover" TEXT,
 
     CONSTRAINT "Playlist_pkey" PRIMARY KEY ("id")
 );
@@ -157,6 +164,9 @@ CREATE UNIQUE INDEX "UniqueListener_nftId_date_key" ON "UniqueListener"("nftId",
 
 -- CreateIndex
 CREATE INDEX "ListedNFT_id_idx" ON "ListedNFT"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ListedNFT_tokenId_contractAddress_key" ON "ListedNFT"("tokenId", "contractAddress");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PlaylistListedNFT_listedNFTId_key" ON "PlaylistListedNFT"("listedNFTId");

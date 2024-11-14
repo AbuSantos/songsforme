@@ -28,7 +28,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 song_cover: true,
                 song_name: true,
                 artist_name: true,
-                listedNft: true
+                listedNft: true,
             }
         })
 

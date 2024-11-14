@@ -46,6 +46,7 @@ export interface ListedNFT {
   accumulatedTime?: number | null;
   rewardRatio: number;
   playlistRewardRatio: number;
+  isSaleEnabled: boolean;
   recentPlays?: [];
   priceData?: [];
   totalAccumulatedTime?: number | null;

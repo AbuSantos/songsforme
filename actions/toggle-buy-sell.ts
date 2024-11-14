@@ -6,28 +6,36 @@ type ToggleType = {
   nftId: string;
   state: boolean;
 };
-export async function toggleState({ nftId, state }: ToggleType) {
-  if (!nftId || !state) {
-    return { message: "Unauthorized" };
+
+export async function toggleState(nftId, state): Promise<{ message: string }> {
+  console.log("Toggling NFT sale state:", nftId, state);
+
+  if (!nftId || typeof state !== "boolean") {
+    return { message: "Invalid input or unauthorized" };
   }
 
-  const nft = db.listedNFT.findUnique({
-    where: {
-      id: nftId,
-    },
-    select: {
-      id: true,
-    },
-  });
+  try {
+    // Fetch the NFT record
+    const nft = await db.listedNFT.findUnique({
+      where: { id: nftId },
+      select: { id: true },
+    });
 
-  if (!nft) return { message: "NFT not found" };
+    if (!nft) {
+      return { message: "NFT not found" };
+    }
 
-  
+    // Update the isSaleEnabled state
+    await db.listedNFT.update({
+      where: { id: nftId },
+      data: { isSaleEnabled: state },
+    });
 
-  await prisma.user.update({
-    where: { email: session.user.email },
-    data: { isEnabled: newState },
-  });
-
-  return newState;
+    return {
+      message: `NFT sale state updated to ${state ? "enabled" : "disabled"}!`,
+    };
+  } catch (error: any) {
+    console.error("Error toggling NFT sale state:", error);
+    return { message: `Error: ${error.message}` };
+  }
 }

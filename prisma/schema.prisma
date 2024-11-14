@@ -88,7 +88,7 @@ model ListedNFT {
   uniqueListener       UniqueListener[]
   NFTListeningTime     NFTListeningTime[]
   priceData            Json? //Array of { timestamp: DateTime, price: Int }
-  isSaleEnabled        isSaleEnabled?      @default(false)
+  isSaleEnabled        Boolean             @default(false)
 
   @@unique([tokenId, contractAddress])
   @@index([id])
