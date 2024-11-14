@@ -17,7 +17,6 @@ import { fetcher } from "@/lib/utils";
 
 export const MusicAccordion = () => {
     const userId = useRecoilValue(isConnected)
-
     const { data, error, isLoading } = useSWR(`/api/singles/${userId}`, fetcher)
 
     return (

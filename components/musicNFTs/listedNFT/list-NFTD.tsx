@@ -12,6 +12,8 @@ import { FormSuccess } from "../../errorsandsuccess/form-success";
 import { listedNFT } from "@/actions/listNFT";
 import { Button } from "../../ui/button";
 import { toast } from "sonner";
+import { useRecoilValue } from "recoil";
+import { isConnected } from "@/atoms/session-atom";
 interface singleIdProps {
   singleId?: string
 }
@@ -22,8 +24,9 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
   const [address, setAddress] = useState("");
   const [tokenId, setTokenId] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<string>("");
+  const seller = useRecoilValue(isConnected)
+
   // 0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9
-  const seller = "0xC7fe86c79f9598C0a5A3874D075A1607686944D3"
 
   const saveListing = (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {
     startTransition(async () => {
@@ -72,8 +75,7 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
 
         />
 
-        <TransactionButton
-
+        {/* <TransactionButton
           transaction={() => {
             const priceInWei = ethers.utils.parseEther(price);
             const tx = prepareContractCall({
@@ -109,13 +111,13 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
           }
         >
           Confirm Listing
-        </TransactionButton>
+        </TransactionButton> */}
 
-        {/* <Button
+        <Button
           onClick={() => saveListing(seller, tokenId, price, address, singleId)}
         >
           save listing
-        </Button> */}
+        </Button>
       </div>
 
       < FormError message={errorMessage} />

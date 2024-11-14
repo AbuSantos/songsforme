@@ -75,7 +75,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
         })
 
         {/* @ts-ignore */ }
-        const playlists: Playlist[] = await db.playlist.findMany({
+        const playlists = await db.playlist.findMany({
             select: {
                 rewardRatio: true,
                 accumulatedTime: true,
