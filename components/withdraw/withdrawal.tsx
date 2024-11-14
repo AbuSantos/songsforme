@@ -16,7 +16,6 @@ export const WithdrawRewards = () => {
     const [totalTime, setTotalTime] = useState<number>(0);
     const userId = useRecoilValue(isConnected);
 
-
     useEffect(() => {
         const fetchAccumulatedTime = async () => {
             setIsLoading(true);
@@ -36,7 +35,7 @@ export const WithdrawRewards = () => {
 
     return (
         <div>
-            <TransactionButton
+            {/* <TransactionButton
                 transaction={() => {
                     try {
                         // Prepare transaction for reward distribution
@@ -73,8 +72,13 @@ export const WithdrawRewards = () => {
                 }}
             >
                 Withdraw Earnings
-            </TransactionButton>
+            </TransactionButton> */}
 
+
+
+            <button onClick={() => console.log(totalTime)} className='text-gray-200'>
+                withdraw
+            </button>
             {message && <p className="mt-2 text-sm">{message}</p>}
         </div>
     );

@@ -41,15 +41,40 @@ export const getUserAccumulatedTime = async (
   userId: string
 ): Promise<number | { message: string }> => {
   try {
+    // Fetch user's accumulated time
     const user = await db.user.findUnique({
       where: { userId },
       select: { accumulatedTime: true },
     });
 
-    console.log(user, "Retrieved user data");
-    const accumulatedTime = user?.accumulatedTime;
+    // If no user data is found, return an error message
+    if (!user) {
+      return { message: "User not found." };
+    }
 
-    if (!accumulatedTime || accumulatedTime <= 0) {
+    // Fetch all playlists associated with the user
+    const playlists = await db.playlist.findMany({
+      where: { userId },
+      select: { accumulatedTime: true },
+    });
+
+    // If the user has no playlists, return only the user's accumulated time
+    if (!playlists || playlists.length === 0) {
+      return user.accumulatedTime ?? 0;
+    }
+
+    // Sum the accumulatedTime from playlists, defaulting to 0 for undefined values
+    const playlistTime = playlists.reduce(
+      (acc, cur) => acc + (cur?.accumulatedTime ?? 0),
+      0
+    );
+
+    
+    // Calculate the total accumulated time
+    const accumulatedTime = (user.accumulatedTime ?? 0) + playlistTime;
+
+    // Check if accumulated time is valid for withdrawal
+    if (accumulatedTime <= 0) {
       return { message: "No rewards available to withdraw." };
     }
 

@@ -185,6 +185,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                             {sortedPlaylists.map((playlist) => (
                                                 <TrendingPlaylist
                                                     key={playlist.id}
+                                                    // @ts-ignore  
                                                     album={playlist}
                                                     className="w-[180px] snap-start flex-shrink-0"
                                                 />

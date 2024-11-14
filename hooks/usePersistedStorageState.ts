@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+// @ts-ignore
 export const usePersistentState = (key, initialValue) => {
   const [state, setState] = useState(() => {
     const storedValue = window.localStorage.getItem(key);
@@ -7,6 +8,7 @@ export const usePersistentState = (key, initialValue) => {
   });
 
   useEffect(() => {
+    // @ts-ignore
     const handleStorageChange = (event) => {
       if (event.key === key && event.newValue !== null) {
         setState(JSON.parse(event.newValue));

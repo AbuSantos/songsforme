@@ -25,6 +25,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
         const newBuyingState = !isEnabled[nftId];
 
         startTransition(async () => {
+            //@ts-ignore
             const res = await toggleState(nftId, newBuyingState);
             if (res.message) {
                 toast.success(res.message);
@@ -68,6 +69,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                         <p className="w-10">{track?.tokenId}</p>
                         <div className="flex flex-col w-8/12">
                             {/* ADD SINGLE SONG NAME  */}
+                            {/* @ts-ignore */}
                             <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.title || "Untitled Track"}</p>
                             <small className="uppercase text-[0.7rem] ">FT: Santos</small>
                         </div>
@@ -78,7 +80,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     </Link>
 
                     <div>
-                        {track?.seller === userId ? (
+                        {userId && (track?.seller === userId ? (
                             <TogglingSell toggleBuySell={() => toggleBuySell(track.id)} isEnabled={isEnabled[track.id] || false} />
                         ) : track?.isSaleEnabled ? (
                             <BuyNFT
@@ -90,7 +92,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                             />
                         ) : (
                             <p>Bid</p>
-                        )}
+                        ))}
                     </div>
                     <div className="items-center space-x-2 flex ml-2">
                         {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}

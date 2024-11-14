@@ -1,13 +1,10 @@
 "use server";
 
 import { db } from "@/lib/db";
-
-type ToggleType = {
-  nftId: string;
-  state: boolean;
-};
-
-export async function toggleState(nftId, state): Promise<{ message: string }> {
+export async function toggleState(
+  nftId: string,
+  state: string
+): Promise<{ message: string }> {
   console.log("Toggling NFT sale state:", nftId, state);
 
   if (!nftId || typeof state !== "boolean") {
