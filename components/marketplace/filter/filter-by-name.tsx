@@ -31,8 +31,6 @@ export const FilterByName = ({ items, placeholder = "Filter..." }: FilterByNameP
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
 
-    console.log(items)
-
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>

@@ -17,11 +17,13 @@ type MarketPlaceProps = {
 
 
 const MarketPlace = async ({ filter }: MarketPlaceProps) => {
-
     const threshHold = getTimeThreshold(filter)
     const { address, name } = getAddressOrName(filter);
 
-    console.log(address, name, "filtering from marketplace")
+
+    const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
+
+    console.log(filter, "filtering from marketplace")
 
     // const filter = searchParams?.filter || "";
     const listedNFTs = await db.listedNFT.findMany({
@@ -35,11 +37,12 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
             ...(address && {
                 contractAddress: address
             }),
-            ...(name && {
-                Single: {
-                    artist_name: name
-                }
-            })
+
+            // ...(name && {
+            //     Single: {
+            //         artist_name: name
+            //     }
+            // })
         },
         select: {
             id: true,
@@ -58,10 +61,11 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
                 }
             }
         },
+        ...(orderBy ? { orderBy } : {})
 
     });
 
-    console.log(listedNFTs)
+    // console.log(listedNFTs)
     revalidateTag("bought")
 
     if (!listedNFTs.length) {

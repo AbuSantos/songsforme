@@ -25,13 +25,8 @@ export const fetcher = (url: string) => fetch(url).then((res) => res.json());
  */
 export const getTimeThreshold = (filter: string): Date | null => {
   const now = new Date(); // Get the current date and time.
-
-  console.log(filter, "from time filter");
-
   if (filter.endsWith("min")) {
     const minutes = parseInt(filter.replace("min", ""), 10); // Extract minutes.
-
-    console.log(minutes, "from time");
     if (!isNaN(minutes)) {
       now.setMinutes(now.getMinutes() - minutes); // Adjust time by subtracting minutes.
       return now;

@@ -93,9 +93,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                             <p>Bid</p>
                         ))}
                     </div>
-                    <div className="items-center space-x-2 flex ml-2">
+                    {/* <div className="items-center space-x-2 flex ml-2">
                         <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
-                    </div>
+                    </div> */}
                 </div>
             ))}
         </div>

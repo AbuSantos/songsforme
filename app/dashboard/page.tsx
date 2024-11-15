@@ -19,10 +19,9 @@ import { HelpComponent } from "@/components/dashboard/addnft/help"
 import { MusicAccordion } from "@/components/dashboard/addnft/music-type"
 import { db } from "@/lib/db"
 import { revalidateTag } from "next/cache"
-import MarketPlace from "@/components/marketplace/market"
 import { Filter } from "@/components/marketplace/filter"
 import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
-import BoughtNFT from "@/components/buy-folder/my-bought-nft"
+// import BoughtNFT from "@/components/buy-folder/my-bought-nft"
 import { ListedNFT, Playlist, PlaylistListedNFT, Single } from "@/types"
 import { AllPlaylist } from "@/components/playlists/all-playlist"
 import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
@@ -33,30 +32,48 @@ import { Search } from "@/components/dashboard/search/search-songs"
 import { MarketSkeleton } from "@/components/marketplace/marketplace-skeleton"
 import { Suspense } from "react"
 import { FilterByTime } from "@/components/marketplace/filter/filter-by-time"
+import { Ratio } from "@/components/marketplace/filter/filter-by-ratio"
+import dynamic from "next/dynamic"
+
+const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
+    suspense: true,
+});
+
+const BoughtNFT = dynamic(() => import("@/components/buy-folder/my-bought-nft"), {
+    suspense: true,
+});
+
 
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
 }
 
-export default async function MusicPage({ searchParams }: { searchParams: { filter?: string } }) {
+export default async function MusicPage({ searchParams }: { searchParams: { filter?: string; ratio?: string } }) {
     const userId = await getSession()
     const filter = searchParams.filter || "ratio";
+    const ratio = searchParams.ratio
+
+    console.log(ratio, "ratio from music")
+    console.log(filter, "ratio from music filter")
+
+    // // Parse ratio parameter
+    // let minRatio: number | null = null;
+    // let maxRatio: number | null = null;
+
+    // if (typeof ratio === "string" && ratio.includes(",")) {
+    //     const [min, max] = ratio.split(",").map(value => parseFloat(value.trim()));
+    //     minRatio = !isNaN(min) ? min : null;
+    //     maxRatio = !isNaN(max) ? max : null;
+    // } else {
+    //     console.log("Invalid or missing ratio parameter");
+    // }
+
+    // console.log({ minRatio, maxRatio }, "Parsed min and max ratios");
+
+    // http://localhost:3000/dashboard?filter=&minRatio=0.2&maxRatio=0.3
 
     const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
-    // const playlists: Playlist[] = await db.playlist.findMany({
-    //     select: {
-    //         rewardRatio: true,
-    //         accumulatedTime: true,
-    //         name: true,
-    //         id: true,
-
-    //     },
-    //     ...(orderBy ? { orderBy } : {})
-    // })
-
-
-
     try {
 
         {/* @ts-ignore */ }
@@ -227,24 +244,18 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 className="h-full flex-col border-none p-0 data-[state=active]:flex"
                             >
                                 <div className="flex items-center justify-between w-full">
-                                    <div className="space-y-1 hidden md:block w-5/12">
-                                        <h2 className=" font-medium text-[1rem] md:text-2xl  md:font-semibold tracking-tight text-[#B4B4B4]">
-                                            Buy and Sell NFTs
-                                        </h2>
-                                    </div>
-
-                                    <div className="flex items-center w-full ">
-                                        <FilterByTime />
-                                        <Search placeholder="Search songs..." />
-                                        {/* <FilterByName items={listedData} /> */}
-                                    </div>
+                                    {/* <Ratio /> */}
+                                    <FilterPlace />
+                                    <FilterByTime />
+                                    <Search placeholder="Search songs..." />
+                                    {/* <FilterByName items={listedData} /> */}
                                 </div>
                                 <Separator className="my-4 bg-[#7B7B7B]" />
                                 <div className="relative">
                                     <ScrollArea>
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 pb-4">
-                                                < MarketPlace filter={filter} />
+                                                < MarketPlace filter={filter}  />
                                             </div>
                                         </Suspense>
                                         <ScrollBar orientation="horizontal" />
@@ -285,5 +296,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
         )
     } catch (error) {
         console.log(error)
+        return (
+            <div className="text-center">
+                <h2 className="text-red-500">Failed to load the page.</h2>
+            </div>)
     }
 }
