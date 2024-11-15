@@ -1,3 +1,4 @@
+"use client"
 import { prepareContractCall, toWei } from "thirdweb";
 import { TransactionButton } from "thirdweb/react";
 import { toast } from "sonner";
@@ -5,6 +6,8 @@ import { Button } from "../ui/button";
 import { contract } from "@/lib/client";
 import { useTransition } from "react";
 import { buyNFT } from "@/actions/buy-song";
+import { useRecoilValue } from "recoil";
+import { isConnected } from "@/atoms/session-atom";
 
 // Interface defining the props for the BuyNFT component
 interface NFTProps {
@@ -16,8 +19,9 @@ interface NFTProps {
 }
 
 // BuyNFT Component for handling the purchase of an NFT on the blockchain
-export const BuyNFT = ({ nftAddress, tokenId, price, listedNftId, buyer }: NFTProps) => {
+export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId }: NFTProps) => {
     const [isPending, startTransition] = useTransition();
+
 
     const handleBuyNft = (price: number, transactionHash: string) => {
         console.log(buyer, price, listedNftId)

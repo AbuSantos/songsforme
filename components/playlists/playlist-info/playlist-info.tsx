@@ -1,9 +1,13 @@
+"use client"
 import { amountGenerated, countPlays, totalPlayTime } from '@/dynamic-price/helper/play-count'
 import { Playlist } from '@/types'
 import Image from 'next/image'
 import { EditRatio } from './edit-ratio'
+import { useRecoilValue } from 'recoil'
+import { isConnected } from '@/atoms/session-atom'
 
 export const PlaylistInfo = ({ data }: { data: Playlist }) => {
+    const userId = useRecoilValue(isConnected);
 
     const plays = countPlays(data?.accumulatedTime || 0)
     const amount = amountGenerated(data?.accumulatedTime!)
@@ -14,7 +18,10 @@ export const PlaylistInfo = ({ data }: { data: Playlist }) => {
                 <div className='flex w-full'>
                     <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">current ratio</small>
                     <span className='cursor-pointer '>
-                        <EditRatio playlistId={data?.id} mode='playlist' />
+                        {
+                            data?.userId === userId &&
+                            < EditRatio playlistId={data?.id} mode='playlist' />
+                        }
                     </span>
                 </div>
                 <p className="text-[1rem] uppercase font-medium flex items-center space-x-1 justify-center">

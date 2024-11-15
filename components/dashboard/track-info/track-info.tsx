@@ -1,10 +1,13 @@
+"use client"
+import { isConnected } from '@/atoms/session-atom'
 import { EditRatio } from '@/components/playlists/playlist-info/edit-ratio'
 import { amountGenerated, countPlays } from '@/dynamic-price/helper/play-count'
 import { ListedNFT } from '@/types'
 import Image from 'next/image'
+import { useRecoilValue } from 'recoil'
 
 export const TrackInfo = ({ data }: { data: ListedNFT }) => {
-
+    const userId = useRecoilValue(isConnected);
     const plays = countPlays(data?.totalAccumulatedTime || 0)
     const amount = amountGenerated(data?.totalAccumulatedTime!)
 
@@ -42,7 +45,11 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
                 <div className='flex w-full'>
                     <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">current ratio</small>
                     <span className='cursor-pointer '>
-                        <EditRatio trackId={data?.id} mode="track" />
+
+                        {
+                            data?.seller === userId &&
+                            <EditRatio trackId={data?.id} mode="track" />
+                        }
                     </span>
                 </div>
                 <p className="text-[1rem] uppercase font-medium">{data?.rewardRatio} </p>
@@ -51,7 +58,11 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
                 <div className='flex w-full'>
                     <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">playloist ratio</small>
                     <span className='cursor-pointer '>
-                        <EditRatio trackId={data?.id} mode="track-playlist" />
+
+                        {
+                            data?.seller === userId &&
+                            <EditRatio trackId={data?.id} mode="track-playlist" />
+                        }
                     </span>
                 </div>
                 <p className="text-[1rem] uppercase font-medium">{data?.playlistRewardRatio} </p>

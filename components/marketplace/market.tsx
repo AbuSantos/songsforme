@@ -11,13 +11,16 @@ import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
 
 // export const revalidate = 60; // Revalidate every 60 seconds as a fallback
 type MarketPlaceProps = {
-    filter: string
+    filter?: string
 }
 // Server Component
 
 // Helper: Build query filters dynamically
-const buildQueryFilters = (filter: string) => {
+const buildQueryFilters = (filter: string | undefined) => {
+    //@ts-ignore
     const threshHold = getTimeThreshold(filter);
+    //@ts-ignore
+
     const { address } = getAddressOrName(filter);
 
     const whereFilters = {
@@ -35,7 +38,9 @@ const buildQueryFilters = (filter: string) => {
     return { whereFilters, orderBy };
 };
 
+
 const MarketPlace = async ({ filter }: MarketPlaceProps) => {
+    //@ts-ignore
     const { address, name } = getAddressOrName(filter);
     const { whereFilters, orderBy } = buildQueryFilters(filter);
 

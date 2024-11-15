@@ -16,6 +16,8 @@ import { CheckCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { toast } from 'sonner'; // Toast library for notifications
 import { Skeleton } from "../ui/skeleton";
+import { useRecoilValue } from "recoil";
+import { isConnected } from "@/atoms/session-atom";
 
 type SelectProps = {
     nftId: string;
