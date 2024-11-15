@@ -7,7 +7,7 @@ import { Skeleton } from "../ui/skeleton";
 import { MarketSkeleton } from "./marketplace-skeleton";
 import { Tracktable } from "../musicNFTs/listedNFT/data-table";
 import { Suspense } from "react";
-import { getTimeThreshold } from "@/lib/utils";
+import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
 
 // export const revalidate = 60; // Revalidate every 60 seconds as a fallback
 type MarketPlaceProps = {
@@ -19,8 +19,9 @@ type MarketPlaceProps = {
 const MarketPlace = async ({ filter }: MarketPlaceProps) => {
 
     const threshHold = getTimeThreshold(filter)
+    const { address, name } = getAddressOrName(filter);
 
-    console.log(threshHold, "filtering from marketplace")
+    console.log(address, name, "filtering from marketplace")
 
     // const filter = searchParams?.filter || "";
     const listedNFTs = await db.listedNFT.findMany({
@@ -29,6 +30,14 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
             ...(threshHold && {
                 listedAt: {
                     gte: threshHold
+                }
+            }),
+            ...(address && {
+                contractAddress: address
+            }),
+            ...(name && {
+                Single: {
+                    artist_name: name
                 }
             })
         },
@@ -41,15 +50,18 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
             contractAddress: true,
             accumulatedTime: true,
             rewardRatio: true,
-            isSaleEnabled: true
+            isSaleEnabled: true,
+            Single: {
+                select: {
+                    song_cover: true,
+                    artist_name: true
+                }
+            }
         },
 
     });
 
-
-    console.log(listedNFTs, "from market")
-
-
+    console.log(listedNFTs)
     revalidateTag("bought")
 
     if (!listedNFTs.length) {
@@ -57,10 +69,13 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
     }
 
     return (
-        <div className="w-full">
-            {/* @ts-ignore */}
-            <Tracktable data={listedNFTs} />
-        </div>
+        < Suspense fallback={<MarketSkeleton />}>
+            <div className="w-full">
+                {/* @ts-ignore */}
+                <Tracktable data={listedNFTs} />
+            </div>
+        </Suspense>
+
     );
 };
 

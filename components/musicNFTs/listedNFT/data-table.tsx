@@ -69,9 +69,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     <Link href={`/dashboard/trackinfo/${track.id}`} className="flex w-8/12 items-center">
                         <p className="w-10">{track?.tokenId}</p>
                         <div className="flex flex-col w-8/12">
-                            {/* ADD SINGLE SONG NAME  */}
-                            {/* @ts-ignore */}
-                            <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.title || "Untitled Track"}</p>
+                            <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.artist_name || "Untitled Track"}</p>
                             <small className="uppercase text-[0.7rem] ">FT: Santos</small>
                         </div>
                         <div className="flex items-center justify-center w-4/12">

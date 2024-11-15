@@ -226,14 +226,14 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 value="podcasts"
                                 className="h-full flex-col border-none p-0 data-[state=active]:flex"
                             >
-                                <div className="flex items-center justify-between ">
-                                    <div className="space-y-1 hidden md:block">
+                                <div className="flex items-center justify-between w-full">
+                                    <div className="space-y-1 hidden md:block w-5/12">
                                         <h2 className=" font-medium text-[1rem] md:text-2xl  md:font-semibold tracking-tight text-[#B4B4B4]">
                                             Buy and Sell NFTs
                                         </h2>
                                     </div>
 
-                                    <div className="flex items-center">
+                                    <div className="flex items-center w-full ">
                                         <FilterByTime />
                                         <Search placeholder="Search songs..." />
                                         {/* <FilterByName items={listedData} /> */}
