@@ -15,35 +15,37 @@ type MarketPlaceProps = {
 }
 // Server Component
 
+// Helper: Build query filters dynamically
+const buildQueryFilters = (filter: string) => {
+    const threshHold = getTimeThreshold(filter);
+    const { address } = getAddressOrName(filter);
+
+    const whereFilters = {
+        sold: false,
+        ...(threshHold && { listedAt: { gte: threshHold } }),
+        ...(address && { contractAddress: address }),
+    };
+
+    const orderBy = filter === "ratio"
+        ? { rewardRatio: "desc" as const }
+        : filter === "playtime"
+            ? { totalAccumulatedTime: "asc" as const }
+            : undefined;
+
+    return { whereFilters, orderBy };
+};
 
 const MarketPlace = async ({ filter }: MarketPlaceProps) => {
-    const threshHold = getTimeThreshold(filter)
     const { address, name } = getAddressOrName(filter);
+    const { whereFilters, orderBy } = buildQueryFilters(filter);
 
-
-    const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
+    // const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { totalAccumulatedTime: "asc" as const } : undefined
 
     console.log(filter, "filtering from marketplace")
 
     // const filter = searchParams?.filter || "";
     const listedNFTs = await db.listedNFT.findMany({
-        where: {
-            sold: false,
-            ...(threshHold && {
-                listedAt: {
-                    gte: threshHold
-                }
-            }),
-            ...(address && {
-                contractAddress: address
-            }),
-
-            // ...(name && {
-            //     Single: {
-            //         artist_name: name
-            //     }
-            // })
-        },
+        where: whereFilters,
         select: {
             id: true,
             tokenId: true,
@@ -52,6 +54,7 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
             price: true,
             contractAddress: true,
             accumulatedTime: true,
+            totalAccumulatedTime: true,
             rewardRatio: true,
             isSaleEnabled: true,
             Single: {

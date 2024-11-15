@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export const FilterPlace = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleValueChange = (value: string) => {
     const params = new URLSearchParams(window.location.search);
