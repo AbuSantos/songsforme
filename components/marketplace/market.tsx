@@ -7,19 +7,35 @@ import { Skeleton } from "../ui/skeleton";
 import { MarketSkeleton } from "./marketplace-skeleton";
 import { Tracktable } from "../musicNFTs/listedNFT/data-table";
 import { Suspense } from "react";
+import { getTimeThreshold } from "@/lib/utils";
 
 // export const revalidate = 60; // Revalidate every 60 seconds as a fallback
-
+type MarketPlaceProps = {
+    filter: string
+}
 // Server Component
-const MarketPlace = async () => {
-    // const filter = searchParams?.filter || "";
 
-    // Fetch data from database directly
+
+const MarketPlace = async ({ filter }: MarketPlaceProps) => {
+
+    const threshHold = getTimeThreshold(filter)
+
+    console.log(threshHold, "filtering from marketplace")
+
+    // const filter = searchParams?.filter || "";
     const listedNFTs = await db.listedNFT.findMany({
-        where: { sold: false },
+        where: {
+            sold: false,
+            ...(threshHold && {
+                listedAt: {
+                    gte: threshHold
+                }
+            })
+        },
         select: {
             id: true,
             tokenId: true,
+            listedAt: true,
             seller: true,
             price: true,
             contractAddress: true,
@@ -27,9 +43,12 @@ const MarketPlace = async () => {
             rewardRatio: true,
             isSaleEnabled: true
         },
+
     });
 
-    console.log(listedNFTs)
+
+    console.log(listedNFTs, "from market")
+
 
     revalidateTag("bought")
 

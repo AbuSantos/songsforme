@@ -244,7 +244,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <ScrollArea>
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 pb-4">
-                                                < MarketPlace />
+                                                < MarketPlace filter={filter} />
                                             </div>
                                         </Suspense>
                                         <ScrollBar orientation="horizontal" />
