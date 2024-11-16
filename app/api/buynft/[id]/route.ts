@@ -30,7 +30,7 @@ export const GET = async (
       },
       include: {
         listedNft: {
-          include: {
+          select: {
             Single: {
               select: {
                 id: true,
@@ -39,12 +39,15 @@ export const GET = async (
                 song_name: true,
               },
             },
+            seller: true,
+            tokenId: true,
+            price: true,
+            contractAddress: true,
+            id: true,
           },
         },
       },
     });
-
-    console.log(nfts, "from my bought");
 
     // Return the fetched playlists as a JSON response
     return new Response(JSON.stringify(nfts), {

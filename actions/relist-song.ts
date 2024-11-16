@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { listedNFT } from "./listNFT";
+import { revalidateTag } from "next/cache";
 
 /**
  * Relists an NFT on the marketplace after it has been bought.
@@ -53,9 +54,12 @@ export const relistSong = async (
         },
       },
       update: {
+        seller,
         price: parsedPrice,
         listedAt: new Date(),
         sold: false,
+        isSaleEnabled: false,
+        accumulatedTime: 0,
       },
       create: {
         seller,
@@ -64,10 +68,10 @@ export const relistSong = async (
         price: parsedPrice,
         listedAt: new Date(),
         sold: false,
+        isSaleEnabled: false,
       },
     });
-
-    console.log(`NFT relisted successfully with price: ${parsedPrice}`);
+    revalidateTag("nft");
 
     // Update the `relisted` status in `buyNFT` table
     // await db.buyNFT.update({

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { RelistNft } from "./relist";
+import { CancelListing } from "./cancel-folder/cancel-listing";
 
 type TrackTableType = {
     data: BuyNFT
@@ -31,26 +32,25 @@ export const BoughtTable = ({ data }: TrackTableType) => {
                 {data &&
                     <div className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
                         <Link href={`/dashboard/trackinfo/${data.listedNftId}`} className="flex w-8/12 items-center ">
-                            {/* <p className="w-10 ">
-                            {data?.status}
-                        </p> */}
                             <div className="flex flex-col w-8/12">
-                                <p className="text-[0.8rem] md:text-[1rem] capitalize">
+                                {/* <p className="text-[0.8rem] md:text-[1rem] capitalize">
                                     {data?.status}
-                                </p>
+                                </p> */}
                                 <small className="uppercase text-[0.7rem] ">
-                                    FT: Santos
+                                    {data?.listedNft?.Single?.artist_name}
                                 </small>
                             </div>
                             <div className="flex items-center justify-center  w-4/12">
                                 <span>
-                                    {data?.price}
+                                    {data?.listedNft?.price}
                                 </span>
                                 <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className='ml-1' />
 
                             </div>
                         </Link>
                         <div className="">
+
+                            <CancelListing address={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} nftId={data?.listedNft?.id} userId={userId} />
                             < RelistNft seller={userId} nft={data} />
                         </div>
                         <div className="items-center space-x-2 flex ml-2">
@@ -59,7 +59,6 @@ export const BoughtTable = ({ data }: TrackTableType) => {
                     </div>
                 }
             </div>
-
         )
     } catch (error) {
         console.log(error)

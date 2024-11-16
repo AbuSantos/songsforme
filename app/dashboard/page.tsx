@@ -83,6 +83,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             }
         });
 
+        console.log(listedData, "from market")
+
         revalidateTag("nft");
 
         {/* @ts-ignore */ }
