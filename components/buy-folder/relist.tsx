@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import { FormError } from "../errorsandsuccess/form-error";
 import { FormSuccess } from "../errorsandsuccess/form-success";
 import { prepareTransaction, toWei } from "thirdweb";
+import useSWR, { mutate } from 'swr';
 
 import {
     Popover,
@@ -26,23 +27,23 @@ type listingProps = {
 }
 
 export const RelistNft = ({ nft, seller }: listingProps) => {
-    console.log(nft, "from relisting")
-
     const [isPending, startTransition] = useTransition();
     const [price, setPrice] = useState<string>("");
     const [isError, setIsError] = useState("");
     const [isSuccess, setIsSuccess] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    console.log(nft?.listedNft?.contractAddress, nft?.listedNft?.tokenId, "from selling")
+    const apiUrl = seller ? `/api/buynft/${seller}` : null;
 
     const saveListing = async (
         price: string,
     ) => {
         startTransition(async () => {
             try {
+                
                 const response = await relistSong(seller, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress, nft?.id);
                 if (response?.message) {
+                    mutate(apiUrl)
                     setIsSuccess(response.message);
                     toast.success("NFT listed successfully!");
                 } else {

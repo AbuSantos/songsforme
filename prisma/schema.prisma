@@ -120,6 +120,8 @@ model Playlist {
   date              DateTime            @default(now())
   description       String?
   cover             String?
+  isForSale         Boolean             @default(false)
+  isRelisted        Boolean             @default(false)
 }
 
 model BuyNFT {

@@ -49,7 +49,9 @@ export const BoughtTable = ({ data }: TrackTableType) => {
                             </div>
                         </Link>
                         <div className="">
-
+{
+    
+}
                             <CancelListing address={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} nftId={data?.listedNft?.id} userId={userId} />
                             < RelistNft seller={userId} nft={data} />
                         </div>

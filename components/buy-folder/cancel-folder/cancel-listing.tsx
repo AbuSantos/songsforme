@@ -17,6 +17,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { cancelListing } from "@/actions/cancel-listing";
+import { mutate } from "swr";
 type CancelProps = {
     address: string
     nftId: string
@@ -26,7 +27,9 @@ type CancelProps = {
 
 export const CancelListing = ({ address, tokenId, nftId, userId }: CancelProps) => {
     const [isPending, startTransition] = useTransition();
+    const apiUrl = userId ? `/api/buynft/${userId}` : null;
 
+    console.log(nftId, userId)
 
     const handleCancel = () => {
         startTransition(async () => {
@@ -34,19 +37,17 @@ export const CancelListing = ({ address, tokenId, nftId, userId }: CancelProps) 
                 const res = await cancelListing(nftId, userId)
                 if (res.message) {
                     toast.success(res.message)
+                    mutate(apiUrl)
                 }
             } catch (error: any) {
                 toast.error("Something went wrong", error.message)
             }
 
         })
-
     }
-
 
     return (
         <Popover>
-
             <PopoverTrigger asChild>
                 <Button className="bg-slate-100 text-black ">
                     Cancel listing
@@ -54,7 +55,7 @@ export const CancelListing = ({ address, tokenId, nftId, userId }: CancelProps) 
             </PopoverTrigger>
             <PopoverContent className="w-80">
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-                    <div className="relative bg-gray-900 rounded-md w-3/6 py-4 px-6">
+                    {/* <div className="relative bg-gray-900 rounded-md w-3/6 py-4 px-6">
                         <TransactionButton
                             transaction={() => {
                                 // Create a transaction object and return it
@@ -77,9 +78,9 @@ export const CancelListing = ({ address, tokenId, nftId, userId }: CancelProps) 
                         >
                             Confirm Cancel Listing
                         </TransactionButton>
-                    </div>
+                    </div> */}
 
-                    <button onClick={handleCancel}>
+                    <button onClick={handleCancel} className="bg-gray-300">
                         confirm cancel
                     </button>
                 </div >

@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 
 export const cancelListing = async (id: string, userId: string) => {
   if (!id || !userId) {
@@ -9,28 +10,37 @@ export const cancelListing = async (id: string, userId: string) => {
 
   try {
     // Optional: Validate if the user exists (only needed if userId isn't authenticated upstream)
-    const user = await db.user.findUnique({
-      where: {
-        userId,
-      },
-      select: {
-        id: true,
-      },
-    });
+    
+    //FIX THE USERID 
+    
+    
+    // const user = await db.user.findUnique({
+    //   where: {
+    //     userId,
+    //   },
+    //   select: {
+    //     id: true,
+    //   },
+    // });
 
-    if (!user) {
-      return { success: false, message: "User not found!" };
-    }
+    // if (!user) {
+    //   return { success: false, message: "User not found!" };
+    // }
 
     // Update the NFT record
     await db.listedNFT.update({
       where: { id },
-      data: { sold: false },
+      data: { sold: true },
     });
+
+    revalidateTag("nft");
 
     return { success: true, message: "NFT canceled successfully!" };
   } catch (error: any) {
     console.error("Error canceling NFT:", error);
-    return { success: false, message: "An error occurred while canceling the NFT." };
+    return {
+      success: false,
+      message: "An error occurred while canceling the NFT.",
+    };
   }
 };
