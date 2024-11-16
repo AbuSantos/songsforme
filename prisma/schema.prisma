@@ -130,6 +130,7 @@ model BuyNFT {
   price           Float
   purchaseDate    DateTime        @default(now()) // Date of purchase
   transactionHash String?
+  isSaleEnabled   Boolean         @default(false)
   status          PurchaseStatus? @default(NONE)
   relisted        Boolean         @default(false)
 }

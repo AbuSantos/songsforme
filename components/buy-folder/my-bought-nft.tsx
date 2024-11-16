@@ -19,14 +19,13 @@ const BoughtNFT = () => {
 
     // Use SWR to fetch data; only fetch if `apiUrl` is not null
     const { data: nfts, error, isLoading } = useSWR(apiUrl, fetcher, {
-        shouldRetryOnError: false,
+        shouldRetryOnError: true,
     });
 
     if (!userId) {
         return <p className='text-center p-2'>Please connect your wallet to view your NFTs.</p>;
     }
 
-    // Display loading, error, or data based on SWR state
     return (
         <div>
             <h2 className='text-center p-2'>My NFTs</h2>

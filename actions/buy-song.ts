@@ -45,7 +45,7 @@ export const buyNFT = async (
       });
 
       // Create a new purchase record
-      const listed = await prisma.buyNFT.create({
+      await prisma.buyNFT.create({
         data: {
           buyer,
           price: price,
@@ -54,7 +54,6 @@ export const buyNFT = async (
           ...(transactionHash && { transactionHash }),
         },
       });
-      console.log(listed);
     });
 
     // Revalidate cached data

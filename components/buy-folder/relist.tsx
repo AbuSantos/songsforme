@@ -72,7 +72,7 @@ export const RelistNft = ({ nft, seller }: listingProps) => {
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
 
-                    <TransactionButton
+                    {/* <TransactionButton
                         transaction={() => {
                             const priceInWei = ethers.utils.parseEther(price);
                             const tx = prepareContractCall({
@@ -105,12 +105,12 @@ export const RelistNft = ({ nft, seller }: listingProps) => {
                         }
                     >
                         Confirm Listing
-                    </TransactionButton>
-                    {/* <Button
-                        onClick={() => saveListing(nft?.buyer, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress, nft?.id)}
+                    </TransactionButton> */}
+                    <Button
+                        onClick={() => saveListing(price)}
                     >
                         save listing
-                    </Button> */}
+                    </Button>
                     < FormError message={isError} />
                     < FormSuccess message={isSuccess} />
                 </div>

@@ -18,7 +18,7 @@ type TrackTableType = {
 
 export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
-    const userId = useRecoilValue(isConnected);
+    const userId = useRecoilValue(isConnected).toLowerCase();
     const [isPending, startTransition] = useTransition();
 
     // Toggle function to switch buy/sell mode for individual NFTs
@@ -70,7 +70,6 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                         <p className="w-10">{track?.tokenId}</p>
                         <div className="flex flex-col w-8/12">
                             <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.artist_name || "Untitled Track"}</p>
-                            <small className="uppercase text-[0.7rem] ">FT: Santos</small>
                         </div>
                         <div className="flex items-center justify-center w-4/12">
                             <span>{track?.price}</span>
@@ -93,9 +92,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                             <p>Bid</p>
                         ))}
                     </div>
-                    {/* <div className="items-center space-x-2 flex ml-2">
+                    <div className="items-center space-x-2 flex ml-2">
                         <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
-                    </div> */}
+                    </div>
                 </div>
             ))}
         </div>

@@ -41,7 +41,6 @@ const buildQueryFilters = (filter: string | undefined) => {
 
 const MarketPlace = async ({ filter }: MarketPlaceProps) => {
     //@ts-ignore
-    const { address, name } = getAddressOrName(filter);
     const { whereFilters, orderBy } = buildQueryFilters(filter);
 
     // const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { totalAccumulatedTime: "asc" as const } : undefined

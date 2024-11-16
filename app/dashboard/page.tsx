@@ -245,9 +245,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             >
                                 <div className="flex items-center justify-between w-full">
                                     {/* <Ratio /> */}
+                                    <Search placeholder="Search songs..." />
                                     <FilterPlace />
                                     <FilterByTime />
-                                    <Search placeholder="Search songs..." />
                                     {/* <FilterByName items={listedData} /> */}
                                 </div>
                                 <Separator className="my-4 bg-[#7B7B7B]" />
@@ -255,7 +255,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <ScrollArea>
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 pb-4">
-                                                < MarketPlace filter={filter}  />
+                                                < MarketPlace filter={filter} />
                                             </div>
                                         </Suspense>
                                         <ScrollBar orientation="horizontal" />
@@ -266,7 +266,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 value="mynft"
                                 className="border-none p-0 outline-none"
                             >
-                                <BoughtNFT />
+                                <Suspense fallback={<MarketSkeleton />}>
+                                    <BoughtNFT />
+                                </Suspense>
                             </TabsContent>
                             <TabsContent
                                 value="trendingPlaylist"

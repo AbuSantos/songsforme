@@ -26,12 +26,19 @@ export const GET = async (
     const nfts = await db.buyNFT.findMany({
       where: {
         buyer: id,
-        relisted: false,
+        // relisted: false,
       },
       include: {
         listedNft: {
           include: {
-            Single: true,
+            Single: {
+              select: {
+                id: true,
+                artist_name: true,
+                song_cover: true,
+                song_name: true,
+              },
+            },
           },
         },
       },

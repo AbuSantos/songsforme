@@ -19,7 +19,9 @@ export const relistSong = async (
   nftAddress: string,
   boughtNFTId: string
 ): Promise<{ message: string }> => {
-  console.log(`Attempting to relist NFT with tokenId: ${tokenId} by seller: ${seller}`);
+  console.log(
+    `Attempting to relist NFT with tokenId: ${tokenId} by seller: ${seller}`
+  );
 
   if (!seller || !tokenId || !price || !nftAddress || !boughtNFTId) {
     return { message: "Invalid input. All fields are required." };
@@ -43,7 +45,7 @@ export const relistSong = async (
     }
 
     // Upsert the NFT listing
-    const relistResult = await db.listedNFT.upsert({
+    await db.listedNFT.upsert({
       where: {
         tokenId_contractAddress: {
           tokenId,
@@ -68,10 +70,10 @@ export const relistSong = async (
     console.log(`NFT relisted successfully with price: ${parsedPrice}`);
 
     // Update the `relisted` status in `buyNFT` table
-    await db.buyNFT.update({
-      where: { id: boughtNFTId },
-      data: { relisted: true },
-    });
+    // await db.buyNFT.update({
+    //   where: { id: boughtNFTId },
+    //   data: { relisted: true },
+    // });
 
     return { message: "NFT relisted successfully." };
   } catch (error) {

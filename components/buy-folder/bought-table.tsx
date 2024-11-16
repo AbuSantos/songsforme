@@ -16,12 +16,9 @@ type TrackTableType = {
 
 
 export const BoughtTable = ({ data }: TrackTableType) => {
-    const userId = useRecoilValue(isConnected)
+    const userId = useRecoilValue(isConnected).toLowerCase()
     console.log(data, "bought table");
     try {
-
-
-
         return (
             <div>
                 <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-2">
