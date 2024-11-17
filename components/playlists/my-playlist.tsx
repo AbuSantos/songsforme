@@ -29,8 +29,6 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
     })}`;
 
 
-
-
     const { data: playlists, error, isLoading } = useSWR(apiUrl, fetcher);
 
     const useData = mode === "aside" ? data : playlists
@@ -48,14 +46,6 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
             </div>
         );
     }
-
-    console.log(data, "from my playlist")
-
-    // function convertIpfsToHttp(uri: string) {
-    //     return uri.startsWith("ipfs://")
-    //         ? uri.replace("ipfs://", "https://ipfs.io/ipfs/")
-    //         : uri;
-    // } 
     try {
         return (
             <Accordion type="single" collapsible className="w-full">

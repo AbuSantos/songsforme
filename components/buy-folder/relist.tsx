@@ -33,6 +33,8 @@ export const RelistNft = ({ nft, seller }: listingProps) => {
     const [isSuccess, setIsSuccess] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    console.log(nft, "from the nft bought")
+
     const apiUrl = seller ? `/api/buynft/${seller}` : null;
 
     const saveListing = async (
@@ -40,7 +42,7 @@ export const RelistNft = ({ nft, seller }: listingProps) => {
     ) => {
         startTransition(async () => {
             try {
-                
+
                 const response = await relistSong(seller, nft?.listedNft?.tokenId, price, nft?.listedNft?.contractAddress, nft?.id);
                 if (response?.message) {
                     mutate(apiUrl)

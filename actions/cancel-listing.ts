@@ -3,17 +3,20 @@
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 
-export const cancelListing = async (id: string, userId: string) => {
+export const cancelListing = async (
+  id: string,
+  userId: string,
+  boughtNFTId: string
+) => {
   if (!id || !userId) {
     return { success: false, message: "Invalid ID or User ID provided!" };
   }
 
   try {
     // Optional: Validate if the user exists (only needed if userId isn't authenticated upstream)
-    
-    //FIX THE USERID 
-    
-    
+
+    //FIX THE USERID
+
     // const user = await db.user.findUnique({
     //   where: {
     //     userId,
@@ -30,7 +33,14 @@ export const cancelListing = async (id: string, userId: string) => {
     // Update the NFT record
     await db.listedNFT.update({
       where: { id },
-      data: { sold: true },
+      data: { sold: true, isRelisted: false },
+    });
+
+    await db.buyNFT.update({
+      where: { id: boughtNFTId },
+      data: {
+        status: "COMPLETE",
+      },
     });
 
     revalidateTag("nft");

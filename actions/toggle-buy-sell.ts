@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 export async function toggleState(
   nftId: string,
   state: string
@@ -27,6 +28,8 @@ export async function toggleState(
       where: { id: nftId },
       data: { isSaleEnabled: state },
     });
+
+    revalidateTag("nft");
 
     return {
       message: `NFT sale state updated to ${state ? "enabled" : "disabled"}!`,

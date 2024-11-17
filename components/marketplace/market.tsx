@@ -75,9 +75,15 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
     // console.log(listedNFTs)
     revalidateTag("bought")
 
-    if (!listedNFTs.length) {
-        return <MarketSkeleton />;
+
+    if (listedNFTs.length === 0) {
+        return <p>There's currently no NFT Listed on the MARKETPLACE</p>
     }
+
+    if (!listedNFTs.length) {
+        return <p>There's currently no NFT Listed on the MARKETPLACE</p>
+    }
+
 
     return (
         < Suspense fallback={<MarketSkeleton />}>

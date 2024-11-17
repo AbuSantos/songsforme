@@ -71,13 +71,16 @@ export const relistSong = async (
         isSaleEnabled: false,
       },
     });
-    revalidateTag("nft");
+
+    //CHANGE THE PENDING STATE TO REFLECT THE ACTION WERE PERFORMING
 
     // Update the `relisted` status in `buyNFT` table
-    // await db.buyNFT.update({
-    //   where: { id: boughtNFTId },
-    //   data: { relisted: true },
-    // });
+    await db.buyNFT.update({
+      where: { id: boughtNFTId },
+      data: { status: "PENDING" },
+    });
+
+    revalidateTag("nft");
 
     return { message: "NFT relisted successfully." };
   } catch (error) {

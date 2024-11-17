@@ -26,7 +26,7 @@ export const GET = async (
     const nfts = await db.buyNFT.findMany({
       where: {
         buyer: id,
-        // relisted: false,
+        relisted: false,
       },
       include: {
         listedNft: {
@@ -44,6 +44,8 @@ export const GET = async (
             price: true,
             contractAddress: true,
             id: true,
+            // isForSale: true,
+            // isRelisted: true,
           },
         },
       },

@@ -89,6 +89,8 @@ model ListedNFT {
   NFTListeningTime     NFTListeningTime[]
   priceData            Json? //Array of { timestamp: DateTime, price: Int }
   isSaleEnabled        Boolean             @default(false)
+  isForSale            Boolean             @default(false)
+  isRelisted           Boolean             @default(false)
 
   @@unique([tokenId, contractAddress])
   @@index([id])
@@ -120,8 +122,6 @@ model Playlist {
   date              DateTime            @default(now())
   description       String?
   cover             String?
-  isForSale         Boolean             @default(false)
-  isRelisted        Boolean             @default(false)
 }
 
 model BuyNFT {

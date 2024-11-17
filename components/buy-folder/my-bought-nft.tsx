@@ -14,6 +14,8 @@ const BoughtNFT = () => {
     // Retrieve and format the user ID from session state
     const userId = useRecoilValue(isConnected)?.toLowerCase();
 
+    console.log(userId)
+
     // Conditionally set the API URL only if userId is available
     const apiUrl = userId ? `/api/buynft/${userId}` : null;
 

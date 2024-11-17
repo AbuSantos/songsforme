@@ -26,6 +26,8 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
   const [isSuccess, setIsSuccess] = useState<string>("");
   const seller = useRecoilValue(isConnected)
 
+  console.log(seller, "from listed")
+
   // 0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9
 
   const saveListing = (seller: string, tokenId: number, price: string, nftAddress: string, singleId?: string) => {

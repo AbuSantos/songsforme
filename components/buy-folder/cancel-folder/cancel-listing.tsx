@@ -23,18 +23,19 @@ type CancelProps = {
     nftId: string
     tokenId: string
     userId: string
+    nftBoughtId: string
 }
 
-export const CancelListing = ({ address, tokenId, nftId, userId }: CancelProps) => {
+export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId }: CancelProps) => {
     const [isPending, startTransition] = useTransition();
     const apiUrl = userId ? `/api/buynft/${userId}` : null;
 
-    console.log(nftId, userId)
+    // console.log(nftId, userId)
 
     const handleCancel = () => {
         startTransition(async () => {
             try {
-                const res = await cancelListing(nftId, userId)
+                const res = await cancelListing(nftId, userId, nftBoughtId)
                 if (res.message) {
                     toast.success(res.message)
                     mutate(apiUrl)
@@ -42,7 +43,6 @@ export const CancelListing = ({ address, tokenId, nftId, userId }: CancelProps) 
             } catch (error: any) {
                 toast.error("Something went wrong", error.message)
             }
-
         })
     }
 
@@ -68,7 +68,10 @@ export const CancelListing = ({ address, tokenId, nftId, userId }: CancelProps) 
                                 });
                                 return tx;
                             }}
-                            onTransactionConfirmed={(receipt) => {
+                            onTransactionConfirmed={(tx) => {
+                            if(tx.status==="success"){
+                                
+                            }
                                 console.log("Transaction confirmed", receipt.transactionHash);
                             }}
 
