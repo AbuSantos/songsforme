@@ -49,12 +49,13 @@ export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId }: 
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button className="bg-slate-100 text-black ">
+                <Button className="bg-[#72232D] hover:bg-[#FF977D] hover:text-[#181111] text-gray-100 ">
                     Cancel listing
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+                    <p className="p-3 text-[#72232D]">Youre about to cancel This song from listing?</p>
                     {/* <div className="relative bg-gray-900 rounded-md w-3/6 py-4 px-6">
                         <TransactionButton
                             transaction={() => {

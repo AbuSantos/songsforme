@@ -10,6 +10,10 @@ import { useRecoilValue } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { RelistNft } from "./relist";
 import { CancelListing } from "./cancel-folder/cancel-listing";
+import { TogglingSell } from "../musicNFTs/listedNFT/toggle-buy-sell";
+import { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
+import { toggleState } from "@/actions/toggle-buy-sell";
 
 type TrackTableType = {
     data: BuyNFT
@@ -18,6 +22,48 @@ type TrackTableType = {
 
 export const BoughtTable = ({ data }: TrackTableType) => {
     const userId = useRecoilValue(isConnected).toLowerCase()
+    const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
+
+    const [isPending, startTransition] = useTransition();
+
+    // Toggle function to switch buy/sell mode for individual NFTs
+    const toggleBuySell = (nftId: string) => {
+        const newBuyingState = !isEnabled[nftId];
+        startTransition(async () => {
+            //@ts-ignore
+            const res = await toggleState(nftId, newBuyingState);
+            if (res.message) {
+                toast.success(res.message);
+            }
+            setIsEnabled((prev) => ({
+                ...prev,
+                [nftId]: newBuyingState,
+            }));
+            // Store the updated state in localStorage
+            window.localStorage.setItem(`buy_${nftId}`, JSON.stringify(newBuyingState));
+        });
+    };
+
+    // Restore toggle state from localStorage on mount
+    useEffect(() => {
+        const storedStates: Record<string, boolean> = {};
+
+        // Iterate over the keys of the `data` object
+        Object.entries(data).forEach(([key, track]) => {
+            const storageKey = `buy_${key}`;
+            const storedState = window.localStorage.getItem(storageKey);
+
+            if (storedState) {
+                try {
+                    storedStates[key] = JSON.parse(storedState);
+                } catch (error) {
+                    console.error(`Failed to parse localStorage item for key ${storageKey}:`, error);
+                }
+            }
+        });
+        setIsEnabled(storedStates);
+    }, [data]);
+
     console.log(data, "bought table");
     try {
         return (
@@ -45,18 +91,18 @@ export const BoughtTable = ({ data }: TrackTableType) => {
                                     {data?.listedNft?.price}
                                 </span>
                                 <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className='ml-1' />
-
                             </div>
                         </Link>
-                        <div className="">
+                        <div className="flex items-center space-x-3 ">
                             {
                                 data?.status === "NONE" ?
                                     < RelistNft seller={userId} nft={data} /> :
                                     <CancelListing address={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} nftId={data?.listedNft?.id} userId={userId} nftBoughtId={data?.id} />
                             }
+                            <TogglingSell toggleBuySell={() => toggleBuySell(data.listedNftId)} isEnabled={isEnabled[data.listedNftId] || false} />
                         </div>
                         <div className="items-center space-x-2 flex ml-2">
-                            {/* <Playlisten userId={userId} nftId={data.id} nftContractAddress={} tokenId={} /> */}
+                            <Playlisten userId={userId} nftId={data.id} nftContractAddress={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} />
                         </div>
                     </div>
                 }

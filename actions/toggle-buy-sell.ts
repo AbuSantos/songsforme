@@ -29,6 +29,15 @@ export async function toggleState(
       data: { isSaleEnabled: state },
     });
 
+    // if (state === "true") {
+    //   await db.buyNFT.update({
+    //     where: {
+    //       buyer: nftId,
+    //     },
+    //     data: { relisted: false },
+    //   });
+    // }
+
     revalidateTag("nft");
 
     return {

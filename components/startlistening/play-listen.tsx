@@ -80,22 +80,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         };
     }, [nftData]);
 
-    // useEffect(() => {
-    //     if (nftData?.animation_url) {
-    //         audioRef.current = new Audio(nftData.animation_url);
-    //         const handleEnded = async () => {
-    //             setIsPlaying(false);
-    //             await endListening(userId, playlistId);
-    //         };
-    //         audioRef.current.addEventListener('ended', handleEnded);
-    //         return () => {
-    //             audioRef.current?.removeEventListener('ended', handleEnded);
-    //             audioRef.current?.pause();
-    //         };
-    //     }
-    // }, [nftData, userId, playlistId]);
-
-
     const handlePlayPause = async () => {
         try {
             setIsLoading(true);

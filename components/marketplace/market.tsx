@@ -74,6 +74,7 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
 
     // console.log(listedNFTs)
     revalidateTag("bought")
+    revalidateTag("nft")
 
 
     if (listedNFTs.length === 0) {

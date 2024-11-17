@@ -48,8 +48,9 @@ export const buyNFT = async (
       await prisma.buyNFT.create({
         data: {
           buyer,
-          price: price,
+          price,
           listedNftId,
+          
           purchaseDate: new Date(),
           ...(transactionHash && { transactionHash }),
         },
@@ -58,7 +59,6 @@ export const buyNFT = async (
 
     // Revalidate cached data
     revalidateTag("bought");
-    mutate("bought");
     revalidateTag("nft");
 
     return { message: "NFT bought successfully." };
