@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/popover"
 import React, { useState } from "react";
 import { createplaylist } from "@/actions/create-playlist";
+import { mutate } from "swr";
 
 type ModalProps = {
     id: string
@@ -27,6 +28,7 @@ export const CreatePlaylist = ({ id }: ModalProps) => {
                 toast("Playlist", {
                     description: data?.message,
                 });
+                mutate(`/api/playlists/${id}`)
                 setPlaylist("")
             }).catch((error) => {
                 console.error("Error:", error);

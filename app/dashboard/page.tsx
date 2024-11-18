@@ -129,7 +129,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
 
         return (
             <>
-                <div className="w-[100vw] md:max-w-full lg:block md:block col-span-3 lg:col-span-4 lg:border-l bg-[#111111] rounded-lg text-[var(--text)]">
+                <div className="w-[100vw]   md:max-w-full lg:block md:block col-span-3 lg:col-span-4 lg:border-lrounded-lg text-[var(--text)]">
                     <div className="h-full px-4 py-6 lg:px-8">
                         <Tabs defaultValue="music" className="h-full space-y-6 border-0">
                             <div className="flex items-center justify-between">

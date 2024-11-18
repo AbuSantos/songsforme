@@ -23,14 +23,11 @@ type PlaylistTypes = {
 
 export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
    
-
     const apiUrl = `/api/playlists?${new URLSearchParams({
         ratio: filter || "",
     })}`;
 
-
     const { data: playlists, error, isLoading } = useSWR(apiUrl, fetcher);
-
     const useData = mode === "aside" ? data : playlists
 
     if (error) return <div>Failed to load playlists</div>;
@@ -77,7 +74,7 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
                                             </div>
                                             <div className="hidden md:flex space-x-1">
                                                 {/* <PauseListen userId={userId} playlistId={item.id} /> */}
-                                                <Playlisten userId={userId} nftId={song?.id} playlistId={item.id}  nftContractAddress={song?.contractAddress} tokenId={song?.tokenId} />
+                                                <Playlisten userId={userId} nftId={song?.id} playlistId={item.id} nftContractAddress={song?.contractAddress} tokenId={song?.tokenId} />
                                             </div>
                                         </div>
                                     ))

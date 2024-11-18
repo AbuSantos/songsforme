@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/select";
 import { useSession } from "@/hooks/useSession";
 import { CheckCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-
 import { useEffect, useState } from "react";
 import { toast } from 'sonner'; // Toast library for notifications
 import { Skeleton } from "../ui/skeleton";
 import { useRecoilValue } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
+import { mutate } from "swr";
 
 type SelectProps = {
     nftId: string;
@@ -57,6 +57,7 @@ export const SelectPlaylist = ({ nftId, userId }: SelectProps) => {
                 toast('Playlist', {
                     description: response?.message, // Server response message
                 });
+                mutate(`/api/playlists/${userId}`)
                 setAdded(true); // Mark the song as added to the playlist
             })
             .catch((error) => {

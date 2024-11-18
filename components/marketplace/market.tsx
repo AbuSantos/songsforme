@@ -20,7 +20,6 @@ const buildQueryFilters = (filter: string | undefined) => {
     //@ts-ignore
     const threshHold = getTimeThreshold(filter);
     //@ts-ignore
-
     const { address } = getAddressOrName(filter);
 
     const whereFilters = {

@@ -33,15 +33,7 @@ export const Aside = ({ className }: SidebarProps) => {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="flex justify-between px-2 items-center">
-            <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-              My Playlists
-            </h2>
-            <div>
-              <CreatePlaylist id={userId} />
-            </div>
-          </div>
-          <div className="space-y-1">
-            <Button variant="ghost" className="w-full justify-start">
+            <h2 className="mb-2 py-2 text-[1rem] font-semibold tracking-tight flex space-y-1 justify-start items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -58,8 +50,14 @@ export const Aside = ({ className }: SidebarProps) => {
                 <path d="M16 6H3" />
                 <path d="M12 18H3" />
               </svg>
-              Playlists
-            </Button>
+              My Playlists
+            </h2>
+            <div>
+              <CreatePlaylist id={userId} />
+            </div>
+          </div>
+          <div className="space-y-1">
+
             {isLoading ? (
               <div className="flex flex-col space-y-2">
 
