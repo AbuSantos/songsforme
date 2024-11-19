@@ -18,7 +18,6 @@ export const Aside = ({ className }: SidebarProps) => {
     userId ? `/api/playlists/${userId}` : null,
     fetcher
   );
-  console.log("playlist, from aside", playlist)
 
   if (error) {
     return (
@@ -29,10 +28,10 @@ export const Aside = ({ className }: SidebarProps) => {
   }
 
   return (
-    <div className={cn("pb-12 rounded-lg", className)}>
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <div className="flex justify-between px-2 items-center">
+    <div className={cn("pb-12 rounded-lg w-full", className)}>
+      <div className="space-y-4 w-full">
+        <div className="px-3">
+          <div className="box-border py-4 flex justify-between h-[60px] items-center fixed z-10 ">
             <h2 className="mb-2 py-2 text-[1rem] font-semibold tracking-tight flex space-y-1 justify-start items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -52,32 +51,19 @@ export const Aside = ({ className }: SidebarProps) => {
               </svg>
               My Playlists
             </h2>
-            <div>
+            <div className="lg:ml-[20rem] md:ml-[10rem]">
               <CreatePlaylist id={userId} />
             </div>
           </div>
-          <div className="space-y-1">
-
+          <div className="space-y-1 pt-[70px]">
             {isLoading ? (
-              <div className="flex flex-col space-y-2">
-
-                <div className="flex space-x-1 items-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A]  bg-[#FFFFFF22]  px-2 py-2 w-full mt-2 rounded-md ">
-                  <Skeleton className='w-12 h-12 bg-[#111113]' />
-                  <Skeleton className='w-8/12 h-12 bg-[#111113]' />
-                  <Skeleton className='w-1/12 h-12 bg-[#111113]' />
+              Array.from({ length: 10 }).map((_, index) => (
+                <div key={index} className="flex space-x-1 items-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] bg-[#FFFFFF22] px-2 py-2 w-full mt-2 rounded-md">
+                  <Skeleton className="w-12 h-12 bg-[#111113]" />
+                  <Skeleton className="w-8/12 h-12 bg-[#111113]" />
+                  <Skeleton className="w-1/12 h-12 bg-[#111113]" />
                 </div>
-                <div className="flex space-x-1 items-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A]  bg-[#FFFFFF22]  px-2 py-2 w-full mt-2 rounded-md ">
-                  <Skeleton className='w-12 h-12 bg-[#111113]' />
-                  <Skeleton className='w-8/12 h-12 bg-[#111113]' />
-                  <Skeleton className='w-1/12 h-12 bg-[#111113]' />
-                </div>
-                <div className="flex space-x-1 items-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A]  bg-[#FFFFFF22]  px-2 py-2 w-full mt-2 rounded-md ">
-                  <Skeleton className='w-12 h-12 bg-[#111113]' />
-                  <Skeleton className='w-8/12 h-12 bg-[#111113]' />
-                  <Skeleton className='w-1/12 h-12 bg-[#111113]' />
-                </div>
-              </div>
-
+              ))
             ) : (
               <MyPlaylist data={playlist} userId={userId} mode="aside" />
             )}

@@ -44,7 +44,7 @@ export const Search = ({ placeholder, classname }: SearchProps): JSX.Element => 
     return (
         <Input
             placeholder={placeholder}
-            className={`${classname} border-[1px] p-4 border-[#19191B] w-full`}
+            className={`${classname} border-[1px] py-6 px-2 border-[#19191B] w-full`}
             onChange={handleSearch}
         />
     );

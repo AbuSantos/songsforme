@@ -1,7 +1,6 @@
 
 import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { AlbumArtwork } from "@/components/dashboard/album-artwork"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
@@ -43,7 +42,6 @@ const BoughtNFT = dynamic(() => import("@/components/buy-folder/my-bought-nft"),
     suspense: true,
 });
 
-
 export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
@@ -54,25 +52,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
     const filter = searchParams.filter || "ratio";
     const ratio = searchParams.ratio
 
-    console.log(ratio, "ratio from music")
-    console.log(filter, "ratio from music filter")
-
-    // // Parse ratio parameter
-    // let minRatio: number | null = null;
-    // let maxRatio: number | null = null;
-
-    // if (typeof ratio === "string" && ratio.includes(",")) {
-    //     const [min, max] = ratio.split(",").map(value => parseFloat(value.trim()));
-    //     minRatio = !isNaN(min) ? min : null;
-    //     maxRatio = !isNaN(max) ? max : null;
-    // } else {
-    //     console.log("Invalid or missing ratio parameter");
-    // }
-
-    // console.log({ minRatio, maxRatio }, "Parsed min and max ratios");
-
-    // http://localhost:3000/dashboard?filter=&minRatio=0.2&maxRatio=0.3
-
     const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
     try {
 
@@ -82,8 +61,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 sold: false
             }
         });
-
-        console.log(listedData, "from market")
 
         revalidateTag("nft");
 
@@ -110,7 +87,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             ...(orderBy ? { orderBy } : {})
         })
 
-
         // Sort playlists by the lowest `rewardRatio` of their `listednft`
         const getSortedPlaylists = () => {
             if (!playlists || playlists.length === 0) return [];
@@ -123,18 +99,20 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             })
         }
         const sortedPlaylists = getSortedPlaylists();
+
         if (!listedData) {
             return
         }
 
         return (
             <>
-                <div className="w-[100vw]   md:max-w-full lg:block md:block col-span-3 lg:col-span-4 lg:border-lrounded-lg text-[var(--text)]">
-                    <div className="h-full px-4 py-6 lg:px-8">
-                        <Tabs defaultValue="music" className="h-full space-y-6 border-0">
-                            <div className="flex items-center justify-between">
-                                <TabsList>
-                                    <div className="hidden md:block">
+                <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 lg:border-l rounded-lg text-[var(--text)] p-0">
+                    <div className="h-full w-full lg:px-8">
+                        <Tabs defaultValue="music" className="h-full border-0">
+                            <div className="flex items-center fixed py-5 justify-between w-full bg-[#111111] md:w-[67.5%] box-border">
+
+                                <TabsList className="space-x-3">
+                                    <div className="hidden md:block px-2 ">
                                         <TabsTrigger value="music" className="relative">
                                             Music
                                         </TabsTrigger>
@@ -144,7 +122,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         </TabsTrigger>
                                         <TabsTrigger value="mynft">My NFT</TabsTrigger>
                                     </div>
-                                    <div className="md:hidden  ">
+                                    <div className="md:hidden px-2 ">
                                         <TabsTrigger value="music" className="relative">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style={{ fill: "rgba(0, 0, 0, 1)", transform: "msFilter", marginLeft: "2px" }}><path d="m19.684 5.821-9-3.272A1.998 1.998 0 0 0 8 4.428v6.129A3.953 3.953 0 0 0 6 10c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4V4.428L19 7.7v6.856A3.962 3.962 0 0 0 17 14c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4V7.7c0-.838-.529-1.594-1.316-1.879zM6 16c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2zm11 4c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z"></path></svg>
                                         </TabsTrigger>
@@ -156,8 +134,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         </TabsTrigger>
                                         <TabsTrigger value="mynft">My NFT</TabsTrigger>
                                     </div>
-
                                 </TabsList>
+
                                 <div className="flex space-x-1">
                                     <Sheet >
                                         <SheetTrigger asChild>
@@ -182,13 +160,12 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
                                 </div>
                             </div>
-
                             <TabsContent
                                 value="music"
-                                className="border-none p-0 outline-none "
+                                className="border-none pt-24 outline-none px-2 "
                             >
-                                <div className="w-full">
-                                    <div className="flex items-center justify-between">
+                                <div className="w-full ">
+                                    <div className="flex items-center justify-between ">
                                         <div className="space-y-1">
                                             <h2 className="text-[1rem] md:text-2xl font-semibold tracking-normal">
                                                 Trending playlist
@@ -225,48 +202,46 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
                                     <Separator className="my-4 " />
                                     <div className="relative">
-                                        <ScrollArea>
-                                            <div className="flex flex-wrap space-x-2 pb-4 gap-2">
-                                                {singleNft?.map((data: Single, index: number) => (
-                                                    <AlbumArtwork
-                                                        key={data.id}
-                                                        album={data}
-                                                        className="w-[180px]"
-                                                    />
-                                                ))}
-                                            </div>
-                                            <ScrollBar orientation="horizontal" />
-                                        </ScrollArea>
+                                        <div className="flex flex-wrap space-x-2 pb-4 gap-2">
+                                            {singleNft?.map((data: Single, index: number) => (
+                                                <AlbumArtwork
+                                                    key={data.id}
+                                                    album={data}
+                                                    className="w-[180px]"
+                                                />
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
 
                             </TabsContent>
                             <TabsContent
                                 value="podcasts"
-                                className="h-full flex-col border-none p-0 data-[state=active]:flex"
+                                className="w-full data-[state=active]:flex pt-16  px-2"
                             >
-                                <div className="flex items-center justify-between w-full">
-                                    {/* <Ratio /> */}
-                                    <Search placeholder="Search songs..." />
-                                    <FilterPlace />
-                                    <FilterByTime />
-                                    {/* <FilterByName items={listedData} /> */}
-                                </div>
-                                <Separator className="my-4 bg-[#7B7B7B]" />
-                                <div className="relative">
-                                    <ScrollArea>
+                                <div className="h-screen w-full flex-col border-none p-0 ">
+                                    <div className="md:flex items-center justify-between bg-[#111111] fixed md:w-[67.2%] w-full">
+                                        <div className="w-[98%] ">
+                                            <Search placeholder="Search songs..." />
+                                        </div>
+                                        <div className="flex items-center w-[95%] space-x-2">
+                                            <FilterPlace />
+                                            <FilterByTime />
+                                        </div>
+                                    </div>
+                                    <Separator className="my-4  bg-[#7B7B7B]" />
+                                    <div className="w-full pt-20 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 pb-4">
                                                 < MarketPlace filter={filter} />
                                             </div>
                                         </Suspense>
-                                        <ScrollBar orientation="horizontal" />
-                                    </ScrollArea>
+                                    </div>
                                 </div>
                             </TabsContent>
                             <TabsContent
                                 value="mynft"
-                                className="border-none p-0 outline-none"
+                                className="border-none p-0 pt-20 outline-none"
                             >
                                 <Suspense fallback={<MarketSkeleton />}>
                                     <BoughtNFT />
@@ -274,9 +249,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             </TabsContent>
                             <TabsContent
                                 value="trendingPlaylist"
-                                className="border-none p-0 outline-none"
+                                className="border-none p-0 pt-20 px-2 outline-none"
                             >
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between space-x-2 fixed md:w-[67.2%] w-full">
                                     <div className="space-y-1">
                                         <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
                                             All Playlist
@@ -287,11 +262,13 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
                                     <div>
                                         <FilterPlace />
-                                        {/* @ts-ignore */}
                                     </div>
                                 </div>
-                                <Separator className="my-4 " />
-                                <AllPlaylist />
+                                <div className="pt-20">
+
+                                    <Separator className="my-4 " />
+                                    <AllPlaylist />
+                                </div>
                             </TabsContent>
                         </Tabs>
                     </div>

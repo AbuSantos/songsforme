@@ -14,7 +14,7 @@ export const FilterPlace = () => {
 
 
   return (
-    <RadioGroup defaultValue="ratio" className="flex space-x-2 items-center justify-center w-full" onValueChange={(value) => handleValueChange(value)}
+    <RadioGroup defaultValue="ratio" className="flex space-x-2 items-center w-full" onValueChange={(value) => handleValueChange(value)}
     >
       <div className="flex items-center space-x-2" >
         <RadioGroupItem value="ratio" id="r1" />
@@ -24,7 +24,6 @@ export const FilterPlace = () => {
         <RadioGroupItem value="playtime" id="r2" />
         <Label htmlFor="r2">play time</Label>
       </div>
-
     </RadioGroup >
   )
 }

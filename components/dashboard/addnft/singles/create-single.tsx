@@ -12,6 +12,7 @@ import { FormError } from "@/components/errorsandsuccess/form-error";
 import { FormSuccess } from "@/components/errorsandsuccess/form-success";
 import { createSingleSong } from "@/actions/create-single";
 import { useActiveAccount } from "thirdweb/react";
+import { mutate } from "swr";
 
 export const CreateSingle = () => {
     // Get the active account from thirdweb
@@ -34,6 +35,7 @@ export const CreateSingle = () => {
      * Validates form input and sends data to the `createSingleSong` function.
      * Displays toast messages and updates the form's error or success state based on the response.
      */
+    
     const handleSubmit = async () => {
         // Ensure all required fields are filled before submitting
         if (!userId || !artistName || !songName) {
@@ -46,6 +48,7 @@ export const CreateSingle = () => {
             createSingleSong(userId, artistName, songName)
                 .then((data) => {
                     // Display success toast and reset form inputs
+                    mutate(`/api/singles/${userId}`)
                     toast(songName, {
                         description: data?.message,
                     });
