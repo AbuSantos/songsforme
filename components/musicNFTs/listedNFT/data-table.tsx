@@ -22,6 +22,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
     const userId = useRecoilValue(isConnected).toLowerCase();
     // const userId = useRecoilValue(isConnected).toLowerCase();
+
+
+    console.log("userId from tracktable:", userId)
     const [isPending, startTransition] = useTransition();
 
     // Toggle function to switch buy/sell mode for individual NFTs

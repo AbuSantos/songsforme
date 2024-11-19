@@ -26,10 +26,10 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [nftData, setNftData] = useState<any>()
 
-    console.log(nftContractAddress, "from tracktable")
     const formatIpfsUrl = (url: string) => {
         return url.replace("ipfs://", "https://ipfs.io/ipfs/");
     };
+
     useEffect(() => {
         const fetchMetaData = async () => {
             try {
@@ -44,12 +44,8 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 toast.error("Failed to load NFT data.");
             }
         }
-
         fetchMetaData()
-
-    }, [userId]) //USE THE ADDRESS
-
-    console.log(nftData?.animation_url)
+    }, [userId, nftContractAddress])
 
     // Initialize audio element with the NFT's audio URL
     useEffect(() => {
@@ -72,7 +68,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 toast.error("Failed to load audio. Check the link.");
             });
 
-            console.log(audioRef.current)
             return () => {
                 audioRef.current?.removeEventListener('ended', handleEnded);
                 audioRef.current?.pause(); // Clean up on component unmount
