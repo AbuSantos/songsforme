@@ -14,7 +14,10 @@ const BoughtNFT = () => {
     // Retrieve and format the user ID from session state
     const userId = useRecoilValue(isConnected)?.toLowerCase();
 
-    console.log(userId)
+
+    if (!userId) {
+        return <p className='text-center p-2'>Please connect your wallet to view your NFTs.</p>;
+    }
 
     // Conditionally set the API URL only if userId is available
     const apiUrl = userId ? `/api/buynft/${userId}` : null;
@@ -23,10 +26,6 @@ const BoughtNFT = () => {
     const { data: nfts, error, isLoading } = useSWR(apiUrl, fetcher, {
         shouldRetryOnError: true,
     });
-
-    if (!userId) {
-        return <p className='text-center p-2'>Please connect your wallet to view your NFTs.</p>;
-    }
 
     return (
         <div>

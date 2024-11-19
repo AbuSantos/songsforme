@@ -29,7 +29,6 @@ const buildQueryFilters = (filter: string) => {
         : filter === "playtime"
             ? { totalAccumulatedTime: "asc" as const }
             : undefined;
-
     return { whereFilters, orderBy };
 };
 
@@ -37,7 +36,6 @@ const buildQueryFilters = (filter: string) => {
 const MarketPlace = async ({ filter }: MarketPlaceProps) => {
     //@ts-ignore
     const { whereFilters, orderBy } = buildQueryFilters(filter);
-
 
     // const filter = searchParams?.filter || "";
     const listedNFTs = await db.listedNFT.findMany({
