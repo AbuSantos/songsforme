@@ -251,22 +251,25 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 value="trendingPlaylist"
                                 className="border-none p-0 pt-20 px-2 outline-none"
                             >
-                                <div className="flex items-center justify-between space-x-2 fixed md:w-[67.2%] w-full">
-                                    <div className="space-y-1">
-                                        <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
-                                            All Playlist
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                            Top picks for you. Updated daily.
-                                        </p>
+                                <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
+                                    <div className="flex items-center justify-between ">
+                                        <div className="space-y-1">
+                                            <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+                                                All Playlist
+                                            </h2>
+                                            <p className="text-sm text-muted-foreground">
+                                                Top picks for you. Updated daily.
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <FilterPlace />
+                                        </div>
                                     </div>
                                     <div>
-                                        <FilterPlace />
+                                        <Separator className="my-4 " />
                                     </div>
                                 </div>
-                                <div className="pt-20">
-
-                                    <Separator className="my-4 " />
+                                <div className="pt-16" >
                                     <AllPlaylist />
                                 </div>
                             </TabsContent>
