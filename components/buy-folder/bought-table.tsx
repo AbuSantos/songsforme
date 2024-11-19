@@ -64,7 +64,6 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
         setIsEnabled(storedStates);
     }, [data]);
 
-    console.log(data, "bought table");
     try {
         return (
             <div>
@@ -79,9 +78,6 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
                     <div className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
                         <Link href={`/dashboard/trackinfo/${data.listedNftId}`} className="flex w-8/12 items-center ">
                             <div className="flex flex-col w-8/12">
-                                {/* <p className="text-[0.8rem] md:text-[1rem] capitalize">
-                                    {data?.status}
-                                </p> */}
                                 <small className="uppercase text-[0.7rem] ">
                                     {data?.listedNft?.Single?.artist_name}
                                 </small>

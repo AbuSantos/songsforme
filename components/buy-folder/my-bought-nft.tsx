@@ -13,17 +13,20 @@ import { BuyNFT } from "@/types";
 const BoughtNFT = () => {
     // Retrieve and format the user ID from session state
     const userId = useRecoilValue(isConnected)?.toLowerCase();
-
-
+    console.log("userId:from bought:", userId);
 
     // Conditionally set the API URL only if userId is available
     const apiUrl = userId ? `/api/buynft/${userId}` : null;
 
     // Use SWR to fetch data; only fetch if `apiUrl` is not null
-    const { data: nfts, error, isLoading } = useSWR<BuyNFT[]>(apiUrl, fetcher, {
-        shouldRetryOnError: true,
-        errorRetryCount: 3,
-    });
+    const { data: nfts, error, isLoading } = useSWR<BuyNFT[]>(
+        apiUrl,
+        apiUrl ? fetcher : null, 
+        {
+            shouldRetryOnError: true,
+            errorRetryCount: 3,
+        }
+    );
 
     if (!userId) {
         return (

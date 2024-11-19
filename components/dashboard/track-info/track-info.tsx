@@ -11,8 +11,6 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
     const plays = countPlays(data?.totalAccumulatedTime || 0)
     const amount = amountGenerated(data?.totalAccumulatedTime!)
 
-
-
     return (
         <div className=" justify-center p-2 items-center space-x-2 space-y-2 w-full grid  grid-cols-2 gap-1">
             <div className="flex flex-col items-center justify-center p-2 space-x-2 border-[1px] w-full border-[#7B7B7B] rounded-md">
