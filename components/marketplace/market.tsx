@@ -13,14 +13,10 @@ import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
 type MarketPlaceProps = {
     filter?: string
 }
-// Server Component
-
 // Helper: Build query filters dynamically
-const buildQueryFilters = (filter: string | undefined) => {
-    //@ts-ignore
-    const threshHold = getTimeThreshold(filter);
-    //@ts-ignore
-    const { address } = getAddressOrName(filter);
+const buildQueryFilters = (filter: string) => {
+    const threshHold = getTimeThreshold(filter || "");
+    const { address } = getAddressOrName(filter || "");
 
     const whereFilters = {
         sold: false,
@@ -42,9 +38,6 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
     //@ts-ignore
     const { whereFilters, orderBy } = buildQueryFilters(filter);
 
-    // const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { totalAccumulatedTime: "asc" as const } : undefined
-
-    console.log(filter, "filtering from marketplace")
 
     // const filter = searchParams?.filter || "";
     const listedNFTs = await db.listedNFT.findMany({
@@ -76,12 +69,8 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
     revalidateTag("nft")
 
 
-    if (listedNFTs.length === 0) {
-        return <p>There's currently no NFT Listed on the MARKETPLACE</p>
-    }
-
     if (!listedNFTs.length) {
-        return <p>There's currently no NFT Listed on the MARKETPLACE</p>
+        return <p>There&apos;s currently no NFT Listed on the MARKETPLACE</p>;
     }
 
 
