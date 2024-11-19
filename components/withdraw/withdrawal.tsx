@@ -70,6 +70,7 @@ export const WithdrawRewards = () => {
                     toast.error(errorMessage);
                     console.error("Transaction error:", error);
                 }}
+                className='w-100 min-w-full'
             >
                 Withdraw Earnings
             </TransactionButton>

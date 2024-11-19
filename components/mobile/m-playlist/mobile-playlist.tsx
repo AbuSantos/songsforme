@@ -26,8 +26,8 @@ export const MobilePlaylist = ({ className, userId }: SidebarProps) => {
     try {
         return (
             <div className={cn("pb-12 rounded-lg ", className)}>
-                <div className="space-y-4 py-4">
-                    <div className="px-3 py-2">
+                <div className="space-y-2 py-4">
+                    <div className=" py-2">
                         <div className="flex justify-between px-2 items-center">
                             <h2 className="mb-2 px-4 text-lg text-[#111111] font-semibold tracking-tight">
                                 My Playlists

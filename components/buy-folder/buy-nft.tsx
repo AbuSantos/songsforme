@@ -80,7 +80,7 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId }: NFTPr
         // </div>
 
         <div>
-            <button onClick={() => handleBuyNft(price, transactionHash)} disabled={isPending}>
+            <button onClick={() => handleBuyNft(price, transactionHash)} disabled={isPending} className="bg-[var(--button-bg)] p-2 w-32 rounded-md">
                 buy nft
             </button>
         </div>

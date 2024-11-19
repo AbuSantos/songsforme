@@ -31,6 +31,7 @@ model User {
   playlistId                String?
   nftListeningTimes         NFTListeningTime[]
   playlist                  Playlist[]
+  Favorites                 Favorites[]
 
   @@index([userId])
 }
@@ -91,6 +92,7 @@ model ListedNFT {
   isSaleEnabled        Boolean             @default(false)
   isForSale            Boolean             @default(false)
   isRelisted           Boolean             @default(false)
+  favorites            Favorites[]
 
   @@unique([tokenId, contractAddress])
   @@index([id])
@@ -114,7 +116,7 @@ model Playlist {
   updatedAt         DateTime            @updatedAt
   userId            String
   listednft         ListedNFT[]
-  nftIds            String[] // Array of nft IDs for this day
+  nftIds            String[]
   owner             User                @relation(fields: [userId], references: [userId])
   accumulatedTime   Int?                @default(0)
   PlaylistListedNFT PlaylistListedNFT[]
@@ -122,6 +124,19 @@ model Playlist {
   date              DateTime            @default(now())
   description       String?
   cover             String?
+}
+
+model Favorites {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  userId    String     @unique
+  nftId     String     @unique
+  listednft ListedNFT? @relation(fields: [nftId], references: [id], onDelete: Cascade)
+  owner     User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@index([userId]) // Indexing userId for faster queries by user
+  @@index([nftId]) // Indexing nftId for faster queries by NFT
 }
 
 model BuyNFT {

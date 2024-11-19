@@ -12,6 +12,10 @@ html,
   --textSoft: #b7cac1;
   --hoverBg: #16171c;
   --hoverBgTable: #21222739;
+  --data-table-bg: #111111;
+  --data-table-text: #fdfbfb;
+  --data-table-hover-bg: #222222;
+  --button-bg: #222222;
   height: 100%;
 }
 

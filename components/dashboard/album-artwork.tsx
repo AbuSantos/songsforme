@@ -40,8 +40,6 @@ export function AlbumArtwork({
                     {album.song_name}
                 </p>
                 <small className="text-[#B4B4B4] tracking-tight leading-tight capitalize">{album.artist_name}</small>
-
-
             </Link>
         </div>
     );

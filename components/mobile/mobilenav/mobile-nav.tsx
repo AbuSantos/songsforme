@@ -48,8 +48,7 @@ export const MobileNav = () => {
                 </Button>
             </SheetTrigger>
             <SheetContent className="w-full ">
-
-                <div className="flex flex-col justify-between h-full">
+                <div className="flex flex-col justify-between h-full w-full">
                     <div className="flex flex-col mt-8 space-y-4">
                         {/* <Button onClick={handleModal} size="nav" className="p-3">
                             <PlusCircledIcon className="mr-2 h-4 w-4" />
@@ -62,21 +61,21 @@ export const MobileNav = () => {
                         {/* <AddToWhitelist /> */}
                     </div>
 
+                    {/* CHANGE THE BUTTON WIDTH */}
                     <div className="mt-4 mb-3 w-full">
                         <WithdrawRewards />
                     </div>
-                    <div >
+                    <div className="overflow-y-auto scroll-smooth">
                         <MobilePlaylist userId={userId} />
                     </div>
 
-                    <div className="mt-auto w-full">
+                    <div className="mt-auto w-full absolute bottom-0 ">
                         <ConnecttButton />
                     </div>
 
                     {isOpen && <AddMusicModal setIsOpen={setIsOpen} />}
                     {listModalOpen && <ListNFTForm setListModalOpen={setListModalOpen} />}
                 </div>
-
             </SheetContent>
         </Sheet>
     )

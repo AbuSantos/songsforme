@@ -56,7 +56,7 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
             </div>
             <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[1px] border-[#7B7B7B] rounded-md">
                 <div className='flex w-full'>
-                    <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">playloist ratio</small>
+                    <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">playlist ratio</small>
                     <span className='cursor-pointer '>
 
                         {

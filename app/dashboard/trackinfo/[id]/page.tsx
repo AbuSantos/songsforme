@@ -38,6 +38,8 @@ const page = async ({ params }: { params: { id: string } }) => {
                     tokenId={track?.tokenId}
                     price={track?.price}
                     listedNftId={track?.id}
+                    isSaleEnabled={track?.isSaleEnabled}
+                    seller={track?.seller}
                 />
             </div>
         )

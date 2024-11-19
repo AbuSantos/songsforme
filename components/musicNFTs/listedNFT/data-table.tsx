@@ -11,6 +11,8 @@ import { isConnected } from "@/atoms/session-atom";
 import { toggleState } from "@/actions/toggle-buy-sell";
 import { toast } from "sonner";
 import { Playlisten } from "@/components/startlistening/play-listen";
+import { SelectPlaylist } from "@/components/playlists/selectplaylist";
+import { Favorite } from "../favorite/fav";
 
 type TrackTableType = {
     data: ListedNFT[];
@@ -20,7 +22,7 @@ type TrackTableType = {
 
 export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
-    const userId = useRecoilValue(isConnected).toLowerCase();
+    const userId = useRecoilValue(isConnected)
     // const userId = useRecoilValue(isConnected).toLowerCase();
 
 
@@ -62,16 +64,16 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
             <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-2">
                 <Text className="uppercase font-extralight w-10 text-[0.8rem] ">T-ID</Text>
                 <Text className="font-[50] capitalize text-[0.8rem] w-6/12 ">Title</Text>
-                <Text className="font-[50] capitalize text-[0.8rem] w-2/12 ">Price</Text>
+                <Text className="font-[50] capitalize text-[0.8rem] w-4/12 ">Price</Text>
                 <Text className="font-[50] capitalize text-[0.8rem] w-4/12 ">Action</Text>
             </header>
 
             {data.map((track) => (
                 <div
                     key={track.id}
-                    className="flex items-center justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE] px-2 py-2 w-full mt-2 text-start rounded-md"
+                    className="flex items-center justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[var(--data-table-bg)] hover:bg-[var(--data-table-hover-bg)] hover:text-[var(--data-table-text)] px-2 py-2 w-full mt-2 text-start rounded-md"
                 >
-                    <Link href={`/dashboard/trackinfo/${track.id}`} className="flex w-8/12 items-center">
+                    <Link href={`/dashboard/trackinfo/${track.id}`} className="flex w-6/12 items-center">
                         <p className="w-10">{track?.tokenId}</p>
                         <div className="flex flex-col w-8/12">
                             <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.artist_name || "Untitled Track"}</p>
@@ -99,6 +101,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     </div>
                     <div className="items-center space-x-2 flex ml-2">
                         <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
+                        <SelectPlaylist userId={userId} nftId={track.id} />
+                        <Favorite nftId={track?.id} userId={userId} />
+
                     </div>
                 </div>
             ))}
