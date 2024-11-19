@@ -17,11 +17,11 @@ import { toggleState } from "@/actions/toggle-buy-sell";
 
 type TrackTableType = {
     data: BuyNFT
+    userId: string
 }
 
 
-export const BoughtTable = ({ data }: TrackTableType) => {
-    const userId = useRecoilValue(isConnected).toLowerCase()
+export const BoughtTable = ({ data, userId }: TrackTableType) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
 
     const [isPending, startTransition] = useTransition();
