@@ -175,3 +175,13 @@ model PlaylistListedNFT {
   @@id([playlistId, listedNFTId])
   @@unique([listedNFTId])
 }
+
+model Bid {
+  id              String   @id @default(cuid())
+  tokenId         String
+  nftAddress      String
+  bidder          String
+  bidAmount       Float
+  transactionHash String
+  createdAt       DateTime @default(now())
+}

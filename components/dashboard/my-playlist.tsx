@@ -43,8 +43,10 @@ export const Aside = ({ className }: SidebarProps) => {
 
           <div className="box-border py-4 flex justify-between h-[60px] bg-[#111111] items-center fixed z-10 ">
 
-            <div className="flex items-center justify-center space-x-2">
-              <h2 className="py-2 text-[1rem] font-semibold tracking-tight flex space-y-1 justify-start items-center cursor-pointer"
+            <div className="flex items-center justify-center space-x-3">
+              <h2 className={`py-2 px-3 text-[1rem] font-semibold tracking-tight   rounded-md flex space-y-1 justify-start items-center cursor-pointer
+              ${fav === "playlist" ? "text-[#fff] bg-[#191919] border border-[#606060]" : "text-[#606060] border-1  border-[#606060]"}
+                  `}
                 onClick={() => setFav("playlist")}
               >
                 <svg
@@ -55,7 +57,7 @@ export const Aside = ({ className }: SidebarProps) => {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="mr-2 h-4 w-4"
+                  className="mr-1 h-4 w-4"
                 >
                   <path d="M21 15V6" />
                   <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
@@ -65,20 +67,21 @@ export const Aside = ({ className }: SidebarProps) => {
                 </svg>
                 Playlists
               </h2>
-              <span className="text-[1rem] text-[#606060] flex justify-center items-center space-y-1 cursor-pointer"
-                onClick={() => setFav("fav")}
 
+
+              <span className={`text-[1rem] ${fav === "fav" ? "text-[#fff] bg-[#191919] border border-[#606060]" : "text-[#606060] border-1  border-[#606060] "} py-2 px-4 rounded-md flex justify-center items-center cursor-pointer
+              `}
+                onClick={() => setFav("fav")}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style={{ fill: "#EDEEF0", transform: "msFilter" }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style={{ fill: fav === "fav" ? "#fff" : "#606060", transform: "msFilter" }}
                   className="mr-2 h-4 w-4"
                 ><path d="m6.516 14.323-1.49 6.452a.998.998 0 0 0 1.529 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082a1 1 0 0 0-.59-1.74l-5.701-.454-2.467-5.461a.998.998 0 0 0-1.822 0L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.214 4.107zm2.853-4.326a.998.998 0 0 0 .832-.586L12 5.43l1.799 3.981a.998.998 0 0 0 .832.586l3.972.315-3.271 2.944c-.284.256-.397.65-.293 1.018l1.253 4.385-3.736-2.491a.995.995 0 0 0-1.109 0l-3.904 2.603 1.05-4.546a1 1 0 0 0-.276-.94l-3.038-2.962 4.09-.326z"></path></svg>
-
 
                 Favs
               </span>
             </div>
 
-            <div className="lg:ml-[18rem] md:ml-[8rem]">
+            <div className="lg:ml-[13rem] md:ml-[5rem]">
               <CreatePlaylist id={userId} />
             </div>
           </div>
@@ -94,6 +97,6 @@ export const Aside = ({ className }: SidebarProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
