@@ -63,6 +63,8 @@ CREATE TABLE "ListedNFT" (
     "lastPlayTimestamp" TIMESTAMP(3),
     "priceData" JSONB,
     "isSaleEnabled" BOOLEAN NOT NULL DEFAULT false,
+    "isForSale" BOOLEAN NOT NULL DEFAULT false,
+    "isRelisted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "ListedNFT_pkey" PRIMARY KEY ("id")
 );
@@ -98,6 +100,17 @@ CREATE TABLE "Playlist" (
 );
 
 -- CreateTable
+CREATE TABLE "Favorites" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "nftId" TEXT NOT NULL,
+
+    CONSTRAINT "Favorites_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "BuyNFT" (
     "id" TEXT NOT NULL,
     "buyer" TEXT NOT NULL,
@@ -105,6 +118,7 @@ CREATE TABLE "BuyNFT" (
     "price" DOUBLE PRECISION NOT NULL,
     "purchaseDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "transactionHash" TEXT,
+    "isSaleEnabled" BOOLEAN NOT NULL DEFAULT false,
     "status" "PurchaseStatus" DEFAULT 'NONE',
     "relisted" BOOLEAN NOT NULL DEFAULT false,
 
@@ -169,6 +183,18 @@ CREATE INDEX "ListedNFT_id_idx" ON "ListedNFT"("id");
 CREATE UNIQUE INDEX "ListedNFT_tokenId_contractAddress_key" ON "ListedNFT"("tokenId", "contractAddress");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Favorites_userId_key" ON "Favorites"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Favorites_nftId_key" ON "Favorites"("nftId");
+
+-- CreateIndex
+CREATE INDEX "Favorites_userId_idx" ON "Favorites"("userId");
+
+-- CreateIndex
+CREATE INDEX "Favorites_nftId_idx" ON "Favorites"("nftId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "PlaylistListedNFT_listedNFTId_key" ON "PlaylistListedNFT"("listedNFTId");
 
 -- CreateIndex
@@ -194,6 +220,12 @@ ALTER TABLE "ListeningSession" ADD CONSTRAINT "ListeningSession_nftId_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "Playlist" ADD CONSTRAINT "Playlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Favorites" ADD CONSTRAINT "Favorites_nftId_fkey" FOREIGN KEY ("nftId") REFERENCES "ListedNFT"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Favorites" ADD CONSTRAINT "Favorites_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "BuyNFT" ADD CONSTRAINT "BuyNFT_listedNftId_fkey" FOREIGN KEY ("listedNftId") REFERENCES "ListedNFT"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -37,6 +37,7 @@ export const GET = async (
             tokenId: true,
             price: true,
             seller: true,
+            contractAddress: true,
             Single: {
               select: {
                 song_cover: true,

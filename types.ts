@@ -116,3 +116,11 @@ export interface LastPlayEntry {
   timestamp: Date;
   count: number;
 }
+export type Favorites = {
+  id: string;
+  userId: string;
+  nftId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  listednft: ListedNFT;
+};

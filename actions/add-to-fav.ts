@@ -33,7 +33,6 @@ export const addToFavorite = async (userId: string, nftId: string) => {
     });
 
     revalidateTag("fav");
-
     return { message: "Song added to favorites successfully!" };
   } catch (error) {
     console.error("Error adding song to favorites:", error);
