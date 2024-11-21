@@ -18,7 +18,6 @@ import {
 import { MakeBidBackend } from "@/actions/make-bid";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
-import { Toggle } from "../ui/toggle";
 import { fetcher } from "@/lib/utils";
 
 interface NFTProps {
@@ -35,6 +34,7 @@ export const MakeBid = ({
     userId, }: NFTProps) => {
     const [isPending, startTransition] = useTransition();
     const [bidAmount, setBidAmount] = useState<number>(0);
+    const [selectedIncrease, setSelectedIncrease] = useState<number | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isSuccess, setIsSuccess] = useState<string>("");
 
@@ -48,10 +48,6 @@ export const MakeBid = ({
         shouldRetryOnError: true,
         errorRetryCount: 3,
     });
-
-
-    console.log(bids)
-
 
     const handleBid = async () => {
         try {
@@ -67,6 +63,7 @@ export const MakeBid = ({
                 method: "bid",
                 //@ts-ignore
                 params: [tokenId, nftAddress],
+                //@ts-ignore
                 value: toWei(bidAmount), // Convert price to Wei
             });
             return tx;
@@ -95,17 +92,17 @@ export const MakeBid = ({
 
         })
     }
-    const handleValue = (newFilter: number) => {
+    const handleValue = (percentage: number) => {
+        if (!bids?.data) return
         //@ts-ignore
         const bid = bids?.data?.reduce((max: number, current: number) => (current.bidAmount > max ? current.bidAmount : max), -Infinity);
-        const bidPercent = (newFilter / 100) * bid
+        const bidPercent = (percentage / 100) * bid
         const bidMade = bidPercent + bid
         setBidAmount(bidMade);
+        setSelectedIncrease(percentage);
     }
 
     return (
-
-
         <Popover>
             <PopoverTrigger asChild>
                 <Button variant="outline" className="text-gray-800" size="nav">Bid</Button>
@@ -115,20 +112,23 @@ export const MakeBid = ({
                 <div className="flex flex-col space-y-3">
                     <h1 className="text-center text-gray-300">Percentage increase from current bid</h1>
 
-                    {bids?.data && <div className="grid grid-cols-4  p-2 gap-2 w-full">
-                        <Toggle aria-label="1 % increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-full" onClick={() => handleValue(1)}>
-                            +1%
-                        </Toggle>
-                        <Toggle aria-label="3 % increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-full" onClick={() => handleValue(3)}>
-                            +3%
-                        </Toggle>
-                        <Toggle aria-label="5 percent increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-fulll" onClick={() => handleValue(4)}>
-                            +5%
-                        </Toggle>
-                        <Toggle aria-label="10 percent increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-full" onClick={() => handleValue(5)}>
-                            +10%
-                        </Toggle>
-                    </div>}
+
+                    {isLoading ? (
+                        <p className="text-center text-gray-500">Loading current bids...</p>
+                    ) : (
+                        <div className="grid grid-cols-4 p-2 gap-2 w-full">
+                            {[1, 3, 5, 10].map((percentage) => (
+                                <span
+                                    key={percentage}
+                                    className={`bg-[#7B7B7B] text-[#111111] w-full cursor-pointer rounded-md text-center py-2 ${selectedIncrease === percentage && "bg-[#5B5BD6] text-[#E0DFFE]"
+                                        }`}
+                                    onClick={() => handleValue(percentage)}
+                                >
+                                    +{percentage}%
+                                </span>
+                            ))}
+                        </div>
+                    )}
                     <Input
                         value={bidAmount}
                         onChange={(e) => setBidAmount(parseFloat(e.target.value) || 0)} // Parse to number
@@ -148,11 +148,18 @@ export const MakeBid = ({
                     >
                         Make Bid
                     </TransactionButton> */}
+
+
+
+                    <div className="flex justify-between space-x-2 p-2 text-[var(--textSoft)]">
+                        <h2 className="capitalize ">you pay</h2>
+                        <span>{bidAmount} ETH</span>
+                    </div>
+
                     <button onClick={handleBidBackEnd} className="text-gray-200">
                         Bid
                     </button>
-                    < FormError message={errorMessage} />
-                    <FormSuccess message={isSuccess} />
+
                 </div>
             </PopoverContent>
 
@@ -162,4 +169,3 @@ export const MakeBid = ({
 };
 
 
-// const bid = bids?.data[0].bidAmount
