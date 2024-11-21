@@ -124,3 +124,13 @@ export type Favorites = {
   updatedAt: Date;
   listednft: ListedNFT;
 };
+
+export interface MakeBidParams {
+  tokenId: string;
+  nftAddress: string;
+  nftId: string;
+  bidder: string;
+  bidAmount: number;
+  transactionHash: string;
+  userId: string;
+}

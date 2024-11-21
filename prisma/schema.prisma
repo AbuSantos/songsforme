@@ -19,6 +19,12 @@ enum isSaleEnabled {
   true
 }
 
+enum BidStatus {
+  REJECTED
+  PENDING
+  WIN
+}
+
 model User {
   id                        String             @id @default(cuid())
   username                  String?            @unique
@@ -32,6 +38,7 @@ model User {
   nftListeningTimes         NFTListeningTime[]
   playlist                  Playlist[]
   Favorites                 Favorites[]
+  Bid                       Bid[]
 
   @@index([userId])
 }
@@ -93,6 +100,7 @@ model ListedNFT {
   isForSale            Boolean             @default(false)
   isRelisted           Boolean             @default(false)
   favorites            Favorites[]
+  Bid                  Bid[]
 
   @@unique([tokenId, contractAddress])
   @@index([id])
@@ -177,11 +185,23 @@ model PlaylistListedNFT {
 }
 
 model Bid {
-  id              String   @id @default(cuid())
+  id              String    @id @default(cuid())
+  userId          String
+  owner           User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
   tokenId         String
   nftAddress      String
+  nftId           String
+  listedNFT       ListedNFT @relation(fields: [nftId], references: [id])
   bidder          String
   bidAmount       Float
   transactionHash String
-  createdAt       DateTime @default(now())
+  status          BidStatus @default(PENDING)
+  createdAt       DateTime  @default(now())
+
+  @@unique([userId, tokenId])
+  @@index([id, nftAddress])
+  @@index([userId])
+  @@index([tokenId])
+  @@index([nftAddress])
+  @@index([createdAt])
 }

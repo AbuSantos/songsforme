@@ -9,12 +9,12 @@ type PriceDataType = {
     price: number;
 };
 
-const LineChart = ({ priceData }: { priceData: PriceDataType[] | undefined }) => {
+const LineChart = ({ priceData, nftAddress }: { priceData: PriceDataType[] | undefined, nftAddress: string }) => {
     const data = {
         labels: priceData?.map((point) => new Date(point.timestamp).toLocaleDateString()),
         datasets: [
             {
-                label: 'NFT Price',
+                label: nftAddress,
                 data: priceData?.map((point) => point.price),
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',

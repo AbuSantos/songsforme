@@ -85,7 +85,7 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
   return (
     <div className="w-11/12 md:w-full p-2">
       {track?.priceData && track?.priceData?.length > 0 ? (
-        <LineChart priceData={track?.priceData} />
+        <LineChart priceData={track?.priceData} nftAddress={track?.contractAddress} />
       ) : (
         <p>Loading chart data...</p>
       )}

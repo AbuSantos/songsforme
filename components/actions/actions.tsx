@@ -1,7 +1,7 @@
 "use client"
 import { useRecoilValue } from "recoil"
 import { BuyNFT } from "../buy-folder/buy-nft"
-import { MakeBid } from "../modal/make-bid"
+import { MakeBid } from "../bids/make-bid"
 import { SelectPlaylist } from "../playlists/selectplaylist"
 import { isConnected } from "@/atoms/session-atom"
 import { TogglingSell } from "../musicNFTs/listedNFT/toggle-buy-sell"
@@ -29,7 +29,7 @@ export const Actions = ({ seller, nftAddress, tokenId, price, nftId, listedNftId
           :
           <div className="flex items-center justify-center space-x-2">
             <BuyNFT buyer={userId} nftAddress={nftAddress} tokenId={tokenId} price={price} listedNftId={listedNftId} />
-            <MakeBid nftAddress={nftAddress} tokenId={tokenId} />
+            <MakeBid nftAddress={nftAddress} tokenId={tokenId} nftId={nftId} userId={userId} />
           </div>
         }
       </div>

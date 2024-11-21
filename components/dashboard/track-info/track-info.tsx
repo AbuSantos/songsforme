@@ -1,5 +1,6 @@
 "use client"
 import { isConnected } from '@/atoms/session-atom'
+import { AllBids } from '@/components/bids/all-bids'
 import { EditRatio } from '@/components/playlists/playlist-info/edit-ratio'
 import { amountGenerated, countPlays } from '@/dynamic-price/helper/play-count'
 import { ListedNFT } from '@/types'
@@ -38,14 +39,18 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
                 </p>
             </div>
             <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[1px] border-[#7B7B7B] rounded-md">
-                <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">creator</small>
-                <p className="text-[1rem] uppercase font-medium">creator </p>
+                <div className='flex w-full'>
+                    <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">Check Bids</small>
+                    <span className='cursor-pointer text-[0.7rem] text-red-600'>
+                        4
+                    </span>
+                </div>
+                < AllBids tokenId={data?.tokenId} nftAddress={data?.contractAddress} userId={userId} seller={data?.seller} />
             </div>
             <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[1px] border-[#7B7B7B] rounded-md">
                 <div className='flex w-full'>
                     <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">current ratio</small>
                     <span className='cursor-pointer '>
-
                         {
                             data?.seller === userId &&
                             <EditRatio trackId={data?.id} mode="track" />

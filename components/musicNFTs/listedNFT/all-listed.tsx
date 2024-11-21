@@ -4,8 +4,8 @@ import { useSendTransaction } from "thirdweb/react";
 import { getContract } from "thirdweb";
 import { bscTestnet, sepolia } from "thirdweb/chains";
 import { useState } from "react";
-import { AcceptBidOffer } from "@/components/actions/accept-offer";
-import { MakeBid } from "@/components/modal/make-bid";
+import { AcceptBidOffer } from "@/components/bids/accept-offer";
+import { MakeBid } from "@/components/bids/make-bid";
 
 
 import { Button } from "@/components/ui/button"

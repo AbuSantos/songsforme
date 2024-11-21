@@ -14,44 +14,36 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-
-async function getSigner() {
-    if (typeof window.ethereum !== "undefined") {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-        // Request wallet connection if needed
-        await provider.send("eth_requestAccounts", []);
-
-        // Get signer (connected wallet)
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-
-        console.log("Signer address:", address);
-        return signer;
-    } else {
-        console.log("Ethereum wallet is not connected.");
-        return null;
-    }
-}
+import { MakeBidBackend } from "@/actions/make-bid";
+import { toast } from "sonner";
+import { mutate } from "swr";
 
 interface NFTProps {
-    nftAddress: string
-    tokenId: string
-
+    tokenId: string,
+    nftAddress: string,
+    nftId: string,
+    userId: string,
 }
 
-export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
+export const MakeBid = ({
+    tokenId,
+    nftAddress,
+    nftId,
+    userId, }: NFTProps) => {
     const [isPending, startTransition] = useTransition();
-    const [price, setPrice] = useState<string>("");
+    const [bidAmount, setBidAmount] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isSuccess, setIsSuccess] = useState<string>("");
 
+    const bidder = userId
+
+    const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
 
 
     const handleBid = async () => {
         try {
             // Ensure price is a valid number
-            if (!price || isNaN(Number(price)) || Number(price) <= 0) {
+            if (!bidAmount || isNaN(Number(bidAmount)) || Number(bidAmount) <= 0) {
                 setErrorMessage("Please enter a valid price.");
                 return null;
             }
@@ -62,7 +54,7 @@ export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
                 method: "bid",
                 //@ts-ignore
                 params: [tokenId, nftAddress],
-                value: toWei(price), // Convert price to Wei
+                value: toWei(bidAmount), // Convert price to Wei
             });
             return tx;
         } catch (error) {
@@ -70,6 +62,26 @@ export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
             return null;
         }
     };
+
+    const handleBidBackEnd = () => {
+        startTransition(async () => {
+            try {
+                const res = await MakeBidBackend(
+                    { tokenId, nftAddress, nftId, bidder, bidAmount, transactionHash, userId }
+                )
+                if (res.success === true) {
+                    mutate(`/api/bids/${tokenId}?nftAddress=${nftAddress}`
+                    )
+                    toast.success(res.message)
+                } else if (res.success === false) {
+                    toast.success(res.message)
+                }
+            } catch (error: any) {
+                toast.error(error.message)
+            }
+
+        })
+    }
 
     return (
 
@@ -82,14 +94,14 @@ export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
 
                 <div className="flex flex-col space-y-3">
                     <Input
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)} // Handling input
+                        value={bidAmount}
+                        onChange={(e) => setBidAmount(parseFloat(e.target.value) || 0)} // Parse to number
                         placeholder="Price in ETH"
                         disabled={isPending}
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
 
-                    <TransactionButton
+                    {/* <TransactionButton
                         //@ts-ignore
                         transaction={handleBid}
                         onTransactionConfirmed={(receipt) => {
@@ -99,7 +111,10 @@ export const MakeBid = ({ nftAddress, tokenId }: NFTProps) => {
                         onError={(error) => setErrorMessage(error.message)}
                     >
                         Make Bid
-                    </TransactionButton>
+                    </TransactionButton> */}
+                    <button onClick={handleBidBackEnd} className="text-gray-200">
+                        Bid
+                    </button>
                     < FormError message={errorMessage} />
                     <FormSuccess message={isSuccess} />
                 </div>

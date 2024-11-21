@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { Playlisten } from "@/components/startlistening/play-listen";
 import { SelectPlaylist } from "@/components/playlists/selectplaylist";
 import { Favorite } from "../favorite/fav";
+import { MakeBid } from "@/components/bids/make-bid";
+import { Copy } from "@/components/actions/copy";
 
 type TrackTableType = {
     data: ListedNFT[];
@@ -76,7 +78,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     <Link href={`/dashboard/trackinfo/${track.id}`} className="flex w-6/12 items-center">
                         <p className="w-10">{track?.tokenId}</p>
                         <div className="flex flex-col w-8/12">
-                            <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.artist_name || "Untitled Track"}</p>
+                            <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.artist_name || "Untitled Track"}  <Copy address={track?.contractAddress} mode="data" /></p>
                         </div>
                         <div className="flex items-center justify-center w-4/12">
                             <span>{track?.price}</span>
@@ -96,14 +98,13 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                 listedNftId={track.id}
                             />
                         ) : (
-                            <p>Bid</p>
+                            < MakeBid tokenId={track?.tokenId} nftAddress={track?.contractAddress} nftId={track?.id} userId={userId} />
                         ))}
                     </div>
                     <div className="items-center space-x-2 flex ml-2">
                         <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
                         <SelectPlaylist userId={userId} nftId={track.id} />
                         <Favorite nftId={track?.id} userId={userId} />
-
                     </div>
                 </div>
             ))}
