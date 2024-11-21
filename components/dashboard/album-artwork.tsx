@@ -4,7 +4,6 @@ import { FaPause, FaPlay } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
-import AllListed from "../musicNFTs/listedNFT/all-listed";
 import Link from "next/link";
 import * as React from "react"
 import { ChevronsUpDown, Plus, X } from "lucide-react"
