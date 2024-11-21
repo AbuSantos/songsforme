@@ -94,9 +94,14 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller }: BidTypes) => {
                                                                     </div>
                                                             }
                                                         </div> :
-                                                        <p>
-                                                            AWAITING CONFIRMATION
-                                                        </p>
+                                                        <div className="text-center">
+                                                            {
+                                                                bid.status === "WIN" ? <p>Bid is Over</p> :
+                                                                    <p>
+                                                                        AWAITING CONFIRMATION
+                                                                    </p>
+                                                            }
+                                                        </div>
                                                 }
                                             </TableCell>
                                         </TableRow>
