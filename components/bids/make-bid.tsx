@@ -19,6 +19,7 @@ import { MakeBidBackend } from "@/actions/make-bid";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/lib/utils";
+import { Separator } from "../ui/separator";
 
 interface NFTProps {
     tokenId: string,
@@ -110,13 +111,13 @@ export const MakeBid = ({
             <PopoverContent className="w-80">
 
                 <div className="flex flex-col space-y-3">
-                    <h1 className="text-center text-gray-300">Percentage increase from current bid</h1>
+                    <h1 className="text-center text-gray-300 py-4">Percentage increase from current bid</h1>
 
 
                     {isLoading ? (
                         <p className="text-center text-gray-500">Loading current bids...</p>
                     ) : (
-                        <div className="grid grid-cols-4 p-2 gap-2 w-full">
+                        <div className="grid grid-cols-4 p-2 gap-2 w-full ">
                             {[1, 3, 5, 10].map((percentage) => (
                                 <span
                                     key={percentage}
@@ -134,7 +135,7 @@ export const MakeBid = ({
                         onChange={(e) => setBidAmount(parseFloat(e.target.value) || 0)} // Parse to number
                         placeholder="Price in ETH"
                         disabled={isPending}
-                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
+                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100 "
                     />
 
                     {/* <TransactionButton
@@ -150,11 +151,12 @@ export const MakeBid = ({
                     </TransactionButton> */}
 
 
-
-                    <div className="flex justify-between space-x-2 p-2 text-[var(--textSoft)]">
+                    <div className="flex justify-between space-x-2 p-2 text-[var(--textSoft)]  mt-6 mb-6">
                         <h2 className="capitalize ">you pay</h2>
                         <span>{bidAmount} ETH</span>
                     </div>
+                    <Separator className=" border-t-[#606060] h-[0.7px]" />
+
 
                     <button onClick={handleBidBackEnd} className="text-gray-200">
                         Bid
