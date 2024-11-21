@@ -67,6 +67,7 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
                     nftAddress={data?.contractAddress || ""}
                     userId={userId || ""}
                     seller={data?.seller || ""}
+                    nftId={data?.id || ""}
                 />
             </div>
             <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[1px] border-[#7B7B7B] rounded-md">

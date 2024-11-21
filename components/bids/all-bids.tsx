@@ -23,8 +23,9 @@ interface BidTypes {
     tokenId: string
     seller: string
     userId: string
+    nftId: string
 }
-export const AllBids = ({ tokenId, nftAddress, userId, seller }: BidTypes) => {
+export const AllBids = ({ tokenId, nftAddress, userId, seller, nftId }: BidTypes) => {
 
     // API URL
     const apiUrl = `/api/bids/${tokenId}?nftAddress=${nftAddress}`;
@@ -89,7 +90,7 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller }: BidTypes) => {
                                                             {
                                                                 bid.status === "WIN" ? <p>Bid is Over</p> :
                                                                     <div className="flex space-x-1 items-center justify-center">
-                                                                        <AcceptBidOffer bidId={bid.id} nftAddress={nftAddress} tokenId={tokenId} />
+                                                                        <AcceptBidOffer bidId={bid.id} nftAddress={nftAddress} tokenId={tokenId} nftId={nftId} />
                                                                         < RejectBidOffer bidId={bid.id} nftAddress={nftAddress} tokenId={tokenId} />
                                                                     </div>
                                                             }

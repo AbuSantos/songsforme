@@ -15,11 +15,11 @@ type AceeptOfferTypes = {
     bidId: string
     tokenId: string
     nftAddress: string
+    nftId: string
 }
-export const AcceptBidOffer = ({ bidId, tokenId, nftAddress }: AceeptOfferTypes) => {
+export const AcceptBidOffer = ({ bidId, tokenId, nftAddress, nftId }: AceeptOfferTypes) => {
 
-
-    console.log(bidId, "bid from client")
+    console.log(nftId)
     const [isPending, startTransition] = useTransition();
     const [transaction, setTransaction] = useState()
     const [isError, setIsError] = useState("");
@@ -28,7 +28,7 @@ export const AcceptBidOffer = ({ bidId, tokenId, nftAddress }: AceeptOfferTypes)
     const handleAcceptOffer = async () => {
         startTransition(async () => {
             try {
-                const res = await acceptOffer(bidId)
+                const res = await acceptOffer(bidId, nftId)
                 if (res.message) {
                     toast.success(res.message)
                     mutate(`/api/bids/${tokenId}?nftAddress=${nftAddress}`)
@@ -61,6 +61,8 @@ export const AcceptBidOffer = ({ bidId, tokenId, nftAddress }: AceeptOfferTypes)
                 Accept Offer
             </TransactionButton>
 
+
+            {/* //FOR TESTING */}
             {/* <button className="text-black bg-[teal] px-3 py-1 capitalize" onClick={handleAcceptOffer}>
                 accept Offer
             </button> */}

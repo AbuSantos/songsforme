@@ -10,18 +10,12 @@ export const buyNFT = async (
   listedNftId: string,
   transactionHash?: string
 ) => {
-  console.log(buyer, transactionHash, "from bouhght");
   // Ensure that required fields are provided
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };
   }
 
   try {
-    // Parse price to ensure it's a valid number
-    // const parsedPrice = parseFloat(price);
-    // if (isNaN(parsedPrice)) {
-    //   return { message: "Invalid price format." };
-    // }
 
     // Check if the NFT exists and if it's already sold
     const listedNFT = await db.listedNFT.findUnique({

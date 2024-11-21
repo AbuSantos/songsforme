@@ -58,6 +58,8 @@ export const RejectBidOffer = ({ bidId, tokenId, nftAddress }: RejectBidTypes) =
             >
                 Reject Offer
             </TransactionButton>
+            {/* //FOR TESTING */}
+
 
             {/* <button className="text-black bg-red-400 px-2 py-1 rounded-md capitalize" onClick={handleAcceptOffer}>
                 reject Offer
