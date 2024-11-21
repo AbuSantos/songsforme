@@ -10,6 +10,8 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD";
 
 export const AllMySingle = ({ data }: { data: any[] }) => {
+
+    
     return (
         <div>
             <header className="flex items-center justify-between">

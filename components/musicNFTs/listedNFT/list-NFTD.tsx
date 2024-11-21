@@ -77,7 +77,7 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
 
         />
 
-        {/* <TransactionButton
+        <TransactionButton
           transaction={() => {
             const priceInWei = ethers.utils.parseEther(price);
             const tx = prepareContractCall({
@@ -113,13 +113,13 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
           }
         >
           Confirm Listing
-        </TransactionButton> */}
+        </TransactionButton>
 
-        <Button
+        {/* <Button
           onClick={() => saveListing(seller, tokenId, price, address, singleId)}
         >
           save listing
-        </Button>
+        </Button> */}
       </div>
 
       < FormError message={errorMessage} />

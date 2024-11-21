@@ -1,5 +1,4 @@
 "use client"
-import { Cross1Icon } from "@radix-ui/react-icons";
 import { useEffect, useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { contract } from "@/lib/client";
@@ -34,14 +33,14 @@ export const MakeBid = ({
     nftId,
     userId, }: NFTProps) => {
     const [isPending, startTransition] = useTransition();
-    const [bidAmount, setBidAmount] = useState<number>(0);
+    const [bidAmount, setBidAmount] = useState<string>("0.00");
     const [selectedIncrease, setSelectedIncrease] = useState<number | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isSuccess, setIsSuccess] = useState<string>("");
 
     const bidder = userId
 
-    const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
+    // const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
     const apiUrl = `/api/bids/${tokenId}?nftAddress=${nftAddress}`;
 
     // Fetch data using SWR
@@ -50,35 +49,13 @@ export const MakeBid = ({
         errorRetryCount: 3,
     });
 
-    const handleBid = async () => {
-        try {
-            // Ensure price is a valid number
-            if (!bidAmount || isNaN(Number(bidAmount)) || Number(bidAmount) <= 0) {
-                setErrorMessage("Please enter a valid price.");
-                return null;
-            }
+    const handleBidBackEnd = (transactionHash: string) => {
+        const bidAmountValue = parseFloat(bidAmount)
 
-            // Prepare transaction
-            const tx = prepareContractCall({
-                contract,
-                method: "bid",
-                //@ts-ignore
-                params: [tokenId, nftAddress],
-                //@ts-ignore
-                value: toWei(bidAmount), // Convert price to Wei
-            });
-            return tx;
-        } catch (error) {
-            setErrorMessage("Failed to prepare transaction. Check input values.");
-            return null;
-        }
-    };
-
-    const handleBidBackEnd = () => {
         startTransition(async () => {
             try {
                 const res = await MakeBidBackend(
-                    { tokenId, nftAddress, nftId, bidder, bidAmount, transactionHash, userId }
+                    { tokenId, nftAddress, nftId, bidder, bidAmount: bidAmountValue, transactionHash, userId }
                 )
                 if (res.success === true) {
                     mutate(apiUrl
@@ -111,8 +88,7 @@ export const MakeBid = ({
             <PopoverContent className="w-80">
 
                 <div className="flex flex-col space-y-3">
-                    <h1 className="text-center text-gray-300 py-4">Percentage increase from current bid</h1>
-
+                    <h1 className="text-center text-gray-300 py-4">Percentage increase from highest bidder</h1>
 
                     {isLoading ? (
                         <p className="text-center text-gray-500">Loading current bids...</p>
@@ -132,39 +108,48 @@ export const MakeBid = ({
                     )}
                     <Input
                         value={bidAmount}
-                        onChange={(e) => setBidAmount(parseFloat(e.target.value) || 0)} // Parse to number
+                        onChange={(e) => setBidAmount(e.target.value)}
                         placeholder="Price in ETH"
                         disabled={isPending}
-                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100 "
+                        className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100 mb-3 "
                     />
-
-                    {/* <TransactionButton
-                        //@ts-ignore
-                        transaction={handleBid}
-                        onTransactionConfirmed={(receipt) => {
-                            console.log("Transaction successful", receipt);
-                            setIsSuccess("Bid Made Successfully")
-                        }}
-                        onError={(error) => setErrorMessage(error.message)}
-                    >
-                        Make Bid
-                    </TransactionButton> */}
 
 
                     <div className="flex justify-between space-x-2 p-2 text-[var(--textSoft)]  mt-6 mb-6">
                         <h2 className="capitalize ">you pay</h2>
                         <span>{bidAmount} ETH</span>
                     </div>
-                    <Separator className=" border-t-[#606060] h-[0.7px]" />
+
+                    <Separator className=" border-t-[#606060] h-[0.7px] mt-3" />
 
 
-                    <button onClick={handleBidBackEnd} className="text-gray-200">
+                    <TransactionButton
+                        transaction={() => {
+                            const tx = prepareContractCall({
+                                contract,
+                                method: "bid",
+                                //@ts-ignore
+                                params: [tokenId, nftAddress],
+                                value: toWei(bidAmount),
+                            });
+                            return tx;
+                        }}
+                        onTransactionConfirmed={(tx) => {
+                            if (tx.status === "success") {
+                                handleBidBackEnd(
+                                    tx.transactionHash
+                                )
+                            }
+                        }}
+                        onError={(error) => setErrorMessage(error.message)}
+                    >
+                        Make Bid
+                    </TransactionButton>
+                    {/* <button onClick={handleBidBackEnd} className="text-gray-200">
                         Bid
-                    </button>
-
+                    </button> */}
                 </div>
             </PopoverContent>
-
         </Popover>
 
     );

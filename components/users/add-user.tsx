@@ -26,7 +26,6 @@ export const CreateUsername = (
 ) => {
     const [isPending, startTransition] = React.useTransition()
     const [username, setUsername] = useState<string>("");
-    const userId = useActiveAccount();
 
     const addUser = () => {
         startTransition(() => {
