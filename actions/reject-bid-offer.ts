@@ -16,7 +16,7 @@ export const rejectOffer = async (bidId: string) => {
 
     return {
       success: true,
-      message: `Offer with ID ${bidId} rejected successfully.`,
+      message: `Offer rejected successfully.`,
       bid,
     };
   } catch (error) {

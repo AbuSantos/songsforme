@@ -89,7 +89,7 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller }: BidTypes) => {
                                                             {
                                                                 bid.status === "WIN" ? <p>Bid is Over</p> :
                                                                     <div className="flex space-x-1 items-center justify-center">
-                                                                        <AcceptBidOffer bidId={bid.id} />
+                                                                        <AcceptBidOffer bidId={bid.id} nftAddress={nftAddress} tokenId={tokenId} />
                                                                         < RejectBidOffer bidId={bid.id} nftAddress={nftAddress} tokenId={tokenId} />
                                                                     </div>
                                                             }

@@ -141,7 +141,7 @@ export const MakeBid = ({
                                 )
                             }
                         }}
-                        onError={(error) => setErrorMessage(error.message)}
+                        onError={(error) => toast.error(error.message)}
                     >
                         Make Bid
                     </TransactionButton>

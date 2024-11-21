@@ -9,11 +9,14 @@ import { toast } from "sonner"
 
 import { toTokens } from "thirdweb/utils";
 import { acceptOffer } from "@/actions/accept-bid-offer";
+import { mutate } from "swr";
 
 type AceeptOfferTypes = {
     bidId: string
+    tokenId: string
+    nftAddress: string
 }
-export const AcceptBidOffer = ({ bidId }: AceeptOfferTypes) => {
+export const AcceptBidOffer = ({ bidId, tokenId, nftAddress }: AceeptOfferTypes) => {
 
 
     console.log(bidId, "bid from client")
@@ -28,54 +31,39 @@ export const AcceptBidOffer = ({ bidId }: AceeptOfferTypes) => {
                 const res = await acceptOffer(bidId)
                 if (res.message) {
                     toast.success(res.message)
+                    mutate(`/api/bids/${tokenId}?nftAddress=${nftAddress}`)
+
                 }
             } catch (error: any) {
                 toast.success(error.message)
             }
         })
     }
-    // Submit handler
-    const onSubmit = async (values: z.infer<typeof AcceptBidSchema>) => {
-        startTransition(() => {
-            try {
-                const transaction = prepareContractCall({
-                    contract,
-                    method: "acceptOffer",
-                    //@ts-ignore
-
-                    params: [values.tokenId, values.address],
-                });
-                //@ts-ignore
-
-                setTransaction(transaction)
-
-            } catch (err) {
-                console.error("Error preparing transaction:", err);
-                setIsError("An error occurred. Please try again.");
-            }
-        });
-    };
-
-
     return (
         <div className="">
-            {/* <TransactionButton
-                //@ts-ignore
+            <TransactionButton
+                transaction={() => {
+                    const tx = prepareContractCall({
+                        contract,
+                        method: "acceptOffer",
+                        //@ts-ignore
+                        params: [tokenId, nftAddress],
+                    })
+                    return tx
+                }}
 
-                transaction={() => transaction}
-                onTransactionConfirmed={() => console.log("listing")}
-                //@ts-ignore
-                onSuccess={(success) => setIsSuccess(success)}
-                onError={(error) =>
-                    setIsError(error.message)
-                }
+                onTransactionConfirmed={(tx) => {
+                    if (tx.status === "success") handleAcceptOffer()
+                    console.log("listing", tx)
+                }}
+                onError={(error) => toast.error(error.message)}
             >
                 Accept Offer
-            </TransactionButton> */}
+            </TransactionButton>
 
-            <button className="text-black bg-[teal] px-3 py-1 capitalize" onClick={handleAcceptOffer}>
+            {/* <button className="text-black bg-[teal] px-3 py-1 capitalize" onClick={handleAcceptOffer}>
                 accept Offer
-            </button>
+            </button> */}
 
 
         </div>
