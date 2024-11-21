@@ -1,3 +1,4 @@
+"use client"
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useEffect, useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,9 @@ import {
 } from "@/components/ui/popover"
 import { MakeBidBackend } from "@/actions/make-bid";
 import { toast } from "sonner";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
+import { Toggle } from "../ui/toggle";
+import { fetcher } from "@/lib/utils";
 
 interface NFTProps {
     tokenId: string,
@@ -38,6 +41,16 @@ export const MakeBid = ({
     const bidder = userId
 
     const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
+    const apiUrl = `/api/bids/${tokenId}?nftAddress=${nftAddress}`;
+
+    // Fetch data using SWR
+    const { data: bids, error, isLoading } = useSWR(apiUrl, fetcher, {
+        shouldRetryOnError: true,
+        errorRetryCount: 3,
+    });
+
+
+    console.log(bids)
 
 
     const handleBid = async () => {
@@ -70,7 +83,7 @@ export const MakeBid = ({
                     { tokenId, nftAddress, nftId, bidder, bidAmount, transactionHash, userId }
                 )
                 if (res.success === true) {
-                    mutate(`/api/bids/${tokenId}?nftAddress=${nftAddress}`
+                    mutate(apiUrl
                     )
                     toast.success(res.message)
                 } else if (res.success === false) {
@@ -81,6 +94,13 @@ export const MakeBid = ({
             }
 
         })
+    }
+    const handleValue = (newFilter: number) => {
+        //@ts-ignore
+        const bid = bids?.data?.reduce((max: number, current: number) => (current.bidAmount > max ? current.bidAmount : max), -Infinity);
+        const bidPercent = (newFilter / 100) * bid
+        const bidMade = bidPercent + bid
+        setBidAmount(bidMade);
     }
 
     return (
@@ -93,6 +113,22 @@ export const MakeBid = ({
             <PopoverContent className="w-80">
 
                 <div className="flex flex-col space-y-3">
+                    <h1 className="text-center text-gray-300">Percentage increase from current bid</h1>
+
+                    {bids?.data && <div className="grid grid-cols-4  p-2 gap-2 w-full">
+                        <Toggle aria-label="1 % increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-full" onClick={() => handleValue(1)}>
+                            +1%
+                        </Toggle>
+                        <Toggle aria-label="3 % increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-full" onClick={() => handleValue(3)}>
+                            +3%
+                        </Toggle>
+                        <Toggle aria-label="5 percent increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-fulll" onClick={() => handleValue(4)}>
+                            +5%
+                        </Toggle>
+                        <Toggle aria-label="10 percent increase" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-full" onClick={() => handleValue(5)}>
+                            +10%
+                        </Toggle>
+                    </div>}
                     <Input
                         value={bidAmount}
                         onChange={(e) => setBidAmount(parseFloat(e.target.value) || 0)} // Parse to number
@@ -124,3 +160,6 @@ export const MakeBid = ({
 
     );
 };
+
+
+// const bid = bids?.data[0].bidAmount

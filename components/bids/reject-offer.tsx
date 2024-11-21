@@ -8,9 +8,15 @@ import { Button } from "../ui/button";
 import { toast } from "sonner"
 
 import { rejectOffer } from "@/actions/reject-bid-offer";
+import { mutate } from "swr";
 
+type RejectBidTypes = {
+    bidId: string
+    tokenId: string,
+    nftAddress: string
+}
 
-export const RejectBidOffer = ({ bidId }: { bidId: string }) => {
+export const RejectBidOffer = ({ bidId, tokenId, nftAddress }: RejectBidTypes) => {
 
     const [isPending, startTransition] = useTransition();
     const [transaction, setTransaction] = useState()
@@ -21,6 +27,7 @@ export const RejectBidOffer = ({ bidId }: { bidId: string }) => {
                 const res = await rejectOffer(bidId)
                 if (res.message) {
                     toast.success(res.message)
+                    mutate(`/api/bids/${tokenId}?nftAddress=${nftAddress}`)
                 }
             } catch (error: any) {
                 toast.success(error.message)

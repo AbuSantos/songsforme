@@ -13,16 +13,6 @@ export const MakeBidBackend = async ({
   transactionHash,
   userId,
 }: MakeBidParams) => {
-  console.log(
-    tokenId,
-    nftAddress,
-    nftId,
-    bidder,
-    bidAmount,
-    transactionHash,
-    userId
-  );
-
   if (!nftId || !nftAddress || !bidder || !bidAmount) {
     return { message: "Invalid Bid Details" };
   }
@@ -37,11 +27,12 @@ export const MakeBidBackend = async ({
 
     const newBid = await db.bid.upsert({
       where: {
-        userId_tokenId: { userId, tokenId }, // Compound unique key
+        userId_tokenId: { userId, tokenId },
       },
       update: {
         bidAmount,
         transactionHash,
+        status: "PENDING",
       },
       create: {
         userId,

@@ -4,21 +4,27 @@ import { db } from "@/lib/db";
 
 export const rejectOffer = async (bidId: string) => {
   if (!bidId) {
-    return { mesage: "Invalid Details" };
+    return { success: false, message: "Invalid or missing bid ID" };
   }
+
   try {
+    // Update the bid's status to "REJECTED"
     const bid = await db.bid.update({
       where: { id: bidId },
       data: { status: "REJECTED" },
     });
 
     return {
-      message: "Offer accepted successfully",
+      success: true,
+      message: `Offer with ID ${bidId} rejected successfully.`,
+      bid,
     };
   } catch (error) {
-    console.error("Error accepting offer:", error);
+    console.error("Error rejecting offer:", { bidId, error });
+
     return {
-      message: "Error accepting offer",
+      success: false,
+      message: "Error rejecting offer. Please try again later.",
     };
   }
 };

@@ -35,9 +35,11 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller }: BidTypes) => {
         errorRetryCount: 3,
     });
 
+
     if (isLoading) return <div>Loading...</div>;  // Display loading text
     if (error) return <div>Error fetching bids.</div>; // Display error message
 
+    console.log(bids, "bids")
     return (
         <div className="grid grid-cols-2 gap-2">
             <Sheet>
@@ -61,8 +63,8 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller }: BidTypes) => {
                         </TableHeader>
                         <TableBody>
                             {
-                                bids && bids.length > 0 ? (
-                                    bids.map((bid: any) => (
+                                bids && bids.data.length > 0 ? (
+                                    bids.data.map((bid: any) => (
                                         <TableRow key={bid.id}>
                                             <TableCell className="font-medium">{bid.tokenId}</TableCell>
                                             <TableCell className="">
@@ -83,12 +85,17 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller }: BidTypes) => {
                                             <TableCell >
                                                 {
                                                     userId && userId === seller ?
-                                                        <div className="flex space-x-1 items-center justify-center">
-                                                            <AcceptBidOffer bidId={bid.id} />
-                                                            < RejectBidOffer bidId={bid.id} />
+                                                        <div >
+                                                            {
+                                                                bid.status === "WIN" ? <p>Bid is Over</p> :
+                                                                    <div className="flex space-x-1 items-center justify-center">
+                                                                        <AcceptBidOffer bidId={bid.id} />
+                                                                        < RejectBidOffer bidId={bid.id} nftAddress={nftAddress} tokenId={tokenId} />
+                                                                    </div>
+                                                            }
                                                         </div> :
                                                         <p>
-                                                            AWAITING CONFFIRMATION
+                                                            AWAITING CONFIRMATION
                                                         </p>
                                                 }
                                             </TableCell>

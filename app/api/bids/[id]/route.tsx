@@ -8,7 +8,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const url = new URL(request.url);
     const nftAddress = url.searchParams.get("nftAddress");
 
-    // Input validation
     if (!id || !nftAddress) {
         return NextResponse.json(
             { error: "Missing or invalid tokenId or nftAddress" },
@@ -31,7 +30,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
             },
         });
 
-        // Return success response
         return NextResponse.json({
             success: true,
             data: bids,
