@@ -53,7 +53,7 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
                                 <Link href={`/dashboard/playlist/${item.id}`} className="w-full">
                                     <div className="flex justify-between text-[#7B7B7B] items-center  md:bg-[#222222] md:hover:bg-[#353232] hover:text-[#EEEEEE]  px-2 md:py-4 w-full text-start rounded-md ">
                                         <div className="flex spacee-x-3 items-center justify-center">
-                                            <Image src="/images/playlisty.jpg" width={45} height={65} alt="playlist" className="rounded-sm" />
+                                            <Image src="/images/playlisty.jpg" width={45} height={105} alt="playlist" className="rounded-sm" />
                                             <p className="text-[1rem] capitalize ml-2">
                                                 {item.name}
                                             </p>
