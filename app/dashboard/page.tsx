@@ -33,6 +33,7 @@ import { Suspense } from "react"
 import { FilterByTime } from "@/components/marketplace/filter/filter-by-time"
 import { Ratio } from "@/components/marketplace/filter/filter-by-ratio"
 import dynamic from "next/dynamic"
+import { TopChart } from "@/components/chart/top-chart"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -121,6 +122,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                             Trending
                                         </TabsTrigger>
                                         <TabsTrigger value="mynft">My NFT</TabsTrigger>
+                                        <TabsTrigger value="chart">Chart</TabsTrigger>
                                     </div>
                                     <div className="md:hidden px-2 py-2 ">
                                         <TabsTrigger value="music" className="relative">
@@ -155,6 +157,12 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                                 <path d="M5.5 11.5H5.49102" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                 <path d="M11 19.5H10.5C6.74142 19.5 4.86213 19.5 3.60746 18.5091C3.40678 18.3506 3.22119 18.176 3.0528 17.9871C2 16.8062 2 15.0375 2 11.5C2 7.96252 2 6.19377 3.0528 5.0129C3.22119 4.82403 3.40678 4.64935 3.60746 4.49087C4.86213 3.5 6.74142 3.5 10.5 3.5H13.5C17.2586 3.5 19.1379 3.5 20.3925 4.49087C20.5932 4.64935 20.7788 4.82403 20.9472 5.0129C21.8957 6.07684 21.9897 7.61799 21.999 10.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                                 <path d="M14.5 11.5C14.5 12.8807 13.3807 14 12 14C10.6193 14 9.5 12.8807 9.5 11.5C9.5 10.1193 10.6193 9 12 9C13.3807 9 14.5 10.1193 14.5 11.5Z" stroke="currentColor" stroke-width="1.5" />
+                                            </svg>
+                                        </TabsTrigger>
+                                        <TabsTrigger value="chart">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                                                <path d="M3 4V14C3 16.8284 3 18.2426 3.87868 19.1213C4.75736 20 6.17157 20 9 20H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M6 14L9.25 10.75C9.89405 10.1059 10.2161 9.78392 10.5927 9.67766C10.8591 9.60254 11.1409 9.60254 11.4073 9.67766C11.7839 9.78392 12.1059 10.1059 12.75 10.75C13.3941 11.3941 13.7161 11.7161 14.0927 11.8223C14.3591 11.8975 14.6409 11.8975 14.9073 11.8223C15.2839 11.7161 15.6059 11.3941 16.25 10.75L20 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
                                         </TabsTrigger>
                                     </div>
@@ -297,9 +305,33 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <AllPlaylist />
                                 </div>
                             </TabsContent>
+                            <TabsContent
+                                value="chart"
+                                className="border-none pt-24 outline-none px-2 "
+                            >
+                                <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
+                                    <div className="space-y-1">
+                                        <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+                                            Top songs
+                                        </h2>
+                                        <p className="text-sm text-muted-foreground">
+                                            Top picks for you. Updated daily.
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <Separator className="my-4 " />
+                                    </div>
+                                </div>
+
+                                <div className="w-full pt-20 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
+                                    <Suspense fallback={<MarketSkeleton />}>
+                                        <TopChart />
+                                    </Suspense>
+                                </div>
+                            </TabsContent>
                         </Tabs>
                     </div>
-                </div>
+                </div >
             </>
         )
     } catch (error) {

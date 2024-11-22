@@ -1,3 +1,4 @@
+import { Return } from "@/components/actions/return";
 import { Tracktable } from "@/components/musicNFTs/listedNFT/data-table"
 import { PlaylistInfo } from "@/components/playlists/playlist-info/playlist-info";
 import { db } from "@/lib/db"
@@ -41,7 +42,8 @@ const page = async ({ params }: { params: { id: string } }) => {
         }
 
         return (
-            <div className='text-red-50 px-3'>
+            <div className='text-red-50 px-1 py-6'>
+                <Return />
                 <header className="md:flex w-full">
                     <div className=" flex space-x-2 items-end px-4 w-full md:w-5/12 ">
                         <Image src={track?.cover || "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"} width={150} height={200} alt="cover" className="rounded-md" />

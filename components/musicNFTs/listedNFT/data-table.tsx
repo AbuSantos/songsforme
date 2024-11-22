@@ -21,6 +21,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge"
 
 type TrackTableType = {
     data: ListedNFT[];
@@ -34,7 +35,6 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     // const userId = useRecoilValue(isConnected).toLowerCase();
 
 
-    console.log("userId from tracktable:", userId)
     const [isPending, startTransition] = useTransition();
 
     // Toggle function to switch buy/sell mode for individual NFTs
@@ -93,23 +93,24 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     </Link>
 
                     <div>
-                        {userId && (track?.seller === userId ? (
-                            <TogglingSell toggleBuySell={() => toggleBuySell(track.id)} isEnabled={isEnabled[track.id] || false} />
-                        ) : track?.isSaleEnabled ? (
-                            <BuyNFT
-                                buyer={userId || ""}
-                                nftAddress={track.contractAddress}
-                                tokenId={track.tokenId}
-                                price={track.price}
-                                listedNftId={track.id}
-                            />
-                        ) : (
-                            < MakeBid tokenId={track?.tokenId} nftAddress={track?.contractAddress} nftId={track?.id} userId={userId} />
-                        ))}
+                        {userId && (track?.sold === true ?
+                            (<Badge className="bg-[teal] text-[0.7rem]">Sold</Badge>) : track?.seller === userId ?
+                                (
+                                    <TogglingSell toggleBuySell={() => toggleBuySell(track.id)} isEnabled={isEnabled[track.id] || false} />
+                                ) : track?.isSaleEnabled ? (
+                                    <BuyNFT
+                                        buyer={userId || ""}
+                                        nftAddress={track.contractAddress}
+                                        tokenId={track.tokenId}
+                                        price={track.price}
+                                        listedNftId={track.id}
+                                    />
+                                ) : (
+                                    < MakeBid tokenId={track?.tokenId} nftAddress={track?.contractAddress} nftId={track?.id} userId={userId} />
+                                ))}
                     </div>
                     <div className="items-center space-x-2 flex ml-2">
                         <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
-
                         <div className="block md:hidden">
 
                             <Popover>

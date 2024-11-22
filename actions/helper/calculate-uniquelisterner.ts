@@ -9,7 +9,6 @@ export const calculateDecayedUniqueListeners = async (nftId: string) => {
     orderBy: { date: "desc" },
     take: 7,
   });
-  console.log(recentListenerRecords, "recent listeners");
 
   const currentTime = Date.now() / 1000;
   const decayRate = calculateDecayRate();

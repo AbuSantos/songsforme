@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
 type ParamProp = {
@@ -29,6 +29,7 @@ export const GET = async (
         listednft: true, // Include associated NFTs in the response
       },
     });
+    revalidateTag("playlist");
 
     // Return the fetched playlists as a JSON response
     return new Response(JSON.stringify(playlists), {

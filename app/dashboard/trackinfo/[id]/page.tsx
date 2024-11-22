@@ -1,4 +1,5 @@
 import { Actions } from "@/components/actions/actions"
+import { Return } from "@/components/actions/return"
 import { TrackChart } from "@/components/dashboard/track-info/track-chart"
 import { TrackInfo } from "@/components/dashboard/track-info/track-info"
 import { Separator } from "@/components/ui/separator"
@@ -28,20 +29,24 @@ const page = async ({ params }: { params: { id: string } }) => {
         if (!track) return
 
         return (
-            <div className="flex items-center justify-center flex-col space-y-2">
-                <TrackChart track={track} />
-                <Separator className="my-4 w-full  " />
-                <TrackInfo data={track} />
-                < Actions
-                    nftAddress={track?.contractAddress}
-                    nftId={track?.id}
-                    tokenId={track?.tokenId}
-                    price={track?.price}
-                    listedNftId={track?.id}
-                    isSaleEnabled={track?.isSaleEnabled}
-                    seller={track?.seller}
-                />
-            </div>
+            <>
+                <Return />
+                <div className="flex items-center justify-center flex-col space-y-2">
+                    <TrackChart track={track} />
+                    <Separator className="my-4 w-full  " />
+                    <TrackInfo data={track} />
+                    < Actions
+                        nftAddress={track?.contractAddress}
+                        nftId={track?.id}
+                        tokenId={track?.tokenId}
+                        price={track?.price}
+                        listedNftId={track?.id}
+                        isSaleEnabled={track?.isSaleEnabled}
+                        seller={track?.seller}
+                    />
+                </div>
+            </>
+
         )
     } catch (error) {
         console.log(error);

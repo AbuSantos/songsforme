@@ -70,7 +70,7 @@ export const SelectPlaylist = ({ nftId, userId }: SelectProps) => {
 
     return (
         <Select onValueChange={handleAddToPlaylist}>
-            <SelectTrigger className="text-gray-950 bg-[var(--button-bg)] text-center items-center">
+            <SelectTrigger className="text-gray-950 bg-[var(--button-bg)] text-center items-center shadow-md">
                 {added ? (
                     <CheckCircledIcon className='cursor-pointer w-6 h-6 text-[teal]' />
                 ) : (

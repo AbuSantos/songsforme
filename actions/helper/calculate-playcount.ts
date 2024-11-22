@@ -12,8 +12,8 @@ export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
 
   // Check if the last entry in recentPlays is from today
   const lastPlayEntry = recentPlays[recentPlays.length - 1];
-  const today = now.toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
-  
+  const today = now.toISOString().slice(0, 10);
+
   if (lastPlayEntry && lastPlayEntry.timestamp.startsWith(today)) {
     // If today's entry exists, increment the count
     lastPlayEntry.count += 1;
@@ -25,8 +25,8 @@ export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
   await db.listedNFT.update({
     where: { id: user.currentNftId as string },
     data: {
-      recentPlays: recentPlays, // Store updated recentPlays array
-      lastPlayTimestamp: now, // Update the last play timestamp
+      recentPlays: recentPlays,
+      lastPlayTimestamp: now,
     },
   });
 };

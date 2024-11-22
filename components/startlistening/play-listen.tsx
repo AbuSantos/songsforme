@@ -14,11 +14,6 @@ type PlaylistIdTypes = {
     nftContractAddress: string
     tokenId: string
 };
-type NFTTypes = {
-    image: string
-    animation_url: string
-    tokenId: string
-}
 
 export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, tokenId }: PlaylistIdTypes) => {
     const [isPlaying, setIsPlaying] = useState(false);
@@ -86,7 +81,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 console.log("Listening paused");
                 localStorage.setItem("playtime", "pause")
 
-                setIsPlaying(false); // Set playing state to false after pausing
+                setIsPlaying(false); 
             } else {
                 try {
                     // End any active session first
@@ -119,7 +114,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         <div>
             {
                 nftData &&
-                <Button onClick={handlePlayPause} disabled={isLoading} className='bg-[var(--button-bg)]'>
+                <Button onClick={handlePlayPause} disabled={isLoading} className='bg-[var(--button-bg)] shadow-md'>
                     {isLoading ?
 
                         <Image src="/images/loader.svg" alt='loader' width={30} height={30} />
