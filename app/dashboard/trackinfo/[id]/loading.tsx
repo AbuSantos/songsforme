@@ -7,7 +7,7 @@ interface LoaderProps {
 
 const Loader: React.FC<LoaderProps> = ({ message = "loading..." }) => {
     return (
-        <div className="loader-container">
+        <div className="loader-container py-6">
             <div className="loader-spinner"></div>
             <p className="loader-message">{message}</p>
         </div>

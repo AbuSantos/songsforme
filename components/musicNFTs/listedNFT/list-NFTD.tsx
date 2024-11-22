@@ -46,7 +46,6 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
 
   return (
     <div className="relative bg-black rounded-md w-full py-8 px-6 border-[0.7px] border-gray-600">
-
       <h1 className="text-center text-2xl text-gray-200 font-medium capitalize p-4">Please add Your Music NFT Details</h1>
 
       <div className="space-y-3">
@@ -77,7 +76,7 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
 
         />
 
-        <TransactionButton
+        {/* <TransactionButton
           transaction={() => {
             const priceInWei = ethers.utils.parseEther(price);
             const tx = prepareContractCall({
@@ -113,13 +112,13 @@ export const DesktopNFTForm = ({ singleId }: singleIdProps) => {
           }
         >
           Confirm Listing
-        </TransactionButton>
+        </TransactionButton> */}
 
-        {/* <Button
+        <Button
           onClick={() => saveListing(seller, tokenId, price, address, singleId)}
         >
           save listing
-        </Button> */}
+        </Button>
       </div>
 
       < FormError message={errorMessage} />

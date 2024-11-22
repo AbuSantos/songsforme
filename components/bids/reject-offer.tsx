@@ -38,7 +38,7 @@ export const RejectBidOffer = ({ bidId, tokenId, nftAddress }: RejectBidTypes) =
 
     return (
         <div className="">
-            <TransactionButton
+            {/* <TransactionButton
                 transaction={() => {
                     const tx = prepareContractCall({
                         contract,
@@ -57,13 +57,13 @@ export const RejectBidOffer = ({ bidId, tokenId, nftAddress }: RejectBidTypes) =
                 className="bg-[#E54D2E]"
             >
                 Reject Offer
-            </TransactionButton>
+            </TransactionButton> */}
             {/* //FOR TESTING */}
 
 
-            {/* <button className="text-black bg-red-400 px-2 py-1 rounded-md capitalize" onClick={handleAcceptOffer}>
+            <button className="text-black bg-red-400 px-2 py-1 rounded-md capitalize" onClick={handleRejectOffer}>
                 reject Offer
-            </button> */}
+            </button>
 
 
         </div>

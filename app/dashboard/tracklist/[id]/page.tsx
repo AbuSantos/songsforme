@@ -34,13 +34,13 @@ const page = async ({ params }: { params: { id: string } }) => {
 
         if (!track) {
             return (
-                <div className="text-red-50 px-3">
+                <div className="text-red-50 px-3 py-6">
                     <h1 className="text-2xl capitalize">Track not found</h1>
                 </div>
             );
         }
         return (
-            <div className='text-red-50 px-3'>
+            <div className='text-red-50 px-1 py-6 '>
                 <header className=" flex space-x-2 items-end px-4">
                     <Image src={"https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"} width={150} height={200} alt="cover" className="rounded-md" />
                     <div className="text-gray-100">

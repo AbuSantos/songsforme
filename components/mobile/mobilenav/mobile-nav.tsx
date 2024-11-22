@@ -20,6 +20,7 @@ import {
 import { MobilePlaylist } from "../m-playlist/mobile-playlist"
 import { useRecoilValue } from "recoil"
 import { isConnected } from "@/atoms/session-atom"
+import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD"
 
 export const MobileNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -48,23 +49,21 @@ export const MobileNav = () => {
                 </Button>
             </SheetTrigger>
             <SheetContent className="w-full ">
-                <div className="flex flex-col justify-between h-full w-full">
-                    <div className="flex flex-col mt-8 space-y-4">
+                <div className="flex flex-col h-full w-full">
+                    <div className="grid grid-cols-2  mt-8 space-x-1 w-full">
                         {/* <Button onClick={handleModal} size="nav" className="p-3">
                             <PlusCircledIcon className="mr-2 h-4 w-4" />
                             Mint Music
                         </Button> */}
-                        <Button onClick={handleListModal} size="nav" className="p-3">
+                        <Button onClick={handleListModal} size="nav" className="p-2">
                             <PlusCircledIcon className="mr-2 h-4 w-4" />
                             List MusicNFT
                         </Button>
-                        {/* <AddToWhitelist /> */}
+
+                        <WithdrawRewards />
                     </div>
 
                     {/* CHANGE THE BUTTON WIDTH */}
-                    <div className="mt-4 mb-3 w-full">
-                        <WithdrawRewards />
-                    </div>
                     <div className="overflow-y-auto scroll-smooth">
                         <MobilePlaylist userId={userId} />
                     </div>
@@ -74,7 +73,8 @@ export const MobileNav = () => {
                     </div>
 
                     {isOpen && <AddMusicModal setIsOpen={setIsOpen} />}
-                    {listModalOpen && <ListNFTForm setListModalOpen={setListModalOpen} />}
+                    {listModalOpen && <DesktopNFTForm />}
+                    {/* {listModalOpen && <ListNFTForm setListModalOpen={setListModalOpen} />} */}
                 </div>
             </SheetContent>
         </Sheet>

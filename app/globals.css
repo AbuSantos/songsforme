@@ -20,6 +20,7 @@ html,
 }
 
 body {
+  background-color: var(--bg-root);
   /* background-color: var(--bg-root);
   color: var(--text); */
 }
