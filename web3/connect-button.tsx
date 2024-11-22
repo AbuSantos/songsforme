@@ -30,16 +30,29 @@ export const ConnecttButton = () => {
 
 
     const wallets = [
-        inAppWallet(),
+        inAppWallet({
+            //@ts-ignore
+            providers: [
+                "passkey"
+            ]
+        }),
         createWallet("io.metamask"),
         createWallet("com.coinbase.wallet"),
         createWallet("me.rainbow"),
+
+
     ];
     return (
         <>
             <ConnectButton
                 client={client}
                 wallets={wallets}
+                connectButton={{
+                    label: "Sign In"
+                }}
+                connectModal={{
+                    title: "Sign in to Bullchord",
+                }}
                 onConnect={async (wallet) => {
                     try {
                         const account = wallet.getAccount();
