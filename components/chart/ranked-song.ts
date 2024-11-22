@@ -48,6 +48,8 @@ export const rankedSong = async () => {
   // Sort songs by topPrice in descending order
   const sortedSongs = processedSongs.sort((a, b) => b.topPrice - a.topPrice);
 
+
+
   // Assign ranks, handling ties
   let currentRank = 0;
   let previousPrice: number | null = null;

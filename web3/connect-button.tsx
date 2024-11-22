@@ -13,7 +13,7 @@ import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 
 const privateKey = process.env.METAMASK_PRIVATE_KEY || "b9342970bf5ec1044da071be47966ba7c07c56a4870b5cf3636f3ca7afeb95d7"
 const thirdwebAuth = createAuth({
-    domain: "localhost:3000",
+    domain: "https://bullchordv1.vercel.app",
     client,
     adminAccount: privateKeyToAccount({ client, privateKey }),
 });
