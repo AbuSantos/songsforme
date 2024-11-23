@@ -34,6 +34,7 @@ import { FilterByTime } from "@/components/marketplace/filter/filter-by-time"
 import { Ratio } from "@/components/marketplace/filter/filter-by-ratio"
 import dynamic from "next/dynamic"
 import { TopChart } from "@/components/chart/top-chart"
+import { Minter } from "@/components/minter/minter"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -123,6 +124,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         </TabsTrigger>
                                         <TabsTrigger value="mynft">My NFT</TabsTrigger>
                                         <TabsTrigger value="chart">Chart</TabsTrigger>
+                                        <TabsTrigger value="minter">Minter</TabsTrigger>
                                     </div>
                                     <div className="md:hidden  py-2 ">
                                         <TabsTrigger value="music" className="relative">
@@ -252,7 +254,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 className="w-full data-[state=active]:flex pt-16  px-2"
                             >
                                 <div className="h-screen w-full flex-col border-none p-0 ">
-                                    <div className="md:flex items-center justify-between bg-[#111111] fixed md:w-[67.2%] w-full">
+                                    <div className="md:flex  space-x-2 justify-between bg-[#111111] fixed md:w-[67.2%] w-full">
                                         <div className="w-[98%] ">
                                             <Search placeholder="Search songs..." />
                                         </div>
@@ -329,6 +331,31 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </Suspense>
                                 </div>
                             </TabsContent>
+                            <TabsContent
+                                value="minter"
+                                className="border-none pt-24 outline-none px-2 "
+                            >
+                                <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
+                                    <div className="space-y-1">
+                                        <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+                                            MINTER
+                                        </h2>
+                                        <p className="text-sm text-muted-foreground">
+                                            All Minted NFTS will be listed on the MarketPlace
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <Separator className="my-4 " />
+                                    </div>
+                                </div>
+
+                                <div className="w-full pt-20 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
+                                    <Suspense fallback={<MarketSkeleton />}>
+                                        <Minter />
+                                    </Suspense>
+                                </div>
+                            </TabsContent>
+
                         </Tabs>
                     </div>
                 </div >
