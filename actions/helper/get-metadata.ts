@@ -5,7 +5,7 @@ if (!process.env.ALCHEMY_KEY) {
 }
 
 const settings = {
-  apiKey: process.env.ALCHEMY_KEY!,
+  apiKey: "Bgl1yhzD-eN0JQKZcp1lQmSzMassO6ZK",
   network: Network.ETH_SEPOLIA,
 };
 
