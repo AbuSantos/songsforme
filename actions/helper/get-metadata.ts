@@ -1,7 +1,11 @@
 import { Network, Alchemy } from "alchemy-sdk";
 
+if (!process.env.ALCHEMY_KEY) {
+  console.error("Missing environment variables");
+}
+
 const settings = {
-  apiKey: process.env.ALCHEMY_KEY,
+  apiKey: process.env.ALCHEMY_KEY!,
   network: Network.ETH_SEPOLIA,
 };
 

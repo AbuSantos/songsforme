@@ -65,7 +65,6 @@ export const TrackChart = ({ track }: { track: ListedNFT }) => {
           return [...prevData, { timestamp: now, price: calculatedPrice }];
         }
       });
-
     };
 
 
