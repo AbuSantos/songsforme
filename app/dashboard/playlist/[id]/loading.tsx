@@ -5,7 +5,6 @@ const Loader = () => {
     return (
         <div className='text-red-50 px-3'>
             <header className="md:flex w-full">
-
                 <div className=" flex space-x-2 items-end px-4 w-full md:w-5/12 ">
                     < Skeleton className='w-[150] h-[150] rounded-md' />
                     <div className="text-gray-100">

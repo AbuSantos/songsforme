@@ -1,8 +1,8 @@
 import { Network, Alchemy } from "alchemy-sdk";
 
 const settings = {
-  apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY, // Replace with your Alchemy API Key.
-  network: Network.ETH_SEPOLIA, // Replace with the network your NFT is on.
+  apiKey: process.env.ALCHEMY_KEY,
+  network: Network.ETH_SEPOLIA,
 };
 
 const alchemy = new Alchemy(settings);

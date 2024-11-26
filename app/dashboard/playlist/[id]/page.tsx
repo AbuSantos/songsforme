@@ -4,7 +4,6 @@ import { PlaylistInfo } from "@/components/playlists/playlist-info/playlist-info
 import { db } from "@/lib/db"
 import { truncate } from "@/lib/utils";
 import { ListedNFT, Playlist, Single } from "@/types";
-import { shortenIfAddress } from "@thirdweb-dev/react";
 import { revalidateTag } from "next/cache";
 import Image from "next/image"
 

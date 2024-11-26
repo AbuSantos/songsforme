@@ -13,8 +13,6 @@ type dataProps = {
     sold: boolean;
 }
 const page = async ({ params }: { params: { id: string } }) => {
-    //  EDIT THE SONG AND TRACK COVER
-
     const id = params.id
     if (!id) return
 

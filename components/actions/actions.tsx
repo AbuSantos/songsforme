@@ -19,9 +19,6 @@ type ActionsProps = {
 export const Actions = ({ seller, nftAddress, tokenId, price, nftId, listedNftId, isSaleEnabled }: ActionsProps) => {
   const userId = useRecoilValue(isConnected);
 
-  console.log(userId, "from actions")
-
-
   return (
     <div className="justify-center items-center space-x-2 flex md:flex w-4/12 p-3">
       <div>
