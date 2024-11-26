@@ -15,6 +15,7 @@ type MarketPlaceProps = {
 }
 // Helper: Build query filters dynamically
 const buildQueryFilters = (filter: string) => {
+
     const threshHold = getTimeThreshold(filter || "");
     const { address } = getAddressOrName(filter || "");
 
@@ -54,7 +55,8 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
             Single: {
                 select: {
                     song_cover: true,
-                    artist_name: true
+                    artist_name: true,
+                    song_name: true
                 }
             }
         },

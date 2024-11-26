@@ -33,7 +33,7 @@ export const AddToWhitelist = () => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="text-gray-800" size="nav">Whitelist </Button>
+                <Button variant="outline" className="text-gray-800 py-1" size="nav">Whitelist </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
                 <div className="flex flex-col space-y-3">

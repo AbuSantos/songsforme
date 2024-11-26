@@ -10,7 +10,6 @@ export const listedNFT = async (
   nftAddress: string,
   singleId?: string
 ) => {
-  console.log(nftAddress, "from listing");
   // Ensure that required fields are provided
   if (!seller || !tokenId || !price || !nftAddress) {
     return { message: "Invalid input. All fields are required." };

@@ -27,7 +27,6 @@ interface BidTypes {
 }
 export const AllBids = ({ tokenId, nftAddress, userId, seller, nftId }: BidTypes) => {
 
-    // API URL
     const apiUrl = `/api/bids/${tokenId}?nftAddress=${nftAddress}`;
 
     // Fetch data using SWR
@@ -77,7 +76,7 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller, nftId }: BidTypes
                                                 {truncate(bid.transactionHash)}
                                                 <Copy address={bid.transactionHash} />
                                             </TableCell>
-                                            <TableCell className="text-right">{new Date(bid.createdAt).toString().slice(0.10)}</TableCell>
+                                            <TableCell className="text-right">{new Date(bid.createdAt).toString().slice(0, 10)}</TableCell>
                                             <TableCell className="text-right">
                                                 <span className="text-[0.8rem] bg-[#FFCA16] py-2 px-2 rounded-md">
                                                     {bid.status}

@@ -1,19 +1,15 @@
 "use client";
 import Image from "next/image";
-import { FaPause, FaPlay } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import Link from "next/link";
-import * as React from "react"
-import { ChevronsUpDown, Plus, X } from "lucide-react"
-import { useContract } from "@thirdweb-dev/react";
+import * as React from "react";
+import { useSongData } from "@/hooks/use-song-data";
 import { Single } from "@/types";
 
-
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-    album: Single
-    className: string
+    album: Single;
+    className: string;
 }
 
 export function AlbumArtwork({
@@ -22,23 +18,28 @@ export function AlbumArtwork({
     ...props
 }: AlbumArtworkProps) {
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
-    const [openTrack, setOpenTrack] = React.useState<boolean>(false)
+    const [openTrack, setOpenTrack] = React.useState<boolean>(false);
+
+    console.log(album)
 
     return (
         <div className={cn("space-y-3", className)} {...props}>
             <Link className="space-y-1" href={`dashboard/tracklist/${album.id}`}>
-                <Image
-                    src="/images/playlisty.jpg"
-                    width={190}
-                    height={150}
-                    alt="Music"
-                    className="block dark:hidden rounded-md cursor-pointer"
-                    onClick={() => setOpenTrack(!openTrack)}
-                />
+                <div className="relative w-[190px] h-[120px] overflow-hidden rounded-md">
+                    <img
+                        src={album.song_cover || `/images/playlisty.jpg`}
+                        alt="Music"
+                        className="absolute w-full h-full object-cover"
+                        onClick={() => setOpenTrack(!openTrack)}
+                    />
+                </div>
+
                 <p className="text-[1rem] capitalize text-slate-500">
                     {album.song_name}
                 </p>
-                <small className="text-[#B4B4B4] tracking-tight leading-tight capitalize">{album.artist_name}</small>
+                <small className="text-[#B4B4B4] tracking-tight leading-tight capitalize">
+                    {album.artist_name}
+                </small>
             </Link>
         </div>
     );

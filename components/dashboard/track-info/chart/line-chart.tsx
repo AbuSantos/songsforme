@@ -11,7 +11,7 @@ type PriceDataType = {
 
 const LineChart = ({ priceData, nftAddress }: { priceData: PriceDataType[] | undefined, nftAddress: string }) => {
     const data = {
-        labels: priceData?.map((point) => new Date(point.timestamp).toLocaleDateString()),
+        labels: priceData?.map((point) => new Date(point.timestamp).toString().slice(0, 10)),
         datasets: [
             {
                 label: nftAddress,

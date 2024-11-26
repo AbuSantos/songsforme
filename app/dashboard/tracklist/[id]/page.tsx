@@ -29,9 +29,14 @@ const page = async ({ params }: { params: { id: string } }) => {
                 song_cover: true,
                 song_name: true,
                 artist_name: true,
-                listedNft: true,
+                listedNft: {
+                    include: {
+                        Single: true
+                    }
+                },
             }
         })
+
 
         if (!track) {
             return (
@@ -43,9 +48,9 @@ const page = async ({ params }: { params: { id: string } }) => {
         return (
             <>
                 <Return />
-                 <div className='text-red-50 px-1 py-6 '>
+                <div className='text-red-50 px-1 py-6 '>
                     <header className=" flex space-x-2 items-end px-4">
-                        <Image src={"https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"} width={150} height={200} alt="cover" className="rounded-md" />
+                        <img src={track?.song_cover || "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80"} width={150} height={300} alt="cover" className="rounded-md" />
                         <div className="text-gray-100">
                             <h1 className="text-2xl capitalize">{track?.song_name}</h1>
                             <p className="text-[#7B7B7B]">{track?.artist_name}</p>

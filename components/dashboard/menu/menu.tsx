@@ -39,7 +39,7 @@ export function Menu() {
         setListModalOpen(!listModalOpen)
     }
     return (
-        <div className="md:fixed justify-between p-3 hidden md:flex w-full bg-black">
+        <div className="md:fixed justify-between items-center p-3 hidden md:flex w-full bg-black">
             <Menubar className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
                 <MenubarMenu>
                     <MenubarTrigger className="font-bold text-xl">Music</MenubarTrigger>
@@ -65,7 +65,7 @@ export function Menu() {
                 <ConnecttButton />
 
             </div>
-            <div>
+            <div className="flex items-center justify-center">
                 <WithdrawRewards />
             </div>
             {

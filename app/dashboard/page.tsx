@@ -68,8 +68,18 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
 
         {/* @ts-ignore */ }
         const singleNft: Single[] = await db.single.findMany({
-            include: {
-                listedNft: true
+            select: {
+                id: true,
+                artist_name: true,
+                song_name: true,
+                song_cover: true,
+                listedNft: {
+                    select: {
+                        contractAddress: true,
+                        tokenId: true,
+                        id: true
+                    }
+                }
             }
         })
 
@@ -309,7 +319,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             </TabsContent>
                             <TabsContent
                                 value="chart"
-                                className="border-none pt-24 outline-none px-2 "
+                                className="border-none pt-[4.8rem] outline-none px-2 "
                             >
                                 <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
                                     <div className="space-y-1">
@@ -333,11 +343,11 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             </TabsContent>
                             <TabsContent
                                 value="minter"
-                                className="border-none pt-24 outline-none px-2 "
+                                className="border-none pt-[58px] outline-none px-2 "
                             >
                                 <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
                                     <div className="space-y-1">
-                                        <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+                                        <h2 className="text-xl md:text-2xl font-semibold tracking-tight py-3">
                                             MINTER
                                         </h2>
                                         <p className="text-sm text-muted-foreground">
@@ -349,7 +359,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
                                 </div>
 
-                                <div className="w-full pt-20 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
+                                <div className="w-full pt-16 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
                                     <Suspense fallback={<MarketSkeleton />}>
                                         <Minter />
                                     </Suspense>
