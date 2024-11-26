@@ -18,10 +18,21 @@ import { isConnected } from "@/atoms/session-atom";
 import { createSingleWithNFTs } from "@/actions/create-list";
 import { toast } from "sonner";
 
+type NftState = {
+    name: string;
+    symbol: string;
+    description: string;
+    image: string;
+    animation_url: string;
+    attributes: { trait_type: string; value: string }[]; // Update this type
+    royalty: string;
+    royaltyRate: string;
+};
+
 export const Minter = () => {
     const userId = useRecoilValue(isConnected)
 
-    const [nftDetails, setNftDetails] = useState({
+    const [nftDetails, setNftDetails] = useState<NftState>({
         name: "",
         symbol: "",
         description: "",
@@ -169,7 +180,7 @@ export const Minter = () => {
     const handleSaveToDatabase = async () => {
         startTransition(async () => {
             const res = await createSingleWithNFTs(userId, nftDetails.name, nftDetails.name, userId, nftDetails.image, "0", "1", deployedAddress, tokenUri)
-
+            //@ts-ignore
             if (res.status === "success") {
                 toast.success("NFT MINTED successfull")
             }
@@ -372,8 +383,8 @@ export const Minter = () => {
                             console.log(tx, "transaction")
                         }}
                         onError={(error: any) =>
-                            // toast.error("Something went wrong", error.message)
-                            console.log(error)
+                            toast.error("Something went wrong", error.message)
+                            // console.log(error)
                         }
                         className="w-full"
                     >
