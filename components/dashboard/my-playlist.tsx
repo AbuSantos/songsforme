@@ -23,6 +23,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 export const Aside = ({ className }: SidebarProps) => {
   const userId = useRecoilValue(isConnected);
   const [fav, setFav] = useState<String>("playlist")
+  
   const { data: playlist, error, isLoading } = useSWR(
     userId ? `/api/playlists/${userId}` : null,
     fetcher

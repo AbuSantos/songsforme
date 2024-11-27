@@ -50,7 +50,6 @@ export const metadata: Metadata = {
 }
 
 export default async function MusicPage({ searchParams }: { searchParams: { filter?: string; ratio?: string } }) {
-    const userId = await getSession()
     const filter = searchParams.filter || "ratio";
     const ratio = searchParams.ratio
 
@@ -122,7 +121,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                     <div className="h-full w-full lg:px-8">
                         <Tabs defaultValue="music" className="h-full border-0">
                             <div className="flex items-center fixed py-5 justify-between w-full bg-[#111111] md:w-[67.5%] box-border">
-
                                 <TabsList className="space-x-3">
                                     <div className="hidden md:block px-2 py-2 ">
                                         <TabsTrigger value="music" className="relative">
@@ -364,8 +362,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         <Minter />
                                     </Suspense>
                                 </div>
-                            </TabsContent>
 
+                            </TabsContent>
                         </Tabs>
                     </div>
                 </div >
@@ -374,8 +372,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
     } catch (error) {
         console.log(error)
         return (
-            <div className="text-center">
+            <div className="text-center pt-5">
                 <h2 className="text-red-500">Failed to load the page.</h2>
+                <p>Please refresh</p>
             </div>)
     }
 }

@@ -51,10 +51,7 @@ export const MobileNav = () => {
             <SheetContent className="w-full ">
                 <div className="flex flex-col h-full w-full">
                     <div className="grid grid-cols-2  mt-8 space-x-1 w-full">
-                        {/* <Button onClick={handleModal} size="nav" className="p-3">
-                            <PlusCircledIcon className="mr-2 h-4 w-4" />
-                            Mint Music
-                        </Button> */}
+
                         <Button onClick={handleListModal} size="nav" className="p-2">
                             <PlusCircledIcon className="mr-2 h-4 w-4" />
                             List MusicNFT
@@ -74,7 +71,6 @@ export const MobileNav = () => {
 
                     {isOpen && <AddMusicModal setIsOpen={setIsOpen} />}
                     {listModalOpen && <DesktopNFTForm />}
-                    {/* {listModalOpen && <ListNFTForm setListModalOpen={setListModalOpen} />} */}
                 </div>
             </SheetContent>
         </Sheet>

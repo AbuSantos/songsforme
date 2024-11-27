@@ -49,12 +49,17 @@ export const Minter = () => {
     const [isPreparedMint, setIsPreparedMint] = useState(false)
     const [deployedAddress, setIsDeployedAddress] = useState<string>("")
     const [isPending, startTransition] = useTransition();
-    // Initialize ThirdwebStorage
+
+    // // Initialize ThirdwebStorage
+    // const clientId = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID;
+    // const secretKey = process.env.THIRDWEB_NEW_API;
+
+
     const storage = new ThirdwebStorage({
         clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
         secretKey: process.env.THIRDWEB_NEW_API!,
     });
-
+    console.log(storage)
     // Update NFT details for non-file inputs
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;

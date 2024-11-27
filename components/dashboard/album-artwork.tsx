@@ -20,8 +20,6 @@ export function AlbumArtwork({
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
     const [openTrack, setOpenTrack] = React.useState<boolean>(false);
 
-    console.log(album)
-
     return (
         <div className={cn("space-y-3", className)} {...props}>
             <Link className="space-y-1" href={`dashboard/tracklist/${album.id}`}>
