@@ -34,6 +34,7 @@ import { FilterByTime } from "@/components/marketplace/filter/filter-by-time"
 import { Ratio } from "@/components/marketplace/filter/filter-by-ratio"
 import dynamic from "next/dynamic"
 import { TopChart } from "@/components/chart/top-chart"
+import { Minter } from "@/components/minter/minter"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -358,7 +359,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
 
                                 <div className="w-full pt-16 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
                                     <Suspense fallback={<MarketSkeleton />}>
-                                        {/* <Minter /> */}
+                                        <Minter />
                                     </Suspense>
                                 </div>
 
