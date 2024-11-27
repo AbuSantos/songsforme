@@ -1,9 +1,5 @@
 import { createThirdwebClient, defineChain } from "thirdweb";
 import { getContract } from "thirdweb";
-import { ethers } from "ethers";
-import { cache } from "react";
-import { useActiveAccount } from "thirdweb/react";
-import { redirect } from "next/navigation";
 
 export const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
@@ -1252,9 +1248,9 @@ export const _checkAndUpdateRate = (userCount: number) => {
   }
 };
 
-export const nftClient = createThirdwebClient({
-  clientId: process.env.NEXT_PUBLIC_NFT_THIRDWEB_CLIENT_ID!,
-});
+// export const nftClient = createThirdwebClient({
+//   clientId: process.env.NEXT_PUBLIC_NFT_THIRDWEB_CLIENT_ID!,
+// });
 
 export const nftFactoryContractAddress =
   "0x2299E8739f44F74A69B51785444C08c15eD3E18B";
