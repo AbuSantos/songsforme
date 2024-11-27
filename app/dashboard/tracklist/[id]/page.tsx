@@ -17,10 +17,11 @@ const page = async ({ params }: { params: { id: string } }) => {
     if (!id) return
 
     try {
+        //CHANGE TO FIND UNIQUE
         //@ts-ignore
-        const track: Single | null = await db.single.findUnique({
+        const track: Single | null = await db.single.findFirst({
             where: {
-                id
+                contractAddress: id
             },
             select: {
                 id: true,

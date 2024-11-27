@@ -54,7 +54,6 @@ export const Minter = () => {
         clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
         secretKey: process.env.THIRDWEB_NEW_API!,
     });
-    console.log(storage)
     // Update NFT details for non-file inputs
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
@@ -398,11 +397,11 @@ export const Minter = () => {
                 {
                     !deployed && !isPreparedMint &&
                     <button
-                        disabled={uploading}
+                        disabled={uploading || !userId}
                         onClick={handleMint}
                         className="mt-4 w-full px-5 py-3 bg-[#6E56FF] text-white rounded-md disabled:bg-gray-500"
                     >
-                        {uploading ? "Uploading..." : "Prepare Mint"}
+                        {uploading ? "Uploading..." : userId ? "Prepare mint" : "Please connect your wallet"}
                     </button>
                 }
             </div>

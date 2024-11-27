@@ -33,7 +33,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                     tokenId
                 );
                 setNftData(response.raw.metadata)
-                console.log("NFT Metadata:\n", response);
             } catch (error) {
                 console.log(error)
                 toast.error("Failed to load NFT data.");
@@ -78,7 +77,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 // Pause current session
                 audioRef.current?.pause();
                 await endListening(userId, playlistId);
-                console.log("Listening paused");
                 localStorage.setItem("playtime", "pause")
 
                 setIsPlaying(false); 

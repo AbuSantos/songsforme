@@ -72,6 +72,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 artist_name: true,
                 song_name: true,
                 song_cover: true,
+                contractAddress: true,
                 listedNft: {
                     select: {
                         contractAddress: true,
@@ -124,7 +125,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 <TabsList className="space-x-3">
                                     <div className="hidden md:block px-2 py-2 ">
                                         <TabsTrigger value="music" className="relative">
-                                            Music
+                                            Home
                                         </TabsTrigger>
                                         <TabsTrigger value="podcasts">Market</TabsTrigger>
                                         <TabsTrigger value="trendingPlaylist">

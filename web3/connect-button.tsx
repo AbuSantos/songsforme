@@ -11,7 +11,7 @@ import { useSetRecoilState } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 
-const privateKey = process.env.METAMASK_PRIVATE_KEY || "b9342970bf5ec1044da071be47966ba7c07c56a4870b5cf3636f3ca7afeb95d7"
+const privateKey = process.env.METAMASK_PRIVATE_KEY!
 const thirdwebAuth = createAuth({
     domain: "localhost:3000",
     client,
@@ -28,7 +28,7 @@ export const ConnecttButton = () => {
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
-
+    console.log(sessionId)
     const wallets = [
         inAppWallet({
             //@ts-ignore
@@ -70,7 +70,7 @@ export const ConnecttButton = () => {
 
                         } else {
                             // User does not exist, trigger user creation flow
-                            setConnectedAddress(account.address);
+                            setConnectedAddress(account.address.toLowerCase());
                             setIsCreatingUser(true); // Trigger the CreateUsername component
                         }
                     } catch (error) {

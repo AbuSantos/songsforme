@@ -168,10 +168,13 @@ model Single {
   album_name      String?
   uri             String?
   owner           String
-  contractAddress String?
+  contractAddress String?     @unique
   tokenId         String?
   listednftId     String?
   listedNft       ListedNFT[]
+
+  @@index([contractAddress])
+  @@index([id])
 }
 
 model PlaylistListedNFT {

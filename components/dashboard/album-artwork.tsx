@@ -20,15 +20,19 @@ export function AlbumArtwork({
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
     const [openTrack, setOpenTrack] = React.useState<boolean>(false);
 
+    console.log(album, "from contract")
+
     return (
         <div className={cn("space-y-3", className)} {...props}>
-            <Link className="space-y-1" href={`dashboard/tracklist/${album.id}`}>
+            <Link className="space-y-1" href={`dashboard/tracklist/${album.contractAddress}`}>
                 <div className="relative w-[190px] h-[120px] overflow-hidden rounded-md">
-                    <img
+                    <Image
                         src={album.song_cover || `/images/playlisty.jpg`}
                         alt="Music"
                         className="absolute w-full h-full object-cover"
                         onClick={() => setOpenTrack(!openTrack)}
+                        width={190}
+                        height={120}
                     />
                 </div>
 
