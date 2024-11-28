@@ -11,12 +11,12 @@ import { useSetRecoilState } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 
-const privateKey = process.env.METAMASK_PRIVATE_KEY!
-const thirdwebAuth = createAuth({
-    domain: "localhost:3000",
-    client,
-    adminAccount: privateKeyToAccount({ client, privateKey }),
-});
+// const privateKey = process.env.METAMASK_PRIVATE_KEY!
+// const thirdwebAuth = createAuth({
+//     domain: "localhost:3000",
+//     client,
+//     adminAccount: privateKeyToAccount({ client, privateKey }),
+// });
 
 // FIX THE TYPES ERROR AND REMOVE TYPE-IGNORE
 
@@ -61,16 +61,16 @@ export const ConnecttButton = () => {
                             console.error("Failed to retrieve wallet address");
                             return;
                         }
-
-                        const user = await getUserByAddress(account?.address);
+                        const normalizedAddress = account.address.toLowerCase();
+                        const user = await getUserByAddress(normalizedAddress);
                         if (user) {
                             // User exists, set session
-                            await setsession(account.address);
-                            setSessionId(account.address)
+                            await setsession(normalizedAddress);
+                            setSessionId(normalizedAddress)
 
                         } else {
                             // User does not exist, trigger user creation flow
-                            setConnectedAddress(account.address.toLowerCase());
+                            setConnectedAddress(normalizedAddress);
                             setIsCreatingUser(true); // Trigger the CreateUsername component
                         }
                     } catch (error) {
