@@ -58,7 +58,6 @@ export const MobilePlaylist = ({ className, userId }: SidebarProps) => {
                                     <div className="text-red-500">Failed to load data.</div>
                                 ) : (
                                     <MyPlaylist data={playlist} userId={userId} mode="aside" />
-
                                 )
                             }
 

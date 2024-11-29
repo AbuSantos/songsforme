@@ -67,7 +67,7 @@ export const WithdrawRewards = () => {
                         : "An error occurred during withdrawal.";
                     toast.error(errorMessage);
                 }}
-                className='w-full min-w-full'
+                className='w-full min-w-full p-2'
             >
                 <span className='flex space-x-2 items-center'>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="#000000" fill="none" className='mr-2'>

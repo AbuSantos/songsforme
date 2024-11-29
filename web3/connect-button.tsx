@@ -21,7 +21,7 @@ import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 // FIX THE TYPES ERROR AND REMOVE TYPE-IGNORE
 
 export const ConnecttButton = () => {
-    const [isCreatingUser, setIsCreatingUser] = useState(false); // State to manage user creation flow
+    const [isCreatingUser, setIsCreatingUser] = useState(false);
     //@ts-ignore
     const [connectedAddress, setConnectedAddress] = useState(null || String); // State to manage the connected address
     const [isOpen, setIsOpen] = useState<boolean>(true)
@@ -47,6 +47,7 @@ export const ConnecttButton = () => {
             <ConnectButton
                 client={client}
                 wallets={wallets}
+
                 connectButton={{
                     label: "Sign In"
                 }}

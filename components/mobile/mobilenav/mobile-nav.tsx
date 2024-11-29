@@ -44,12 +44,12 @@ export const MobileNav = () => {
             </SheetTrigger>
             <SheetContent className="w-full ">
                 <div className="flex flex-col h-full w-full">
-                    <div className="grid grid-cols-2  mt-8 space-x-1 w-full">
+                    <div className="mt-6 w-full flex items-center justify-center">
 
-                        <Button onClick={handleListModal} size="nav" className="p-2">
+                        {/* <Button onClick={handleListModal} size="nav" className="p-2">
                             <PlusCircledIcon className="mr-2 h-4 w-4" />
                             List MusicNFT
-                        </Button>
+                        </Button> */}
 
                         <WithdrawRewards />
                     </div>
@@ -59,7 +59,7 @@ export const MobileNav = () => {
                         <MobilePlaylist userId={userId} />
                     </div>
 
-                    <div className="mt-auto w-full absolute bottom-0 ">
+                    <div className="mt-auto w-full absolute bottom-0  p-3">
                         <ConnecttButton />
                     </div>
 

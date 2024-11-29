@@ -20,7 +20,6 @@ import { db } from "@/lib/db"
 import { revalidateTag } from "next/cache"
 import { Filter } from "@/components/marketplace/filter"
 import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
-// import BoughtNFT from "@/components/buy-folder/my-bought-nft"
 import { ListedNFT, Playlist, PlaylistListedNFT, Single } from "@/types"
 import { AllPlaylist } from "@/components/playlists/all-playlist"
 import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
