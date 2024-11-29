@@ -8,7 +8,9 @@ type PriceDatType = {
   price: number;
 };
 
-export const rankedSong = async () => {
+export const rankedSong = async (page: number = 1, limit: number = 20) => {
+  const offset = (page - 1) * limit;
+
   //@ts-ignore
   const listedData: ListedNFT[] = await db.listedNFT.findMany({
     select: {
@@ -24,22 +26,42 @@ export const rankedSong = async () => {
       price: true,
       contractAddress: true,
       priceData: true,
+      accumulatedTime: true, // Include this for filtering
     },
+    take: limit,
+    skip: offset,
   });
 
   const now = new Date();
   const today = now.toISOString().slice(0, 10);
+  const todayStart = new Date(today);
+  const tomorrowStart = new Date(todayStart);
+  tomorrowStart.setDate(todayStart.getDate() + 1);
 
-  // Process songs
-  const processedSongs = listedData.map((song) => {
+  // Filter songs with sufficient play time
+  const highPlayedSongs = listedData.filter(
+    (song) =>
+      song?.accumulatedTime !== null &&
+      song?.accumulatedTime !== undefined &&
+      song.accumulatedTime >= 8000
+  );
+  if (highPlayedSongs.length === 0) {
+    return []; 
+  }
+
+  // Process songs/filyered songs
+  const processedSongs = highPlayedSongs.map((song) => {
     if (!song?.priceData || song.priceData.length === 0) {
       return { ...song, topPrice: 0 };
     }
 
-    // Flatten priceData and filter for today's prices
     const allPrices = song.priceData
       .flat()
-      .filter((entry: PriceDatType) => entry.timestamp.startsWith(today))
+      .filter(
+        (entry: PriceDatType) =>
+          new Date(entry.timestamp) >= todayStart &&
+          new Date(entry.timestamp) < tomorrowStart
+      )
       .map((entry: PriceDatType) => entry.price);
 
     const maxPrice = allPrices.length > 0 ? Math.max(...allPrices) : 0;
