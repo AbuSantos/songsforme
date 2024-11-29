@@ -39,6 +39,7 @@ export const rankedSong = async (page: number = 1, limit: number = 20) => {
   tomorrowStart.setDate(todayStart.getDate() + 1);
 
   // Filter songs with sufficient play time
+  //CHNAGE THE PLAYED TIME TO 8000
   const highPlayedSongs = listedData.filter(
     (song) =>
       song?.accumulatedTime !== null &&
@@ -46,7 +47,7 @@ export const rankedSong = async (page: number = 1, limit: number = 20) => {
       song.accumulatedTime >= 8000
   );
   if (highPlayedSongs.length === 0) {
-    return []; 
+    return [];
   }
 
   // Process songs/filyered songs
