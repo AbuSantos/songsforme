@@ -16,7 +16,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
         <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
             <div className="h-full w-full ">
                 <Tabs defaultValue="all" className="h-full border-0">
-                    <TabsList className="space-x-3 bg-[#111111] p-2">
+                    <TabsList className=" bg-[#111111] p-2">
                         <TabsTrigger value="all" className="relative py-2">
                             All
                         </TabsTrigger>
