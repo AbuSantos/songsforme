@@ -166,6 +166,7 @@ model Single {
   artist_name     String?
   song_cover      String?
   album_name      String?
+  genre           String?
   uri             String?
   owner           String
   contractAddress String?     @unique
@@ -173,8 +174,8 @@ model Single {
   listednftId     String?
   listedNft       ListedNFT[]
 
-  @@index([contractAddress])
-  @@index([id])
+  // @@index([contractAddress])
+  // @@index([id])
 }
 
 model PlaylistListedNFT {

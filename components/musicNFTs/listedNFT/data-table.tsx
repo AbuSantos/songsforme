@@ -30,7 +30,7 @@ type TrackTableType = {
 };
 
 //FIX THE USERID CASING PROBLEM
-
+// 572,000,000,000
 export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
     const userId = useRecoilValue(isConnected)
@@ -112,7 +112,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                     ))}
                         </div>
                         <div className="items-center space-x-2 flex ml-2">
-                            <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
+                            {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}
                             <div className="block md:hidden">
 
                                 <Popover>

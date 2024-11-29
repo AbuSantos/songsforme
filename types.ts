@@ -99,6 +99,7 @@ export interface Single {
   album_name?: string | null;
   uri?: string | null;
   owner: string;
+  genre: string;
   contractAddress?: string | null;
   tokenId?: string | null;
   listednftId?: string | null;

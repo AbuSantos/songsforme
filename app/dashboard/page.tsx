@@ -35,6 +35,7 @@ import { Ratio } from "@/components/marketplace/filter/filter-by-ratio"
 import dynamic from "next/dynamic"
 import { TopChart } from "@/components/chart/top-chart"
 import { Minter } from "@/components/minter/minter"
+import { SingleGenre } from "@/components/singles-genre/single-genre"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -73,6 +74,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 song_name: true,
                 song_cover: true,
                 contractAddress: true,
+                genre: true,
                 listedNft: {
                     select: {
                         contractAddress: true,
@@ -118,7 +120,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
 
         return (
             <>
-                <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 lg:border-l rounded-lg text-[var(--text)] p-0">
+                <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
                     <div className="h-full w-full lg:px-8">
                         <Tabs defaultValue="music" className="h-full border-0">
                             <div className="flex items-center fixed py-5 justify-between w-full bg-[#111111] md:w-[67.5%] box-border">
@@ -219,7 +221,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         </div>
                                     </div>
                                     <Separator className="my-4 " />
-
                                     <div className="max-w-[100vw] overflow-auto " >
                                         <div className="flex flex-nowrap overflow-auto pb-4 snap-x snap-mandatory scroll-smooth ">
                                             {sortedPlaylists.map((playlist) => (
@@ -234,17 +235,14 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <div className="">
-                                            <h2 className="text-[1.5rem] md:text-2xl font-semibold tracking-normal">
-                                                Singles and Albums
-                                            </h2>
-                                            <p className="text-sm hidden text-muted-foreground">
-                                                Top picks for you. Updated daily.
-                                            </p>
-                                        </div>
+
+
                                     </div>
                                     <Separator className="my-4 " />
-                                    <div className="relative">
+
+                                    < SingleGenre singleNft={singleNft} />
+
+                                    {/* <div className="relative">
                                         <div className="flex flex-wrap space-x-2 pb-4 gap-2">
                                             {singleNft?.map((data: Single, index: number) => (
                                                 <AlbumArtwork
@@ -254,7 +252,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                                 />
                                             ))}
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
 
                             </TabsContent>
