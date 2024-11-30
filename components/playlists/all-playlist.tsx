@@ -11,10 +11,10 @@ import { isConnected } from "@/atoms/session-atom";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const AllPlaylist = () => {
-    const searchParams = useSearchParams();
-    const userId = useRecoilValue(isConnected);
-
     try {
+        const searchParams = useSearchParams();
+        const userId = useRecoilValue(isConnected);
+
         // Retrieve filters from the search params
         const filter = searchParams.get("filter");
 
