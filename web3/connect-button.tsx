@@ -28,7 +28,6 @@ export const ConnecttButton = () => {
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
-    console.log(sessionId)
     const wallets = [
         inAppWallet({
             //@ts-ignore

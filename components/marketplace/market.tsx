@@ -70,7 +70,7 @@ const MarketPlace = async ({ filter }: MarketPlaceProps) => {
 
 
     if (!listedNFTs.length) {
-        return <p>There&apos;s currently no NFT Listed on the MARKETPLACE</p>;
+        return <p className="mt-8"> There&apos;s currently no NFT Listed on the MARKETPLACE</p>;
     }
 
 
