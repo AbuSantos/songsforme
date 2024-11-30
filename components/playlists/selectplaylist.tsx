@@ -22,6 +22,7 @@ import { mutate } from "swr";
 type SelectProps = {
     nftId: string;
     userId: string | undefined
+    mode?: string
 };
 
 type PlaylistData = {
@@ -29,7 +30,7 @@ type PlaylistData = {
     name: string;
 };
 
-export const SelectPlaylist = ({ nftId, userId }: SelectProps) => {
+export const SelectPlaylist = ({ nftId, userId, mode }: SelectProps) => {
     const [added, setAdded] = useState<boolean>(false); // Tracks if NFT is already added to a playlist
     const [playlists, setPlaylists] = useState<PlaylistData[]>([]); // List of playlists fetched from the server
     const [loading, setLoading] = useState<boolean>(true); // Loading state for fetching playlists
@@ -82,12 +83,12 @@ export const SelectPlaylist = ({ nftId, userId }: SelectProps) => {
                     {added ? (
                         <span className="flex items-center justify-start space-x-2 capitalize text-gray-100">
                             <CheckCircledIcon className='cursor-pointer w-6 h-6 text-[teal] mr-2' />
-                            added to playlist
+                            {` ${mode === "page" ? "" : "added to playlist"} `}
                         </span>
                     ) : (
                         <span className="flex items-center justify-center space-x-2 capitalize text-[#EDEEF0]">
                             <PlusCircledIcon className='cursor-pointer w-6 h-6 text-[#EDEEF0] mr-2' />
-                            add to playlist
+                            {` ${mode === "page" ? "" : "add to playlist"} `}
                         </span>
                     )}
                 </div>

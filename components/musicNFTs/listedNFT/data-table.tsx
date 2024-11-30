@@ -23,13 +23,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"
 import { getNFTMetadata } from "@/actions/helper/get-metadata";
+import { useRouter } from "next/navigation";
 
 type TrackTableType = {
     data: ListedNFT[];
     artiste_name?: string
 };
 
-//FIX THE USERID CASING PROBLEM
 // 572,000,000,000
 export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
@@ -66,6 +66,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
         }, {});
         setIsEnabled(storedStates);
     }, [data]);
+
+  
+
 
     return (
         <div>
@@ -128,7 +131,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                 </Popover>
                             </div>
 
-                            <div className="items-start hidden md:flex space-x-2 jus">
+                            <div className="items-start hidden md:flex space-x-2 ">
                                 <SelectPlaylist userId={userId} nftId={track.id} />
                                 <Favorite nftId={track?.id} userId={userId} />
                             </div>

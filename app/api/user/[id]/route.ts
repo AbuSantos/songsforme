@@ -36,8 +36,6 @@ export const GET = async (
       where: { userId: id },
     });
 
-    console.log(user, "user found");
-
     // If user is not found, return 404 response
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

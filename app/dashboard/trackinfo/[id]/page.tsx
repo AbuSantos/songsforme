@@ -22,9 +22,18 @@ const page = async ({ params }: { params: { id: string } }) => {
                     select: {
                         id: true
                     }
+                },
+                Single: {
+                    select: {
+                        song_name: true
+                    }
                 }
+
             }
+
         })
+        console.log(track)
+
         revalidateTag("track")
         if (!track) return
 
@@ -43,6 +52,8 @@ const page = async ({ params }: { params: { id: string } }) => {
                         listedNftId={track?.id}
                         isSaleEnabled={track?.isSaleEnabled}
                         seller={track?.seller}
+                        mode="page"
+                        songName={track?.Single?.song_name}
                     />
                 </div>
             </>

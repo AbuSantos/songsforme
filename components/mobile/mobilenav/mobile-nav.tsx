@@ -21,6 +21,7 @@ import { MobilePlaylist } from "../m-playlist/mobile-playlist"
 import { useRecoilValue } from "recoil"
 import { isConnected } from "@/atoms/session-atom"
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD"
+import Link from "next/link"
 
 export const MobileNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -31,7 +32,6 @@ export const MobileNav = () => {
     const handleListModal = () => {
         setListModalOpen(!listModalOpen)
     }
-
 
     return (
         <Sheet >
@@ -45,14 +45,9 @@ export const MobileNav = () => {
             </SheetTrigger>
             <SheetContent className="w-full ">
                 <div className="flex flex-col h-full w-full">
-                    <div className="mt-6 w-full flex items-center justify-center">
-
-                        {/* <Button onClick={handleListModal} size="nav" className="p-2">
-                            <PlusCircledIcon className="mr-2 h-4 w-4" />
-                            List MusicNFT
-                        </Button> */}
-
-                        <WithdrawRewards />
+                    <div className="mt-6 w-full flex justify-between items-center ">
+                        <Link href="/dashboard/earning" className="text-2xl font-semibold">My Earnings</Link>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: "rgba(0, 0, 0, 1)", transform: "msFilter" }}><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path></svg>
                     </div>
 
                     {/* CHANGE THE BUTTON WIDTH */}

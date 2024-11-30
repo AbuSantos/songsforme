@@ -29,7 +29,7 @@ export const MobilePlaylist = ({ className, userId }: SidebarProps) => {
                 <div className="space-y-2 py-4">
                     <div className=" py-2">
                         <div className="flex justify-between px-2 items-center">
-                            <h2 className="mb-2 px-4 text-lg text-[#111111] font-semibold tracking-tight">
+                            <h2 className="mb-2  px-2 text-2xl text-[#111111] font-semibold tracking-tight">
                                 My Playlists
                             </h2>
                             <div>
