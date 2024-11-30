@@ -36,10 +36,11 @@ export const MobileNav = () => {
     return (
         <Sheet >
             <SheetTrigger asChild>
-                <Button variant="outline">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: "rgba(0, 0, 0, 1)", transform: "msFilter", marginLeft: "2px" }}>
+                <Button variant="outline" className=" rounded-full size-16 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style={{ fill: "#000", transform: "msFilter", marginLeft: "2px" }}>
                         <path d="M4 6h16v2H4zm4 5h12v2H8zm5 5h7v2h-7z"></path>
                     </svg>
+
                 </Button>
             </SheetTrigger>
             <SheetContent className="w-full ">
