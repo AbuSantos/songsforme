@@ -1,4 +1,3 @@
-
 import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { AlbumArtwork } from "@/components/dashboard/album-artwork"
@@ -35,6 +34,8 @@ import dynamic from "next/dynamic"
 import { TopChart } from "@/components/chart/top-chart"
 import { Minter } from "@/components/minter/minter"
 import { SingleGenre } from "@/components/singles-genre/single-genre"
+import { getAddressOrName, getTimeThreshold } from "@/lib/utils"
+import { Prisma } from "@prisma/client"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -48,12 +49,51 @@ export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
 }
+const buildQueryFilters = (filter: string | undefined) => {
+    const threshHold = getTimeThreshold(filter || "");
+    const song_Name = filter?.trim();
+    const { address } = getAddressOrName(filter || "");
+
+    const whereFilters = {
+        sold: false,
+        ...(filter && filter !== "ratio" && song_Name && {
+            Single: {
+                is: {
+                    song_name: {
+                        contains: song_Name,
+                        mode: Prisma.QueryMode.insensitive,
+                    },
+                },
+            }
+        }),
+        ...(threshHold && { listedAt: { gte: threshHold } }),
+        ...(address && { contractAddress: address }),
+    };
+
+    const orderBy =
+        filter === "ratio"
+            ? { rewardRatio: "desc" as const }
+            : filter === "playtime"
+                ? { totalAccumulatedTime: "asc" as const }
+                : undefined;
+
+
+    console.log("Query Filters:", whereFilters);
+    console.log("Order By:", orderBy);
+
+    return { whereFilters, orderBy };
+};
 
 export default async function MusicPage({ searchParams }: { searchParams: { filter?: string; ratio?: string } }) {
-    const filter = searchParams.filter || "ratio";
+    const filter = searchParams.filter?.trim() || "ratio";
     const ratio = searchParams.ratio
 
+    console.log("Active Filter:", filter);
+
+
+
     const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
+    const filterByName = filter !== "ratio" && filter !== "playtime" ? filter : ""
     try {
 
         {/* @ts-ignore */ }
@@ -62,7 +102,44 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 sold: false
             }
         });
+        const { whereFilters } = buildQueryFilters(filter);
 
+        const listedNFTs = await db.listedNFT.findMany({
+            where: {
+                ...(filterByName && {
+                    Single: {
+                        is: {
+                            song_name: {
+                                contains: filterByName,
+                                mode: Prisma.QueryMode.insensitive,
+                            },
+                        },
+                    }
+                }),
+            },
+
+            select: {
+                id: true,
+                tokenId: true,
+                listedAt: true,
+                seller: true,
+                price: true,
+                contractAddress: true,
+                accumulatedTime: true,
+                totalAccumulatedTime: true,
+                rewardRatio: true,
+                isSaleEnabled: true,
+                Single: {
+                    select: {
+                        song_cover: true,
+                        artist_name: true,
+                        song_name: true
+                    }
+                }
+            },
+            ...(orderBy ? { orderBy } : {})
+
+        });
 
         revalidateTag("nft");
 
@@ -202,20 +279,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
 
                                     </div>
                                     <Separator className="my-4 " />
-
                                     < SingleGenre singleNft={singleNft} />
-
-                                    {/* <div className="relative">
-                                        <div className="flex flex-wrap space-x-2 pb-4 gap-2">
-                                            {singleNft?.map((data: Single, index: number) => (
-                                                <AlbumArtwork
-                                                    key={data.id}
-                                                    album={data}
-                                                    className="w-[180px]"
-                                                />
-                                            ))}
-                                        </div>
-                                    </div> */}
                                 </div>
 
                             </TabsContent>
@@ -224,8 +288,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 className="w-full data-[state=active]:flex md:pt-16 pt-2 px-2"
                             >
                                 <div className="h-screen w-full flex-col border-none p-0 ">
-                                    <div className="md:flex space-x-2 justify-between bg-[#111111] fixed md:w-[67.2%] w-full">
-                                        <div className="w-[98%] flex items-center ">
+                                    <div className="md:flex space-x-2 justify-between bg-[#111111] fixed md:w-[67.2%] w-full m-auto">
+                                        <div className="w-[98%] flex items-center m-auto ">
                                             <Search placeholder="Search songs..." />
                                         </div>
                                         <div className="flex items-center w-[95%] space-x-2">
@@ -237,7 +301,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <div className="w-full pt-20 md:pt-[2rem] pb-10 overflow-y-auto scroll-smooth scrollbar-none">
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 md:pb-4 pb-14">
-                                                < MarketPlace filter={filter} />
+                                                < MarketPlace data={listedNFTs} />
                                             </div>
                                         </Suspense>
                                     </div>
@@ -395,7 +459,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             </>
         )
     } catch (error) {
-        console.log(error)
         return (
             <div className="text-center pt-5">
                 <h2 className="text-red-500">Failed to load the page.</h2>

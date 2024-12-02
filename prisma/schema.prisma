@@ -90,12 +90,12 @@ model ListedNFT {
   rewardRatio          Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   playlistRewardRatio  Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   totalAccumulatedTime Int?                @default(0)
-  recentPlays          Json? //Array of { timestamp: DateTime, count: Int }
+  recentPlays          Json? 
   lastPlayTimestamp    DateTime?
   listeningSession     ListeningSession[]
   uniqueListener       UniqueListener[]
   NFTListeningTime     NFTListeningTime[]
-  priceData            Json? //Array of { timestamp: DateTime, price: Int }
+  priceData            Json?
   isSaleEnabled        Boolean             @default(false)
   isForSale            Boolean             @default(false)
   isRelisted           Boolean             @default(false)

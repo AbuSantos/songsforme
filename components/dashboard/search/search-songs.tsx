@@ -31,6 +31,7 @@ export const Search = ({ placeholder, classname }: SearchProps): JSX.Element => 
         if (e.target.value) {
             // Set 'filter' parameter if input length is greater than 2
             if (e.target.value.length > 2) {
+
                 params.set("filter", e.target.value);
             }
         } else {

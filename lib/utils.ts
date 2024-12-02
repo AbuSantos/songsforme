@@ -18,10 +18,6 @@ export const fetcher = (url: string) => fetch(url).then((res) => res.json());
  * Calculates a date-time threshold based on the provided time filter.
  * @param {string} filter - A string specifying the time offset, which must end with either "min" for minutes or "hr" for hours (e.g., "30min" or "2hr").
  * @returns {Date | null} - A Date object representing the time threshold based on the filter, or null if the filter is invalid.
- *
- * @example
- * getTimeThreshold("30min"); // Returns the current date-time minus 30 minutes.
- * getTimeThreshold("2hr");   // Returns the current date-time minus 2 hours.
  */
 export const getTimeThreshold = (filter: string): Date | null => {
   const now = new Date(); // Get the current date and time.
@@ -48,7 +44,7 @@ export const getTimeThreshold = (filter: string): Date | null => {
  * and the address is returned. Otherwise, it returns the artiste name.
  *
  * @param {string} filter - The filter string to determine whether to return address or artisteName.
- * @returns {string | undefined} - Returns the address if the filter starts with "0x"; otherwise, returns the artisteName.
+ * @returns {string | undefined} - Returns the address if the filter starts with "0x";
  */
 export const getAddressOrName = (
   filter: string
@@ -57,7 +53,7 @@ export const getAddressOrName = (
     return { address: filter };
   }
 
-  // Check if filter is a name (assuming it's a non-empty string without "0x" prefix)
+  // Check if filter is a name
   if (filter.trim().length > 0) {
     return { name: filter };
   }
