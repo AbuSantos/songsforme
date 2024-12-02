@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { MakeBidParams } from "@/types";
+import { Knock } from "@knocklabs/node";
 
 // Use the type in the function
 export const MakeBidBackend = async ({
@@ -16,6 +17,8 @@ export const MakeBidBackend = async ({
   if (!nftId || !nftAddress || !bidder || !bidAmount) {
     return { message: "Invalid Bid Details" };
   }
+
+  const knock = new Knock(process.env.KNOCK_API_SECRET);
 
   try {
     //@ts-ignore
@@ -44,6 +47,16 @@ export const MakeBidBackend = async ({
         transactionHash,
       },
     });
+
+    // await knock.workflows.trigger("bullchord", {
+    //   data: { userId: userId, bidAmount, transactionHash },
+    //   recipients: [
+    //     {
+    //       seller,
+    //     },
+    //   ],
+    // });
+
     return {
       message: "Bid successfully placed or updated",
       success: true,

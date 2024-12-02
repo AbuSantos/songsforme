@@ -49,46 +49,13 @@ export const metadata: Metadata = {
     title: "songs for me",
     description: "Earn songs as your listen to music.",
 }
-const buildQueryFilters = (filter: string | undefined) => {
-    const threshHold = getTimeThreshold(filter || "");
-    const song_Name = filter?.trim();
-    const { address } = getAddressOrName(filter || "");
-
-    const whereFilters = {
-        sold: false,
-        ...(filter && filter !== "ratio" && song_Name && {
-            Single: {
-                is: {
-                    song_name: {
-                        contains: song_Name,
-                        mode: Prisma.QueryMode.insensitive,
-                    },
-                },
-            }
-        }),
-        ...(threshHold && { listedAt: { gte: threshHold } }),
-        ...(address && { contractAddress: address }),
-    };
-
-    const orderBy =
-        filter === "ratio"
-            ? { rewardRatio: "desc" as const }
-            : filter === "playtime"
-                ? { totalAccumulatedTime: "asc" as const }
-                : undefined;
 
 
-    console.log("Query Filters:", whereFilters);
-    console.log("Order By:", orderBy);
-
-    return { whereFilters, orderBy };
-};
-
-export default async function MusicPage({ searchParams }: { searchParams: { filter?: string; ratio?: string } }) {
+export default async function MusicPage({ searchParams }: { searchParams: { filter?: string; q?: string } }) {
     const filter = searchParams.filter?.trim() || "ratio";
-    const ratio = searchParams.ratio
+    // const searchQuery = searchParams.q
 
-    console.log("Active Filter:", filter);
+    // console.log("Active Filter:", searchQuery);
 
 
 
@@ -102,44 +69,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 sold: false
             }
         });
-        const { whereFilters } = buildQueryFilters(filter);
 
-        const listedNFTs = await db.listedNFT.findMany({
-            where: {
-                ...(filterByName && {
-                    Single: {
-                        is: {
-                            song_name: {
-                                contains: filterByName,
-                                mode: Prisma.QueryMode.insensitive,
-                            },
-                        },
-                    }
-                }),
-            },
 
-            select: {
-                id: true,
-                tokenId: true,
-                listedAt: true,
-                seller: true,
-                price: true,
-                contractAddress: true,
-                accumulatedTime: true,
-                totalAccumulatedTime: true,
-                rewardRatio: true,
-                isSaleEnabled: true,
-                Single: {
-                    select: {
-                        song_cover: true,
-                        artist_name: true,
-                        song_name: true
-                    }
-                }
-            },
-            ...(orderBy ? { orderBy } : {})
-
-        });
 
         revalidateTag("nft");
 
@@ -301,7 +232,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <div className="w-full pt-20 md:pt-[2rem] pb-10 overflow-y-auto scroll-smooth scrollbar-none">
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 md:pb-4 pb-14">
-                                                < MarketPlace data={listedNFTs} />
+                                                < MarketPlace filter={filter} />
                                             </div>
                                         </Suspense>
                                     </div>
