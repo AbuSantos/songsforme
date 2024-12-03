@@ -3,7 +3,7 @@ import { Menu } from "@/components/dashboard/menu/menu";
 import BottomNav from "@/components/dashboard/bottom-nav";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { playlists } from "@/data/playlists";
-import { Aside } from "@/components/dashboard/my-playlist";
+import { Aside } from "@/components/aside/my-playlist";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getSession } from "@/lib/helper";
 import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";

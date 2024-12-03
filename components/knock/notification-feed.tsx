@@ -20,25 +20,30 @@ const NotificationFeed = () => {
 
     if (!userId) return
 
+
+
     return (
         <KnockProvider
             apiKey={String(process.env.NEXT_PUBLIC_KNOCK_API_KEY)}
             userId={userId}
         >
-            <KnockFeedProvider feedId={String(process.env.NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID)}>
-                <>
-                    <NotificationIconButton
-                        ref={notifButtonRef}
-                        onClick={(e) => setIsVisible(!isVisible)}
-                    />
-                    <NotificationFeedPopover
-                        buttonRef={notifButtonRef}
-                        isVisible={isVisible}
-                        onClose={() => setIsVisible(false)}
-                    />
-                </>
-            </KnockFeedProvider>
-        </KnockProvider>
+            <div className="!z-[9999] relative">
+                <KnockFeedProvider feedId={String(process.env.NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID)}>
+                    <>
+                        <NotificationIconButton
+                            ref={notifButtonRef}
+                            onClick={(e) => setIsVisible(!isVisible)}
+                        />
+                        <NotificationFeedPopover
+                            buttonRef={notifButtonRef}
+                            isVisible={isVisible}
+                            onClose={() => setIsVisible(false)}
+                            placement="top"
+                        />
+                    </>
+                </KnockFeedProvider>
+            </div>
+        </KnockProvider >
     );
 };
 

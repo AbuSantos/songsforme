@@ -9,6 +9,8 @@ import { fetcher } from "@/lib/utils";
 import { BoughtTable } from "./bought-table";
 import { MarketSkeleton } from "../marketplace/marketplace-skeleton";
 import { BuyNFT } from "@/types";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { BuyActivity } from "./activity/activity";
 
 const BoughtNFT = () => {
     // Retrieve and format the user ID from session state
@@ -21,7 +23,7 @@ const BoughtNFT = () => {
     // Use SWR to fetch data; only fetch if `apiUrl` is not null
     const { data: nfts, error, isLoading } = useSWR<BuyNFT[]>(
         apiUrl,
-        apiUrl ? fetcher : null, 
+        apiUrl ? fetcher : null,
         {
             shouldRetryOnError: true,
             errorRetryCount: 3,
@@ -39,23 +41,51 @@ const BoughtNFT = () => {
     return (
         <div>
             <h2 className="text-center p-2">My NFTs</h2>
-            <div className="flex flex-wrap space-x-4 pb-4 w-full">
-                {isLoading && <MarketSkeleton />}
-                {!isLoading && error && (
-                    <p className="text-center text-red-500">
-                        Failed to load NFTs. Please try again later.
-                    </p>
-                )}
-                {!isLoading && nfts?.length === 0 && (
-                    <p className="text-center">You have no NFTs.</p>
-                )}
-                {!isLoading &&
-                    nfts?.map((nft: BuyNFT) => (
-                        <div className="w-full" key={nft.id}>
-                            <BoughtTable data={nft} userId={userId} />
-                        </div>
-                    ))}
-            </div>
+
+            <Tabs defaultValue="my_nft" className="h-full border-0 ">
+                <div className="m-auto flex items-center justify-center">
+                    <TabsList className="space-x-3 w-[4/12] bg-black p-3">
+                        <TabsTrigger value="my_nft" className="relative">
+                            My NFTs
+                        </TabsTrigger>
+                        <TabsTrigger value="activity">Activity</TabsTrigger>
+                    </TabsList>
+                </div>
+
+                <TabsContent
+                    value="my_nft"
+                    className="border-none md:pt-24 pt-2 outline-none px-2 "
+
+                >
+                    <div className="flex flex-wrap space-x-4 pb-4 w-full">
+                        {isLoading && <MarketSkeleton />}
+                        {!isLoading && error && (
+                            <p className="text-center text-red-500">
+                                Failed to load NFTs. Please try again later.
+                            </p>
+                        )}
+                        {!isLoading && nfts?.length === 0 && (
+                            <p className="text-center">You have no NFTs.</p>
+                        )}
+
+                        {!isLoading &&
+                            nfts?.map((nft: BuyNFT) => (
+                                <div className="w-full" key={nft.id}>
+                                    <BoughtTable data={nft} userId={userId} />
+                                </div>
+                            ))}
+                    </div>
+                </TabsContent>
+                <TabsContent
+                    value="activity"
+                    className="border-none md:pt-24 pt-2 outline-none px-2 "
+                >
+                    <BuyActivity />
+                </TabsContent>
+            </Tabs>
+
+
+
         </div>
     );
 };

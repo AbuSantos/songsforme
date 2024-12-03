@@ -1,10 +1,10 @@
+"use server";
 import { db } from "@/lib/db";
 
 export const clearAccumulatedTime = async (userId: string) => {
   if (!userId) {
     return { message: "Invalid user ID" };
   }
-
   try {
     // Update user's accumulatedTime to 0 to clear it
     const user = await db.user.update({

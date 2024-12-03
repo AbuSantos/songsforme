@@ -23,6 +23,7 @@ import { ConnecttButton } from "@/web3/connect-button"
 import { AddToWhitelist } from "../../modal/add-to-whitelist"
 import { ListNFTForm } from "../../modal/list-nft"
 import { WithdrawRewards } from "@/components/withdraw/withdrawal"
+import NotificationFeed from "@/components/knock/notification-feed"
 
 
 export function Menu() {
@@ -42,9 +43,9 @@ export function Menu() {
         <div className="md:fixed justify-between items-center p-3 hidden md:flex w-full bg-black">
             <Menubar className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
                 <MenubarMenu>
-                    <MenubarTrigger className="font-bold text-xl">Music</MenubarTrigger>
+                    <MenubarTrigger className="font-bold text-xl">Bullchord Music</MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>About Songs for me</MenubarItem>
+                        <MenubarItem>About Bullchord</MenubarItem>
                         <MenubarSeparator />
                         <MenubarShortcut />
                     </MenubarContent>
@@ -52,30 +53,25 @@ export function Menu() {
             </Menubar>
             <div className="ml-auto flex mr-4 justify-end space-x-2">
 
-                {/* <Button onClick={handleModal} size="nav">
-                    <PlusCircledIcon className="mr-2 h-4 w-4" />
-                    Mint Music
-                </Button> */}
-                <Button onClick={handleListModal} size="nav" className="lg:hidden">
+
+                {/* <Button onClick={handleListModal} size="nav" className="lg:hidden">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     List MusicNFT
-                </Button>
+                </Button> */}
                 <AddToWhitelist />
 
                 <ConnecttButton />
 
             </div>
-            <div className="flex items-center justify-center">
-                <WithdrawRewards />
-            </div>
+
             {
                 isOpen &&
                 <AddMusicModal setIsOpen={setIsOpen} />
             }
-            {
+            {/* {
                 listModalOpen &&
                 <ListNFTForm setListModalOpen={setListModalOpen} />
-            }
+            } */}
         </div>
     )
 }

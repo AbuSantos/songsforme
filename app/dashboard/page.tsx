@@ -36,6 +36,7 @@ import { Minter } from "@/components/minter/minter"
 import { SingleGenre } from "@/components/singles-genre/single-genre"
 import { getAddressOrName, getTimeThreshold } from "@/lib/utils"
 import { Prisma } from "@prisma/client"
+import NotificationFeed from "@/components/knock/notification-feed"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -131,8 +132,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             <>
                 <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
                     <div className="h-full w-full lg:px-8">
-                        <Tabs defaultValue="music" className="h-full border-0">
-                            <div className="hidden md:flex items-center fixed py-5 justify-between w-full bg-[#111111] md:w-[67.5%] box-border">
+                        <Tabs defaultValue="music" className="h-full border-0 ">
+                            <div className="hidden md:flex items-center fixed py-5 space-x-4 justify-between w-full bg-[#111111] md:w-[67.5%] box-border">
                                 <TabsList className="space-x-3 w-full hidden md:flex">
                                     <div className=" px-2 py-2 flex items-start ">
                                         <TabsTrigger value="music" className="relative">
@@ -142,14 +143,17 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         <TabsTrigger value="trendingPlaylist">
                                             Trending
                                         </TabsTrigger>
-                                        <TabsTrigger value="mynft">My NFT</TabsTrigger>
+
                                         <TabsTrigger value="chart">Chart</TabsTrigger>
                                         <TabsTrigger value="minter">Minter</TabsTrigger>
+                                        <TabsTrigger value="mynft">
+                                            Mine
+                                        </TabsTrigger>
                                     </div>
 
                                 </TabsList>
 
-                                <div className=" space-x-1 md:flex hidden">
+                                <div className=" space-x-2 md:flex hidden z-20">
                                     <Sheet >
                                         <SheetTrigger asChild>
                                             <Button variant="outline" size="nav" className="text-gray-950">Help</Button>
@@ -168,6 +172,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                             </div>
                                         </SheetContent>
                                     </Sheet>
+                                    <div className="bg-white"  >
+                                        < NotificationFeed />
+                                    </div>
 
                                 </div>
                             </div>

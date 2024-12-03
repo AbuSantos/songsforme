@@ -9,12 +9,14 @@ import { clearAccumulatedTime } from '@/actions/helper/clear-time';
 import { getUserAccumulatedTime } from '@/lib/helper';
 import { useRecoilValue } from 'recoil';
 import { isConnected } from '@/atoms/session-atom';
+import { mutate } from 'swr';
 
 export const WithdrawRewards = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
     const [totalTime, setTotalTime] = useState<number>(0);
     const userId = useRecoilValue(isConnected);
+
 
     useEffect(() => {
         const fetchAccumulatedTime = async () => {
@@ -32,6 +34,9 @@ export const WithdrawRewards = () => {
 
         fetchAccumulatedTime();
     }, [userId]);
+    const handleClearTime = async () => {
+        await clearAccumulatedTime(userId);
+    }
 
     return (
         <div className='w-full mt-2'>
@@ -55,6 +60,7 @@ export const WithdrawRewards = () => {
                     if (receipt.status === "success") {
                         try {
                             await clearAccumulatedTime(userId);
+                            mutate(`/api/user/${userId}`)
                             toast.success("Withdrawal successful. Tokens deposited to your wallet!");
                         } catch (error) {
                             toast.error("Error finalizing rewards withdrawal.");
@@ -80,7 +86,7 @@ export const WithdrawRewards = () => {
 
             </TransactionButton>
 
-            {/* <button onClick={() => console.log(totalTime)} className='text-gray-200'>
+            {/* <button onClick={handleClearTime} className='text-gray-200'>
                 withdraw
             </button> */}
             {message && <p className="mt-2 text-sm">{message}</p>}

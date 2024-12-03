@@ -16,7 +16,7 @@ import { AlbumArtwork } from "@/components/dashboard/album-artwork"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import BottomNav from "@/components/dashboard/bottom-nav"
-import { Aside } from "@/components/dashboard/my-playlist"
+import { Aside } from "@/components/aside/my-playlist"
 
 
 export const metadata: Metadata = {

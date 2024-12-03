@@ -5,8 +5,6 @@ import { contract } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 import { TransactionButton, useSendTransaction } from "thirdweb/react";
 import { toast } from "sonner"
-import { FormError } from "../errorsandsuccess/form-error";
-import { FormSuccess } from "../errorsandsuccess/form-success";
 import { prepareTransaction, toWei } from "thirdweb";
 import useSWR, { mutate } from 'swr';
 
@@ -114,8 +112,6 @@ export const RelistNft = ({ nft, seller }: listingProps) => {
                     >
                         save listing
                     </Button>
-                    < FormError message={isError} />
-                    < FormSuccess message={isSuccess} />
                 </div>
             </PopoverContent>
 

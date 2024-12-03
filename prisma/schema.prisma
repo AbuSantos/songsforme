@@ -29,6 +29,7 @@ model User {
   id                        String             @id @default(cuid())
   username                  String?            @unique
   userId                    String             @unique
+  email                     String?            @unique
   listenTimeThreshold       Int
   accumulatedTime           Int                @default(0) // Aggregated total listening time for the user
   lastListeningTime         DateTime? // Last time the user listened
@@ -90,7 +91,7 @@ model ListedNFT {
   rewardRatio          Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   playlistRewardRatio  Float               @default(0.2) // NFT owner reward ratio (e.g., 0.2 means 20% of the reward goes to the owner)
   totalAccumulatedTime Int?                @default(0)
-  recentPlays          Json? 
+  recentPlays          Json?
   lastPlayTimestamp    DateTime?
   listeningSession     ListeningSession[]
   uniqueListener       UniqueListener[]

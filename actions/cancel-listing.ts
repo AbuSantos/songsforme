@@ -6,7 +6,8 @@ import { revalidateTag } from "next/cache";
 export const cancelListing = async (
   id: string,
   userId: string,
-  boughtNFTId: string
+  boughtNFTId: string,
+  price: number
 ) => {
   if (!id || !userId) {
     return { success: false, message: "Invalid ID or User ID provided!" };
@@ -33,13 +34,13 @@ export const cancelListing = async (
     // Update the NFT record
     await db.listedNFT.update({
       where: { id },
-      data: { sold: true, isRelisted: false },
+      data: { sold: true, isRelisted: false, price },
     });
 
     await db.buyNFT.update({
       where: { id: boughtNFTId },
       data: {
-        status: "COMPLETE",
+        status: "NONE",
       },
     });
 

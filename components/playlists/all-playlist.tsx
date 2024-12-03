@@ -47,7 +47,7 @@ export const AllPlaylist = () => {
                 }
             </div>
 
-            <div className="hidden md:flex flex-wrap space-x-2 pb-4">
+            <div className="hidden md:flex flex-wrap space-x-2 pb-4 mt-4">
                 {playlists && playlists.map((playlist: Playlist) => (
                     <TrendingPlaylist
                         album={playlist}

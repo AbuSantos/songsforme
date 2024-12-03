@@ -25,18 +25,18 @@ type CancelProps = {
     tokenId: string
     userId: string
     nftBoughtId: string
+    price: number
 }
 
-export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId }: CancelProps) => {
+export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId, price }: CancelProps) => {
     const [isPending, startTransition] = useTransition();
     const apiUrl = userId ? `/api/buynft/${userId}` : null;
 
-    // console.log(nftId, userId)
 
     const handleCancel = () => {
         startTransition(async () => {
             try {
-                const res = await cancelListing(nftId, userId, nftBoughtId)
+                const res = await cancelListing(nftId, userId, nftBoughtId, price)
                 if (res.message) {
                     toast.success(res.message)
                     mutate(apiUrl)
@@ -50,45 +50,44 @@ export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId }: 
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button className="bg-[#72232D] hover:bg-[#FF977D] hover:text-[#181111] text-gray-100 ">
+                <Button className="bg-[#E54D2E] hover:bg-[#FF977D] hover:text-[#181111] text-gray-100 ">
                     Cancel listing
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80">
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-                    <p className="p-3 text-[#72232D]">Youre about to cancel This song from listing?</p>
-                    {/* <div className="relative bg-gray-900 rounded-md w-3/6 py-4 px-6">
-                        <TransactionButton
-                            transaction={() => {
-                                // Create a transaction object and return it
-                                const tx = prepareContractCall({
-                                    contract,
-                                    //@ts-ignore
-                                    method:
-                                        "function cancelListing(uint256 _tokenId, address _nftAddress)",
-                                    params: [tokenId, address],
-                                });
-                                return tx;
-                            }}
-                            onTransactionConfirmed={(tx) => {
-                            if(tx.status==="success"){
-                                
-                            }
-                                console.log("Transaction confirmed", receipt.transactionHash);
-                            }}
+            <PopoverContent className="w-80 flex flex-col items-center justify-center">
 
-                            onError={(error) => {
-                                console.error("Transaction error", error);
-                            }}
-                        >
-                            Confirm Cancel Listing
-                        </TransactionButton>
-                    </div> */}
+                <p className="p-3 text-[#E54D2E] text-center">You're about to cancel This song from listing?</p>
 
-                    <button onClick={handleCancel} className="bg-gray-300">
-                        confirm cancel
-                    </button>
-                </div >
+                <TransactionButton
+                    transaction={() => {
+                        // Create a transaction object and return it
+                        const tx = prepareContractCall({
+                            contract,
+                            //@ts-ignore
+                            method:
+                                "function cancelListing(uint256 _tokenId, address _nftAddress)",
+                            params: [tokenId, address],
+                        });
+                        return tx;
+                    }}
+                    onTransactionConfirmed={(tx) => {
+                        if (tx.status === "success") {
+                            handleCancel()
+                        }
+                        console.log("Transaction confirmed", tx.transactionHash);
+                    }}
+
+                    onError={(error) => {
+                        toast.error(error.message)
+                        console.error("Transaction error", error);
+                    }}
+                >
+                    Confirm Cancel Listing
+                </TransactionButton>
+
+                {/* <button onClick={handleCancel} className="bg-gray-300">
+                    confirm cancel
+                </button> */}
             </PopoverContent>
         </Popover>
     );

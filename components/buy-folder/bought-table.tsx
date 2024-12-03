@@ -26,6 +26,7 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
 
     const [isPending, startTransition] = useTransition();
 
+
     // Toggle function to switch buy/sell mode for individual NFTs
     const toggleBuySell = (nftId: string) => {
         const newBuyingState = !isEnabled[nftId];
@@ -75,7 +76,7 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
                 </header>
 
                 {data &&
-                    <div className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
+                    <div className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#EEEEEE] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
                         <Link href={`/dashboard/trackinfo/${data.listedNftId}`} className="flex w-8/12 items-center ">
                             <div className="flex flex-col w-8/12">
                                 <small className="uppercase text-[0.7rem] ">
@@ -93,7 +94,7 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
                             {
                                 data?.status === "NONE" ?
                                     < RelistNft seller={userId} nft={data} /> :
-                                    <CancelListing address={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} nftId={data?.listedNft?.id} userId={userId} nftBoughtId={data?.id} />
+                                    <CancelListing address={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} nftId={data?.listedNft?.id} userId={userId} nftBoughtId={data?.id} price={data?.price} />
                             }
                             <TogglingSell toggleBuySell={() => toggleBuySell(data.listedNftId)} isEnabled={isEnabled[data.listedNftId] || false} />
                         </div>

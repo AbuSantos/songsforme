@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tabs"
 import { Favorite } from "../musicNFTs/favorite/fav";
 import { MyFavorite } from "../musicNFTs/favorite/my-favorites";
+import { MyEarnings } from "./my-earning";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -23,12 +24,14 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 export const Aside = ({ className }: SidebarProps) => {
   const userId = useRecoilValue(isConnected);
   const [fav, setFav] = useState<String>("playlist")
-  
+
   const { data: playlist, error, isLoading } = useSWR(
     userId ? `/api/playlists/${userId}` : null,
     fetcher
   );
+  const apiUrl = userId ? `/api/user/${userId}` : null;
 
+  const { data, isLoading: userLoading } = useSWR(apiUrl, fetcher);
   if (error) {
     return (
       <div className="text-center text-red-500 p-4">
@@ -39,13 +42,19 @@ export const Aside = ({ className }: SidebarProps) => {
 
   return (
     <div className={cn("pb-12 rounded-lg w-full", className)}>
-      <div className="space-y-4 w-full">
-        <div className="px-3">
+      <div className="px-3">
 
-          <div className="box-border py-4 flex justify-between h-[60px] bg-[#111111] items-center fixed z-10 ">
+        <div className="box-border py-2 w-[28rem]  bg-transparent items-center fixed z-10">
+          <div className={`${userId ? "h-[14rem]" : "h-[1rem]"} bg-[#111111] items-center w-full`}>
+            {
+              userId &&
+              < MyEarnings data={data} />
+            }
+          </div>
 
-            <div className="flex items-center justify-center space-x-3">
-              <h2 className={`py-2 px-3 text-[1rem] font-semibold tracking-tight   rounded-md flex space-y-1 justify-start items-center cursor-pointer
+          <div className={`flex w-full ${userId ? " mt-[1rem]" : "mt-[0rem]"} items-center`}>
+            <div className="flex items-center justify-center space-x-3 w-10/12 ">
+              <h2 className={`py-2 px-3 text-[1rem] font-semibold tracking-tight rounded-md flex space-y-1 justify-start items-center cursor-pointer
               ${fav === "playlist" ? "text-[#fff] bg-[#191919] border border-[#606060]" : "text-[#606060] border-1  border-[#606060]"}
                   `}
                 onClick={() => setFav("playlist")}
@@ -82,20 +91,24 @@ export const Aside = ({ className }: SidebarProps) => {
               </span>
             </div>
 
-            <div className="lg:ml-[13rem] md:ml-[5rem]">
+            <div className="lg:ml-[13rem] md:ml-[5rem] w-2/12">
               <CreatePlaylist id={userId} />
             </div>
           </div>
-          <div className="space-y-1 pt-[70px]">
-            {
-              fav === "playlist" &&
-              <MyPlaylist data={playlist} userId={userId} mode="aside" />
-            }
-            {
-              fav === "fav" &&
-              <MyFavorite userId={userId} />
-            }
-          </div>
+
+        </div>
+
+
+
+        <div className="space-y-1 pt-[330px]">
+          {
+            fav === "playlist" &&
+            <MyPlaylist data={playlist} userId={userId} mode="aside" />
+          }
+          {
+            fav === "fav" &&
+            <MyFavorite userId={userId} />
+          }
         </div>
       </div>
     </div >
