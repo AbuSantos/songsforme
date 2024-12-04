@@ -22,8 +22,9 @@ type ModalProps = {
 export const EditRatio = ({ playlistId, trackId, mode }: ModalProps) => {
     const [isPending, startTransition] = React.useTransition();
     const [ratio, setRatio] = useState<number>(0.0);
-    const userId = useRecoilValue(isConnected);
+    const userId = useRecoilValue(isConnected)?.userId;
 
+   
     const addToPlaylist = () => {
         if (!userId) {
             toast("Error", {

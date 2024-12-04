@@ -16,13 +16,12 @@ import useSWR from "swr"
 import { fetcher } from "@/lib/utils"
 type PlaylistTypes = {
     data: Playlist[]
-    userId: string
+    userId: string | undefined
     filter?: string | null
     mode?: string
 }
 
 export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
-
     const apiUrl = `/api/playlists?${new URLSearchParams({
         ratio: filter || "",
     })}`;

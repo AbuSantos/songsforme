@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/lib/db";
 
-export const clearAccumulatedTime = async (userId: string) => {
+export const clearAccumulatedTime = async (userId: string | undefined) => {
   if (!userId) {
     return { message: "Invalid user ID" };
   }
@@ -10,7 +10,7 @@ export const clearAccumulatedTime = async (userId: string) => {
     const user = await db.user.update({
       where: { userId },
       data: {
-        accumulatedTime: 0, // Set accumulatedTime to zero
+        accumulatedTime: 0,
       },
       select: {
         accumulatedTime: true,

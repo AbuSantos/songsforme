@@ -12,7 +12,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const AllPlaylist = () => {
     const searchParams = useSearchParams();
-    const userId = useRecoilValue(isConnected);
+    const userId = useRecoilValue(isConnected)?.userId;
 
     // Retrieve filters from the search params
     const filter = searchParams.get("filter");

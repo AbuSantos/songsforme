@@ -8,8 +8,9 @@ import { getUserByAddress } from "@/data/user";
 import { useState } from "react"; // Import useState to handle state
 import { createAuth } from "thirdweb/auth";
 import { useSetRecoilState } from "recoil";
-import { isConnected } from "@/atoms/session-atom";
+import { isConnected, UserSession } from "@/atoms/session-atom";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
+import { toast } from "sonner";
 
 // const privateKey = process.env.METAMASK_PRIVATE_KEY!
 // const thirdwebAuth = createAuth({
@@ -26,6 +27,9 @@ export const ConnecttButton = () => {
     const [isOpen, setIsOpen] = useState<boolean>(true)
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
+
+
+    console.log(isCreatingUser)
 
     const wallets = [
         inAppWallet({
@@ -57,33 +61,45 @@ export const ConnecttButton = () => {
                         const account = wallet.getAccount();
 
                         if (!account?.address) {
-                            console.error("Failed to retrieve wallet address");
+                            toast.error("Failed to retrieve wallet address");
                             return;
                         }
+
                         const normalizedAddress = account.address.toLowerCase();
                         const user = await getUserByAddress(normalizedAddress);
+
+                        console.log(user)
+
                         if (user) {
                             // User exists, set session
+
+                            console.log(user, "user from user")
                             await setsession(normalizedAddress);
-                            setSessionId(normalizedAddress)
+                            const session: UserSession = {
+                                userId: normalizedAddress,
+                                username: user?.username!,
+                                userEmail: user?.email!,
+                            }
+                            setSessionId(session)
 
                         } else {
                             // User does not exist, trigger user creation flow
                             setConnectedAddress(normalizedAddress);
                             setIsCreatingUser(true); // Trigger the CreateUsername component
                         }
+
+
                     } catch (error) {
                         console.error("Error during wallet connection or session setup:", error);
                     }
                 }}
+
+
                 onDisconnect={async () => {
                     try {
                         await deleteSession();
-                        //@ts-ignore
-
                         setConnectedAddress(null); // Clear the connected address
                         setIsCreatingUser(false); // Reset the user creation flow
-                        //@ts-ignore
                         setSessionId(null);
                     } catch (error) {
                         console.error("Error during disconnection:", error);
@@ -91,7 +107,6 @@ export const ConnecttButton = () => {
                 }}
             />
 
-            {/* Render the user creation component if needed */}
             {isCreatingUser && connectedAddress && isOpen && (
                 <CreateUsername address={connectedAddress} setIsOpen={setIsOpen} isOpen={isOpen} />
             )}

@@ -12,7 +12,7 @@ import useSWR from "swr";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-    userId: string
+    userId: string | undefined
 }
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

@@ -16,7 +16,7 @@ import { isConnected } from "@/atoms/session-atom";
 const NotificationFeed = () => {
     const [isVisible, setIsVisible] = useState(false);
     const notifButtonRef = useRef(null);
-    const userId = useRecoilValue(isConnected)
+    const userId = useRecoilValue(isConnected)?.userId;
 
     if (!userId) return
 

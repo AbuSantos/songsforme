@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useRecoilValue } from "recoil";
 
 export const TrackInfo = ({ data }: { data: ListedNFT }) => {
-    const userId = useRecoilValue(isConnected) || null;
+    const userId = useRecoilValue(isConnected)?.userId;
 
     if (!data) {
         return <div>Loading...</div>; // Fallback for undefined `data`

@@ -15,13 +15,14 @@ export const WithdrawRewards = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
     const [totalTime, setTotalTime] = useState<number>(0);
-    const userId = useRecoilValue(isConnected);
+    const userId = useRecoilValue(isConnected)?.userId;
 
 
     useEffect(() => {
         const fetchAccumulatedTime = async () => {
             setIsLoading(true);
             try {
+                //@ts-ignore
                 const time = await getUserAccumulatedTime(userId) as number;
                 setTotalTime(time);
             } catch (error) {
@@ -34,9 +35,8 @@ export const WithdrawRewards = () => {
 
         fetchAccumulatedTime();
     }, [userId]);
-    const handleClearTime = async () => {
-        await clearAccumulatedTime(userId);
-    }
+
+  
 
     return (
         <div className='w-full mt-2'>

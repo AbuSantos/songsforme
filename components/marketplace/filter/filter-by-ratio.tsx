@@ -18,7 +18,7 @@ export const Ratio = () => {
     const [minRatio, setMinRatio] = useState<number | null>(null);
     const [maxRatio, setMaxRatio] = useState<number | null>(null);
 
-    const userId = useRecoilValue(isConnected);
+    const userId = useRecoilValue(isConnected)?.userId;
     const router = useRouter();
 
     const handleValue = (min: number | null, max: number | null) => {

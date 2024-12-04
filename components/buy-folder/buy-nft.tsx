@@ -6,8 +6,7 @@ import { Button } from "../ui/button";
 import { contract } from "@/lib/client";
 import { useTransition } from "react";
 import { buyNFT } from "@/actions/buy-song";
-import { useRecoilValue } from "recoil";
-import { isConnected } from "@/atoms/session-atom";
+
 
 // Interface defining the props for the BuyNFT component
 interface NFTProps {

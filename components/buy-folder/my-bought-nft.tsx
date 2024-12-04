@@ -14,8 +14,8 @@ import { BuyActivity } from "./activity/activity";
 
 const BoughtNFT = () => {
     // Retrieve and format the user ID from session state
-    const userId = useRecoilValue(isConnected)?.toLowerCase();
-    console.log("userId:from bought:", userId);
+    const userId = useRecoilValue(isConnected)?.userId;
+
 
     // Conditionally set the API URL only if userId is available
     const apiUrl = userId ? `/api/buynft/${userId}` : null;

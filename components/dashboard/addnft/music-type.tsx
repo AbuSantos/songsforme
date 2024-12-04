@@ -16,11 +16,8 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 
 export const MusicAccordion = () => {
-    const userId = useRecoilValue(isConnected)
+    const userId = useRecoilValue(isConnected)?.userId;
     const { data, error, isLoading } = useSWR(`/api/singles/${userId}`, fetcher)
-
-    console.log(userId, "from singles")
-
     return (
         <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">

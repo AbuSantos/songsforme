@@ -30,7 +30,7 @@ type NftState = {
 };
 
 export const Minter = () => {
-    const userId = useRecoilValue(isConnected)
+    const userId = useRecoilValue(isConnected)?.userId;
 
     const [nftDetails, setNftDetails] = useState<NftState>({
         name: "",
@@ -178,6 +178,7 @@ export const Minter = () => {
 
     const handleSaveToDatabase = async () => {
         startTransition(async () => {
+            //@ts-ignore
             const res = await createSingleWithNFTs(userId, nftDetails.name, nftDetails.name, userId, nftDetails.image, "0", "1", deployedAddress, tokenUri)
             //@ts-ignore
             if (res.status === "success") {

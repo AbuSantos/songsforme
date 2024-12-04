@@ -15,8 +15,6 @@ export const checkUserName = async (username: string) => {
       },
     });
 
-    console.log(user);
-
     return {
       isTaken: !!user,
       message: user ? "Username is already taken." : "Username is available.",

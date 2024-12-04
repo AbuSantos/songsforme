@@ -27,7 +27,7 @@ export const MobileNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [listModalOpen, setListModalOpen] = useState<boolean>(false)
-    const userId = useRecoilValue(isConnected);
+    const userId = useRecoilValue(isConnected)?.userId;
 
     const handleListModal = () => {
         setListModalOpen(!listModalOpen)

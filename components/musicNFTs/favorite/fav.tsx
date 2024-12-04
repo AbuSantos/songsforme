@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { mutate } from 'swr';
 
 type FavTypes = {
-    userId: string
+    userId: string | undefined
     nftId: string
 }
 export const Favorite = ({ userId, nftId }: FavTypes) => {

@@ -15,12 +15,16 @@ import { createplaylist } from "@/actions/create-playlist";
 import { mutate } from "swr";
 
 type ModalProps = {
-    id: string
+    id: string | undefined
 }
 
 export const CreatePlaylist = ({ id }: ModalProps) => {
     const [isPending, startTransition] = React.useTransition()
     const [playlist, setPlaylist] = useState<string>("");
+
+    if (!id) {
+        return
+    }
 
     const addToPlaylist = () => {
         startTransition(() => {

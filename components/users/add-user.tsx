@@ -22,6 +22,9 @@ import { FormError } from "../errorsandsuccess/form-error";
 import { useDebouncedCallback } from "use-debounce";
 import { checkUserName } from "@/actions/check-username";
 import { FormSuccess } from "../errorsandsuccess/form-success";
+import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
+import { isConnected, UserSession } from "@/atoms/session-atom";
+import { useActiveAccount } from "thirdweb/react";
 
 interface UserProps {
     address: string;
@@ -35,6 +38,7 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
     const [emailAddress, setEmailAddress] = useState<string>("");
     const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(null);
     const [checking, setChecking] = useState<boolean>(false);
+    const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
     const addUser = () => {
         if (!emailAddress.trim()) {
@@ -55,6 +59,13 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
                     setUsername("");
                     setEmailAddress("");
                     setIsOpen(false);
+
+                    const session: UserSession = {
+                        userId: address,
+                        username: username,
+                        userEmail: emailAddress,
+                    }
+                    setSessionId(session)
                 } else {
                     toast.error(res.message);
                 }
@@ -73,7 +84,6 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
         setChecking(true);
         try {
             const res = await checkUserName(value);
-            console.log("Check Username API Response:", res);
             if (res?.isTaken) {
                 setIsUsernameValid(false);
             } else {
@@ -81,7 +91,7 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
             }
         } catch (error) {
             console.error("Error checking username:", error);
-            setIsUsernameValid(null); // API error
+            setIsUsernameValid(null);
         } finally {
             setChecking(false);
         }

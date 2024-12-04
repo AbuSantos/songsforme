@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React from 'react'
 import useSWR from 'swr';
 
-export const MyFavorite = ({ userId }: { userId: string }) => {
+export const MyFavorite = ({ userId }: { userId: string | undefined }) => {
 
     const { data: favorites, error, isLoading } = useSWR(
         userId ? `/api/favorites/${userId}` : null,

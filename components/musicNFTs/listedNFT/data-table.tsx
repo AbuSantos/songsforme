@@ -33,7 +33,7 @@ type TrackTableType = {
 // 572,000,000,000
 export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
-    const userId = useRecoilValue(isConnected)
+    const userId = useRecoilValue(isConnected)?.userId;
     // const userId = useRecoilValue(isConnected).toLowerCase();
     const [isPending, startTransition] = useTransition();
 
@@ -67,7 +67,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
         setIsEnabled(storedStates);
     }, [data]);
 
-  
+
 
 
     return (

@@ -2,7 +2,10 @@
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 
-export const addToFavorite = async (userId: string, nftId: string) => {
+export const addToFavorite = async (
+  userId: string | undefined,
+  nftId: string
+) => {
   if (!userId) {
     return { message: "Please connect your wallet!" };
   }

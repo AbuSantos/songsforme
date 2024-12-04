@@ -6,8 +6,7 @@ import Link from "next/link";
 import { Playlisten } from "@/components/startlistening/play-listen";
 import { Actions } from "@/components/actions/actions";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
-import { isConnected } from "@/atoms/session-atom";
+
 import { RelistNft } from "./relist";
 import { CancelListing } from "./cancel-folder/cancel-listing";
 import { TogglingSell } from "../musicNFTs/listedNFT/toggle-buy-sell";
