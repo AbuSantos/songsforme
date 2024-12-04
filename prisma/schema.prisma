@@ -42,6 +42,7 @@ model User {
   Bid                       Bid[]
 
   @@index([userId])
+  @@index([username])
 }
 
 model NFTListeningTime {

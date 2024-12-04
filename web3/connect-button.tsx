@@ -22,8 +22,7 @@ import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 
 export const ConnecttButton = () => {
     const [isCreatingUser, setIsCreatingUser] = useState(false);
-    //@ts-ignore
-    const [connectedAddress, setConnectedAddress] = useState(null || String); // State to manage the connected address
+    const [connectedAddress, setConnectedAddress] = useState<null | string>();
     const [isOpen, setIsOpen] = useState<boolean>(true)
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
@@ -85,7 +84,6 @@ export const ConnecttButton = () => {
                         setConnectedAddress(null); // Clear the connected address
                         setIsCreatingUser(false); // Reset the user creation flow
                         //@ts-ignore
-
                         setSessionId(null);
                     } catch (error) {
                         console.error("Error during disconnection:", error);
