@@ -54,7 +54,7 @@ const BoughtNFT = () => {
 
                 <TabsContent
                     value="my_nft"
-                    className="border-none md:pt-24 pt-2 outline-none px-2 "
+                    className="border-none md:pt-14 pt-2 outline-none px-2 "
 
                 >
                     <div className="flex flex-wrap space-x-4 pb-4 w-full">
@@ -78,7 +78,7 @@ const BoughtNFT = () => {
                 </TabsContent>
                 <TabsContent
                     value="activity"
-                    className="border-none md:pt-24 pt-2 outline-none px-2 "
+                    className="border-none md:pt-14 pt-2 outline-none px-2 "
                 >
                     <BuyActivity />
                 </TabsContent>

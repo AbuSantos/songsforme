@@ -25,6 +25,13 @@ enum BidStatus {
   WIN
 }
 
+enum ActionType {
+  NFT_SOLD
+  BID_PLACED
+  NFT_TRANSFERRED
+  LISTING_CREATED
+}
+
 model User {
   id                        String             @id @default(cuid())
   username                  String?            @unique
@@ -40,6 +47,7 @@ model User {
   playlist                  Playlist[]
   Favorites                 Favorites[]
   Bid                       Bid[]
+  Activity                  Activity[]
 
   @@index([userId])
   @@index([username])
@@ -210,4 +218,19 @@ model Bid {
   @@index([tokenId])
   @@index([nftAddress])
   @@index([createdAt])
+}
+
+model Activity {
+  id        String     @id @default(uuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  action    ActionType
+  entityId  String
+  metadata  Json
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([userId, action, entityId])
+  @@index([userId])
+  @@index([id])
 }

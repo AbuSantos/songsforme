@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { listedNFT } from "./listNFT";
 import { revalidateTag } from "next/cache";
+import { logActivity } from "./loggin-activity";
 
 /**
  * Relists an NFT on the marketplace after it has been bought.
@@ -73,7 +74,12 @@ export const relistSong = async (
       },
     });
 
-    //CHANGE THE PENDING STATE TO REFLECT THE ACTION WERE PERFORMING
+    await logActivity(seller, "LISTING_CREATED", tokenId, {
+      price: parsedPrice,
+      nftAddress,
+      message: `Relisted NFT on marketplace.`,
+      timestamp: new Date(),
+    });
 
     // Update the `relisted` status in `buyNFT` table
     await db.buyNFT.update({

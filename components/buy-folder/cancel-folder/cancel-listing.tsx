@@ -32,7 +32,6 @@ export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId, pr
     const [isPending, startTransition] = useTransition();
     const apiUrl = userId ? `/api/buynft/${userId}` : null;
 
-
     const handleCancel = () => {
         startTransition(async () => {
             try {
