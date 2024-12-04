@@ -34,6 +34,8 @@ type TrackTableType = {
 export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
     const userId = useRecoilValue(isConnected)?.userId;
+    const usrname = useRecoilValue(isConnected)?.username
+    console.log(usrname)
     // const userId = useRecoilValue(isConnected).toLowerCase();
     const [isPending, startTransition] = useTransition();
 
@@ -109,6 +111,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                             tokenId={track.tokenId}
                                             price={track.price}
                                             listedNftId={track.id}
+                                            usrname={usrname || ""}
                                         />
                                     ) : (
                                         < MakeBid tokenId={track?.tokenId} nftAddress={track?.contractAddress} nftId={track?.id} userId={userId} />

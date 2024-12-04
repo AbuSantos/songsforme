@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
+import { logActivity } from "./loggin-activity";
 
 export const listedNFT = async (
   seller: string,
@@ -58,6 +59,12 @@ export const listedNFT = async (
       return singleNft;
     });
 
+    await logActivity(seller, "LISTING_CREATED", tokenId, {
+      price: parsedPrice,
+      nftAddress,
+      message: `Relisted NFT on marketplace.`,
+      timestamp: new Date(),
+    });
     // Revalidate cached data
     revalidateTag("nft");
 

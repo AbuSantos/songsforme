@@ -9,6 +9,8 @@ export const logActivity = async (
   metadata: any
 ) => {
   try {
+    console.log(userId, action, entityId, metadata);
+
     await db.activity.upsert({
       where: {
         userId_action_entityId: {

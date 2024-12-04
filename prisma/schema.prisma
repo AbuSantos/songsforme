@@ -223,7 +223,7 @@ model Bid {
 model Activity {
   id        String     @id @default(uuid())
   userId    String
-  user      User       @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [userId])
   action    ActionType
   entityId  String
   metadata  Json

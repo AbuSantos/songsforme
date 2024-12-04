@@ -3,21 +3,31 @@
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 import { mutate } from "swr";
+import { logActivity } from "./loggin-activity";
 
+/**
+ * Buys an NFT listed in the marketplace.
+ * @param buyer - Address of the buyer.
+ * @param price - Price of the NFT.
+ * @param listedNftId - ID of the listed NFT.
+ * @param usrname - Username of the buyer.
+ * @param transactionHash - Optional transaction hash for the purchase.
+ * @returns A message indicating the result of the purchase.
+ */
 export const buyNFT = async (
   buyer: string,
   price: number,
   listedNftId: string,
-  transactionHash?: string
-) => {
-  // Ensure that required fields are provided
+  transactionHash: string,
+  usrname: string,
+): Promise<{ message: string }> => {
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };
   }
+  console.log(usrname, "username");
 
   try {
-
-    // Check if the NFT exists and if it's already sold
+    // Fetch the listed NFT
     const listedNFT = await db.listedNFT.findUnique({
       where: { id: listedNftId },
     });
@@ -30,28 +40,41 @@ export const buyNFT = async (
       return { message: "NFT is already sold." };
     }
 
-    // Use a transaction to ensure atomicity
+    // Perform atomic operations
     await db.$transaction(async (prisma) => {
-      // Mark the NFT as sold
       await prisma.listedNFT.update({
         where: { id: listedNftId },
         data: { sold: true },
       });
 
-      // Create a new purchase record
       await prisma.buyNFT.create({
         data: {
           buyer,
           price,
           listedNftId,
-          
           purchaseDate: new Date(),
           ...(transactionHash && { transactionHash }),
         },
       });
+
+      await logActivity(buyer, "NFT_SOLD", listedNFT.tokenId, {
+        price: listedNFT.price,
+        nftAddress: listedNFT.contractAddress,
+        message: `You bought NFT`,
+        timestamp: new Date(),
+      });
+
+      await logActivity(listedNFT.seller, "NFT_SOLD", listedNFT.tokenId, {
+        price: listedNFT.price,
+        nftAddress: listedNFT.contractAddress,
+        message: `${usrname} bought your NFT`,
+        timestamp: new Date(),
+      });
     });
 
-    // Revalidate cached data
+    // Refresh SWR data and cache
+    // mutate("bought");
+    // mutate("nft");
     revalidateTag("bought");
     revalidateTag("nft");
 
