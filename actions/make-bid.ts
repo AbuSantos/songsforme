@@ -57,6 +57,8 @@ export const MakeBidBackend = async ({
     //   ],
     // });
 
+
+
     return {
       message: "Bid successfully placed or updated",
       success: true,

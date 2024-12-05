@@ -11,6 +11,7 @@ import { MarketSkeleton } from "../marketplace/marketplace-skeleton";
 import { BuyNFT } from "@/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { BuyActivity } from "./activity/activity";
+import { AllOffer } from "./offers/offers";
 
 const BoughtNFT = () => {
     // Retrieve and format the user ID from session state
@@ -49,6 +50,7 @@ const BoughtNFT = () => {
                             My NFTs
                         </TabsTrigger>
                         <TabsTrigger value="activity">Activity</TabsTrigger>
+                        <TabsTrigger value="offer">Offers</TabsTrigger>
                     </TabsList>
                 </div>
 
@@ -81,6 +83,12 @@ const BoughtNFT = () => {
                     className="border-none md:pt-14 pt-2 outline-none px-2 "
                 >
                     <BuyActivity />
+                </TabsContent>
+                <TabsContent
+                    value="activity"
+                    className="border-none md:pt-14 pt-2 outline-none px-2 "
+                >
+                    <AllOffer userId={userId} />
                 </TabsContent>
             </Tabs>
 

@@ -172,9 +172,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                             </div>
                                         </SheetContent>
                                     </Sheet>
-                                    <div className="bg-white"  >
+                                    {/* <div className="bg-white"  >
                                         < NotificationFeed />
-                                    </div>
+                                    </div> */}
 
                                 </div>
                             </div>

@@ -40,7 +40,7 @@ export const MakeBid = ({
 
     const bidder = userId
 
-    const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
+    // const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
     const apiUrl = `/api/bids/${tokenId}?nftAddress=${nftAddress}`;
 
     // Fetch data using SWR
@@ -145,8 +145,8 @@ export const MakeBid = ({
                     >
                         Make Bid
                     </TransactionButton>
-                    {/* //FOR TESTING */}
 
+                    {/* //FOR TESTING */}
                     {/* <button onClick={handleBidBackEnd} className="text-gray-200">
                         Bid
                     </button> */}

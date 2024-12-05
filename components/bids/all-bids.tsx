@@ -39,7 +39,6 @@ export const AllBids = ({ tokenId, nftAddress, userId, seller, nftId }: BidTypes
     if (isLoading) return <div>Loading...</div>;  // Display loading text
     if (error) return <div>Error fetching bids.</div>; // Display error message
 
-    console.log(bids, "bids")
     return (
         <div className="grid grid-cols-2 gap-2">
             <Sheet>

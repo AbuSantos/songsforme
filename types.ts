@@ -1,3 +1,5 @@
+import { BidStatus } from "@prisma/client";
+
 export enum PurchaseStatus {
   PENDING = "PENDING",
   COMPLETE = "COMPLETE",
@@ -52,6 +54,7 @@ export interface ListedNFT {
   totalAccumulatedTime?: number | null;
   listeningSession?: ListeningSession[];
   NFTListeningTime?: NFTListeningTime[];
+  Bid?: Bid[];
 }
 
 export interface ListeningSession {
@@ -134,4 +137,20 @@ export interface MakeBidParams {
   bidAmount: number;
   transactionHash: string;
   userId: string;
+}
+
+export interface Bid {
+  id: string;
+  tokenId: string;
+  owner: User;
+  nftAddress: string;
+  bidder: string;
+  listedNFT: ListedNFT;
+  bidAmount: number;
+  status: BidStatus;
+  createdAt: Date;
+  sold: boolean;
+  transactionHash: string;
+  userId?: string;
+  nftId: string;
 }

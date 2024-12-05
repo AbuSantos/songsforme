@@ -22,7 +22,6 @@ type TrackTableType = {
 
 export const BoughtTable = ({ data, userId }: TrackTableType) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
-
     const [isPending, startTransition] = useTransition();
 
 

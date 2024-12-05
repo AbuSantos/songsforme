@@ -163,7 +163,7 @@ model BuyNFT {
   listedNftId     String
   listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
   price           Float
-  purchaseDate    DateTime        @default(now()) // Date of purchase
+  purchaseDate    DateTime        @default(now())
   transactionHash String?
   isSaleEnabled   Boolean         @default(false)
   status          PurchaseStatus? @default(NONE)

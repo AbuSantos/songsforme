@@ -20,8 +20,6 @@ export const BuyActivity = () => {
         }
     );
 
-    console.log(activities)
-
     // Loading state
     if (isLoading) {
         return <p>Loading activities...</p>;
@@ -40,11 +38,11 @@ export const BuyActivity = () => {
 
     // Render activities
     return (
-        <section>
+        <section className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-2">
             {activities?.data?.map((activity: any) => (
                 <div
                     key={activity.id}
-                    className="flex items-start space-x-2 bg-[#191919] w-[20rem] rounded-md p-4 mb-4"
+                    className="flex items-start justify-center space-x-2 bg-[#191919] w-[22rem] rounded-md p-4 mb-4"
                 >
                     <div>
                         <h1 className="text-[#EEEEEE] font-semibold capitalize flex items-center">
