@@ -71,7 +71,7 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
                         <Link href={`/dashboard/trackinfo/${data.listedNftId}`} className="flex w-8/12 items-center ">
                             <div className="flex flex-col w-8/12">
                                 <small className="uppercase text-[0.7rem] ">
-                                    {data?.listedNft?.Single?.artist_name}
+                                    {data?.listedNft?.Single?.artist_name || "untitled track"}
                                 </small>
                             </div>
                             <div className="flex items-center justify-center  w-4/12">

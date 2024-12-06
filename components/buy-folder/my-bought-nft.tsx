@@ -31,6 +31,9 @@ const BoughtNFT = () => {
         }
     );
 
+    console.log(nfts, "NFT from bought table")
+    console.log(userId, "user id from data")
+
     if (!userId) {
         return (
             <p className="text-center p-2">

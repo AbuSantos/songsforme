@@ -161,6 +161,7 @@ model BuyNFT {
   id              String          @id @default(cuid())
   buyer           String
   listedNftId     String
+  tokenId         String
   listedNft       ListedNFT       @relation(fields: [listedNftId], references: [id]) // NFT being bought
   price           Float
   purchaseDate    DateTime        @default(now())
@@ -168,6 +169,9 @@ model BuyNFT {
   isSaleEnabled   Boolean         @default(false)
   status          PurchaseStatus? @default(NONE)
   relisted        Boolean         @default(false)
+
+  @@unique([listedNftId, tokenId])
+  @@index([id])
 }
 
 model Single {
