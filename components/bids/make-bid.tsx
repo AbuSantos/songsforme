@@ -40,7 +40,7 @@ export const MakeBid = ({
 
     const bidder = userId
 
-    // const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
+    const transactionHash = '0x7f72061d8378D00743556DA234DC29D4c07E848C'
     const apiUrl = `/api/bids/${tokenId}?nftAddress=${nftAddress}`;
 
     // Fetch data using SWR
@@ -123,7 +123,7 @@ export const MakeBid = ({
                     <Separator className=" border-t-[#606060] h-[0.7px] mt-3" />
 
 
-                    <TransactionButton
+                    {/* <TransactionButton
                         transaction={() => {
                             const tx = prepareContractCall({
                                 contract,
@@ -144,12 +144,12 @@ export const MakeBid = ({
                         onError={(error) => toast.error(error.message)}
                     >
                         Make Bid
-                    </TransactionButton>
+                    </TransactionButton> */}
 
                     {/* //FOR TESTING */}
-                    {/* <button onClick={handleBidBackEnd} className="text-gray-200">
+                    <button onClick={() => handleBidBackEnd(transactionHash)} className="text-gray-200">
                         Bid
-                    </button> */}
+                    </button>
                 </div>
             </PopoverContent>
         </Popover>

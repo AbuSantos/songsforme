@@ -20,7 +20,7 @@ export const GET = async (
   }
 
   try {
-    const nft = await db.listedNFT.findMany({
+    const nftBid = await db.listedNFT.findMany({
       where: {
         seller: id,
       },
@@ -38,6 +38,7 @@ export const GET = async (
                 email: true,
               },
             },
+            bidAmount: true,
           },
         },
         Single: {
@@ -50,7 +51,7 @@ export const GET = async (
       },
     });
 
-    return new NextResponse(JSON.stringify({ data: nft }), {
+    return new NextResponse(JSON.stringify({ data: nftBid }), {
       status: 200,
     });
   } catch (error) {

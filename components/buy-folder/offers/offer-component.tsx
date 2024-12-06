@@ -13,11 +13,13 @@ import { Copy } from "@/components/actions/copy"
 import { AcceptBidOffer } from "@/components/bids/accept-offer"
 import { RejectBidOffer } from "@/components/bids/reject-offer"
 
+interface OfferType {
+    data: ListedNFT[]
+    error: string
+    isLoading: boolean
+}
+export const MyNFTOFfers = ({ data, error, isLoading }: OfferType) => {
 
-export const MyNFTOFfers = ({ data }: { data: ListedNFT[] }) => {
-    const apiUrl = `/api/playlists?`;
-
-    const { data: playlists, error, isLoading } = useSWR(apiUrl, fetcher);
 
     if (error) return <div>Failed to load playlists</div>;
 
@@ -57,15 +59,14 @@ export const MyNFTOFfers = ({ data }: { data: ListedNFT[] }) => {
                                 {
                                     item.Bid?.length === 0 ? <small>No Bids here</small> : item.Bid?.map((bid: Bid) => (
                                         <div key={bid.id} className="flex items-center justify-between gap-2 space-y-2">
-                                            {/* <small>{song.id}</small> */}
-                                            <div>
+                                            <div className="flex items-center justify-center space-x-2">
                                                 <p>{bid.owner?.username}</p>
-                                                <Copy address={bid.owner?.userId} />
+                                                <Copy address={bid.owner?.userId} mode="data" />
                                             </div>
 
                                             <div>
                                                 <h1>
-                                                    {bid?.bidAmount}
+                                                    {bid?.bidAmount} WETH
                                                 </h1>
 
                                             </div>

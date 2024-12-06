@@ -17,12 +17,18 @@ export const AllOffer = ({ userId }: { userId: string }) => {
         }
     );
 
-    return (
-        <div>
-            <h1>MY Offers</h1>
+    try {
+        return (
             <div>
-                < MyNFTOFfers data={bids} />
+                <h1>MY Offers</h1>
+                <div>
+                    < MyNFTOFfers data={bids?.data} error={error} isLoading={isLoading} />
+                </div>
             </div>
-        </div>
-    )
+        )
+    } catch (error: any) {
+        console.log(error.message)
+    }
+
+
 }

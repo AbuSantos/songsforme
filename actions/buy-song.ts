@@ -19,7 +19,7 @@ export const buyNFT = async (
   price: number,
   listedNftId: string,
   transactionHash: string,
-  usrname: string,
+  usrname: string
 ): Promise<{ message: string }> => {
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };
@@ -52,6 +52,7 @@ export const buyNFT = async (
           buyer,
           price,
           listedNftId,
+          status: "COMPLETE",
           purchaseDate: new Date(),
           ...(transactionHash && { transactionHash }),
         },
