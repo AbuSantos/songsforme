@@ -1,8 +1,13 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { logActivity } from "./loggin-activity";
 
-export const acceptOffer = async (bidId: string, nftId: string) => {
+export const acceptOffer = async (
+  bidId: string,
+  nftId: string,
+  usrname: string | undefined
+) => {
   if (!bidId) {
     return { success: false, message: "Invalid or missing bid ID" };
   }
@@ -56,14 +61,35 @@ export const acceptOffer = async (bidId: string, nftId: string) => {
         data: {
           buyer: newBidder?.bidder,
           price: newBidder?.bidAmount,
+          tokenId: tokenId,
           listedNftId: nftId,
-
           purchaseDate: new Date(),
           ...(newBidder?.transactionHash && {
             transactionHash: newBidder?.transactionHash,
           }),
         },
       });
+      try {
+        await logActivity(newBidder?.bidder, "NFT_SOLD", listedNFT.tokenId, {
+          price: listedNFT.price,
+          nftAddress: listedNFT.contractAddress,
+          message: `You won bid for NFT`,
+          timestamp: new Date(),
+        });
+      } catch (logError) {
+        console.error("Error logging activity for buyer:", logError);
+      }
+
+      try {
+        await logActivity(listedNFT.seller, "NFT_SOLD", listedNFT.tokenId, {
+          price: listedNFT.price,
+          nftAddress: listedNFT.contractAddress,
+          message: `${usrname} bought your NFT`,
+          timestamp: new Date(),
+        });
+      } catch (logError) {
+        console.error("Error logging activity for seller:", logError);
+      }
     });
 
     return {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { toast } from 'sonner'
 
-export const Copy = ({ address, mode }: { address: string, mode?: string }) => {
+export const Copy = ({ address, mode }: { address: string | "", mode?: string }) => {
 
     const handleCopy = () => {
         navigator.clipboard.writeText(address)

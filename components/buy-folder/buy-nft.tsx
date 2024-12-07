@@ -15,7 +15,7 @@ interface NFTProps {
     tokenId: string;    // The unique identifier for the NFT being purchased
     price: number;      // The price of the NFT in Ether (as a number)
     listedNftId: string
-    usrname: string
+    usrname: string | undefined
 }
 
 // BuyNFT Component for handling the purchase of an NFT on the blockchain
@@ -23,7 +23,6 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     const [isPending, startTransition] = useTransition();
     const transactionHash = "0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9"
 
-    console.log(usrname, "usrrname")
 
     const handleBuyNft = (price: number, transactionHash: string) => {
         console.log(buyer, price, listedNftId)

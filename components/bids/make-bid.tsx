@@ -58,8 +58,7 @@ export const MakeBid = ({
                     { tokenId, nftAddress, nftId, bidder, bidAmount: bidAmountValue, transactionHash, userId }
                 )
                 if (res.success === true) {
-                    mutate(apiUrl
-                    )
+                    mutate(apiUrl)
                     toast.success(res.message)
                 } else if (res.success === false) {
                     toast.success(res.message)

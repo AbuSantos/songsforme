@@ -1,4 +1,4 @@
-import { BidStatus } from "@prisma/client";
+import { ActionType, BidStatus } from "@prisma/client";
 
 export enum PurchaseStatus {
   PENDING = "PENDING",
@@ -153,4 +153,22 @@ export interface Bid {
   transactionHash: string;
   userId?: string;
   nftId: string;
+}
+
+export type Activity = {
+  id: string; // Unique identifier (UUID)
+  userId: string; // Foreign key referencing the User
+  user: User; // Relation to the User model
+  action: ActionType; // Enum or type representing the action
+  entityId: string; // ID of the related entity
+  metadata: Metadata; // JSON metadata
+  createdAt: Date; // Timestamp when created
+  updatedAt: Date; // Timestamp when last updated
+};
+
+interface Metadata {
+  price?: string;
+  timestamp?: Date;
+  nftAddress?: string | undefined;
+  message?: string;
 }

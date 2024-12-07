@@ -9,13 +9,11 @@ export const buyNFT = async (
   price: number,
   listedNftId: string,
   transactionHash: string,
-  usrname: string
+  usrname: string | undefined
 ): Promise<{ message: string }> => {
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };
   }
-
-  console.log(usrname, "username");
 
   try {
     const listedNFT = await db.listedNFT.findUnique({
@@ -55,7 +53,7 @@ export const buyNFT = async (
           price,
           tokenId: listedNFT?.tokenId,
           listedNftId,
-          // status: "COMPLETE",
+          status: "NONE",
           purchaseDate: new Date(),
           ...(transactionHash && { transactionHash }),
         },
@@ -63,7 +61,7 @@ export const buyNFT = async (
           buyer,
           price,
           listedNftId,
-          // status: "COMPLETE",
+          status: "NONE",
           purchaseDate: new Date(),
           ...(transactionHash && { transactionHash }),
         },

@@ -13,6 +13,7 @@ import { TogglingSell } from "../musicNFTs/listedNFT/toggle-buy-sell";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { toggleState } from "@/actions/toggle-buy-sell";
+import { mutate } from "swr";
 
 type TrackTableType = {
     data: BuyNFT
@@ -33,6 +34,7 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
             const res = await toggleState(nftId, newBuyingState);
             if (res.message) {
                 toast.success(res.message);
+                mutate(`api/listednft`)
             }
             setIsEnabled((prev) => ({
                 ...prev,

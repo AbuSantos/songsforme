@@ -23,18 +23,20 @@ type ActionsProps = {
   songName?: string | null | undefined
 }
 export const Actions = ({ songName, mode, seller, nftAddress, tokenId, price, nftId, listedNftId, isSaleEnabled }: ActionsProps) => {
-  const userId = useRecoilValue(isConnected);
+  const userId = useRecoilValue(isConnected)?.userId;
+  const username = useRecoilValue(isConnected)?.username;
   const songUrl = typeof window !== "undefined" ? window.location.href : ""
+  if (!userId) {
+    return
+  }
 
   return (
     <div className="justify-center items-center space-x-2 flex md:flex w-4/12 p-3">
       <div>
-
-
         {userId && (seller === userId) ? ("")
           :
           <div className="flex items-center justify-center space-x-2">
-            <BuyNFT buyer={userId} nftAddress={nftAddress} tokenId={tokenId} price={price} listedNftId={listedNftId} />
+            <BuyNFT buyer={userId} nftAddress={nftAddress} tokenId={tokenId} price={price} listedNftId={listedNftId} usrname={username} />
             <MakeBid nftAddress={nftAddress} tokenId={tokenId} nftId={nftId} userId={userId} />
           </div>
         }

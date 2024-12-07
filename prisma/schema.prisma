@@ -30,6 +30,7 @@ enum ActionType {
   BID_PLACED
   NFT_TRANSFERRED
   LISTING_CREATED
+  PLAYLIST_CREATED
 }
 
 model User {
@@ -238,3 +239,5 @@ model Activity {
   @@index([userId])
   @@index([id])
 }
+
+

@@ -10,6 +10,8 @@ import { toast } from "sonner"
 import { toTokens } from "thirdweb/utils";
 import { acceptOffer } from "@/actions/accept-bid-offer";
 import { mutate } from "swr";
+import { useRecoilValue } from "recoil";
+import { isConnected } from "@/atoms/session-atom";
 
 type AceeptOfferTypes = {
     bidId: string
@@ -19,16 +21,15 @@ type AceeptOfferTypes = {
 }
 export const AcceptBidOffer = ({ bidId, tokenId, nftAddress, nftId }: AceeptOfferTypes) => {
 
-    console.log(nftId)
     const [isPending, startTransition] = useTransition();
-    const [transaction, setTransaction] = useState()
     const [isError, setIsError] = useState("");
-    const [isSuccess, setIsSuccess] = useState("");
+    const usrname: string | undefined = useRecoilValue(isConnected)?.username;
+
 
     const handleAcceptOffer = async () => {
         startTransition(async () => {
             try {
-                const res = await acceptOffer(bidId, nftId)
+                const res = await acceptOffer(bidId, nftId, usrname)
                 if (res.message) {
                     toast.success(res.message)
                     mutate(`/api/bids/${tokenId}?nftAddress=${nftAddress}`)

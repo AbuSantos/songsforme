@@ -14,23 +14,6 @@ export const cancelListing = async (
   }
 
   try {
-    // Optional: Validate if the user exists (only needed if userId isn't authenticated upstream)
-
-    //FIX THE USERID
-
-    // const user = await db.user.findUnique({
-    //   where: {
-    //     userId,
-    //   },
-    //   select: {
-    //     id: true,
-    //   },
-    // });
-
-    // if (!user) {
-    //   return { success: false, message: "User not found!" };
-    // }
-
     // Update the NFT record
     await db.listedNFT.update({
       where: { id },

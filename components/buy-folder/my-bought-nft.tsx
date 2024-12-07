@@ -80,7 +80,7 @@ const BoughtNFT = () => {
                                     <Text className="font-[50] capitalize text-[0.8rem] w-2/12 ">price</Text>
                                     <Text className="font-[50] capitalize text-[0.8rem] w-4/12 ">action</Text>
                                 </header>
-                                {!isLoading &&
+                                {
                                     nfts?.map((nft: BuyNFT) => (
                                         <div className="w-full" key={nft.id}>
                                             <BoughtTable data={nft} userId={userId} />
