@@ -37,6 +37,7 @@ import { SingleGenre } from "@/components/singles-genre/single-genre"
 import { getAddressOrName, getTimeThreshold } from "@/lib/utils"
 import { Prisma } from "@prisma/client"
 import NotificationFeed from "@/components/knock/notification-feed"
+import { ArtiseHub } from "@/components/artiste-hub/artiste-hub"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -148,6 +149,9 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         <TabsTrigger value="minter">Minter</TabsTrigger>
                                         <TabsTrigger value="mynft">
                                             Mine
+                                        </TabsTrigger>
+                                        <TabsTrigger value="artiste_hub">
+                                            Artiste Hub
                                         </TabsTrigger>
                                     </div>
 
@@ -327,6 +331,23 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </Suspense>
                                 </div>
 
+                            </TabsContent>
+                            <TabsContent
+                                value="artiste_hub"
+                                className="border-none p-0 md:pt-24 pt-2 outline-none"
+                            >
+                                <div className="space-y-1">
+
+                                    <h2 className="text-[1.5rem] md:text-2xl font-semibold tracking-normal">
+                                        Artiste Hub
+                                    </h2>
+
+                                    <p className="text-sm hidden text-muted-foreground">
+                                        Track Sales, listed and playlists
+                                    </p>
+                                </div>
+                                <Separator className="my-4 " />
+                                <ArtiseHub />
                             </TabsContent>
 
                             <div className="mt-auto w-full fixed bottom-0  md:hidden h-20">
