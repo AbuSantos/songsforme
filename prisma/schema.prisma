@@ -50,6 +50,14 @@ model User {
   Bid                       Bid[]
   Activity                  Activity[]
 
+  //to be edited
+  bio              String?
+  profilePicture   String?
+  bannerImage      String?
+  socialLinks      Json?
+  releases         Int?
+  ArtisteAnalytics ArtisteAnalytics[]
+
   @@index([userId])
   @@index([username])
 }
@@ -112,6 +120,7 @@ model ListedNFT {
   isRelisted           Boolean             @default(false)
   favorites            Favorites[]
   Bid                  Bid[]
+  TrackAnalytics       TrackAnalytics[]
 
   @@unique([tokenId, contractAddress])
   @@index([id])
@@ -240,4 +249,21 @@ model Activity {
   @@index([id])
 }
 
+model ArtisteAnalytics {
+  id            String @id @default(cuid())
+  userId        String
+  artiste       User   @relation(fields: [userId], references: [userId])
+  totalEarnings Float  @default(0)
+  totalFans     Int    @default(0)
+  totalTracks   Int    @default(0)
+  totalReleases Int    @default(0)
+}
 
+model TrackAnalytics {
+  id              String    @id @default(cuid())
+  listednftId     String
+  track           ListedNFT @relation(fields: [listednftId], references: [id])
+  streams         Int       @default(0)
+  likes           Int       @default(0)
+  uniqueListeners Int       @default(0)
+}
