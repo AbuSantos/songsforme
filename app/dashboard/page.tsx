@@ -103,6 +103,12 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 accumulatedTime: true,
                 name: true,
                 id: true,
+                owner: {
+                    select: {
+                        userId: true,
+                        username: true,
+                    }
+                },
                 listednft: {
                     select: {
                         id: true
@@ -217,8 +223,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
 
                                     <div className="flex items-center justify-between">
-
-
                                     </div>
                                     <Separator className="my-4 " />
                                     < SingleGenre singleNft={singleNft} />

@@ -38,7 +38,12 @@ export function TrendingPlaylist({
                 />
 
             </Link>
-            <small className="text-[#B4B4B4] tracking-tight leading-tight capitalize">{album.name}, Your favorite playlist created by me</small>
+            <small className="text-[#B4B4B4]  tracking-tight leading-tight capitalize">{`${album.name} by `}
+                <Link className="space-y-1 hover:text-[#8E4EC6]" href={`/dashboard/artistehub/${album?.owner?.userId}`}>
+                    {album?.owner?.username}
+                </Link>
+            </small>
+
         </div>
     );
 }

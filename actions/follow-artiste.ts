@@ -1,44 +1,52 @@
 "use server";
+
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 
 export const followArtiste = async (
   userId: string | undefined,
-  nftId: string
+  artisteId: string
 ) => {
   if (!userId) {
     return { message: "Please connect your wallet!" };
   }
 
-  if (!nftId) {
-    return { message: "Please provide a valid song ID." };
-  }
-
   try {
-    // Check if the song is already in favorites
-    const existingFavorite = await db.favorites.findFirst({
+    // Check if the user already follows the artiste
+    const existingFollow = await db.follow.findUnique({
       where: {
-        userId,
-        nftId,
+        followerId_followedId: {
+          followerId: userId,
+          followedId: artisteId,
+        },
       },
     });
 
-    if (existingFavorite) {
-      return { message: "This song is already in your favorites." };
+    if (existingFollow) {
+      return { message: "You already follow this artiste!" };
     }
 
-    // Add a new favorite
-    await db.favorites.create({
+    // Create a new follow relationship
+    await db.follow.create({
       data: {
-        userId,
-        nftId,
+        follower: {
+          connect: {
+            id: userId,
+          },
+        },
+        followed: {
+          connect: {
+            id: artisteId,
+          },
+        },
       },
     });
 
-    revalidateTag("fav");
-    return { message: "Song added to favorites successfully!" };
+    // Revalidate the cache
+    revalidateTag("followed");
+    return { message: "You successfully followed the artiste!" };
   } catch (error) {
-    console.error("Error adding song to favorites:", error);
-    return { message: "An error occurred while adding the song to favorites." };
+    console.error("Error following user:", error);
+    return { message: "An error occurred while following the artiste." };
   }
 };
