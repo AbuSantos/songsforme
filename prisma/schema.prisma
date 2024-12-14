@@ -58,8 +58,23 @@ model User {
   releases         Int?
   ArtisteAnalytics ArtisteAnalytics[]
 
+  //followers count
+  followers Follow[] @relation("ArtisteFollowers") // Users following this user
+  following Follow[] @relation("FanFollowing")
+
   @@index([userId])
   @@index([username])
+}
+
+model Follow {
+  id         String   @id @default(cuid())
+  followerId String
+  follower   User     @relation("FanFollowing", fields: [followerId], references: [userId]) // Fan following an artiste
+  followedId String
+  followed   User     @relation("ArtisteFollowers", fields: [followedId], references: [userId]) // Artiste being followed
+  followedAt DateTime @default(now()) // Timestamp of the follow
+
+  @@unique([followerId, followedId])
 }
 
 model NFTListeningTime {
@@ -251,7 +266,7 @@ model Activity {
 
 model ArtisteAnalytics {
   id            String @id @default(cuid())
-  userId        String
+  userId        String @unique
   artiste       User   @relation(fields: [userId], references: [userId])
   totalEarnings Float  @default(0)
   totalFans     Int    @default(0)

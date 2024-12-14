@@ -8,12 +8,12 @@ type ArtisteHeaderType = {
 }
 export const ArtisteHeader = ({ imageUri, bio, followers, name }: ArtisteHeaderType) => {
     return (
-        <div>
-            <Image src={imageUri} alt={name} width={150} height={150} />
+        <div className="flex items-start  space-x-2">
+            <Image src={imageUri} alt={name} width={200} height={200} />
             <div>
-                <p>{name}</p>
-                <small>{bio}</small>
-                <p>{followers}</p>
+                <p>{name} King Julien</p>
+                <small>{bio} Thisis a bio</small>
+                <p>{followers} 20</p>
             </div>
         </div>
     )
