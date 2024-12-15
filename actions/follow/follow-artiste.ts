@@ -1,7 +1,6 @@
 "use server";
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
-import { mutate } from "swr";
 
 export const followArtiste = async (
   userId: string | undefined,
@@ -45,8 +44,6 @@ export const followArtiste = async (
     });
 
     revalidateTag(`followed_${artisteId}`);
-    mutate(`followed_${artisteId}`);
-
     return {
       message: `You successfully followed ${followed.username}!`,
       status: 200,
