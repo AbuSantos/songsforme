@@ -19,6 +19,11 @@ export interface User {
   playlistId?: string | null;
   nftListeningTimes: NFTListeningTime[];
   playlist: Playlist[];
+  bio?: string;
+  profilePicture?: string;
+  bannerImage?: string;
+  releases?: number;
+  socialLinks?: string;
 }
 
 export interface NFTListeningTime {

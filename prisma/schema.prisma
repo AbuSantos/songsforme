@@ -59,7 +59,7 @@ model User {
   ArtisteAnalytics ArtisteAnalytics[]
 
   //followers count
-  followers Follow[] @relation("ArtisteFollowers") // Users following this user
+  followers Follow[] @relation("ArtisteFollowers") 
   following Follow[] @relation("FanFollowing")
 
   @@index([userId])

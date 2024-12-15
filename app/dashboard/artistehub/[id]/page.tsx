@@ -1,14 +1,31 @@
 import { ArtiseHub } from "@/components/artiste-hub/artiste-hub"
+import { db } from "@/lib/db"
+import { User } from "@/types"
+import { revalidateTag } from "next/cache"
 
-const Artiste = async ({ params }: { params: { id: string } }) => {
-    const userId = params.id
-    if (!userId) return
+const page = async ({ params }: { params: { id: string } }) => {
+    const artisteId = params.id
+    if (!artisteId) return
+    try {
+        const user = await db.user.findUnique({ where: { userId: artisteId } })
 
-    return (
-        <div className="px-1 py-6">
-            <ArtiseHub userId={userId} />
-        </div>
-    )
+        const followerCount = await db.follow.count({
+            where: {
+                followedId: artisteId
+            }
+        })
+
+        revalidateTag(`followed_${artisteId}`);
+        return (
+            <div className="px-1 py-6">
+                <ArtiseHub artisteId={artisteId} userData={user} count={followerCount} />
+            </div>
+        )
+    } catch (error) {
+        console.log(error)
+    }
+
+
 }
 
-export default Artiste
+export default page
