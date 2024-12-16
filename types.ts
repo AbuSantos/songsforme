@@ -177,3 +177,19 @@ interface Metadata {
   nftAddress?: string | undefined;
   message?: string;
 }
+
+export type ArtisteAnalytics = {
+  id: string; // Unique identifier
+  userId: string; // User ID for the artiste
+  totalEarnings: number; // Total earnings in Float
+  totalFans?: Record<string, any> | null; // JSON field for total fans (could be object, array, etc.)
+  totalTracks: number; // Count of total tracks
+  totalReleases?: Record<string, any> | null; // JSON field for total releases
+  totalStreams?: Record<string, any> | null; // JSON field for total streams (engagement metric)
+  totalLikes?: Record<string, any> | null; // JSON field for total likes (engagement metric)
+  earningsFromStreams?: number | null; // Earnings specifically from streams
+  earningsFromSales?: Record<string, any> | null; // JSON field for sales-related earnings
+  earningsFromRoyalties?: Record<string, any> | null; // JSON field for royalties earnings
+  createdAt: Date; // Timestamp: Created at
+  updatedAt: Date; // Timestamp: Last updated
+};

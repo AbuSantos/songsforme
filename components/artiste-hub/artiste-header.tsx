@@ -15,6 +15,7 @@ import {
 import { unFollowArtiste } from "@/actions/follow/unfollow-artiste";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/lib/utils";
+import { Separator } from "../ui/separator";
 
 type ArtisteHeaderType = {
     imageUri?: string;
@@ -69,8 +70,7 @@ export const ArtisteHeader = ({
     };
 
     return (
-        <div className="flex items-end space-x-4">
-            {/* Profile Picture */}
+        <div className="flex items-end space-x-2">
             <div className="h-48 w-48 rounded-full overflow-hidden bg-gray-200">
                 <Image
                     src={profilePic}
@@ -81,10 +81,9 @@ export const ArtisteHeader = ({
                 />
             </div>
 
-            {/* Artiste Details */}
             <div>
                 <h1 className="font-semibold text-xl">{name}</h1>
-                <small className="block text-gray-500">{bio}</small>
+                <small className="block text-gray-500">{bio} This is a bio</small>
                 <div className="flex items-center space-x-4 mt-2">
                     <p className="text-sm">{followers} followers</p>
                     <div>
@@ -112,6 +111,20 @@ export const ArtisteHeader = ({
                                 {isPending ? "Following..." : "Follow"}
                             </Button>
                         )}
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <div>
+                            <h1 className="text-xl font-semibold">Total Streams</h1>
+                            <p></p>
+                        </div>
+                        <Separator orientation="vertical" />
+
+                        <div>
+                            <h1 className="text-xl font-semibold">Total Earnings</h1>
+                            <p></p>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

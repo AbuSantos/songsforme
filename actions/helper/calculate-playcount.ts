@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { LastPlayEntry, ListedNFT, User } from "@/types";
+import { updateStream } from "../analytics/update-stream";
 
 type plays = {
   timestamp: string; // UNIX timestamp
@@ -21,7 +22,7 @@ export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
     // Otherwise, add a new entry for today
     recentPlays.push({ timestamp: now.toISOString(), count: 1 });
   }
-
+  await updateStream(nft?.Single?.owner);
   await db.listedNFT.update({
     where: { id: user.currentNftId as string },
     data: {

@@ -56,6 +56,11 @@ export const endListening = async (userId?: string, playlistId?: string) => {
         select: {
           rewardRatio: true,
           recentPlays: true,
+          Single: {
+            select: {
+              owner: true,
+            },
+          },
         },
       });
       console.log(`[DB Query] NFT fetch time: ${Date.now() - nftStartTime}ms`);

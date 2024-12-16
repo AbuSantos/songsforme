@@ -59,7 +59,7 @@ model User {
   ArtisteAnalytics ArtisteAnalytics[]
 
   //followers count
-  followers Follow[] @relation("ArtisteFollowers") 
+  followers Follow[] @relation("ArtisteFollowers")
   following Follow[] @relation("FanFollowing")
 
   @@index([userId])
@@ -265,13 +265,20 @@ model Activity {
 }
 
 model ArtisteAnalytics {
-  id            String @id @default(cuid())
-  userId        String @unique
-  artiste       User   @relation(fields: [userId], references: [userId])
-  totalEarnings Float  @default(0)
-  totalFans     Int    @default(0)
-  totalTracks   Int    @default(0)
-  totalReleases Int    @default(0)
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  artiste               User     @relation(fields: [userId], references: [userId])
+  totalEarnings         Float    @default(0)
+  totalFans             Json?
+  totalTracks           Int      @default(0)
+  totalReleases         Json?
+  totalStreams          Json? // Engagement metric: Total streams
+  totalLikes            Json? // Engagement metric: Total likes
+  earningsFromStreams   Float?
+  earningsFromSales     Json?
+  earningsFromRoyalties Float?
+  createdAt             DateTime @default(now()) // Timestamp: Created
+  updatedAt             DateTime @updatedAt // Timestamp: Last updated
 }
 
 model TrackAnalytics {
