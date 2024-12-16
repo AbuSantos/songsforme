@@ -3,52 +3,56 @@
 import { db } from "@/lib/db";
 import { ArtisteAnalytics } from "@/types";
 
-type PlayEntry = {
+type Plays = {
   timestamp: string; // ISO timestamp
   count: number;
-};
+}[];
 
-export const updateStream = async (artisteId: string | undefined) => {
+export const updateStream = async (artisteId: string) => {
   try {
     const now = new Date();
-    const today = now.toISOString().split("T")[0];
+    const today = now.toISOString().split("T")[0]; 
 
-    // Fetch the current analytics for the artiste
-    const streams: ArtisteAnalytics | null =
-      await db.artisteAnalytics.findUnique({
-        where: { userId: artisteId },
-        select: { totalStreams: true },
-      });
+    // Fetch the existing record for the user
+    const existingAnalytics = await db.artisteAnalytics.findUnique({
+      where: { userId: artisteId.toLowerCase() },
+    });
 
-    if (!streams) {
-      throw new Error("Artiste analytics not found.");
-    }
+    let updatedStreams: Plays = [];
 
-    const currentStreams = (streams.totalStreams || []) as PlayEntry[];
+    if (existingAnalytics?.totalStreams) {
+      // Parse the existing streams
+      const currentStreams = existingAnalytics.totalStreams as Plays;
 
-    // Find today's entry
-    let updatedStreams: PlayEntry[];
+      // Check if there's an entry for today
+      const todayEntry = currentStreams.find(
+        (entry) => entry.timestamp === today
+      );
 
-    const lastEntryIndex = currentStreams.findIndex(
-      (entry) => entry.timestamp.split("T")[0] === today
-    );
+      if (todayEntry) {
+        // Update today's entry
+        todayEntry.count += 1;
+      } else {
+        // Add a new entry for today
+        currentStreams.push({ timestamp: today, count: 1 });
+      }
 
-    if (lastEntryIndex !== -1) {
-      // Update the count for today's entry
-      currentStreams[lastEntryIndex].count += 1;
       updatedStreams = currentStreams;
     } else {
-      // Add a new entry for today
-      updatedStreams = [
-        ...currentStreams,
-        { timestamp: now.toISOString(), count: 1 },
-      ];
+      // If no streams exist, create the first entry
+      updatedStreams = [{ timestamp: today, count: 1 }];
     }
 
-    // Update the database
-    await db.artisteAnalytics.update({
-      where: { userId: artisteId },
-      data: { totalStreams: updatedStreams },
+    // Use upsert to update or create the analytics record
+    await db.artisteAnalytics.upsert({
+      where: { userId: artisteId.toLowerCase() },
+      update: {
+        totalStreams: updatedStreams,
+      },
+      create: {
+        userId: artisteId,
+        totalStreams: updatedStreams,
+      },
     });
 
     return { message: "Stream count updated successfully.", status: 200 };

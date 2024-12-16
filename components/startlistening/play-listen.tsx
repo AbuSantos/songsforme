@@ -21,6 +21,8 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [nftData, setNftData] = useState<any>()
 
+    console.log(nftId, "from playlisten")
+
     const formatIpfsUrl = (url: string) => {
         return url.replace("ipfs://", "https://ipfs.io/ipfs/");
     };
@@ -79,7 +81,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 await endListening(userId, playlistId);
                 localStorage.setItem("playtime", "pause")
 
-                setIsPlaying(false); 
+                setIsPlaying(false);
             } else {
                 try {
                     // End any active session first

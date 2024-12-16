@@ -26,6 +26,7 @@ export const endListening = async (userId?: string, playlistId?: string) => {
         listeningSessionStartTime: true,
       },
     });
+
     console.log(`[DB Query] User fetch time: ${Date.now() - userStartTime}ms`);
 
     if (!user) throw new Error("User not found.");

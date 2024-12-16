@@ -92,7 +92,7 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
                             <TogglingSell toggleBuySell={() => toggleBuySell(data.listedNftId)} isEnabled={isEnabled[data.listedNftId] || false} />
                         </div>
                         <div className="items-center space-x-2 flex ml-2">
-                            <Playlisten userId={userId} nftId={data.id} nftContractAddress={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} />
+                            <Playlisten userId={userId} nftId={data?.listedNftId} nftContractAddress={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} />
                         </div>
                     </div>
                 }

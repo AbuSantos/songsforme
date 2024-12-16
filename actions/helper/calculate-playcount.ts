@@ -11,6 +11,7 @@ export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
   const now = new Date();
   const recentPlays: plays = nft.recentPlays || [];
 
+
   // Check if the last entry in recentPlays is from today
   const lastPlayEntry = recentPlays[recentPlays.length - 1];
   const today = now.toISOString().slice(0, 10);

@@ -24,8 +24,6 @@ export const GET = async (
   // Extract the address query parameter from the URL
   const { id } = params;
 
-  console.log(id, "user Id from address");
-
   if (!id) {
     return NextResponse.json({ error: "Address is required" }, { status: 400 });
   }
