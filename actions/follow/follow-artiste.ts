@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
+import { updateFansCount } from "../analytics/update-fans-count";
 
 export const followArtiste = async (
   userId: string | undefined,
@@ -42,6 +43,7 @@ export const followArtiste = async (
         followed: { connect: { userId: artisteId } },
       },
     });
+    await updateFansCount(artisteId);
 
     revalidateTag(`followed_${artisteId}`);
     return {
