@@ -40,5 +40,22 @@ export const updateFansCount = async (artisteId: string) => {
     } else {
       updatedFollows = [{ timestamp: today, count: 1 }];
     }
-  } catch (error) {}
+
+    // Use upsert to update or create the analytics record
+    await db.artisteAnalytics.upsert({
+      where: { userId: artisteId.toLowerCase() },
+      update: {
+        totalFans: updatedFollows,
+      },
+      create: {
+        userId: artisteId,
+        totalFans: updatedFollows,
+      },
+    });
+
+    return { message: "Stream count updated successfully.", status: 200 };
+  } catch (error) {
+    console.error("Error updating stream count:", error);
+    return { message: error.message || "An error occurred.", status: 500 };
+  }
 };
