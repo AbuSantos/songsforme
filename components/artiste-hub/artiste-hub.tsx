@@ -6,17 +6,23 @@ import useSWR from 'swr';
 import { isConnected } from '@/atoms/session-atom';
 import { fetcher } from '@/lib/utils';
 import { User } from '@/types';
-export const ArtiseHub = ({ artisteId, userData, count }: { userId: string, userData: User, count: number, artisteId: string }) => {
+import { Separator } from '../ui/separator';
+import { ArtisteBody } from './artiste-body';
+
+export const ArtisteHub = ({ artisteId, userData, count, userId }: { userId: string, userData: User, count: number, artisteId: string }) => {
 
     // Fetch user analytics
-    // const { data: analytics, error, isLoading } = useSWR(
-    //     userId ? `/api/user/${userId}/analytics` : null,
-    //     fetcher
-    // );
+    const { data: analytics, error, isLoading } = useSWR(
+        artisteId ? `/api/user/${artisteId}/analytics` : null,
+        fetcher
+    );
+
 
     return (
         <div>
-            <ArtisteHeader name={userData?.username} followers={count} imageUri={userData?.bannerImage} bio={userData?.bio} artisteId={artisteId} />
+            <ArtisteHeader name={userData?.username} followers={count} imageUri={userData?.bannerImage} bio={userData?.bio} artisteId={artisteId} analytics={analytics} />
+            <Separator className='my-4' />
+            <ArtisteBody artisteId={artisteId} />
         </div>
     )
 }

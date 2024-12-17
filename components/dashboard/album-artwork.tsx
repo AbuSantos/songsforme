@@ -22,7 +22,7 @@ export function AlbumArtwork({
 
     return (
         <div className={cn("space-y-3", className)} {...props}>
-            <Link className="space-y-1" href={`dashboard/tracklist/${album.contractAddress}`}>
+            <Link className="space-y-1" href={`/dashboard/tracklist/${album.contractAddress}`}>
                 <div className="relative w-[190px] h-[120px] overflow-hidden rounded-md">
                     <Image
                         src={album.song_cover || `/images/playlisty.jpg`}

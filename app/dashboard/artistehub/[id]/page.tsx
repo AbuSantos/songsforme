@@ -1,4 +1,4 @@
-import { ArtiseHub } from "@/components/artiste-hub/artiste-hub"
+import { ArtisteHub } from "@/components/artiste-hub/artiste-hub"
 import { db } from "@/lib/db"
 import { User } from "@/types"
 import { revalidateTag } from "next/cache"
@@ -16,9 +16,10 @@ const page = async ({ params }: { params: { id: string } }) => {
         })
 
         revalidateTag(`followed_${artisteId}`);
+        
         return (
             <div className="px-1 py-6">
-                <ArtiseHub artisteId={artisteId} userData={user} count={followerCount} />
+                <ArtisteHub artisteId={artisteId} userData={user} count={followerCount} />
             </div>
         )
     } catch (error) {

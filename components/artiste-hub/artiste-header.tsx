@@ -16,6 +16,7 @@ import { unFollowArtiste } from "@/actions/follow/unfollow-artiste";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/lib/utils";
 import { Separator } from "../ui/separator";
+import { ArtisteAnalytics } from "@/types";
 
 type ArtisteHeaderType = {
     imageUri?: string;
@@ -24,6 +25,7 @@ type ArtisteHeaderType = {
     name: string;
     profilePic: string;
     artisteId: string;
+    analytics: ArtisteAnalytics
 };
 
 export const ArtisteHeader = ({
@@ -33,6 +35,7 @@ export const ArtisteHeader = ({
     name,
     profilePic = "/default-profile.png",
     artisteId,
+    analytics,
 }: ArtisteHeaderType) => {
     const [isPending, startTransition] = useTransition();
     const userId = useRecoilValue(isConnected)?.userId;
@@ -68,6 +71,11 @@ export const ArtisteHeader = ({
             }
         });
     };
+
+    const totalStreams = analytics?.totalStreams?.reduce((sum: { timestamp: string, count: number }, stream: { timestamp: string, count: number }) => {
+       //@ts-ignore
+        return sum + stream.count;
+    }, 0);
 
     return (
         <div className="flex items-end space-x-2">
@@ -112,20 +120,19 @@ export const ArtisteHeader = ({
                             </Button>
                         )}
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                        <div>
-                            <h1 className="text-xl font-semibold">Total Streams</h1>
-                            <p></p>
-                        </div>
-                        <Separator orientation="vertical" />
-
-                        <div>
-                            <h1 className="text-xl font-semibold">Total Earnings</h1>
-                            <p></p>
-                        </div>
-                        
+                </div>
+                <div className="flex  space-x-2">
+                    <div>
+                        <h1 className="text-xl font-semibold">Total Streams</h1>
+                        <p className="text-center">{totalStreams}</p>
                     </div>
+                    <Separator orientation="vertical" />
+
+                    <div >
+                        <h1 className="text-xl font-semibold">Total Earnings</h1>
+                        <p className="text-center">{analytics?.totalEarnings?.toFixed(3)} ETH</p>
+                    </div>
+
                 </div>
             </div>
         </div>

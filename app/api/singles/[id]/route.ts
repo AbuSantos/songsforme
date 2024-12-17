@@ -13,7 +13,7 @@ export const GET = async (
 ) => {
   const { id } = params;
 
-  console.log(id, "address from singles api");
+  console.log(id, "THIS IS FROM SINGLES API");
   // Check if user ID is provided
   if (!id) {
     return new Response(JSON.stringify({ message: "UserId is required" }), {
@@ -27,14 +27,23 @@ export const GET = async (
       where: {
         owner: id,
       },
+
       select: {
         id: true,
         artist_name: true,
+        song_name: true,
         song_cover: true,
-        album_name: true,
+        contractAddress: true,
+        genre: true,
+        listedNft: {
+          select: {
+            contractAddress: true,
+            tokenId: true,
+            id: true,
+          },
+        },
       },
     });
-
     // Return the fetched playlists as a JSON response
     return new Response(JSON.stringify(singles), {
       status: 200,
