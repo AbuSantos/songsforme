@@ -62,6 +62,7 @@ export const relistSong = async (
         sold: false,
         isSaleEnabled: false,
         accumulatedTime: 0,
+        isRelisted: true,
       },
       create: {
         seller,
@@ -71,6 +72,7 @@ export const relistSong = async (
         listedAt: new Date(),
         sold: false,
         isSaleEnabled: false,
+        isRelisted: true,
       },
     });
 
@@ -87,6 +89,7 @@ export const relistSong = async (
       data: { status: "PENDING" },
     });
 
+    revalidateTag("bought");
     revalidateTag("nft");
 
     return { message: "NFT relisted successfully." };

@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 import { logActivity } from "./loggin-activity";
+import { updateEarnings } from "./analytics/update-earnings";
 
 export const buyNFT = async (
   buyer: string,
@@ -25,6 +26,7 @@ export const buyNFT = async (
         price: true,
         contractAddress: true,
         seller: true,
+        singleId: true,
       },
     });
 
@@ -67,6 +69,7 @@ export const buyNFT = async (
         },
       }),
     ]);
+    await updateEarnings(listedNFT?.singleId,listedNftId);
 
     try {
       await logActivity(buyer, "NFT_SOLD", listedNFT.tokenId, {
