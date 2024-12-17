@@ -15,6 +15,7 @@
  */
 import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
+import { updateReleaseCount } from "./analytics/update-releases";
 
 type SuccessResult = {
   tokenId: string;
@@ -99,6 +100,7 @@ export const createSingleWithNFTs = async (
           singleId: newSingle.id,
           nftId: nftRecord.id,
         });
+        await updateReleaseCount(userId);
       } catch (tokenError: any) {
         // Log token creation errors
         console.error(`Error creating NFT for token ${tokenId}:`, tokenError);

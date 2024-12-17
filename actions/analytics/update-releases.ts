@@ -1,61 +1,68 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { count, timeStamp } from "console";
-type FollowerCount = {
-  timestamp: string; // ISO timestamp
+
+type ReleaseCount = {
+  timestamp: string; // ISO date (YYYY-MM-DD)
   count: number;
 }[];
-export const updateFansCount = async (artisteId: string) => {
+
+export const updateReleaseCount = async (artisteId: string) => {
   try {
     const now = new Date();
-    const today = now.toISOString().split("T")[0];
+    const today = now.toISOString().split("T")[0]; // Format: YYYY-MM-DD
 
     // Fetch the existing record for the user
     const existingAnalytics = await db.artisteAnalytics.findUnique({
       where: { userId: artisteId.toLowerCase() },
       select: {
-        totalFans: true,
+        totalReleases: true,
+        totalTracks: true,
       },
     });
 
-    let updatedFollows: FollowerCount = [];
+    // Prepare updated release count
+    let updatedReleases: ReleaseCount = [];
 
-    if (existingAnalytics?.totalFans) {
-      const currentFollowerCount =
-        existingAnalytics?.totalFans as FollowerCount;
+    if (existingAnalytics?.totalReleases) {
+      // Parse existing totalReleases
+      const currentReleaseCount = existingAnalytics.totalReleases as ReleaseCount;
 
-      const todayEntry = currentFollowerCount.find(
+      const todayEntry = currentReleaseCount.find(
         (entry) => entry.timestamp === today
       );
 
       if (todayEntry) {
-        // Update today's entry
+        // Increment today's count
         todayEntry.count += 1;
       } else {
-        currentFollowerCount.push({ timestamp: now.toISOString(), count: 1 });
+        // Add a new entry for today
+        currentReleaseCount.push({ timestamp: today, count: 1 });
       }
 
-      updatedFollows = currentFollowerCount;
+      updatedReleases = currentReleaseCount;
     } else {
-      updatedFollows = [{ timestamp: today, count: 1 }];
+      // Initialize the releases with today's count
+      updatedReleases = [{ timestamp: today, count: 1 }];
     }
 
     // Use upsert to update or create the analytics record
     await db.artisteAnalytics.upsert({
       where: { userId: artisteId.toLowerCase() },
       update: {
-        totalFans: updatedFollows,
+        totalReleases: updatedReleases,
+        totalTracks: { increment: 1 }, // Increment total tracks by 1
       },
       create: {
-        userId: artisteId,
-        totalFans: updatedFollows,
+        userId: artisteId.toLowerCase(),
+        totalReleases: updatedReleases,
+        totalTracks: 1,
       },
     });
 
-    return { message: "Stream count updated successfully.", status: 200 };
+    return { message: "Release count updated successfully.", status: 200 };
   } catch (error: any) {
-    console.error("Error updating stream count:", error);
+    console.error("Error updating release count:", error);
     return { message: error.message || "An error occurred.", status: 500 };
   }
 };
