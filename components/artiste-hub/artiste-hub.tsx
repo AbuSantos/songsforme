@@ -9,7 +9,13 @@ import { User } from '@/types';
 import { Separator } from '../ui/separator';
 import { ArtisteBody } from './artiste-body';
 
-export const ArtisteHub = ({ artisteId, userData, count, userId }: { userId: string, userData: User, count: number, artisteId: string }) => {
+interface ArtisteGraph {
+    userId: string,
+    userData: Partial<User>,
+    count: number,
+    artisteId: string
+}
+export const ArtisteHub = ({ artisteId, userData, count, userId }: ArtisteGraph) => {
 
     // Fetch user analytics
     const { data: analytics, error, isLoading } = useSWR(

@@ -351,6 +351,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </p>
                                 </div>
                                 <Separator className="my-4 " />
+
+                                {/* @ts-ignore */}
                                 <ArtisteHub />
                             </TabsContent>
 
