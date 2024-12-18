@@ -2,20 +2,34 @@
 
 import { db } from "@/lib/db";
 
-export const updateUserImage = async (imageUri: string, userId: string) => {
+interface UpdateUserResponse {
+  message: string;
+  success?: boolean;
+}
+
+export const updateUserImage = async (
+  imageUri: string,
+  userId: string
+): Promise<UpdateUserResponse> => {
+  // Validate inputs
   if (!userId || !imageUri) {
-    return { message: "invalid Details" };
+    return { message: "Invalid details provided" };
   }
+
   try {
+    // Check if the user exists
     const user = await db.user.findUnique({
       where: {
         userId,
       },
     });
+
     if (!user) {
-      return { message: "user not found" };
+      return { message: "User not found" };
     }
-    const updateUserImage = await db.user.update({
+
+    // Update user profile picture
+    await db.user.update({
       where: {
         userId,
       },
@@ -23,8 +37,11 @@ export const updateUserImage = async (imageUri: string, userId: string) => {
         profilePicture: imageUri,
       },
     });
+
+    // Success response
+    return { message: "Profile picture updated successfully", success: true };
   } catch (error: any) {
-    console.log(error.message);
-    return { message: `${error.message}` };
+    console.error("Error updating user:", error); // For developers
+    return { message: "An error occurred while updating the profile picture" }; // For end-users
   }
 };

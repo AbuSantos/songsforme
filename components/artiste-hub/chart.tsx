@@ -24,9 +24,6 @@ interface StreamGraphProps {
 }
 
 export const ArtisteChart = ({ streams, label }: StreamGraphProps) => {
-    if (streams?.length === 0) {
-        return <p>No data available for {label}.</p>;
-    }
 
     const labels = useMemo(
         () => streams?.map((stream) => format(new Date(stream.timestamp), "MMM d")),
