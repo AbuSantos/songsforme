@@ -55,9 +55,9 @@ export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId, pr
             </PopoverTrigger>
             <PopoverContent className="w-80 flex flex-col items-center justify-center">
 
-                <p className="p-3 text-[#E54D2E] text-center">You're about to cancel This song from listing?</p>
+                <p className="p-3 text-[#E54D2E] text-center">You&apos;re about to cancel This song from listing?</p>
 
-                {/* <TransactionButton
+                <TransactionButton
                     transaction={() => {
                         // Create a transaction object and return it
                         const tx = prepareContractCall({
@@ -82,11 +82,11 @@ export const CancelListing = ({ address, tokenId, nftId, userId, nftBoughtId, pr
                     }}
                 >
                     Confirm Cancel Listing
-                </TransactionButton> */}
+                </TransactionButton>
 
-                <button onClick={handleCancel} className="bg-gray-300">
+                {/* <button onClick={handleCancel} className="bg-gray-300">
                     confirm cancel
-                </button>
+                </button> */}
             </PopoverContent>
         </Popover>
     );
