@@ -17,12 +17,11 @@ export const ArtisteHub = ({ artisteId, userData, count, userId }: { userId: str
         fetcher
     );
 
-
     return (
         <div>
             <ArtisteHeader name={userData?.username} followers={count} imageUri={userData?.bannerImage} bio={userData?.bio} artisteId={artisteId} analytics={analytics} />
             <Separator className='my-4' />
-            <ArtisteBody artisteId={artisteId} />
+            <ArtisteBody artisteId={artisteId} analytics={analytics} />
         </div>
     )
 }

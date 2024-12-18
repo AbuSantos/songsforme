@@ -37,7 +37,7 @@ import { SingleGenre } from "@/components/singles-genre/single-genre"
 import { getAddressOrName, getTimeThreshold } from "@/lib/utils"
 import { Prisma } from "@prisma/client"
 import NotificationFeed from "@/components/knock/notification-feed"
-import { ArtiseHub } from "@/components/artiste-hub/artiste-hub"
+import { ArtisteHub } from "@/components/artiste-hub/artiste-hub"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -351,7 +351,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </p>
                                 </div>
                                 <Separator className="my-4 " />
-                                <ArtiseHub />
+                                <ArtisteHub />
                             </TabsContent>
 
                             <div className="mt-auto w-full fixed bottom-0  md:hidden h-20">

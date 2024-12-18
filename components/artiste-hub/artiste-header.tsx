@@ -22,8 +22,8 @@ type ArtisteHeaderType = {
     imageUri?: string;
     bio?: string;
     followers: number;
-    name: string;
-    profilePic: string;
+    name: string | undefined | null;
+    profilePic?: string;
     artisteId: string;
     analytics: ArtisteAnalytics
 };
@@ -73,7 +73,7 @@ export const ArtisteHeader = ({
     };
 
     const totalStreams = analytics?.totalStreams?.reduce((sum: { timestamp: string, count: number }, stream: { timestamp: string, count: number }) => {
-       //@ts-ignore
+        //@ts-ignore
         return sum + stream.count;
     }, 0);
 
@@ -82,7 +82,7 @@ export const ArtisteHeader = ({
             <div className="h-48 w-48 rounded-full overflow-hidden bg-gray-200">
                 <Image
                     src={profilePic}
-                    alt={name}
+                    alt={name || ""}
                     width={200}
                     height={200}
                     className="object-cover"
