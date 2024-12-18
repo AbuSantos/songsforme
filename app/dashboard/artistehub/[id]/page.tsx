@@ -18,7 +18,7 @@ const page = async ({ params }: { params: { id: string } }) => {
         revalidateTag(`followed_${artisteId}`);
 
         return (
-            <div className="px-1 py-6">
+            <div className="px-1 ">
                 {/* @ts-ignore */}
                 <ArtisteHub artisteId={artisteId} userData={user} count={followerCount} />
             </div>

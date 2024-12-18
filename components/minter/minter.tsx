@@ -189,10 +189,9 @@ export const Minter = () => {
     }
 
     return (
-        <div className="py-9">
+        <div >
             {/* NFT Metadata Section */}
             <section>
-                <header className="text-lg font-semibold mb-4">NFT Metadata</header>
                 <div className="flex space-x-2 ">
                     {/* Image Upload Section */}
                     <div

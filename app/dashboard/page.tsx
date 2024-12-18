@@ -152,7 +152,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         </TabsTrigger>
 
                                         <TabsTrigger value="chart">Chart</TabsTrigger>
-                                        <TabsTrigger value="minter">Minter</TabsTrigger>
                                         <TabsTrigger value="mynft">
                                             Mine
                                         </TabsTrigger>
@@ -311,31 +310,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </Suspense>
                                 </div>
                             </TabsContent>
-                            <TabsContent
-                                value="minter"
-                                className="border-none pt-[58px] outline-none px-2 "
-                            >
-                                <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
-                                    <div className="space-y-1">
-                                        <h2 className="text-xl md:text-2xl font-semibold tracking-tight py-3">
-                                            MINTER
-                                        </h2>
-                                        <p className="text-sm text-muted-foreground">
-                                            All Minted NFTS will be listed on the MarketPlace
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <Separator className="my-4 " />
-                                    </div>
-                                </div>
-
-                                <div className="w-full pt-16 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
-                                    <Suspense fallback={<MarketSkeleton />}>
-                                        <Minter />
-                                    </Suspense>
-                                </div>
-
-                            </TabsContent>
+                           
                             <TabsContent
                                 value="artiste_hub"
                                 className="border-none p-0 md:pt-24 pt-2 outline-none"

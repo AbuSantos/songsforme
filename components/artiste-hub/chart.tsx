@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Bar } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -8,8 +8,9 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
+import { format } from "date-fns";
+import { useMemo } from "react";
 
-// Register Chart.js components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 type StreamData = {
@@ -19,15 +20,19 @@ type StreamData = {
 
 interface StreamGraphProps {
     streams: StreamData[];
-    label: string
+    label: string;
 }
 
-
 export const ArtisteChart = ({ streams, label }: StreamGraphProps) => {
-    // Transform the data
-    const labels = streams?.map((stream) => stream.timestamp)
-    const counts = streams?.map((stream) => stream.count)
+    if (streams?.length === 0) {
+        return <p>No data available for {label}.</p>;
+    }
 
+    const labels = useMemo(
+        () => streams?.map((stream) => format(new Date(stream.timestamp), "MMM d")),
+        [streams]
+    );
+    const counts = useMemo(() => streams?.map((stream) => stream.count), [streams]);
 
     const data = {
         labels,
@@ -38,15 +43,23 @@ export const ArtisteChart = ({ streams, label }: StreamGraphProps) => {
                 backgroundColor: "#8E4EC6",
                 borderColor: "#8E4EC6",
                 borderWidth: 1,
-            }
-        ]
-    }
+            },
+        ],
+    };
+
     const options = {
         responsive: true,
         plugins: {
             legend: {
                 display: true,
                 position: "top" as const,
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context: any) {
+                        return `${context.dataset.label}: ${context.raw}`;
+                    },
+                },
             },
         },
         scales: {
@@ -58,8 +71,7 @@ export const ArtisteChart = ({ streams, label }: StreamGraphProps) => {
 
     return (
         <div>
-            <small>{label} per day</small>
             <Bar data={data} options={options} />
         </div>
     );
-}
+};
