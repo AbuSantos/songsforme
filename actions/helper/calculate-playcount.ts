@@ -11,7 +11,6 @@ export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
   const now = new Date();
   const recentPlays: plays = nft.recentPlays || [];
 
-
   // Check if the last entry in recentPlays is from today
   const lastPlayEntry = recentPlays[recentPlays.length - 1];
   const today = now.toISOString().slice(0, 10);
@@ -23,6 +22,7 @@ export const calculateRecentPlays = async (user: User, nft: ListedNFT) => {
     // Otherwise, add a new entry for today
     recentPlays.push({ timestamp: now.toISOString(), count: 1 });
   }
+  //@ts-ignore
   await updateStream(nft?.Single?.owner);
   await db.listedNFT.update({
     where: { id: user.currentNftId as string },
