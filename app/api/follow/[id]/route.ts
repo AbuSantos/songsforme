@@ -6,21 +6,21 @@ type ParamProp = {
   id: string;
 };
 
-// Function to handle GET request to fetch following for a given user
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
-
-  // Parse query parameters
   const url = new URL(request.url);
   const artisteId = url.searchParams.get("artisteId");
 
   console.log(id, artisteId, "from route");
 
   if (!id || !artisteId) {
-    return { message: "Please connect your wallet!", status: 400 };
+    return NextResponse.json(
+      { message: "Please connect your wallet!" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -36,22 +36,16 @@ export async function GET(
     if (existingFollow) {
       return NextResponse.json({
         isFollowing: true,
-        message: `You are following ${artisteId}.`,
-        status: 200,
       });
     }
 
     return NextResponse.json({
       isFollowing: false,
-      message: `You are not following ${artisteId}.`,
-      status: 200,
     });
   } catch (error) {
-    console.error("Error checking follow status:", error);
-
-    return NextResponse.json({
-      message: "An error occurred while checking follow status.",
-      status: 500,
-    });
+    return NextResponse.json(
+      { message: "Error checking follow status" },
+      { status: 500 }
+    );
   }
 }
