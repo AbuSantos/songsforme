@@ -38,6 +38,7 @@ import { getAddressOrName, getTimeThreshold } from "@/lib/utils"
 import { Prisma } from "@prisma/client"
 import NotificationFeed from "@/components/knock/notification-feed"
 import { ArtisteHub } from "@/components/artiste-hub/artiste-hub"
+import { MyArtisteHub } from "@/components/artiste-hub/my-artiste-hub"
 
 const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
     suspense: true,
@@ -328,7 +329,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 <Separator className="my-4 " />
 
                                 {/* @ts-ignore */}
-                                <ArtisteHub />
+                                <MyArtisteHub />
                             </TabsContent>
 
                             <div className="mt-auto w-full fixed bottom-0  md:hidden h-20">

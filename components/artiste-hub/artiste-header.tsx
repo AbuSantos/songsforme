@@ -149,32 +149,37 @@ export const ArtisteHeader = ({
                     <small className="block text-gray-500">{bio} This is a bio</small>
                     <div className="flex items-center space-x-4 mt-2">
                         <p className="text-sm">{followers} followers</p>
-                        <div>
-                            {isLoading ? (
-                                <p>Loading...</p>
-                            ) : data?.isFollowing ? (
-                                <Popover>
-                                    <PopoverTrigger>Following</PopoverTrigger>
-                                    <PopoverContent>
+                        {
+                            userId && <div>
+                                {
+                                    isLoading ? (
+                                        <p>Loading...</p>
+                                    ) : data?.isFollowing ? (
+                                        <Popover>
+                                            <PopoverTrigger>Following</PopoverTrigger>
+                                            <PopoverContent>
+                                                <Button
+                                                    onClick={() => handleFollowAction("unfollow")}
+                                                    disabled={isPending}
+                                                    className="w-full"
+                                                    variant="destructive"
+                                                >
+                                                    {isPending ? "Unfollowing..." : "Unfollow"}
+                                                </Button>
+                                            </PopoverContent>
+                                        </Popover>
+                                    ) : (
                                         <Button
-                                            onClick={() => handleFollowAction("unfollow")}
+                                            onClick={() => handleFollowAction("follow")}
                                             disabled={isPending}
-                                            className="w-full"
-                                            variant="destructive"
                                         >
-                                            {isPending ? "Unfollowing..." : "Unfollow"}
+                                            {isPending ? "Following..." : "Follow"}
                                         </Button>
-                                    </PopoverContent>
-                                </Popover>
-                            ) : (
-                                <Button
-                                    onClick={() => handleFollowAction("follow")}
-                                    disabled={isPending}
-                                >
-                                    {isPending ? "Following..." : "Follow"}
-                                </Button>
-                            )}
-                        </div>
+                                    )
+                                }
+                            </div>
+                        }
+
                     </div>
 
                 </div>

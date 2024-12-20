@@ -23,8 +23,12 @@ const page = async ({ params }: { params: { id: string } }) => {
                 <ArtisteHub artisteId={artisteId} userData={user} count={followerCount} />
             </div>
         )
-    } catch (error) {
-        console.log(error)
+    } catch (error: any) {
+        const isError = error.message.includes("database server") ? <p className="text-center text-red-600">Network Error, please check your internet connection</p> :
+            <p>Please referesh</p>
+        return <div className="p-6">
+            {isError}
+        </div>
     }
 
 
