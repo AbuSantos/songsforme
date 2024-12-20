@@ -20,6 +20,8 @@ export function AlbumArtwork({
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
     const [openTrack, setOpenTrack] = React.useState<boolean>(false);
 
+    console.log(album, "from album")
+
     return (
         <div className={cn("space-y-3", className)} {...props}>
             <Link className="space-y-1" href={`/dashboard/tracklist/${album.contractAddress}`}>
@@ -37,10 +39,12 @@ export function AlbumArtwork({
                 <p className="text-[1rem] capitalize text-slate-500">
                     {album.song_name}
                 </p>
-                <small className="text-[#B4B4B4] tracking-tight leading-tight capitalize">
-                    {album.artist_name}
-                </small>
             </Link>
+            <small className="text-[#B4B4B4]  tracking-tight leading-tight capitalize">
+                <Link className="space-y-1 hover:text-[#8E4EC6]" href={`/dashboard/artistehub/${album?.owner}`}>
+                    {album.artist_name}
+                </Link>
+            </small>
         </div>
     );
 }

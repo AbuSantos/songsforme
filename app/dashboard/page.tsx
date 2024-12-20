@@ -86,6 +86,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 song_cover: true,
                 contractAddress: true,
                 genre: true,
+                owner: true,
                 listedNft: {
                     select: {
                         contractAddress: true,
@@ -311,7 +312,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </Suspense>
                                 </div>
                             </TabsContent>
-                           
+
                             <TabsContent
                                 value="artiste_hub"
                                 className="border-none p-0 md:pt-24 pt-2 outline-none"
