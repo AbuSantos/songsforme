@@ -26,6 +26,7 @@ export const Actions = ({ songName, mode, seller, nftAddress, tokenId, price, nf
   const userId = useRecoilValue(isConnected)?.userId;
   const username = useRecoilValue(isConnected)?.username;
   const songUrl = typeof window !== "undefined" ? window.location.href : ""
+  
   if (!userId) {
     return
   }

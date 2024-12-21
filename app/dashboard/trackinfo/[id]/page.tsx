@@ -32,8 +32,6 @@ const page = async ({ params }: { params: { id: string } }) => {
             }
 
         })
-        console.log(track)
-
         revalidateTag("track")
         if (!track) return
 

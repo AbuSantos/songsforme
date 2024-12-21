@@ -26,7 +26,13 @@ export const GET = async (
     const playlists = await db.playlist.findMany({
       where: { userId: id as string },
       include: {
-        listednft: true, // Include associated NFTs in the response
+        listednft: true,
+        owner: {
+          select: {
+            userId: true,
+            username: true,
+          },
+        },
       },
     });
     revalidateTag("playlist");
