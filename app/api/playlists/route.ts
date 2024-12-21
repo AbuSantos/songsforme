@@ -41,6 +41,12 @@ export const GET = async (req: NextRequest) => {
             id: true,
           },
         },
+        owner: {
+          select: {
+            userId: true,
+            username: true,
+          },
+        },
       },
       ...(orderBy ? { orderBy } : {}),
       take: ITEM_PER_PAGE,

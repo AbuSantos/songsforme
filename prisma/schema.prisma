@@ -59,8 +59,9 @@ model User {
   ArtisteAnalytics ArtisteAnalytics[]
 
   //followers count
-  followers Follow[] @relation("ArtisteFollowers")
-  following Follow[] @relation("FanFollowing")
+  followers Follow[]  @relation("ArtisteFollowers")
+  following Follow[]  @relation("FanFollowing")
+  Comments  Comments?
 
   @@index([userId])
   @@index([username])
@@ -136,6 +137,7 @@ model ListedNFT {
   favorites            Favorites[]
   Bid                  Bid[]
   TrackAnalytics       TrackAnalytics[]
+  Comments             Comments[]
 
   @@unique([tokenId, contractAddress])
   @@index([id])
@@ -288,4 +290,15 @@ model TrackAnalytics {
   streams         Int       @default(0)
   likes           Int       @default(0)
   uniqueListeners Int       @default(0)
+}
+
+model Comments {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [userId])
+  comment   String
+  trackId   String
+  track     ListedNFT @relation(fields: [trackId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }

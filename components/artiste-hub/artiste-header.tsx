@@ -165,7 +165,7 @@ export const ArtisteHeader = ({
                                                     variant="destructive"
                                                 >
                                                     {isPending ? "Unfollowing..." : "Unfollow"}
-                                                </Button>
+                                              </Button>
                                             </PopoverContent>
                                         </Popover>
                                     ) : (

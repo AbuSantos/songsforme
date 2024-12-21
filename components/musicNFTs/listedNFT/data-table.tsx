@@ -135,6 +135,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                             <div className="items-start hidden md:flex space-x-2 ">
                                 <SelectPlaylist userId={userId} nftId={track.id} />
                                 <Favorite nftId={track?.id} userId={userId} />
+                                
                             </div>
                         </div>
                     </div>

@@ -51,7 +51,6 @@ const buildQueryFilters = (filter: string | undefined) => {
 const MarketPlace = async ({ filter }: MarketPlaceProps) => {
     const { whereFilters, orderBy } = buildQueryFilters(filter);
 
-    console.log(filter, "from market")
 
     const listedNFTs = await db.listedNFT.findMany({
         where: {
