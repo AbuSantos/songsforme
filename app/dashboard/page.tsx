@@ -248,7 +248,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     <div className="w-full pt-20 md:pt-[2rem] pb-10 overflow-y-auto scroll-smooth scrollbar-none">
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 md:pb-4 pb-14">
-                                                < MarketPlace filter={filter} />
+                                                < MarketPlace />
+                                                {/* < MarketPlace filter={filter} /> */}
                                             </div>
                                         </Suspense>
                                     </div>
@@ -272,7 +273,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                             <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
                                                 All Playlist
                                             </h2>
-                                            <p className="text-sm text-muted-foreground">
+                                            <p className="text-sm text-muted-foreground hidden md:block">
                                                 Top picks for you. Updated daily.
                                             </p>
                                         </div>

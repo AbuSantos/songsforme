@@ -14,7 +14,8 @@ export const AllPlaylist = () => {
     const searchParams = useSearchParams();
     const userId = useRecoilValue(isConnected)?.userId;
 
-    // Retrieve filters from the search params
+    try {
+           // Retrieve filters from the search params
     const filter = searchParams.get("filter");
 
     const apiUrl = `/api/playlists?${new URLSearchParams({
@@ -24,6 +25,7 @@ export const AllPlaylist = () => {
     const { data: playlists, error, isLoading } = useSWR(apiUrl, fetcher);
 
     if (error) return <div>Failed to load playlists</div>;
+
 
 
     if (isLoading) {
@@ -48,7 +50,7 @@ export const AllPlaylist = () => {
             </div>
 
             <div className="hidden md:flex flex-wrap space-x-2 pb-4 mt-4">
-                {playlists && playlists.map((playlist: Playlist) => (
+                {playlists && playlists?.map((playlist: Playlist) => (
                     <TrendingPlaylist
                         album={playlist}
                         key={playlist.id}
@@ -59,6 +61,12 @@ export const AllPlaylist = () => {
         </div>
     );
 
+    } catch (error:any) {
+        console.log(error.message);
+        
+    }
+
+ 
 
 
 };

@@ -12,6 +12,9 @@ type SearchProps = {
 
 export const Search = ({ placeholder, classname }: SearchProps): JSX.Element => {
     const searchParams = useSearchParams()
+
+    console.log(searchParams)
+    
     const pathname = usePathname()
     const { replace } = useRouter()
 

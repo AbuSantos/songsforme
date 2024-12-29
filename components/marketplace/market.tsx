@@ -1,103 +1,42 @@
-"use server"
-import { db } from "@/lib/db";
-import { revalidateTag } from "next/cache";
-// import Tracktable from "../musicNFTs/listedNFT/data-table";
-import { Skeleton } from "../ui/skeleton";
+"use client";
+
+import { Suspense } from "react";
+import useSWR from "swr";
+import { useSearchParams } from "next/navigation";
+import { fetcher } from "@/lib/utils";
 import { MarketSkeleton } from "./marketplace-skeleton";
 import { Tracktable } from "../musicNFTs/listedNFT/data-table";
-import { Suspense } from "react";
-import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
-import { Prisma } from "@prisma/client";
 
-// export const revalidate = 60; // Revalidate every 60 seconds as a fallback
-type MarketPlaceProps = {
-    filter?: string
-}
-// Helper: Build query filters dynamically
-const buildQueryFilters = (filter: string | undefined) => {
-    const threshHold = getTimeThreshold(filter || "");
-    const song_Name = filter?.trim();
-    const { address } = getAddressOrName(filter || "");
+const MarketPlace = () => {
+    const searchParams = useSearchParams();
+    const filter = searchParams?.get("filter");
+    const apiUrl = `/api/listednft?filter=${filter || ""}`;
+    try {
+        const { data, error, isLoading } = useSWR(apiUrl, fetcher, {
+            shouldRetryOnError: true,
+            errorRetryCount: 3,
+        });
 
-    const whereFilters = {
-        sold: false,
-        ...(filter && filter !== "ratio" && song_Name ? {
-            Single: {
-                is: {
-                    song_name: {
-                        contains: song_Name,
-                        mode: Prisma.QueryMode.insensitive,
-                    },
-                },
-            }
-        } : {}),
-        ...(threshHold && { listedAt: { gte: threshHold } }),
-        ...(address && { contractAddress: address }),
-    };
+        if (error) {
+            return <p className="mt-8">Failed to load marketplace data. Please try again later.</p>;
+        }
 
-    const orderBy =
-        filter === "ratio"
-            ? { rewardRatio: "desc" as const }
-            : filter === "playtime"
-                ? { totalAccumulatedTime: "asc" as const }
-                : undefined;
+        if (isLoading) {
+            return <p className="mt-8">loading...</p>;
+        }
 
-    return { whereFilters, orderBy };
-};
-
-
-
-const MarketPlace = async ({ filter }: MarketPlaceProps) => {
-    const { whereFilters, orderBy } = buildQueryFilters(filter);
-
-
-    const listedNFTs = await db.listedNFT.findMany({
-        where: {
-            ...whereFilters,
-        },
-        select: {
-            id: true,
-            tokenId: true,
-            listedAt: true,
-            seller: true,
-            price: true,
-            contractAddress: true,
-            accumulatedTime: true,
-            totalAccumulatedTime: true,
-            rewardRatio: true,
-            isSaleEnabled: true,
-            Single: {
-                select: {
-                    song_cover: true,
-                    artist_name: true,
-                    song_name: true
-                }
-            }
-        },
-        ...(orderBy ? { orderBy } : {})
-
-    });
-
-    // console.log(listedNFTs)
-    revalidateTag("bought")
-    revalidateTag("nft")
-
-
-    if (!listedNFTs.length) {
-        return <p className="mt-8"> There&apos;s currently no NFT Listed on the MARKETPLACE</p>;
+        return (
+            <Suspense fallback={<MarketSkeleton />}>
+                <div className="w-full">
+                    <Tracktable data={data} />
+                </div>
+            </Suspense>
+        );
+    } catch (error: any) {
+        console.log(error.message)
     }
 
 
-    return (
-        < Suspense fallback={<MarketSkeleton />}>
-            <div className="w-full">
-                {/* @ts-ignore */}
-                <Tracktable data={listedNFTs} />
-            </div>
-        </Suspense>
-
-    );
 };
 
 export default MarketPlace;

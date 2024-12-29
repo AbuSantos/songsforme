@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
 type ParamProp = {
@@ -14,6 +16,41 @@ export const GET = async (req: NextRequest) => {
   const page: number = (url.get("page") as unknown as number) || 1;
 
   const searchQuery = url.get("filter");
+
+  console.log(searchQuery, "query from search");
+
+  const buildQueryFilters = (filter: string | undefined) => {
+    const threshHold = getTimeThreshold(filter || "");
+    const song_Name = filter?.trim();
+    const { address } = getAddressOrName(filter || "");
+
+    const whereFilters = {
+      sold: false,
+      ...(filter && filter !== "ratio" && song_Name
+        ? {
+            Single: {
+              is: {
+                song_name: {
+                  contains: song_Name,
+                  mode: Prisma.QueryMode.insensitive,
+                },
+              },
+            },
+          }
+        : {}),
+      ...(threshHold && { listedAt: { gte: threshHold } }),
+      ...(address && { contractAddress: address }),
+    };
+
+    const orderBy =
+      filter === "ratio"
+        ? { rewardRatio: "desc" as const }
+        : filter === "playtime"
+        ? { totalAccumulatedTime: "asc" as const }
+        : undefined;
+
+    return { whereFilters, orderBy };
+  };
 
   // Determine ordering based on query parameters
   const orderBy =
@@ -34,19 +71,29 @@ export const GET = async (req: NextRequest) => {
       select: {
         id: true,
         tokenId: true,
+        listedAt: true,
         seller: true,
         price: true,
         contractAddress: true,
-        uri: true,
         accumulatedTime: true,
+        totalAccumulatedTime: true,
         rewardRatio: true,
-        sold: true,
+        isSaleEnabled: true,
+        Single: {
+          select: {
+            song_cover: true,
+            artist_name: true,
+            song_name: true,
+          },
+        },
       },
 
       ...(orderBy ? { orderBy } : {}),
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (page - 1),
     });
+    revalidateTag("bought");
+    revalidateTag("nft");
 
     // Return the fetched playlists as a JSON response
     return new Response(JSON.stringify(listedData), {
