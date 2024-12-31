@@ -161,7 +161,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                             Artiste Hub
                                         </TabsTrigger>
                                     </div>
-
                                 </TabsList>
 
                                 <div className=" space-x-2 md:flex hidden z-20">
