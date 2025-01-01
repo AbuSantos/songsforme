@@ -1,9 +1,12 @@
 "use server"
 
+import { MarketSkeleton } from "@/components/marketplace/marketplace-skeleton";
+import Tracktable from "@/components/musicNFTs/listedNFT/data-table";
 import { db } from "@/lib/db";
 import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { Suspense } from "react";
 
 type ParamProp = {
     id: string;
@@ -100,9 +103,11 @@ const MarketPlace = async ({ searchParams }: { searchParams: { query?: string, p
 
 
         return (
-            <div>
-                hh
-            </div>
+            <Suspense fallback={<MarketSkeleton />}>
+                <div className="w-full">
+                    <Tracktable data={listedData} />
+                </div>
+            </Suspense>
         )
 
 
