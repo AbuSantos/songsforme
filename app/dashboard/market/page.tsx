@@ -1,7 +1,10 @@
 "use server"
 
+import { Search } from "@/components/dashboard/search/search-songs";
+import { FilterByTime } from "@/components/marketplace/filter/filter-by-time";
 import { MarketSkeleton } from "@/components/marketplace/marketplace-skeleton";
 import Tracktable from "@/components/musicNFTs/listedNFT/data-table";
+import { FilterPlace } from "@/components/playlists/filter-playlist";
 import { db } from "@/lib/db";
 import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
@@ -12,20 +15,23 @@ type ParamProp = {
     id: string;
 };
 
-const MarketPlace = async ({ searchParams }: { searchParams: { query?: string, page?: string } }) => {
+const MarketPlace = async ({ searchParams }: { searchParams: { filter?: string, page?: string, query?: string } }) => {
+
+    console.log(searchParams)
 
     // Function to handle GET request to fetch playlists for a given user
     const ITEM_PER_PAGE = 15;
     const page = Number(searchParams.page) || 1;
-    const searchQuery = searchParams.query || "";
+    const searchQuery = searchParams.query || undefined;
+    const filterQuery = searchParams.filter || undefined
 
 
     console.log(searchQuery, "query from search");
 
     const buildQueryFilters = (filter: string | undefined) => {
-        const threshHold = getTimeThreshold(filter || "");
+        const threshHold = getTimeThreshold(filter || undefined);
         const song_Name = filter?.trim();
-        const { address } = getAddressOrName(filter || "");
+        const { address } = getAddressOrName(filter || undefined);
 
         const whereFilters = {
             sold: false,
@@ -57,9 +63,9 @@ const MarketPlace = async ({ searchParams }: { searchParams: { query?: string, p
 
     // Determine ordering based on query parameters
     const orderBy =
-        searchQuery === "ratio"
+        filterQuery === "ratio"
             ? { rewardRatio: "desc" as const }
-            : searchQuery === "playtime"
+            : filterQuery === "playtime"
                 ? { accumulatedTime: "asc" as const }
                 : undefined;
 
@@ -103,11 +109,23 @@ const MarketPlace = async ({ searchParams }: { searchParams: { query?: string, p
 
 
         return (
-            <Suspense fallback={<MarketSkeleton />}>
-                <div className="w-full">
-                    <Tracktable data={listedData} />
+            <div>
+                <div className="md:flex space-x-2 justify-between bg-[#111111] fixed md:w-[67.2%] w-full m-auto">
+                    <div className="w-[98%] flex items-center m-auto ">
+                        <Search placeholder="Search songs..." />
+                    </div>
+                    <div className="flex items-center w-[95%] space-x-2">
+                        <FilterPlace />
+                        <FilterByTime />
+                    </div>
                 </div>
-            </Suspense>
+                <div className="w-full  md:pt-16 pt-2 px-2">
+                    <div className="w-full">
+                        <Tracktable data={listedData} />
+                    </div>
+                </div>
+
+            </div>
         )
 
 

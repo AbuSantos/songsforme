@@ -1,73 +1,79 @@
 import { db } from "@/lib/db";
-import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
+import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { NextRequest } from "next/server";
+import { getTimeThreshold, getAddressOrName } from "@/lib/utils";
 
-type ParamProp = {
-  id: string;
-};
+const ITEMS_PER_PAGE = 15;
 
-// Function to handle GET request to fetch playlists for a given user
 export const GET = async (req: NextRequest) => {
-  const ITEM_PER_PAGE = 15;
-  const url = new URL(req.url).searchParams;
+  const searchParams = new URL(req.url).searchParams;
 
-  const page: number = (url.get("page") as unknown as number) || 1;
+  // Extract parameters
+  const page = Number(searchParams.get("page")) || 1;
+  const query = searchParams.get("query");
+  const filter = searchParams.get("filter");
 
-  const searchQuery = url.get("filter");
-
-  console.log(searchQuery, "query from search");
-
-  const buildQueryFilters = (filter: string | undefined) => {
-    const threshHold = getTimeThreshold(filter || "");
-    const song_Name = filter?.trim();
-    const { address } = getAddressOrName(filter || "");
-
-    const whereFilters = {
-      sold: false,
-      ...(filter && filter !== "ratio" && song_Name
-        ? {
-            Single: {
-              is: {
-                song_name: {
-                  contains: song_Name,
-                  mode: Prisma.QueryMode.insensitive,
-                },
-              },
-            },
-          }
-        : {}),
-      ...(threshHold && { listedAt: { gte: threshHold } }),
-      ...(address && { contractAddress: address }),
-    };
-
-    const orderBy =
-      filter === "ratio"
-        ? { rewardRatio: "desc" as const }
-        : filter === "playtime"
-        ? { totalAccumulatedTime: "asc" as const }
-        : undefined;
-
-    return { whereFilters, orderBy };
+  const isEthereumAddress = (value: string): boolean => {
+    return /^0x[a-fA-F0-9]{40}$/.test(value);
   };
 
-  // Determine ordering based on query parameters
-  const orderBy =
-    searchQuery === "ratio"
-      ? { rewardRatio: "desc" as const }
-      : searchQuery === "playtime"
-      ? { accumulatedTime: "asc" as const }
-      : undefined;
+  console.log("Query params:", { page, query, filter });
 
   try {
+    // Build where clause
+    const whereClause: Prisma.ListedNFTWhereInput = {
+      sold: false,
+    };
+
+    // Handle search query
+    if (query) {
+      if (isEthereumAddress(query)) {
+        whereClause.OR = [{ contractAddress: query }, { seller: query }];
+      }
+      whereClause.OR = [
+        {
+          Single: {
+            song_name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        },
+        {
+          Single: {
+            artist_name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        },
+      ];
+    }
+
+    // Handle time-based filters
+    if (filter) {
+      const threshold = getTimeThreshold(filter);
+      if (threshold) {
+        whereClause.listedAt = {
+          gte: threshold,
+        };
+      }
+    }
+
+    // Handle sorting
+    let orderBy: Prisma.ListedNFTOrderByWithRelationInput = {};
+    if (filter === "ratio") {
+      orderBy = { rewardRatio: "desc" };
+    } else if (filter === "playtime") {
+      orderBy = { totalAccumulatedTime: "desc" };
+    } else {
+      orderBy = { listedAt: "desc" };
+    }
+
+    // Execute query
     const listedData = await db.listedNFT.findMany({
-      where: {
-        sold: false,
-        ...(searchQuery && {
-          contractAddress: { contains: searchQuery, mode: "insensitive" },
-        }),
-      },
+      where: whereClause,
+      orderBy,
       select: {
         id: true,
         tokenId: true,
@@ -81,31 +87,36 @@ export const GET = async (req: NextRequest) => {
         isSaleEnabled: true,
         Single: {
           select: {
-            song_cover: true,
-            artist_name: true,
             song_name: true,
+            artist_name: true,
+            song_cover: true,
+            genre: true,
           },
         },
       },
-
-      ...(orderBy ? { orderBy } : {}),
-      take: ITEM_PER_PAGE,
-      skip: ITEM_PER_PAGE * (page - 1),
+      skip: (page - 1) * ITEMS_PER_PAGE,
+      take: ITEMS_PER_PAGE,
     });
-    revalidateTag("bought");
-    revalidateTag("nft");
 
-    // Return the fetched playlists as a JSON response
-    return new Response(JSON.stringify(listedData), {
-      status: 200,
+    // Get total count for pagination
+    const total = await db.listedNFT.count({
+      where: whereClause,
+    });
+
+    return NextResponse.json({
+      data: listedData,
+      metadata: {
+        total,
+        page,
+        pageSize: ITEMS_PER_PAGE,
+        pageCount: Math.ceil(total / ITEMS_PER_PAGE),
+      },
     });
   } catch (error) {
-    // Log error details for debugging
-    console.error("Error fetching Songs:", error);
-
-    // Respond with a server error message
-    return new Response(JSON.stringify({ message: "Error fetching Songs" }), {
-      status: 500, // Internal Server Error
-    });
+    console.error("Error fetching listed NFTs:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch listed NFTs" },
+      { status: 500 }
+    );
   }
 };

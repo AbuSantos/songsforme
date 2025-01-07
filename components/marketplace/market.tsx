@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
 import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
 import { fetcher } from "@/lib/utils";
@@ -9,34 +9,46 @@ import { Tracktable } from "../musicNFTs/listedNFT/data-table";
 
 const MarketPlace = () => {
     const searchParams = useSearchParams();
+    const query = searchParams?.get("query");
     const filter = searchParams?.get("filter");
-    const apiUrl = `/api/listednft?filter=${filter || ""}`;
+
+    const apiUrl = useMemo(() => {
+        const params = new URLSearchParams();
+        if (query) params.append("query", query);
+        if (filter) params.append("filter", filter);
+
+        return `/api/listednft${params.toString() ? `?${params.toString()}` : ''}`;
+    }, [query, filter]);
+
     try {
-        const { data, error, isLoading } = useSWR(apiUrl, fetcher, {
-            shouldRetryOnError: true,
-            errorRetryCount: 3,
-        });
+        const { data, error, isLoading } = useSWR(
+            apiUrl,
+            fetcher,
+            {
+                shouldRetryOnError: true,
+                errorRetryCount: 3,
+            }
+        );
 
         if (error) {
-            return <p className="mt-8">Failed to load marketplace data. Please try again later.</p>;
+            return <p className="mt-4">Failed to load marketplace data. Please try again later.</p>;
         }
 
         if (isLoading) {
-            return <p className="mt-8">loading...</p>;
+            return <p className="mt-4">loading...</p>;
         }
 
         return (
             <Suspense fallback={<MarketSkeleton />}>
                 <div className="w-full">
-                    <Tracktable data={data} />
+                    <Tracktable data={data.data} />
                 </div>
             </Suspense>
         );
     } catch (error: any) {
-        console.log(error.message)
+        console.error("Market error:", error);
+        return <p className="mt-4">An error occurred.</p>;
     }
-
-
 };
 
 export default MarketPlace;

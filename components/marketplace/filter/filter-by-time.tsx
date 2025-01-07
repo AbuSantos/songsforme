@@ -1,35 +1,62 @@
 "use client"
+
 import { Toggle } from "@/components/ui/toggle"
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export const FilterByTime = () => {
     const router = useRouter();
-    const [filter, setFilter] = useState("");
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [activeFilter, setActiveFilter] = useState(searchParams.get("filter") || undefined);
 
-    const handleValue = (newFilter: string) =>
-        setFilter(newFilter); {
-        const params = new URLSearchParams(window.location.search)
-        params.set("filter", filter)
-        router.push(`?${params.toString()}`);
-    }
+    const handleValue = (newFilter: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (newFilter === activeFilter) {
+            params.delete("filter");
+            setActiveFilter("");
+        } else {
+            params.set("filter", newFilter);
+            setActiveFilter(newFilter);
+        }
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
     return (
-        <div className="flex  p-2 space-x-1">
-            <Toggle aria-label="10m hours filter" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]" variant="default" onClick={() => handleValue("6min")}>
+        <div className="flex p-2 space-x-1">
+            <Toggle
+                pressed={activeFilter === "6min"}
+                aria-label="10m hours filter"
+                className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]"
+                variant="default"
+                onClick={() => handleValue("6min")}
+            >
                 10m
             </Toggle>
-            <Toggle aria-label="1 hours filter" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]" onClick={() => handleValue("1hr")}>
+            <Toggle
+                pressed={activeFilter === "1hr"}
+                aria-label="1 hours filter"
+                className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]"
+                onClick={() => handleValue("1hr")}
+            >
                 1h
             </Toggle>
-            <Toggle aria-label="6 hours filter" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]" onClick={() => handleValue("6hr")}>
+            <Toggle
+                pressed={activeFilter === "6hr"}
+                aria-label="6 hours filter"
+                className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]"
+                onClick={() => handleValue("6hr")}
+            >
                 6h
             </Toggle>
-            <Toggle aria-label="24 hours filter" className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]" onClick={() => handleValue("24hr")}>
+            <Toggle
+                pressed={activeFilter === "24hr"}
+                aria-label="24 hours filter"
+                className="bg-[#2A2A2A] hover:bg-[#2A2A2A] w-[40px]"
+                onClick={() => handleValue("24hr")}
+            >
                 24h
             </Toggle>
         </div>
-
     )
 }
-
-

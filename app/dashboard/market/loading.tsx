@@ -1,6 +1,10 @@
+import { MarketSkeleton } from "@/components/marketplace/marketplace-skeleton"
+
 const Loading = () => {
     return (
-        <div>loading...</div>
+        <div>
+            <MarketSkeleton />
+        </div>
     )
 }
 

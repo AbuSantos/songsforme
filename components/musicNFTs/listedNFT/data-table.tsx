@@ -69,9 +69,6 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
 
     try {
 
-
-
-
         return (
             <div>
                 <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-1">

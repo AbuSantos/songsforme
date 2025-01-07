@@ -55,17 +55,12 @@ export const metadata: Metadata = {
 
 
 export default async function MusicPage({ searchParams }: { searchParams: { filter?: string; q?: string } }) {
-    const filter = searchParams.filter?.trim() || "ratio";
-    // const searchQuery = searchParams.q
 
-    // console.log("Active Filter:", searchQuery);
-
-
-
+    const filter = searchParams.filter?.trim() || "ratio" || undefined;
     const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
     const filterByName = filter !== "ratio" && filter !== "playtime" ? filter : ""
-    try {
 
+    try {
         {/* @ts-ignore */ }
         const listedData: ListedNFT[] = await db.listedNFT.findMany({
             where: {
@@ -73,10 +68,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             }
         });
 
-
-
         revalidateTag("nft");
-
         {/* @ts-ignore */ }
         const singleNft: Single[] = await db.single.findMany({
             select: {
@@ -96,7 +88,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 }
             }
         })
-
 
         {/* @ts-ignore */ }
         const playlists = await db.playlist.findMany({
