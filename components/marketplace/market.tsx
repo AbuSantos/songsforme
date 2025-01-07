@@ -37,6 +37,11 @@ const MarketPlace = () => {
         if (isLoading) {
             return <p className="mt-4">loading...</p>;
         }
+        if (data.total === 0) {
+            return <p className="mt-4">Songs not available</p>;
+        }
+
+        console.log(data.data)
 
         return (
             <Suspense fallback={<MarketSkeleton />}>

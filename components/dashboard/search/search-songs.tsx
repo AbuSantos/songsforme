@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import { isEthereumAddress, isValidEthereumAddress } from "@/lib/helper";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -20,23 +21,25 @@ export const Search = ({ placeholder, classname }: SearchProps): JSX.Element => 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
 
-        // Only update URL if query differs
-        if (term !== params.get("query")) {
-            if (term && term.length > 2) {
+        if (term && term.length > 2) {
+            // Check if the term is an Ethereum address
+            if (isValidEthereumAddress(term)) {
                 params.set("query", term);
             } else {
-                params.delete("query");
+                params.set("query", term);
             }
-
-            // Clean up empty filter param if it exists
-            if (params.get("filter") === "") {
-                params.delete("filter");
-            }
-
-            const queryString = params.toString();
-            const url = queryString ? `${pathname}?${queryString}` : pathname;
-            replace(url);
+        } else {
+            params.delete("query");
         }
+
+        // Clean up empty filter
+        if (params.get("filter") === "") {
+            params.delete("filter");
+        }
+
+        const queryString = params.toString();
+        const url = queryString ? `${pathname}?${queryString}` : pathname;
+        replace(url);
     }, 300);
 
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {

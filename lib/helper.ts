@@ -4,6 +4,8 @@ import { decrypt } from "@/actions/set-sessions"; // Adjust the import according
 import { cache } from "react";
 import { db } from "./db";
 import { JWTPayload } from "jose";
+import { utils } from "ethers";
+
 
 // Cached session retrieval with improved error handling and type checking
 export const getSession = cache(async (): Promise<JWTPayload | null> => {
@@ -69,7 +71,6 @@ export const getUserAccumulatedTime = async (
       0
     );
 
-    
     // Calculate the total accumulated time
     const accumulatedTime = (user.accumulatedTime ?? 0) + playlistTime;
 
@@ -83,4 +84,17 @@ export const getUserAccumulatedTime = async (
     console.error("Error retrieving accumulated time for user:", error);
     return { message: "Error retrieving user data." };
   }
+};
+
+export const isEthereumAddress = (value: string): boolean => {
+  return /^0x[a-fA-F0-9]{40}$/.test(value);
+};
+
+
+export const isValidEthereumAddress = (value: string): boolean => {
+    try {
+        return utils.getAddress(value) === value;
+    } catch {
+        return false;
+    }
 };

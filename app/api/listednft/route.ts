@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { getTimeThreshold, getAddressOrName } from "@/lib/utils";
+import { isEthereumAddress } from "@/lib/helper";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -13,11 +14,7 @@ export const GET = async (req: NextRequest) => {
   const query = searchParams.get("query");
   const filter = searchParams.get("filter");
 
-  const isEthereumAddress = (value: string): boolean => {
-    return /^0x[a-fA-F0-9]{40}$/.test(value);
-  };
-
-  console.log("Query params:", { page, query, filter });
+  console.log(query, "search query");
 
   try {
     // Build where clause
@@ -28,7 +25,20 @@ export const GET = async (req: NextRequest) => {
     // Handle search query
     if (query) {
       if (isEthereumAddress(query)) {
-        whereClause.OR = [{ contractAddress: query }, { seller: query }];
+        whereClause.OR = [
+          {
+            contractAddress: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            seller: {
+              contains: query.toLowerCase(),
+              mode: "insensitive",
+            },
+          },
+        ];
       }
       whereClause.OR = [
         {
