@@ -1,86 +1,63 @@
 import { db } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
-import { getTimeThreshold, getAddressOrName } from "@/lib/utils";
 import { isEthereumAddress } from "@/lib/helper";
-
+import { getTimeThreshold } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 const ITEMS_PER_PAGE = 15;
 
 export const GET = async (req: NextRequest) => {
   const searchParams = new URL(req.url).searchParams;
 
   // Extract parameters
-  const page = Number(searchParams.get("page")) || 1;
-  const query = searchParams.get("query");
+  const page = Math.max(Number(searchParams.get("page")) || 1, 1);
+  const query = searchParams.get("query")?.trim();
   const filter = searchParams.get("filter");
-
-  console.log(query, "search query");
 
   try {
     // Build where clause
-    const whereClause: Prisma.ListedNFTWhereInput = {
-      sold: false,
-    };
+    const whereClause: Prisma.ListedNFTWhereInput = { sold: false };
+    const orConditions: Prisma.ListedNFTWhereInput[] = [];
 
-    // Handle search query
+    //if the query is an address, we conduct a search first with the the contract address or the sellers address
     if (query) {
       if (isEthereumAddress(query)) {
-        whereClause.OR = [
+        orConditions.push(
           {
             contractAddress: {
-              contains: query,
+              equals: query.toLowerCase(),
               mode: "insensitive",
             },
           },
-          {
-            seller: {
-              contains: query.toLowerCase(),
-              mode: "insensitive",
-            },
-          },
-        ];
+          { seller: { equals: query.toLowerCase(), mode: "insensitive" } }
+        );
       }
-      whereClause.OR = [
-        {
-          Single: {
-            song_name: {
-              contains: query,
-              mode: "insensitive",
-            },
-          },
-        },
-        {
-          Single: {
-            artist_name: {
-              contains: query,
-              mode: "insensitive",
-            },
-          },
-        },
-      ];
+      orConditions.push(
+        { Single: { song_name: { contains: query, mode: "insensitive" } } },
+        { Single: { artist_name: { contains: query, mode: "insensitive" } } }
+      );
+    }
+
+    if (orConditions.length > 0) {
+      whereClause.OR = orConditions;
     }
 
     // Handle time-based filters
     if (filter) {
       const threshold = getTimeThreshold(filter);
       if (threshold) {
-        whereClause.listedAt = {
-          gte: threshold,
-        };
+        whereClause.listedAt = { gte: threshold };
       }
     }
 
-    // Handle sorting
-    let orderBy: Prisma.ListedNFTOrderByWithRelationInput = {};
-    if (filter === "ratio") {
-      orderBy = { rewardRatio: "desc" };
-    } else if (filter === "playtime") {
-      orderBy = { totalAccumulatedTime: "desc" };
-    } else {
-      orderBy = { listedAt: "desc" };
-    }
+    // Sorting logic
+    const orderBy: Prisma.ListedNFTOrderByWithRelationInput =
+      filter === "ratio"
+        ? { rewardRatio: "desc" }
+        : filter === "playtime"
+        ? { totalAccumulatedTime: "desc" }
+        : { listedAt: "desc" };
 
-    // Execute query
+    // Fetch data
     const listedData = await db.listedNFT.findMany({
       where: whereClause,
       orderBy,
@@ -108,10 +85,8 @@ export const GET = async (req: NextRequest) => {
       take: ITEMS_PER_PAGE,
     });
 
-    // Get total count for pagination
-    const total = await db.listedNFT.count({
-      where: whereClause,
-    });
+    // Get total count
+    const total = await db.listedNFT.count({ where: whereClause });
 
     return NextResponse.json({
       data: listedData,
@@ -120,6 +95,8 @@ export const GET = async (req: NextRequest) => {
         page,
         pageSize: ITEMS_PER_PAGE,
         pageCount: Math.ceil(total / ITEMS_PER_PAGE),
+        hasNextPage: page * ITEMS_PER_PAGE < total,
+        hasPreviousPage: page > 1,
       },
     });
   } catch (error) {
