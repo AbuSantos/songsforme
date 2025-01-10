@@ -325,8 +325,8 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             </TabsContent>
 
                             <div className="mt-auto w-full fixed bottom-0  md:hidden h-20">
-                                <TabsList className="w-full py-5 h-20  rounded-none">
-                                    <div className=" w-full  py-4 flex justify-between">
+                                <TabsList className="w-full py-5 h-20  rounded-none bg-black">
+                                    <div className=" w-full py-4 flex justify-between">
                                         <TabsTrigger value="music" className="relative flex flex-col space-y-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="25" height="25" color="#000000" fill="none">
                                                 <path d="M11 7.13678V17M11 7.13678C12.8928 8.81698 14.5706 10.0042 16.0063 10.6818C16.6937 11.0062 17.3165 11.0682 18.0198 10.7552C19.7751 9.97419 21 8.20629 21 6.15045C19.0715 7.50911 16.6876 6.77163 14.6847 5.50548C13.0454 4.46918 12.2258 3.95102 11.8569 4.00364C11.5781 4.0434 11.4283 4.1242 11.244 4.33421C11 4.61216 11 5.4537 11 7.13678Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
