@@ -121,6 +121,7 @@ const MarketPlace = async ({ searchParams }: { searchParams: { filter?: string, 
                 </div>
                 <div className="w-full  md:pt-16 pt-2 px-2">
                     <div className="w-full">
+                        {/* @ts-ignore */}
                         <Tracktable data={listedData} />
                     </div>
                 </div>
