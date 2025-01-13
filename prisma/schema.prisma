@@ -59,9 +59,10 @@ model User {
   ArtisteAnalytics ArtisteAnalytics[]
 
   //followers count
-  followers Follow[]  @relation("ArtisteFollowers")
-  following Follow[]  @relation("FanFollowing")
+  followers Follow[]   @relation("ArtisteFollowers")
+  following Follow[]   @relation("FanFollowing")
   Comments  Comments?
+  Whitelist Whitelist?
 
   @@index([userId])
   @@index([username])
@@ -264,6 +265,14 @@ model Activity {
   @@unique([userId, action, entityId])
   @@index([userId])
   @@index([id])
+}
+
+model Whitelist {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [userId])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ArtisteAnalytics {

@@ -128,7 +128,6 @@ export const ArtisteHeader = ({
                     className="image flex flex-col overflow-hidden items-center justify-center  cursor-pointer "
                     onClick={() => document.getElementById("image")?.click()}
                 >
-
                     <Input
                         type="file"
                         id="image"

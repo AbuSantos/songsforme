@@ -18,11 +18,13 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { addToWhiteList } from "@/actions/whitelist/add-to-whitelist";
+import { mutate } from "swr";
 type modalTypes = {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const AddToWhitelist = () => {
+export const AddToWhitelist = ({ adminId, userId }: { adminId: string, userId: string }) => {
 
     const [isPending, startTransition] = useTransition();
     const [address, setAddress] = useState<string>("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
@@ -55,7 +57,18 @@ export const AddToWhitelist = () => {
                             });
                             return tx;
                         }}
-                        onTransactionConfirmed={() => console.log("lising")}
+                        onTransactionConfirmed={async (receipt) => {
+                            if (receipt.status === "success") {
+                                try {
+                                    await addToWhiteList(adminId, userId);
+                                    mutate(`/api/user/${userId}`)
+                                    toast.success("User added Successfully!");
+                                } catch (error) {
+                                    toast.error("Error adding user!");
+                                }
+                            }
+                        }}
+
                         onError={(error) =>
                             setIsError(error.message)
                         }
