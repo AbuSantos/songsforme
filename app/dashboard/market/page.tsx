@@ -26,11 +26,11 @@ const MarketPlace = async ({ searchParams }: { searchParams: { filter?: string, 
     const filterQuery = searchParams.filter || undefined
 
 
-    console.log(searchQuery, "query from search");
-
     const buildQueryFilters = (filter: string | undefined) => {
+        //   @ts-ignore 
         const threshHold = getTimeThreshold(filter || undefined);
         const song_Name = filter?.trim();
+        //   @ts-ignore 
         const { address } = getAddressOrName(filter || undefined);
 
         const whereFilters = {
@@ -106,6 +106,8 @@ const MarketPlace = async ({ searchParams }: { searchParams: { filter?: string, 
         revalidateTag("nft");
 
         console.log(listedData)
+
+        0x183EF459F542c835084d266DcD653Be8577178Af
 
 
         return (

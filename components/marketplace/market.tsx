@@ -42,6 +42,8 @@ const MarketPlace = () => {
             return <p className="mt-4">Songs not available, we're currently working to increase our songs count </p>
         }
 
+        console.log(data.data, "from marketplace")
+
         return (
             <Suspense fallback={<MarketSkeleton />}>
                 <div className="w-full">

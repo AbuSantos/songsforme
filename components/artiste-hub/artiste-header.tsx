@@ -245,7 +245,10 @@ export const ArtisteHeader = ({
                             isArtist &&
                             <>
                                 <h1 className="text-xl font-semibold">Total Earnings</h1>
-                                <p className="text-center">{analytics?.totalEarnings?.toFixed(3)} ETH</p>
+                                <p className="text-center">
+                                    {analytics?.totalEarnings?.toFixed(3)}
+                                    <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className="ml-1" />
+                                </p>
                             </>
                         }
                     </div>
