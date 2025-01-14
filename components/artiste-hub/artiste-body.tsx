@@ -37,6 +37,11 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
         return <p>Error loading singles. Please try again later.</p>;
     }
 
+    // const newRelease = data && data?.map
+    // const sortedData = data?.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+    console.log(data)
+
     const artistContent = (
         <Tabs defaultValue="analytics" className="h-full border-0 ">
             <div className="m-auto flex items-center justify-center">
@@ -95,12 +100,35 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
     );
 
     const nonArtistContent = (
-        <div className="mx-4">
-            {data &&
-                data.map((single: Single) => (
-                    <AlbumArtwork key={single.id} album={single} className="w-[180px]" />
-                ))}
-        </div>
+        <Tabs defaultValue="all" className="h-full border-0 ">
+            <div className="m-auto flex items-center justify-center">
+                <TabsList className="bg-black">
+                    <TabsTrigger value="all">All Tracks</TabsTrigger>
+                    <TabsTrigger value="new">New Release</TabsTrigger>
+                </TabsList>
+            </div>
+
+            <TabsContent value="all">
+                <div className="mx-4">
+                    {data &&
+                        data?.map((single: Single) => (
+                            <AlbumArtwork key={single.id} album={single} className="w-[180px]" />
+                        ))}
+                </div>
+            </TabsContent>
+            <TabsContent value="new">
+                <div className="mx-4">
+                    {data &&
+                        data?.map((single: Single) => (
+                            <AlbumArtwork key={single.id} album={single} className="w-[180px]" />
+                        ))}
+                </div>
+            </TabsContent>
+
+        </Tabs>
+
+
+
     );
 
     return <div className='py-4'>{isArtist ? artistContent : nonArtistContent}</div>;

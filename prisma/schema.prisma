@@ -215,6 +215,8 @@ model Single {
   tokenId         String?
   listednftId     String?
   listedNft       ListedNFT[]
+  createdAt         DateTime            @default(now())
+
 
   // @@index([contractAddress])
   // @@index([id])
