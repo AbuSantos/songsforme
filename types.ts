@@ -112,6 +112,7 @@ export interface Single {
   tokenId?: string | null;
   listednftId?: string | null;
   listedNft: ListedNFT[];
+  createdAt?: Date;
 }
 
 export interface PlaylistListedNFT {
