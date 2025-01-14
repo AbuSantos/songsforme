@@ -38,9 +38,8 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
     }
 
     // const newRelease = data && data?.map
-    // const sortedData = data?.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-
-    console.log(data)
+    //@ts-ignore
+    const sortedData = data?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     const artistContent = (
         <Tabs defaultValue="analytics" className="h-full border-0 ">
@@ -119,7 +118,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
             <TabsContent value="new">
                 <div className="mx-4">
                     {data &&
-                        data?.map((single: Single) => (
+                        sortedData?.map((single: Single) => (
                             <AlbumArtwork key={single.id} album={single} className="w-[180px]" />
                         ))}
                 </div>
