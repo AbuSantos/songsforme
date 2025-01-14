@@ -122,7 +122,7 @@ export const ArtisteHeader = ({
     const isArtist = userId === artisteId;
 
     return (
-        <div className="flex items-end justify-between space-x-4 bg-gradient-to-tl from-[#111113] via-[#54346B] to-[#6E56FF] py-6 px-2 ">
+        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-end md:justify-between space-x-4 bg-gradient-to-tl from-[#111113] via-[#54346B] to-[#6E56FF] py-6 px-2 ">
             <div className="flex items-end space-x-2">
                 <div
                     className="image flex flex-col overflow-hidden items-center justify-center  cursor-pointer "
@@ -244,7 +244,7 @@ export const ArtisteHeader = ({
                             isArtist &&
                             <>
                                 <h1 className="text-xl font-semibold">Total Earnings</h1>
-                                <p className="text-center">
+                                <p className="text-center flex md:block">
                                     {analytics?.totalEarnings?.toFixed(3)}
                                     <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className="ml-1" />
                                 </p>

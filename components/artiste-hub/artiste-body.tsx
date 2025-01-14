@@ -38,6 +38,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
     }
 
     try {
+
         const sortedData = data?.slice().sort((a, b) => {
             const dateA = new Date(a.createdAt ?? 0).getTime();
             const dateB = new Date(b.createdAt ?? 0).getTime();
@@ -46,7 +47,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
             if (isNaN(dateA)) return 1;
             if (isNaN(dateB)) return -1;
 
-            return dateB - dateA; // Sorts descending (newest first)
+            return dateB - dateA;
         });
 
         const artistContent = (

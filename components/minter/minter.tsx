@@ -192,10 +192,13 @@ export const Minter = () => {
         <div >
             {/* NFT Metadata Section */}
             <section>
-                <div className="flex space-x-2 ">
+                <div className="block md:hidden">
+                    <h2>Please use a desktop when minting for optimal UX</h2>
+                </div>
+                <div className="flex flex-col md:flex-row md:w-full space-x-2 ">
                     {/* Image Upload Section */}
                     <div
-                        className="image flex flex-col items-center justify-center space-y-3 bg-black cursor-pointer border-1 border-dashed border-gray-700 rounded-md w-4/12"
+                        className="image flex flex-col items-center justify-center space-y-3 bg-black cursor-pointer border-1 border-dashed border-gray-700 rounded-md md:w-4/12 w-10/12"
                         onClick={() => document.getElementById("image")?.click()}
                     >
                         <Input
@@ -234,7 +237,7 @@ export const Minter = () => {
                     </div>
 
                     {/* Metadata Inputs */}
-                    <div className="detail w-8/12">
+                    <div className="detail md:w-8/12 w-full">
                         <div className="mb-4 w-full">
                             <Label htmlFor="name">Song Name</Label>
                             <Input

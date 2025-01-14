@@ -63,7 +63,7 @@ export const MobileTab = ({ artistesIds }: MobileTabType) => {
                     Mine
                 </span>
             </TabsTrigger>
-            <TabsTrigger value="mynft" className="relative flex flex-col space-y-2">
+            <TabsTrigger value="artiste_hub" className="relative flex flex-col space-y-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" className="hidden" style={{ fill: "rgba(0, 0, 0, 1)", transform: "msFilter" }}><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"></path></svg>
                 <span className="capitalize ">
                     Hub
