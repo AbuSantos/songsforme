@@ -20,15 +20,17 @@ const MarketPlace = () => {
         return `/api/listednft${params.toString() ? `?${params.toString()}` : ''}`;
     }, [query, filter]);
 
+    const { data, error, isLoading } = useSWR(
+        apiUrl,
+        fetcher,
+        {
+            shouldRetryOnError: true,
+            errorRetryCount: 3,
+        }
+    );
+
     try {
-        const { data, error, isLoading } = useSWR(
-            apiUrl,
-            fetcher,
-            {
-                shouldRetryOnError: true,
-                errorRetryCount: 3,
-            }
-        );
+
 
         if (error) {
             return <p className="mt-4">Failed to load marketplace data. Please try again later.</p>;
@@ -39,10 +41,8 @@ const MarketPlace = () => {
         }
 
         if (!data?.data || data.data.length === 0) {
-            return <p className="mt-4">Songs not available, we're currently working to increase our songs count </p>
+            return <p className="mt-4">Songs not available, we re currently working to increase our songs count </p>
         }
-
-        console.log(data.data, "from marketplace")
 
         return (
             <Suspense fallback={<MarketSkeleton />}>
