@@ -24,8 +24,6 @@ export function Menu() {
     const [listModalOpen, setListModalOpen] = useState<boolean>(false)
     const userId = useRecoilValue(isConnected)?.userId;
 
-    console.log(userId)
-
     const adminId = process.env.NEXT_PUBLIC_ADMIN_WALLET?.toLowerCase()!
 
     return (

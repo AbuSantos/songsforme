@@ -27,9 +27,27 @@ type modalTypes = {
 export const AddToWhitelist = ({ adminId, userId }: { adminId: string, userId: string }) => {
 
     const [isPending, startTransition] = useTransition();
-    const [address, setAddress] = useState<string>("0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30");
+    const [address, setAddress] = useState<string>("");
     const [isError, setIsError] = useState("");
     const [isSuccess, setIsSuccess] = useState("");
+
+    const handleAddToWhiteList = async () => {
+        startTransition(async () => {
+            try {
+                const res = await addToWhiteList(adminId, userId)
+                if (res.success) {
+                    toast.success(res.message)
+                } else {
+                    toast.error(res.error)
+                }
+
+            } catch (error: any) {
+                console.log(error)
+                toast.error(error.message)
+
+            }
+        })
+    }
 
 
     return (
@@ -47,7 +65,7 @@ export const AddToWhitelist = ({ adminId, userId }: { adminId: string, userId: s
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
 
-                    <TransactionButton
+                    {/* <TransactionButton
                         transaction={() => {
                             const tx = prepareContractCall({
                                 contract,
@@ -74,10 +92,9 @@ export const AddToWhitelist = ({ adminId, userId }: { adminId: string, userId: s
                         }
                     >
                         Save
-                    </TransactionButton>
+                    </TransactionButton> */}
 
-                    < FormError message={isError} />
-                    < FormSuccess message={isSuccess} />
+                    <button className="bg-gray-200 px-4 py-2 rounded-md" onClick={handleAddToWhiteList}>Add to whitelist</button>
                 </div>
             </PopoverContent>
 
