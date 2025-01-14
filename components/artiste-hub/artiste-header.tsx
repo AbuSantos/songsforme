@@ -185,7 +185,7 @@ export const ArtisteHeader = ({
                                         <PopoverTrigger>Set up Ticketing</PopoverTrigger>
                                         <PopoverContent >
                                             <div className="p-4 space-y-3">
-                                                <small className="py-3 text-blue-700"> You're about to be redirected to Momentify to setup ticketing.
+                                                <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to setup ticketing.
                                                     <span className="font-bold text-gray-200">
                                                         COMING SOON!
                                                     </span>
@@ -207,7 +207,7 @@ export const ArtisteHeader = ({
                                         <PopoverTrigger>Purchase Ticket</PopoverTrigger>
                                         <PopoverContent >
                                             <div className="p-4 space-y-3">
-                                                <small className="py-3 text-blue-700"> You're about to be redirected to Momentify to purchase this artiste concert ticket.   <span className="font-bold text-gray-200">
+                                                <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to purchase this artiste concert ticket.   <span className="font-bold text-gray-200">
                                                     COMING SOON!
                                                 </span></small>
                                                 <Button
