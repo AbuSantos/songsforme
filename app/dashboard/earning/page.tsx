@@ -15,7 +15,8 @@ import useSWR from "swr";
 const PAY_RATE = 0.001;
 
 const MyEarnings = () => {
-    const userId = useRecoilValue(isConnected);
+    const userId = useRecoilValue(isConnected)?.userId;
+
 
     const apiUrl = userId ? `/api/user/${userId}` : null;
     const { data, error, isLoading } = useSWR(apiUrl, fetcher);
@@ -26,7 +27,10 @@ const MyEarnings = () => {
 
     if (error) {
         return <p className="text-red-500 text-center">Failed to load data</p>;
+
     }
+
+    console.log(data, "from data")
 
     const earnings = (data?.accumulatedTime || 0) * PAY_RATE;
 
@@ -39,7 +43,19 @@ const MyEarnings = () => {
                 <div className="w-11/12 p-3 flex flex-col bg-muted h-[20rem] rounded-md m-auto">
                     <div className="flex flex-col items-start">
                         <h1 className="text-gray-950 text-2xl">
-                            {earnings === 0 ? "0 ETH" : `${earnings.toFixed(4)} ETH`}
+                            {earnings === 0 ?
+                                <>
+                                    < div className='flex items-center space-x-2'>
+                                        0
+                                        < Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={20} height={20} className="ml-1" />
+                                    </div>
+                                </>
+                                :
+                                < div className='flex items-center space-x-2'>
+                                    {earnings.toFixed(4)}
+                                    < Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={20} height={20} className="ml-1" />
+                                </div>
+                            }
                         </h1>
                         <span className="text-gray-900">
                             Accumulated Time: {data?.accumulatedTime || 0}s
