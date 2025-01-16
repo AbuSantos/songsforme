@@ -1,6 +1,9 @@
 "use client"
 
+import { useRecoilValue } from "recoil"
 import { TabsTrigger } from "../ui/tabs"
+import { isConnected } from "@/atoms/session-atom"
+
 type ArtistesIdType = {
     id: string,
     userId: string
@@ -10,6 +13,9 @@ type MobileTabType = {
     artistesIds: ArtistesIdType[]
 }
 export const MobileTab = ({ artistesIds }: MobileTabType) => {
+    const userId = useRecoilValue(isConnected)?.userId;
+
+    const isWhitelisted = artistesIds.some((id: ArtistesIdType) => id.userId === userId)
     return (
         <div className=" w-full py-4 flex justify-between">
             <TabsTrigger value="music" className="relative flex space-y-2 items-center justify-center rounded-2xl py-3">
@@ -63,12 +69,15 @@ export const MobileTab = ({ artistesIds }: MobileTabType) => {
                     Mine
                 </span>
             </TabsTrigger>
-            <TabsTrigger value="artiste_hub" className="relative flex flex-col space-y-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" className="hidden" style={{ fill: "rgba(0, 0, 0, 1)", transform: "msFilter" }}><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"></path></svg>
-                <span className="capitalize ">
-                    Hub
-                </span>
-            </TabsTrigger>
+            {
+                isWhitelisted &&
+                <TabsTrigger value="artiste_hub" className="relative flex flex-col space-y-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" className="hidden" style={{ fill: "rgba(0, 0, 0, 1)", transform: "msFilter" }}><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"></path></svg>
+                    <span className="capitalize ">
+                        Hub
+                    </span>
+                </TabsTrigger>
+            }
         </div>
     )
 }

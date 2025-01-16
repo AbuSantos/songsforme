@@ -17,7 +17,6 @@ const PAY_RATE = 0.001;
 const MyEarnings = () => {
     const userId = useRecoilValue(isConnected)?.userId;
 
-
     const apiUrl = userId ? `/api/user/${userId}` : null;
     const { data, error, isLoading } = useSWR(apiUrl, fetcher);
 
@@ -29,8 +28,6 @@ const MyEarnings = () => {
         return <p className="text-red-500 text-center">Failed to load data</p>;
 
     }
-
-    console.log(data, "from data")
 
     const earnings = (data?.accumulatedTime || 0) * PAY_RATE;
 
