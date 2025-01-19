@@ -11,9 +11,9 @@ export const sendArtistesForm = async (email: string, wallet: string) => {
       subject: "Artiste Form Submission",
       html: `<p>Email: ${email}</p><p>Wallet: ${wallet}</p>`,
     });
-    return { message: data };
+    return { message: data, status: "success" };
   } catch (error) {
     console.log(error);
-    return { error, data: null };
+    return { status: error, message: null };
   }
 };
