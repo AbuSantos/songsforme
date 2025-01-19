@@ -4,21 +4,22 @@ import { MiddlePage } from "@/components/homepage/middle-page";
 import { SongCount } from "@/components/homepage/song-count";
 import Image from "next/image";
 
-
 export default async function HomePage() {
-
   return (
     <div className="h-screen flex flex-col items-center justify-center text-center relative overflow-y-hidden">
-      <div className="flex items-center justify-center align-middle p-4 m-auto text-center">
+      <div className="absolute inset-0 z-0 opacity-25">
+        <Image src="/images/under.png" layout="fill" objectFit="cover" alt="bg" />
+      </div>
+      <div className="relative z-10 flex items-center justify-center align-middle p-4 m-auto text-center">
         <Header />
       </div>
-      <div className="text-gray-100 flex items-center justify-center align-middle py-6 m-auto">
+      <div className="relative z-10 text-gray-100 flex items-center justify-center align-middle py-6 m-auto">
         <MiddlePage />
       </div>
-      <div className="pt-36 flex align-middle justify-center items-center m-auto text-white">
+      <div className="relative z-10 pt-36 flex align-middle justify-center items-center m-auto text-white">
         <SongCount />
       </div>
-      <footer className="w-screen">
+      <footer className="relative z-10 w-screen">
         <Carousel />
       </footer>
     </div>
