@@ -8,7 +8,15 @@ export default async function HomePage() {
   return (
     <div className="h-screen flex flex-col items-center justify-center text-center relative overflow-y-hidden">
       <div className="absolute inset-0 z-0 opacity-25">
-        <Image src="/images/under.png" layout="fill" objectFit="cover" alt="bg" />
+        <Image
+          src="/images/under.png"
+          layout="fill"
+          alt="bg"
+          priority
+          placeholder="blur"
+          blurDataURL="/images/under-blur.png"
+          style={{ objectFit: 'cover' }}
+        />
       </div>
       <div className="relative z-10 flex items-center justify-center align-middle p-4 m-auto text-center">
         <Header />
