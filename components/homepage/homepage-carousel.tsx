@@ -2,8 +2,8 @@ import Image from 'next/image'
 
 export const Carousel = () => {
     return (
-        <div className="absolute bottom-10 flex flex-col items-center w-full h-">
-            <div className="relative w-full max-w-5xl h-10">
+        <div className="absolute bottom-24 flex flex-col items-center w-full">
+            <div className="relative w-full  h-10">
                 <div className="relative z-10 w-full">
                     <Image src="/images/bg.jpg" alt="Artwork 1" width={1200} height={400} className="rounded-2xl shadow-lg w-full object-cover" />
                 </div>

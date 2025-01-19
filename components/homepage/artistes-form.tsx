@@ -31,7 +31,7 @@ export const ArtisteForm = () => {
                     onChange={(e) => setWallet(e.target.value)}
                 />
             </div>
-            <Button  >
+            <Button size="lg" variant="outline" className="w-full text-gray-900" >
                 Submit
             </Button>
         </div>
