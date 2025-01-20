@@ -6,6 +6,7 @@ import { Label } from '../ui/label'
 import { sendArtistesForm } from '@/actions/artistesforms/submit-form'
 import { toast } from 'sonner'
 import { FormSuccess } from '../errorsandsuccess/form-success'
+import { sendCongratulatoryEmail } from '@/actions/emails/congratulatory-email'
 
 export const ArtisteForm = () => {
     const [email, setEmail] = useState('')
@@ -15,16 +16,18 @@ export const ArtisteForm = () => {
     const [isPending, startTransition] = useTransition()
 
     const sendEmail = async (e: FormEvent) => {
-        // e.preventDefault()
-        // startTransition(async () => {
-        //     const response = await sendArtistesForm(email, wallet)
-        //     if (response.status === 'error') {
-        //         toast.error('Failed to send email. Please try again later.')
-        //     } else if (response.status === 'success') {
-        //         toast.success('Email sent successfully, we will get back to you soon.')
-        //     }
+        e.preventDefault()
+        startTransition(async () => {
+            const response = await sendArtistesForm(email, wallet)
+            if (response.status === 'error') {
+                toast.error('Failed to send email. Please try again later.')
+            } else if (response.status === 'success') {
+                toast.success('Email sent successfully, we will get back to you soon.')
+                setWallet('')
+                setEmail('')
+            }
 
-        // })
+        })
     }
 
     return (

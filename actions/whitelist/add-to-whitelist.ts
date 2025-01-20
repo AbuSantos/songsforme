@@ -1,8 +1,13 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { sendWelcomeEmail } from "../emails/email";
 
-export const addToWhiteList = async (adminId: string, userId: string) => {
+export const addToWhiteList = async (
+  adminId: string,
+  userId: string,
+  email: string
+) => {
   if (!adminId) {
     return {
       message: "You are not authorized to whitelist a user",
@@ -31,6 +36,7 @@ export const addToWhiteList = async (adminId: string, userId: string) => {
         userId,
       },
     });
+    await sendWelcomeEmail(email, "Artiste");
 
     return { message: "User added to whitelist successfully!", success: true };
   } catch (error: any) {
