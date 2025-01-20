@@ -141,7 +141,7 @@ model ListedNFT {
   Comments             Comments[]
 
   @@unique([tokenId, contractAddress])
-  @@index([id])
+  @@index([id, contractAddress, seller])
 }
 
 model ListeningSession {

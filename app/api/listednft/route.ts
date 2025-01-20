@@ -17,10 +17,10 @@ export const GET = async (req: NextRequest) => {
 
   try {
     // Ensure indexes are created on frequently queried fields
-    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_contractAddress ON ListedNFT (contractAddress)`;
-    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_seller ON ListedNFT (seller)`;
-    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_song_name ON Single (song_name)`;
-    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_artist_name ON Single (artist_name)`;
+    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_contractAddress ON "ListedNFT" ("contractAddress")`;
+    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_seller ON "ListedNFT" ("seller")`;
+    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_song_name ON "Single" ("song_name")`;
+    await db.$executeRaw`CREATE INDEX IF NOT EXISTS idx_artist_name ON "Single" ("artist_name")`;
 
     // Build where clause
     const whereClause: Prisma.ListedNFTWhereInput = { sold: false };

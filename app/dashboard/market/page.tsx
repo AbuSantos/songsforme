@@ -107,7 +107,6 @@ const MarketPlace = async ({ searchParams }: { searchParams: { filter?: string, 
 
         console.log(listedData)
 
-        0x183EF459F542c835084d266DcD653Be8577178Af
 
 
         return (
