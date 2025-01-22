@@ -14,6 +14,7 @@ export const buyNFT = async (
   usrname: string | undefined,
   buyerEmail: string,
   itemLink: string
+  
 ): Promise<{ message: string }> => {
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };
@@ -39,6 +40,8 @@ export const buyNFT = async (
         },
       },
     });
+
+    console.log(listedNFT, "from buy");
 
     if (!listedNFT) {
       return { message: "NFT not found." };

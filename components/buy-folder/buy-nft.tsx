@@ -44,7 +44,6 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                 toast.error("Something went wrong", error.message)
             }
         })
-
     }
 
     return (

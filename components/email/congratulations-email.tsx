@@ -29,7 +29,7 @@ export const BullchordCongratulatoryEmail = ({
 
                 <Text style={paragraph}>Congratulations, your items sold!</Text>
                 <Text style={paragraph}>
-                    You successfully sold your item, {songName} for {price}!  Your sound, Your asset.
+                    You successfully sold your item, {songName} for {price} Eth!  Your sound, Your asset.
                 </Text>
                 <Img
                     src={`${imageUrl}`}
@@ -40,7 +40,7 @@ export const BullchordCongratulatoryEmail = ({
                 />
 
                 <Section style={btnContainer}>
-                    <Button style={button} href="https://getkoala.com">
+                    <Button style={button} href={itemUrl}>
                         View Item
                     </Button>
                 </Section>
