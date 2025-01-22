@@ -8,15 +8,26 @@ import { getSession } from "@/lib/helper"
 import { ListedNFT } from "@/types"
 import { revalidateTag } from "next/cache"
 
-const page = async ({ params }: { params: { id: string } }) => {
-    const id = params.id
+interface PageProps {
+    params: { id: string };
+    searchParams: { tokenId?: string };
+}
+
+export async function page({ params, searchParams }: PageProps) {
+    const { id } = params;
+    const tokenId = searchParams.tokenId;
 
     if (!id) return
 
     try {
         //@ts-ignore
-        const track: ListedNFT = await db.listedNFT.findUnique({
-            where: { id },
+        const track: ListedNFT = await db.listedNFT.findFirst({
+            where: {
+                AND: [
+                    { contractAddress: id },
+                    { tokenId: tokenId }
+                ]
+            },
             include: {
                 playlist: {
                     select: {

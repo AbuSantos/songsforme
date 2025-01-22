@@ -35,6 +35,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
     const userId = useRecoilValue(isConnected)?.userId;
     const usrname = useRecoilValue(isConnected)?.username
+    const userEmail = useRecoilValue(isConnected)?.userEmail;
     const [isPending, startTransition] = useTransition();
 
     // Toggle function to switch buy/sell mode for individual NFTs
@@ -85,7 +86,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                             key={track.id}
                             className="flex items-center justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[var(--data-table-bg)] hover:bg-[var(--data-table-hover-bg)] hover:text-[var(--data-table-text)] px-1 py-2 w-full mt-2 text-start rounded-md"
                         >
-                            <Link href={`/dashboard/trackinfo/${track.id}`} className="flex w-6/12 items-center">
+                            <Link href={`/dashboard/trackinfo/${track.contractAddress}?tokenId=${track.tokenId}`} className="flex w-6/12 items-center">
                                 <p className="w-10">{track?.tokenId}</p>
                                 <div className="flex flex-col w-8/12">
                                     <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.song_name || track?.Single?.artist_name || "Untitled Track"}  <Copy address={track?.contractAddress} mode="data" /></p>
@@ -109,6 +110,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                                 price={track.price}
                                                 listedNftId={track.id}
                                                 usrname={usrname || ""}
+                                                email={userEmail || ""}
                                             />
                                         ) : (
                                             < MakeBid tokenId={track?.tokenId} nftAddress={track?.contractAddress} nftId={track?.id} userId={userId} />
