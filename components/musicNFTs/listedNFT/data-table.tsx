@@ -27,7 +27,6 @@ import { useRouter } from "next/navigation";
 
 type TrackTableType = {
     data: ListedNFT[];
-    artiste_name?: string
 };
 
 // 572,000,000,000
@@ -37,6 +36,10 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const usrname = useRecoilValue(isConnected)?.username
     const userEmail = useRecoilValue(isConnected)?.userEmail;
     const [isPending, startTransition] = useTransition();
+
+
+    console.log("from data", usrname, userEmail)
+
 
     // Toggle function to switch buy/sell mode for individual NFTs
     const toggleBuySell = (nftId: string) => {
@@ -69,7 +72,6 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     }, [data]);
 
     try {
-
         return (
             <div>
                 <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-1">
@@ -80,7 +82,6 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                 </header>
 
                 {data?.map((track) => {
-
                     return (
                         <div
                             key={track.id}

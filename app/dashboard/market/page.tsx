@@ -9,7 +9,8 @@ import { db } from "@/lib/db";
 import { getAddressOrName, getTimeThreshold } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { Suspense } from "react";
+import { headers } from "next/headers";
+
 
 type ParamProp = {
     id: string;
@@ -17,13 +18,14 @@ type ParamProp = {
 
 const MarketPlace = async ({ searchParams }: { searchParams: { filter?: string, page?: string, query?: string } }) => {
 
-    console.log(searchParams)
-
     // Function to handle GET request to fetch playlists for a given user
     const ITEM_PER_PAGE = 15;
     const page = Number(searchParams.page) || 1;
     const searchQuery = searchParams.query || undefined;
     const filterQuery = searchParams.filter || undefined
+
+    // Retrieve headers and construct the items URL
+  
 
 
     const buildQueryFilters = (filter: string | undefined) => {

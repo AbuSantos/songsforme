@@ -21,6 +21,7 @@ type ActionsProps = {
   seller: string
   mode?: string
   songName?: string | null | undefined
+  itemLink?: string
 }
 export const Actions = ({ songName, mode, seller, nftAddress, tokenId, price, nftId, listedNftId, isSaleEnabled }: ActionsProps) => {
   const userId = useRecoilValue(isConnected)?.userId;
@@ -46,6 +47,7 @@ export const Actions = ({ songName, mode, seller, nftAddress, tokenId, price, nf
               listedNftId={listedNftId}
               usrname={username}
               email={email || ""}
+              itemLink={songUrl || ""}
             />
             <MakeBid nftAddress={nftAddress} tokenId={tokenId} nftId={nftId} userId={userId} />
           </div>

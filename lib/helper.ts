@@ -1,11 +1,22 @@
 "use server";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { decrypt } from "@/actions/set-sessions"; // Adjust the import according to your structure
 import { cache } from "react";
 import { db } from "./db";
 import { JWTPayload } from "jose";
 import { utils } from "ethers";
 
+interface User {
+  accumulatedTime: number | null;
+}
+
+interface Playlist {
+  accumulatedTime: number | null;
+}
+
+interface ErrorMessage {
+  message: string;
+}
 
 // Cached session retrieval with improved error handling and type checking
 export const getSession = cache(async (): Promise<JWTPayload | null> => {
@@ -55,7 +66,7 @@ export const getUserAccumulatedTime = async (
     }
 
     // Fetch all playlists associated with the user
-    const playlists = await db.playlist.findMany({
+    const playlists: Playlist[] = await db.playlist.findMany({
       where: { userId },
       select: { accumulatedTime: true },
     });
@@ -90,11 +101,12 @@ export const isEthereumAddress = (value: string): boolean => {
   return /^0x[a-fA-F0-9]{40}$/.test(value);
 };
 
-
 export const isValidEthereumAddress = (value: string): boolean => {
-    try {
-        return utils.getAddress(value) === value;
-    } catch {
-        return false;
-    }
+  try {
+    return utils.getAddress(value) === value;
+  } catch {
+    return false;
+  }
 };
+
+
