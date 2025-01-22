@@ -219,7 +219,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 className="w-full data-[state=active]:flex md:pt-16 pt-2 px-2"
                             >
                                 <div className="h-screen w-full flex-col border-none p-0 ">
-                                    <div className="md:flex space-x-2 justify-between bg-[#111111] fixed md:w-[67.2%] w-full m-auto">
+                                    <div className="md:flex space-x-2 justify-between bg-[#111111] fixed md:w-[90%] w-full m-auto">
                                         <div className="w-[98%] flex items-center m-auto ">
                                             <Search placeholder="Search songs..." />
                                         </div>
@@ -228,7 +228,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                             <FilterByTime />
                                         </div>
                                     </div>
-                                    <Separator className="my-4  bg-[#7B7B7B] hidden md:block" />
+                                    {/* <Separator className="my-4 bg-[#7B7B7B] hidden md:block" /> */}
                                     <div className="w-full pt-20 md:pt-[2rem] pb-10 overflow-y-auto scroll-smooth scrollbar-none">
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 md:pb-4 pb-14">

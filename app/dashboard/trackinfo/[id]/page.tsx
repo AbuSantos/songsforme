@@ -14,6 +14,7 @@ interface PageProps {
 }
 
 export async function Page({ params, searchParams }: PageProps) {
+  
     const { id } = params;
     const tokenId = searchParams?.tokenId;
 
