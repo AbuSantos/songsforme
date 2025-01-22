@@ -18,10 +18,11 @@ import { mutate } from "swr";
 type TrackTableType = {
     data: BuyNFT
     userId: string
+    email: string
 }
 
 
-export const BoughtTable = ({ data, userId }: TrackTableType) => {
+export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
     const [isPending, startTransition] = useTransition();
 
@@ -86,7 +87,7 @@ export const BoughtTable = ({ data, userId }: TrackTableType) => {
                         <div className="flex items-center space-x-3 ">
                             {
                                 data?.status === "NONE" ?
-                                    < RelistNft seller={userId} nft={data} /> :
+                                    < RelistNft seller={userId} nft={data} email={email} /> :
                                     <CancelListing address={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} nftId={data?.listedNft?.id} userId={userId} nftBoughtId={data?.id} price={data?.price} />
                             }
                             <TogglingSell toggleBuySell={() => toggleBuySell(data.listedNftId)} isEnabled={isEnabled[data.listedNftId] || false} />

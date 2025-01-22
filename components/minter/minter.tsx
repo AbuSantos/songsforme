@@ -31,6 +31,7 @@ type NftState = {
 
 export const Minter = () => {
     const userId = useRecoilValue(isConnected)?.userId;
+    const userEmail = useRecoilValue(isConnected)?.userEmail;
 
     const [nftDetails, setNftDetails] = useState<NftState>({
         name: "",
@@ -179,7 +180,7 @@ export const Minter = () => {
     const handleSaveToDatabase = async () => {
         startTransition(async () => {
             //@ts-ignore
-            const res = await createSingleWithNFTs(userId, nftDetails.name, nftDetails.name, userId, nftDetails.image, "0", "1", deployedAddress, tokenUri)
+            const res = await createSingleWithNFTs(userId, nftDetails.name, nftDetails.name, userId, nftDetails.image, "0", "1", deployedAddress, tokenUri, userEmail)
             //@ts-ignore
             if (res.status === "success") {
                 toast.success("NFT MINTED successfull")

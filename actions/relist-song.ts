@@ -20,7 +20,8 @@ export const relistSong = async (
   tokenId: string,
   price: string,
   nftAddress: string,
-  boughtNFTId: string
+  boughtNFTId: string,
+  email: string
 ): Promise<{ message: string }> => {
   console.log(
     `Attempting to relist NFT with tokenId: ${tokenId} by seller: ${seller}`
@@ -60,6 +61,7 @@ export const relistSong = async (
         price: parsedPrice,
         listedAt: new Date(),
         sold: false,
+        email,
         isSaleEnabled: false,
         accumulatedTime: 0,
         isRelisted: true,
@@ -69,6 +71,7 @@ export const relistSong = async (
         tokenId,
         contractAddress: nftAddress,
         price: parsedPrice,
+        email,
         listedAt: new Date(),
         sold: false,
         isSaleEnabled: false,

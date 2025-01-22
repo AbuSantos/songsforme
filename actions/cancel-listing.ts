@@ -17,7 +17,7 @@ export const cancelListing = async (
     // Update the NFT record
     await db.listedNFT.update({
       where: { id },
-      data: { sold: true, isRelisted: false, price },
+      data: { sold: true, isRelisted: false, email: null, price },
     });
 
     await db.buyNFT.update({

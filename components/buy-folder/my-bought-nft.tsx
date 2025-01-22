@@ -17,6 +17,7 @@ import { Text } from "@radix-ui/themes";
 const BoughtNFT = () => {
     // Retrieve and format the user ID from session state
     const userId = useRecoilValue(isConnected)?.userId;
+    const email = useRecoilValue(isConnected)?.userEmail
 
     // Conditionally set the API URL only if userId is available
     const apiUrl = userId ? `/api/buynft/${userId}` : null;
@@ -80,7 +81,7 @@ const BoughtNFT = () => {
                                 {
                                     nfts?.map((nft: BuyNFT) => (
                                         <div className="w-full" key={nft.id}>
-                                            <BoughtTable data={nft} userId={userId} />
+                                            <BoughtTable data={nft} userId={userId} email={email || ""} />
                                         </div>
                                     ))}
                             </div>

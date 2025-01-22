@@ -20,7 +20,6 @@ interface OfferType {
 }
 export const MyNFTOFfers = ({ data, error, isLoading }: OfferType) => {
 
-
     if (error) return <div>Failed to load playlists</div>;
 
     if (isLoading) {

@@ -13,7 +13,7 @@ import {
 import * as React from "react";
 
 export interface BullchordWelcomeEmailProps {
-    price: string, imageUrl: string, songName: string, itemUrl: string
+    price: number, imageUrl: string, songName: string, itemUrl: string
 }
 
 export const BullchordCongratulatoryEmail = ({

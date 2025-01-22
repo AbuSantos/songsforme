@@ -9,6 +9,7 @@ export const listedNFT = async (
   tokenId: string,
   price: string,
   nftAddress: string,
+  email?: string,
   singleId?: string
 ) => {
   // Ensure that required fields are provided
@@ -25,6 +26,7 @@ export const listedNFT = async (
 
     // Use a transaction to ensure atomicity (both operations succeed or fail together)
     const result = await db.$transaction(async (prisma) => {
+     
       // Create a new NFT listing
       const singleNft = await prisma.listedNFT.create({
         data: {
@@ -32,6 +34,7 @@ export const listedNFT = async (
           seller: seller,
           price: parsedPrice,
           contractAddress: nftAddress,
+          email,
           listedAt: new Date(),
           sold: false,
           ...(singleId && {

@@ -334,6 +334,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             </>
         )
     } catch (error) {
+        console.log(error, "from dashboard page")
         return (
             <div className="text-center pt-5">
                 <h2 className="text-red-500">Failed to load the page.</h2>

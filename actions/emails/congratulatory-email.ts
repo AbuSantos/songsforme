@@ -11,7 +11,7 @@ const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export const sendCongratulatoryEmail = async (
   songName: string,
-  price: string,
+  price: number,
   imageUrl: string,
   email: string,
   itemUrl: string

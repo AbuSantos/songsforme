@@ -4,13 +4,15 @@ import { db } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 import { logActivity } from "./loggin-activity";
 import { updateEarnings } from "./analytics/update-earnings";
+import { sendCongratulatoryEmail } from "./emails/congratulatory-email";
 
 export const buyNFT = async (
   buyer: string,
   price: number,
   listedNftId: string,
   transactionHash: string,
-  usrname: string | undefined
+  usrname: string | undefined,
+  buyerEmail: string
 ): Promise<{ message: string }> => {
   if (!buyer || !price || !listedNftId) {
     return { message: "Invalid input. All fields are required." };
@@ -27,6 +29,13 @@ export const buyNFT = async (
         contractAddress: true,
         seller: true,
         singleId: true,
+        email: true,
+        Single: {
+          select: {
+            song_name: true,
+            song_cover: true,
+          },
+        },
       },
     });
 
@@ -41,7 +50,7 @@ export const buyNFT = async (
     await db.$transaction([
       db.listedNFT.update({
         where: { id: listedNftId },
-        data: { sold: true },
+        data: { sold: true, email: buyerEmail },
       }),
       db.buyNFT.upsert({
         where: {
@@ -69,7 +78,14 @@ export const buyNFT = async (
         },
       }),
     ]);
-    await updateEarnings(listedNFT?.singleId,listedNftId);
+    await updateEarnings(listedNFT?.singleId, listedNftId);
+    await sendCongratulatoryEmail(
+      listedNFT?.Single?.song_name as string,
+      price,
+      listedNFT?.Single?.song_cover as string,
+      listedNFT?.email as string,
+      ITEMURL
+    );
 
     try {
       await logActivity(buyer, "NFT_SOLD", listedNFT.tokenId, {

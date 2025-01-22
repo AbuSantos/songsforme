@@ -112,6 +112,7 @@ model ListedNFT {
   tokenId              String
   seller               String
   price                Float
+  email                String?
   contractAddress      String
   uri                  String?
   listedAt             DateTime            @default(now())
@@ -215,8 +216,7 @@ model Single {
   tokenId         String?
   listednftId     String?
   listedNft       ListedNFT[]
-  createdAt         DateTime            @default(now())
-
+  createdAt       DateTime    @default(now())
 
   // @@index([contractAddress])
   // @@index([id])

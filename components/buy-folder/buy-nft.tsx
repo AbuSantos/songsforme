@@ -16,19 +16,21 @@ interface NFTProps {
     price: number;      // The price of the NFT in Ether (as a number)
     listedNftId: string
     usrname: string | undefined
+    email: string
 }
 
 // BuyNFT Component for handling the purchase of an NFT on the blockchain
-export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname }: NFTProps) => {
+export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname, email }: NFTProps) => {
+   
     const [isPending, startTransition] = useTransition();
-    const transactionHash = "0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9"
-
+    const transactionHash = "0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9"// This is a placeholder transaction hash for testing
 
     const handleBuyNft = (price: number, transactionHash: string) => {
         console.log(buyer, price, listedNftId)
+
         startTransition(async () => {
             try {
-                const res = await buyNFT(buyer, price, listedNftId, transactionHash, usrname)
+                const res = await buyNFT(buyer, price, listedNftId, transactionHash, usrname, email)
                 if (res.message) {
                     toast.success(res.message)
                 } else {
@@ -42,43 +44,43 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     }
 
     return (
-        // <div>
-        //     <TransactionButton
-        //         className="w-[60px] p-2 bg-black"
-        //         // Function to prepare the contract call and create the transaction
-        //         transaction={() => {
-        //             // Prepare the contract call using the contract and method provided
-        //             const tx = prepareContractCall({
-        //                 contract, // This is the blockchain contract reference
-        //                 //@ts-ignore
-        //                 method: "function buyBull(address _nftContract, uint256 _tokenId) payable", // The smart contract function for buying NFTs
-        //                 params: [nftAddress, tokenId], // Parameters required by the contract method (NFT contract address and tokenId)
-        //                 value: toWei(price.toString()), // Convert the price from Ether to Wei (smallest unit of Ether)
-        //             });
-        //             return tx; // Return the transaction object
-        //         }}
-        //         // Handle successful transaction confirmation
-        //         onTransactionConfirmed={(tx) => {
-        //             if (tx.status === "success") {
-        //                 handleBuyNft(price, tx.transactionHash)
-        //                 toast.success("NFT purchased successfully!")
-        //             }
-        //         }}
-        //         onError={(error) => {
-        //             // Display an error toast notification using the `sonner` library
-        //             toast.error("NFT Error", {
-        //                 description: error.message, // Display the actual error message for debugging
-        //             });
-        //         }}
-        //     >
-        //         Buy
-        //     </TransactionButton>
-        // </div>
-
         <div>
-            <button onClick={() => handleBuyNft(price, transactionHash)} disabled={isPending} className="bg-[var(--button-bg)] p-2 w-32 rounded-md">
-                buy nft
-            </button>
+            <TransactionButton
+                className="w-[60px] p-2 bg-black"
+                // Function to prepare the contract call and create the transaction
+                transaction={() => {
+                    // Prepare the contract call using the contract and method provided
+                    const tx = prepareContractCall({
+                        contract, // This is the blockchain contract reference
+                        //@ts-ignore
+                        method: "function buyBull(address _nftContract, uint256 _tokenId) payable", // The smart contract function for buying NFTs
+                        params: [nftAddress, tokenId], // Parameters required by the contract method (NFT contract address and tokenId)
+                        value: toWei(price.toString()), // Convert the price from Ether to Wei (smallest unit of Ether)
+                    });
+                    return tx; // Return the transaction object
+                }}
+                // Handle successful transaction confirmation
+                onTransactionConfirmed={(tx) => {
+                    if (tx.status === "success") {
+                        handleBuyNft(price, tx.transactionHash)
+                        toast.success("NFT purchased successfully!")
+                    }
+                }}
+                onError={(error) => {
+                    // Display an error toast notification using the `sonner` library
+                    toast.error("NFT Error", {
+                        description: error.message, // Display the actual error message for debugging
+                    });
+                }}
+            >
+                Buy
+            </TransactionButton>
         </div>
+
+        // <div>
+        //     <button onClick={() => handleBuyNft(price, transactionHash)} disabled={isPending} className="bg-[var(--button-bg)] p-2 w-32 rounded-md">
+        //         buy nft
+        //     </button>
+        // </div>
     );
 };

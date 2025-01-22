@@ -37,7 +37,8 @@ export const createSingleWithNFTs = async (
   baseTokenId: string,
   price: string,
   nftAddress: string,
-  uri: string
+  uri: string,
+  email?: string
 ): Promise<object> => {
   if (!userId || userId.trim() === "" || !songName || songName.trim() === "") {
     return { status: "error", message: "User ID and song name are required." };
@@ -86,6 +87,7 @@ export const createSingleWithNFTs = async (
             listedAt: new Date(),
             sold: false,
             isSaleEnabled: true,
+            email,
             Single: {
               connect: {
                 id: newSingle.id,
