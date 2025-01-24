@@ -107,7 +107,7 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-            <div className="relative bg-black rounded-md md:w-2/6 w-[90%] py-8 px-6 border-[0.7px] border-gray-600">
+            <div className="relative bg-black rounded-md md:w-2/6 max-lg-[100px]:w3/6 w-[90%] py-8 px-6 border-[0.7px] border-gray-600">
                 <div className="flex flex-col items-center justify-center py-2">
                     <p className="bg-gray-100 rounded-full size-12 flex items-center justify-center mt-2">
                         <svg

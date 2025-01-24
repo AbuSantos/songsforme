@@ -5,7 +5,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Playlisten } from "../startlistening/play-listen"
+import { Playlisten } from "../startlistening/play-listenn"
 import { ListedNFT, Playlist } from "@/types"
 import Image from "next/image"
 import Link from "next/link"

@@ -1,6 +1,6 @@
 "use client"
 import { listedNFT } from '@/actions/listNFT';
-import { Playlisten } from '@/components/startlistening/play-listen';
+import { Playlisten } from '@/components/startlistening/play-listenn';
 import { fetcher } from '@/lib/utils';
 import { Favorites, ListedNFT } from '@/types';
 import Image from 'next/image';

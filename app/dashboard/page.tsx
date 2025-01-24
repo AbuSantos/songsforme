@@ -223,7 +223,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         <div className="w-[98%] flex items-center m-auto ">
                                             <Search placeholder="Search songs..." />
                                         </div>
-                                        <div className="flex items-center w-[95%] space-x-2">
+                                        <div className="flex items-center w-[100%] space-x-2">
                                             <FilterPlace />
                                             <FilterByTime />
                                         </div>

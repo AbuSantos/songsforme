@@ -3,7 +3,7 @@
 import { Text } from "@radix-ui/themes"
 import { BuyNFT, ListedNFT } from "@/types";
 import Link from "next/link";
-import { Playlisten } from "@/components/startlistening/play-listen";
+import { Playlisten } from "@/components/startlistening/play-listenn";
 import { Actions } from "@/components/actions/actions";
 import Image from "next/image";
 
