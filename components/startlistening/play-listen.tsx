@@ -22,8 +22,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const [nftData, setNftData] = useState<any>();
     const [audioUrl, setAudioUrl] = useState<string>("");
 
-    console.log("Play listen 2")
-
     // Audio System Refs
     const engine = useRef<AudioEngine>(new AudioEngine());
     // const tracker = useRef<PlaytimeTracker>(new PlaytimeTracker());
@@ -53,12 +51,16 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             try {
                 // Get optimal quality URL based on network
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
+
+                console.log(optimalUrl, "optimal url")
+                console.log(audioUrl, "audio url from playlisten")
+
                 await engine.current.loadTrack(optimalUrl);
 
                 // Set up quality switching
                 qualityManager.current.initDynamicSwitching(engine.current, audioUrl);
             } catch (error) {
-                console.error("Audio initialization failed:", error);
+                console.log("Audio initialization failed:", error);
                 toast.error("Error loading audio track");
             }
         };
@@ -80,36 +82,30 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         setIsLoading(true);
         try {
             if (isPlaying) {
-                // Stop playback and tracking
-                engine.current.stop();
-                tracker.current.stop();
+                await engine.current.pause();
                 await endListening(userId, playlistId);
             } else {
-                // Start new session with audio metrics
+                // Queue system prevents overlapping requests
                 await engine.current.play();
-                tracker.current.start();
-
-                // Start reward tracking with additional metrics
-                await startListening(userId, nftId, playlistId, {
-                    bitrate: qualityManager.current.currentQuality,
-                    playtime: tracker.current.getCurrentPlaytime(),
-                    deviceType: navigator.userAgent
-                });
+                await startListening(userId, nftId, playlistId);
             }
             setIsPlaying(!isPlaying);
         } catch (error) {
             console.error("Playback error:", error);
-            toast.error("Playback failed");
+            toast.error(error instanceof Error ? error.message : "Playback failed");
         } finally {
             setIsLoading(false);
         }
     };
+
 
     // Reward validation system
     useEffect(() => {
         const interval = setInterval(async () => {
             if (isPlaying) {
                 const isValid = await engine.current.validatePlayback();
+                console.log("Playback validation:", isValid);
+
                 if (!isValid) {
                     engine.current.stop();
                     // tracker.current.stop();

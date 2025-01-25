@@ -6,6 +6,7 @@ export class AudioEngine {
   private playbackStartTime = 0;
   private pausedTime = 0;
   private isActivePlayback = false;
+  private currentSource: AudioBufferSourceNode | null = null;
 
   constructor() {
     this.context = this.createAudioContext();
@@ -47,6 +48,9 @@ export class AudioEngine {
 
   private async fetchAndDecodeAudio(url: string): Promise<AudioBuffer> {
     const response = await fetch(url);
+
+    console.log(response, "response from audio engine");
+
     if (!response.ok)
       throw new Error(`HTTP ${response.status} - ${response.statusText}`);
     return this.context.decodeAudioData(await response.arrayBuffer());
@@ -63,29 +67,62 @@ export class AudioEngine {
   play(): void {
     if (!this.source?.buffer) throw new Error("No track loaded");
 
+    // Clean up previous playback
     if (this.isActivePlayback) {
       this.stop();
     }
 
-    this.source.start(0, this.pausedTime % this.source.buffer.duration);
-    this.playbackStartTime = this.context.currentTime - this.pausedTime;
-    this.isActivePlayback = true;
+    // Create fresh source node
+    this.currentSource = this.context.createBufferSource();
+    this.currentSource.buffer = this.source.buffer;
+    this.currentSource.connect(this.analyticsNode);
 
-    this.resumeContext();
-  }
+    // Set up clean termination
+    this.currentSource.onended = () => {
+      this.handlePlaybackEnd();
+      this.currentSource = null;
+    };
 
-  stop(): void {
-    if (this.source) {
-      this.source.stop(0);
-      this.pausedTime = 0;
+    // Calculate start offset for pause/resume
+    const startOffset = this.pausedTime % this.source.buffer.duration;
+
+    try {
+      this.currentSource.start(0, startOffset);
+      this.playbackStartTime = this.context.currentTime - startOffset;
+      this.isActivePlayback = true;
+
+      this.resumeContext();
+    } catch (error) {
+      console.error("Playback start failed:", error);
+      this.currentSource = null;
       this.isActivePlayback = false;
+      throw error;
     }
   }
 
+  stop(): void {
+    if (this.currentSource) {
+      try {
+        this.currentSource.stop(0);
+      } catch (error) {
+        console.warn("Stop failed (already stopped):", error);
+      }
+      this.currentSource.disconnect();
+      this.currentSource = null;
+    }
+    this.pausedTime = 0;
+    this.isActivePlayback = false;
+  }
+
   pause(): void {
-    if (this.isActivePlayback) {
+    if (this.isActivePlayback && this.currentSource) {
       this.pausedTime = this.context.currentTime - this.playbackStartTime;
-      this.source?.stop(0);
+      try {
+        this.currentSource.stop(0);
+      } catch (error) {
+        console.warn("Pause stop failed:", error);
+      }
+      this.currentSource = null;
       this.isActivePlayback = false;
     }
   }
