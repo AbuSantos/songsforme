@@ -16,7 +16,7 @@ export class AudioEngine {
   }
 
   private createAudioContext(): AudioContext {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = new ((window as any).AudioContext || (window as any).webkitAudioContext)();
     ctx.addEventListener("statechange", () =>
       console.debug("AudioContext state:", ctx.state)
     );
@@ -48,8 +48,6 @@ export class AudioEngine {
 
   private async fetchAndDecodeAudio(url: string): Promise<AudioBuffer> {
     const response = await fetch(url);
-
-    console.log(response, "response from audio engine");
 
     if (!response.ok)
       throw new Error(`HTTP ${response.status} - ${response.statusText}`);
@@ -206,7 +204,7 @@ export class AudioEngine {
     const data = new Uint8Array(this.analyticsNode.frequencyBinCount);
     this.analyticsNode.getByteFrequencyData(data);
     return {
-      dynamicRange: Math.max(...data) - Math.min(...data),
+      dynamicRange: Math.max(...Array.from(data)) - Math.min(...Array.from(data)),
       frequencySpread: this.calculateFrequencySpread(data),
     };
   }

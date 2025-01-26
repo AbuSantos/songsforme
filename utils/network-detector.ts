@@ -4,11 +4,14 @@ interface NetworkInformation {
   downlink?: number; // Estimated download bandwidth in Mbps
   rtt?: number; // Estimated round-trip time in milliseconds
   addEventListener?: (event: string, callback: () => void) => void; // Listener for network changes
+  removeEventListener?: (event: string, callback: () => void) => void; // Remove listener for network changes
 }
 
 // Extend Navigator interface to include connection property
-interface Navigator {
-  connection?: NetworkInformation;
+declare global {
+  interface Navigator {
+    connection?: NetworkInformation;
+  }
 }
 
 export class NetworkDetector {
@@ -16,15 +19,17 @@ export class NetworkDetector {
    * Fetch network connection information.
    */
   static async getConnectionInfo() {
-    if (navigator.connection) {
-      const connection = navigator.connection;
+    if ((navigator as Navigator).connection) {
+      const connection = (navigator as Navigator).connection;
       
-      return {
-        type: connection.effectiveType || "unknown", // Fallback for older browsers
-        downlink: connection.downlink || Infinity, // Mbps
-        rtt: connection.rtt || 0, // ms
-      };
-      
+      if (connection) {
+        return {
+          type: connection.effectiveType || "unknown", // Fallback for older browsers
+          downlink: connection.downlink || Infinity, // Mbps
+          rtt: connection.rtt || 0, // ms
+        };
+      }
+
     }
     return { type: "unknown", downlink: Infinity, rtt: 0 };
   }

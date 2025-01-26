@@ -52,6 +52,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             try {
                 // Get optimal quality URL based on network
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
+                console.log(optimalUrl, "optimal url");
 
                 await engine.current.loadTrack(optimalUrl);
 
@@ -120,8 +121,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         const interval = setInterval(async () => {
             if (isPlaying) {
                 const isValid = await engine.current.validatePlayback();
-                console.log("Playback validation:", isValid);
-
                 if (!isValid) {
                     engine.current.stop();
                     // tracker.current.stop();

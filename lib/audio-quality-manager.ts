@@ -3,6 +3,8 @@ import { AudioEngine } from "./audio-engine";
 
 export class QualityManager {
   private currentQuality: string = "320k";
+  private manualOverride: string | null = null;
+  private onlineHandler: any = null;
 
   private qualityMap: Record<string, string> = {
     "64k": "/audio/low",
@@ -11,34 +13,47 @@ export class QualityManager {
     lossless: "/audio/flac",
   };
 
-  //   async getOptimalURL() {
-  //     const targetQuality = await NetworkDetector.selectBitrate();
-  //     this.currentQuality = targetQuality;
-  //     return this.qualityMap[targetQuality];
-  //   }
   async getOptimalURL(baseUrl: string) {
-    const quality = await NetworkDetector.selectBitrate();
-    this.currentQuality = quality;
-    return this.qualityToURL(baseUrl, quality);
+    try {
+      if (this.manualOverride) {
+        return this.qualityToURL(baseUrl, this.manualOverride);
+      }
+
+      const quality = await NetworkDetector.selectBitrate();
+      this.currentQuality = quality;
+      return this.qualityToURL(baseUrl, quality);
+    } catch (error) {
+      console.error("Error selecting bitrate:", error);
+      return this.qualityToURL(baseUrl, "64k"); // Fallback
+    }
   }
+
   private qualityToURL(url: string, quality: string) {
-    // Implement your quality URL resolution logic
     return `${url}?quality=${quality}`;
   }
 
-  //   dynamicSwitch(engine: AudioEngine) {
-  //     window.addEventListener("online", async () => {
-  //       const newQuality = await NetworkDetector.selectBitrate();
-  //       if (newQuality !== this.currentQuality) {
-  //         engine.loadTrack(await this.getOptimalURL());
-  //       }
-  //     });
-  //   }
-
   initDynamicSwitching(engine: AudioEngine, baseUrl: string) {
-    window.addEventListener("online", async () => {
+    if (this.onlineHandler) {
+      window.removeEventListener("online", this.onlineHandler);
+    }
+
+    this.onlineHandler = async () => {
       const newUrl = await this.getOptimalURL(baseUrl);
       engine.loadTrack(newUrl);
+    };
+
+    window.addEventListener("online", this.onlineHandler);
+    window.addEventListener("offline", () => {
+      console.warn("Network disconnected. Switching to lowest quality.");
+      engine.loadTrack(this.qualityToURL(baseUrl, "64k"));
     });
+  }
+
+  setManualQuality(quality: string) {
+    if (this.qualityMap[quality]) {
+      this.manualOverride = quality;
+    } else {
+      console.warn("Invalid quality setting:", quality);
+    }
   }
 }

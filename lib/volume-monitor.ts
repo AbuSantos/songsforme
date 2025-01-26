@@ -52,12 +52,14 @@ export class VolumeMonitor {
   ) {
     const engine = engineRef.current;
 
+    //@ts-ignore
     if (!engine.audioElement) {
       console.warn("No audio element found in AudioEngine.");
       return false;
     }
 
     const volumeMonitor = new VolumeMonitor();
+    //@ts-ignore
     volumeMonitor.init(engine.audioElement);
 
     const currentVolume = volumeMonitor.getVolumeLevel();
