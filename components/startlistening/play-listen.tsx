@@ -7,6 +7,7 @@ import { endListening } from '@/actions/endListening';
 import { startListening } from '@/actions/startListening';
 import { AudioEngine } from '@/lib/audio-engine';
 import { QualityManager } from '@/lib/audio-quality-manager';
+import { VolumeMonitor } from '@/lib/volume-monitor';
 
 type PlaylistIdTypes = {
     userId: string | undefined;
@@ -52,9 +53,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 // Get optimal quality URL based on network
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
 
-                console.log(optimalUrl, "optimal url")
-                console.log(audioUrl, "audio url from playlisten")
-
                 await engine.current.loadTrack(optimalUrl);
 
                 // Set up quality switching
@@ -72,6 +70,24 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             // tracker.current.stop();
         };
     }, [audioUrl]);
+
+    useEffect(() => {
+        const validateVolume = async () => {
+            if (isPlaying) {
+                const isValid = await VolumeMonitor.validateListeningSession(engine, 5);
+                if (!isValid) {
+                    engine.current.stop();
+                    await endListening(userId, playlistId, "true");
+                    toast.warning("Playback paused due to low volume.");
+                    setIsPlaying(false);
+                }
+            }
+        };
+
+        const interval = setInterval(validateVolume, 15000); // Check every 15 seconds
+        return () => clearInterval(interval);
+    }, [isPlaying, userId, playlistId]);
+
 
     const handlePlayPause = async () => {
         if (!userId) {
