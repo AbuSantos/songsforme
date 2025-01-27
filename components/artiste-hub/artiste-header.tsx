@@ -146,8 +146,8 @@ export const ArtisteHeader = ({
                 <div>
                     <h1 className="font-semibold text-xl">{name}</h1>
                     <small className="block text-gray-300">{bio} This is a bio</small>
-                    <div className="flex items-center space-x-4 mt-2">
-                        <p className="text-sm">{followers} followers</p>
+                    <div className="flex items-center gap-x-2 mt-2 justify-center">
+                        <p className="text-[0.8rem]">{followers} followers</p>
                         {
                             userId && <div>
                                 {
@@ -155,7 +155,7 @@ export const ArtisteHeader = ({
                                         <p>Loading...</p>
                                     ) : data?.isFollowing ? (
                                         <Popover>
-                                            <PopoverTrigger className="text-sm">Following</PopoverTrigger>
+                                            <PopoverTrigger className="text-[0.8rem]">Following</PopoverTrigger>
                                             <PopoverContent>
                                                 <Button
                                                     onClick={() => handleFollowAction("unfollow")}
