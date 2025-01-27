@@ -1,5 +1,6 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Button } from '../ui/button';
 import { getNFTMetadata } from '@/actions/helper/get-metadata';
 import { toast } from 'sonner';
@@ -143,9 +144,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                     className='bg-[var(--button-bg)] shadow-md'
                 >
                     {isLoading ? (
-                        <p>Hello</p>
-
-                        // <Image src="/images/loader.svg" alt='loader' width={30} height={30} />
+                        <Image src="/images/loader.svg" alt='loader' width={30} height={30} />
                     ) : isPlaying ? (
                         <PauseIcon />
                     ) : (
@@ -154,7 +153,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 </Button>
             ) : (
                 <Button disabled className='bg-[var(--button-bg)] shadow-md'>
-                    {/* <Image src="/images/loader.svg" alt='loader' width={30} height={30} /> */}
+                    <Image src="/images/loader.svg" alt='loader' width={30} height={30} />
                 </Button>
             )}
         </div>

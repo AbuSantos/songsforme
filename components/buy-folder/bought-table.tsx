@@ -3,7 +3,7 @@
 import { Text } from "@radix-ui/themes"
 import { BuyNFT, ListedNFT } from "@/types";
 import Link from "next/link";
-import { Playlisten } from "@/components/startlistening/play-listenn";
+// import { Playlisten } from "@/components/startlistening/play-listenn";
 import { Actions } from "@/components/actions/actions";
 import Image from "next/image";
 
@@ -14,6 +14,7 @@ import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { toggleState } from "@/actions/toggle-buy-sell";
 import { mutate } from "swr";
+import { Playlisten } from "../startlistening/play-listen";
 
 type TrackTableType = {
     data: BuyNFT
