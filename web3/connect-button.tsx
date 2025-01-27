@@ -28,9 +28,6 @@ export const ConnecttButton = () => {
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
-
-    console.log(isCreatingUser)
-
     const wallets = [
         inAppWallet({
             //@ts-ignore
@@ -41,8 +38,6 @@ export const ConnecttButton = () => {
         createWallet("io.metamask"),
         createWallet("com.coinbase.wallet"),
         createWallet("me.rainbow"),
-
-
     ];
     return (
         <>
@@ -67,13 +62,8 @@ export const ConnecttButton = () => {
 
                         const normalizedAddress = account.address.toLowerCase();
                         const user = await getUserByAddress(normalizedAddress);
-
-                        console.log(user)
-
                         if (user) {
                             // User exists, set session
-
-                            console.log(user, "user from user")
                             await setsession(normalizedAddress);
                             const session: UserSession = {
                                 userId: normalizedAddress,
