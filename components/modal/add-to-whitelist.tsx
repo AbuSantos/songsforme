@@ -24,7 +24,7 @@ type modalTypes = {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const AddToWhitelist = ({ adminId, userId }: { adminId: string, userId: string }) => {
+export const AddToWhitelist = ({ adminId, userId, email }: { adminId: string, userId: string, email: string }) => {
 
     const [isPending, startTransition] = useTransition();
     const [address, setAddress] = useState<string>("");
@@ -34,7 +34,7 @@ export const AddToWhitelist = ({ adminId, userId }: { adminId: string, userId: s
     const handleAddToWhiteList = async () => {
         startTransition(async () => {
             try {
-                const res = await addToWhiteList(adminId, userId)
+                const res = await addToWhiteList(adminId, userId, email)
                 if (res.success) {
                     toast.success(res.message)
                 } else {
@@ -78,7 +78,7 @@ export const AddToWhitelist = ({ adminId, userId }: { adminId: string, userId: s
                         onTransactionConfirmed={async (receipt) => {
                             if (receipt.status === "success") {
                                 try {
-                                    await addToWhiteList(adminId, userId);
+                                    await addToWhiteList(adminId, userId, email);
                                     mutate(`/api/user/${userId}`)
                                     toast.success("User added Successfully!");
                                 } catch (error) {

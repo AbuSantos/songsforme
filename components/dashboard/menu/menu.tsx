@@ -23,6 +23,7 @@ export function Menu() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [listModalOpen, setListModalOpen] = useState<boolean>(false)
     const userId = useRecoilValue(isConnected)?.userId;
+    const userEmail = useRecoilValue(isConnected)?.userEmail
 
     const adminId = process.env.NEXT_PUBLIC_ADMIN_WALLET?.toLowerCase()!
 
@@ -40,7 +41,7 @@ export function Menu() {
             <div className="ml-auto flex mr-4 justify-end space-x-2">
                 {
                     userId && userId === adminId &&
-                    <AddToWhitelist adminId={adminId} userId={userId} />
+                    <AddToWhitelist adminId={adminId} userId={userId} email={userEmail || ""} />
                 }
 
                 <ConnecttButton />
