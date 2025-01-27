@@ -155,7 +155,7 @@ export const ArtisteHeader = ({
                                         <p>Loading...</p>
                                     ) : data?.isFollowing ? (
                                         <Popover>
-                                            <PopoverTrigger>Following</PopoverTrigger>
+                                            <PopoverTrigger className="text-sm">Following</PopoverTrigger>
                                             <PopoverContent>
                                                 <Button
                                                     onClick={() => handleFollowAction("unfollow")}
@@ -178,63 +178,14 @@ export const ArtisteHeader = ({
                                 }
                             </div>
                         }
-                        <div>
-                            {
-                                isArtist ?
-                                    <Popover>
-                                        <PopoverTrigger>Set up Ticketing</PopoverTrigger>
-                                        <PopoverContent >
-                                            <div className="p-4 space-y-3">
-                                                <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to setup ticketing.
-                                                    <span className="font-bold text-gray-200">
-                                                        COMING SOON!
-                                                    </span>
-
-                                                </small>
-                                                <Button
-                                                    // onClick={() => handleFollowAction("unfollow")}
-                                                    //TO BE WORKED ON
-                                                    disabled={true}
-                                                    className="w-full"
-                                                    variant="destructive"
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            </div>
-
-                                        </PopoverContent>
-                                    </Popover> : <Popover>
-                                        <PopoverTrigger>Purchase Ticket</PopoverTrigger>
-                                        <PopoverContent >
-                                            <div className="p-4 space-y-3">
-                                                <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to purchase this artiste concert ticket.   <span className="font-bold text-gray-200">
-                                                    COMING SOON!
-                                                </span></small>
-                                                <Button
-                                                    // onClick={() => handleFollowAction("unfollow")}
-                                                    //TO BE WORKED ON
-                                                    disabled={true}
-                                                    className="w-full"
-                                                    variant="destructive"
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            </div>
-
-                                        </PopoverContent>
-                                    </Popover>
-
-                            }
-                        </div>
 
                     </div>
-
                 </div>
             </div>
             <div>
                 <div className="flex  space-x-2">
                     <div>
-                        <h1 className="text-xl font-semibold">Total Streams</h1>
+                        <h1 className="text-base md:text-xl font-semibold">Total Streams</h1>
                         <p className="text-center">{totalStreams}</p>
                     </div>
                     <Separator orientation="vertical" />
@@ -243,12 +194,58 @@ export const ArtisteHeader = ({
                         {
                             isArtist &&
                             <>
-                                <h1 className="text-xl font-semibold">Total Earnings</h1>
-                                <p className="text-center flex md:block">
+                                <h1 className="text-base md:text-xl font-semibold">Total Earnings</h1>
+                                <p className="text-center flex justify-center items-center gap-x-1">
                                     {analytics?.totalEarnings?.toFixed(3)}
                                     <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className="ml-1" />
                                 </p>
                             </>
+                        }
+                    </div>
+                    <div>
+                        {
+                            isArtist ?
+                                <Popover>
+                                    <PopoverTrigger className="text-base md:text-xl font-semibold">Set up Ticketing</PopoverTrigger>
+                                    <PopoverContent >
+                                        <div className="p-4 space-y-3">
+                                            <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to setup ticketing.
+                                                <span className="font-bold text-gray-200">
+                                                    COMING SOON!
+                                                </span>
+
+                                            </small>
+                                            <Button
+                                                //TO BE WORKED ON
+                                                disabled={true}
+                                                className="w-full"
+                                                variant="destructive"
+                                            >
+                                                Confirm
+                                            </Button>
+                                        </div>
+
+                                    </PopoverContent>
+                                </Popover> : <Popover>
+                                    <PopoverTrigger className="text-base md:text-xl font-semibold"> Purchase Ticket</PopoverTrigger>
+                                    <PopoverContent >
+                                        <div className="p-4 space-y-3">
+                                            <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to purchase this artiste concert ticket.   <span className="font-bold text-gray-200">
+                                                COMING SOON!
+                                            </span></small>
+                                            <Button
+                                                // onClick={() => handleFollowAction("unfollow")}
+                                                //TO BE WORKED ON
+                                                disabled={true}
+                                                className="w-full"
+                                                variant="destructive"
+                                            >
+                                                Confirm
+                                            </Button>
+                                        </div>
+
+                                    </PopoverContent>
+                                </Popover>
                         }
                     </div>
 
