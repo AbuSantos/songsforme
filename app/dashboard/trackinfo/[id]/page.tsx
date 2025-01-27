@@ -13,8 +13,8 @@ interface PageProps {
     searchParams: { tokenId?: string };
 }
 
-export async function Page({ params, searchParams }: PageProps) {
-  
+const page = async ({ params, searchParams }: PageProps) => {
+
     const { id } = params;
     const tokenId = searchParams?.tokenId;
 
@@ -85,4 +85,4 @@ export async function Page({ params, searchParams }: PageProps) {
     }
 }
 
-export default Page;
+export default page;
