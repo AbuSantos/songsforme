@@ -27,7 +27,7 @@ export const MyEarnings = ({ data }: { data: User }) => {
                             </div>
                         }
                     </h1>
-                    <span className="text-gray-50">
+                    <span className="text-slate-500 text-sm">
                         Accumulated Time: {data?.accumulatedTime || 0}s
                     </span>
                 </div>

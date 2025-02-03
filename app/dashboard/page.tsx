@@ -61,6 +61,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
     const filter = searchParams.filter?.trim() || "ratio" || undefined;
     const orderBy = filter === "ratio" ? { rewardRatio: "desc" as const } : filter === "playtime" ? { accumulatedTime: "asc" as const } : undefined
     const filterByName = filter !== "ratio" && filter !== "playtime" ? filter : ""
+    revalidateTag("nft");
 
     try {
         {/* @ts-ignore */ }
@@ -70,7 +71,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             }
         });
 
-        revalidateTag("nft");
         {/* @ts-ignore */ }
         const singleNft: Single[] = await db.single.findMany({
             select: {
@@ -313,8 +313,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </p>
                                 </div>
                                 <Separator className="my-4 " />
-
-                                {/* @ts-ignore */}
                                 <MyArtisteHub />
                             </TabsContent>
 

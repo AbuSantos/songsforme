@@ -7,10 +7,12 @@ import { calculateRecentPlays } from "./helper/calculate-playcount";
 import { ListedNFT, User } from "@/types";
 import { calculateReward } from "./helper/calculate-reward";
 // import { calculateReward } from "../helper/calculate-reward";
+
 /**
  * Ends the current active listening session for a user and updates both the user and the NFT's accumulated time atomically.
  * @param {string} userId - The ID of the user ending the session.
  */
+
 export const endListening = async (
   userId?: string,
   playlistId?: string,

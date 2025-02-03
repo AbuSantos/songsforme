@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useState, useTransition } from "react";
+import React, { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -32,6 +32,7 @@ type NftState = {
 export const Minter = () => {
     const userId = useRecoilValue(isConnected)?.userId;
     const userEmail = useRecoilValue(isConnected)?.userEmail;
+    const username = useRecoilValue(isConnected)?.username
 
     const [nftDetails, setNftDetails] = useState<NftState>({
         name: "",
@@ -55,6 +56,7 @@ export const Minter = () => {
         clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
         secretKey: process.env.THIRDWEB_NEW_API!,
     });
+
     // Update NFT details for non-file inputs
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
@@ -69,8 +71,7 @@ export const Minter = () => {
         try {
             const uri = await storage.upload(file);
             const gatewayUrl = storage.resolveScheme(uri);
-            console.log("File uploaded to IPFS:", uri);
-            console.log("Gateway URL:", gatewayUrl);
+
             return gatewayUrl;
         } catch (error) {
             console.error("Failed to upload to IPFS:", error);
@@ -79,12 +80,11 @@ export const Minter = () => {
     };
 
     // Handle image file selection and upload
-    const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const handleAvatarUpload = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
         setUploading(true);
-
         try {
             // Upload image to IPFS
             const ipfsUrl = await uploadToIPFS(file);
@@ -98,6 +98,7 @@ export const Minter = () => {
             reader.onload = (e) => {
                 if (e.target?.result) setLocalImage(e.target.result as string);
             };
+
             reader.readAsDataURL(file);
         } catch (error) {
             console.error("Image upload failed:", error);
@@ -112,7 +113,6 @@ export const Minter = () => {
         if (!file) return;
 
         setUploading(true);
-
         try {
             const ipfsUrl = await uploadToIPFS(file);
             setNftDetails((prev) => ({
@@ -166,9 +166,6 @@ export const Minter = () => {
 
     const handleDeployedMint = async () => {
         const mintContract = await nftContract(deployedAddress)
-        console.log(mintContract)
-        console.log(deployedAddress)
-
         const tx = prepareContractCall({
             contract: mintContract,
             method: "mintNFT",
@@ -179,8 +176,7 @@ export const Minter = () => {
 
     const handleSaveToDatabase = async () => {
         startTransition(async () => {
-            //@ts-ignore
-            const res = await createSingleWithNFTs(userId, nftDetails.name, nftDetails.name, userId, nftDetails.image, "0", "1", deployedAddress, tokenUri, userEmail)
+            const res = await createSingleWithNFTs((userId || ""), (username || ""), nftDetails.name, (userId || ""), nftDetails.image, "0", "1", deployedAddress, tokenUri, userEmail)
             //@ts-ignore
             if (res.status === "success") {
                 toast.success("NFT MINTED successfull")
@@ -205,7 +201,7 @@ export const Minter = () => {
                         <Input
                             type="file"
                             id="image"
-                            onChange={handleImageUpload}
+                            onChange={handleAvatarUpload}
                             className="hidden"
                         />
                         {localImage ? (

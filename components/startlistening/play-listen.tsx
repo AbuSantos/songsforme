@@ -46,6 +46,8 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         fetchMetadata();
     }, [nftContractAddress, tokenId]);
 
+    console.log(nftData, "set nft data")
+
     useEffect(() => {
         if (!audioUrl) return;
 

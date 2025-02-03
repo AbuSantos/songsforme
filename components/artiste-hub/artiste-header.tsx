@@ -85,6 +85,7 @@ export const ArtisteHeader = ({
         try {
             const uri = await storage.upload(file);
             const gatewayUrl = storage.resolveScheme(uri);
+
             console.log("File uploaded to IPFS:", uri);
             console.log("Gateway URL:", gatewayUrl);
             return gatewayUrl;
@@ -93,8 +94,11 @@ export const ArtisteHeader = ({
             throw error;
         }
     };
+
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
+        console.log("hello header");
+
+      const file = event.target.files?.[0]
         if (!file) return;
         setUploading(true);
         try {
@@ -109,7 +113,6 @@ export const ArtisteHeader = ({
         } finally {
             setUploading(false);
         }
-
     }
 
     const totalStreams = analytics?.totalStreams?.reduce((sum: { timestamp: string, count: number }, stream: { timestamp: string, count: number }) => {
@@ -126,17 +129,17 @@ export const ArtisteHeader = ({
             <div className="flex items-end space-x-2">
                 <div
                     className="image flex flex-col overflow-hidden items-center justify-center  cursor-pointer "
-                    onClick={() => document.getElementById("image")?.click()}
+                    onClick={() => document.getElementById("avatar_image")?.click()}
                 >
                     <Input
                         type="file"
-                        id="image"
+                        id="avatar_image"
                         onChange={handleImageUpload}
                         className="hidden"
                     />
                     <Image
                         src={profilePic || "/default-profile.png"}
-                        alt={name || ""}
+                        alt={name || "Click to add image"}
                         width={250}
                         height={200}
                         className="object-cover rounded-md"
@@ -178,7 +181,6 @@ export const ArtisteHeader = ({
                                 }
                             </div>
                         }
-
                     </div>
                 </div>
             </div>

@@ -28,7 +28,6 @@ type Genre = {
 const genres: Genre[] = [
     { id: 1, name: "Afrobeat" },
     { id: 2, name: "Hip Hop" },
-    { id: 3, name: "R&B" },
     { id: 4, name: "Pop" },
     { id: 5, name: "Jazz" },
     { id: 6, name: "Indie" },

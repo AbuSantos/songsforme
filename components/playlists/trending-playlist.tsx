@@ -25,7 +25,6 @@ export function TrendingPlaylist({
     const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
     const [openTrack, setOpenTrack] = React.useState<boolean>(false)
 
-    console.log(album)
 
     return (
         <div className={cn("space-y-3 hover:bg-[#2A2A2A] rounded-md py-4 px-[0.8rem]", className)} {...props}>

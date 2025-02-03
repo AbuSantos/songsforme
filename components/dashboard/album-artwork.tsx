@@ -1,10 +1,8 @@
 "use client";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import Link from "next/link";
 import * as React from "react";
-import { useSongData } from "@/hooks/use-song-data";
 import { Single } from "@/types";
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,7 +15,6 @@ export function AlbumArtwork({
     className,
     ...props
 }: AlbumArtworkProps) {
-    const { audioRef, isPlaying, currentTrackId, setTrack, togglePlayPause } = useAudioPlayer();
     const [openTrack, setOpenTrack] = React.useState<boolean>(false);
 
     return (

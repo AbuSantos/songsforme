@@ -13,24 +13,27 @@ type NFTTypes = {
 
 // Update the accumulated time for the specific NFT in the NFTListeningTime table with locking
 export const playListTime = async (user: User, listeningDuration: number) => {
+ 
   // Validate inputs
   if (!user || listeningDuration <= 0) {
     throw new Error("Invalid input parameters.");
   }
 
   const nft = await db.listedNFT.findUnique({
-    where: { id: user.currentNftId as string },
+    where: { id: user?.currentNftId as string },
     select: {
       id: true,
       rewardRatio: true,
       recentPlays: true,
     },
   });
+
+
   if (!nft) throw new Error(`NFT with id ${user.currentNftId} not found.`);
 
   const playlist = db.playlist.findUnique({
     where: {
-      id: user.playlistId as string,
+      id: user?.playlistId as string,
     },
     select: {
       rewardRatio: true,
@@ -40,11 +43,12 @@ export const playListTime = async (user: User, listeningDuration: number) => {
   if (!playlist) throw new Error(`NFT with id ${user.playlistId} not found.`);
 
   const nftRewardRatio = nft.rewardRatio || 0.2;
+ 
   //@ts-ignore
   const playlistRewardRatio = playlist.rewardRatio || 0.1;
-
   const ownerListeningTime = Math.round(listeningDuration * nftRewardRatio); // Owner's share
   const playlisterTime = Math.round(listeningDuration * playlistRewardRatio); // Owner's share
+  
   const listenerListeningTime =
     listeningDuration - (nftRewardRatio + playlistRewardRatio); // Listener's share
 
