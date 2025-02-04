@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"
 import { getNFTMetadata } from "@/actions/helper/get-metadata";
 import { useRouter } from "next/navigation";
+import { SCopy } from "@/components/actions/s-copy";
 
 type TrackTableType = {
     data: ListedNFT[];
@@ -69,7 +70,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
 
     try {
         return (
-            <div>
+            <div className="scroll-smooth">
                 <header className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between text-[#484848] px-1">
                     <Text className="uppercase font-extralight w-10 text-[0.8rem] ">T-ID</Text>
                     <Text className="font-[50] capitalize text-[0.8rem] w-6/12 ">Title</Text>
@@ -81,13 +82,16 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     return (
                         <div
                             key={track.id}
-                            className="flex items-center justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[var(--data-table-bg)] hover:bg-[var(--data-table-hover-bg)] hover:text-[var(--data-table-text)] px-1 py-2 w-full mt-2 text-start rounded-md z-10"
+                            className="flex items-center justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[var(--data-table-bg)] hover:bg-[var(--data-table-hover-bg)] hover:text-[var(--data-table-text)] px-1 py-2 w-full mt-2 text-start rounded-md z-10 scroll-smooth"
                         >
                             <Link href={`/dashboard/trackinfo/${track.contractAddress}?tokenId=${track.tokenId}`} className="flex w-6/12 items-center">
                                 <p className="w-10 hidden md:block">{track?.tokenId}</p>
                                 <div className="flex flex-col w-8/12">
-                                    <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.song_name || track?.Single?.artist_name || "Untitled Track"}
-                                        {/* <Copy address={track?.contractAddress} mode="data" /> */}
+                                    <p className="flex space-x-2 items-center">
+                                        <span className="text-[0.8rem] md:text-[1rem] capitalize">
+                                            {track?.Single?.song_name || track?.Single?.artist_name || "Untitled Track"}
+                                        </span>
+                                        <Copy address={track?.contractAddress} mode="data" />
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-center w-4/12">
@@ -128,6 +132,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                         <PopoverContent className="w-[250px] space-y-2">
                                             <SelectPlaylist userId={userId} nftId={track.id} />
                                             <Favorite nftId={track?.id} userId={userId} />
+                                            <SCopy address={track?.contractAddress} mode="data" />
                                         </PopoverContent>
                                     </Popover>
                                 </div>
@@ -135,7 +140,6 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                 <div className="items-start hidden md:flex space-x-2 ">
                                     <SelectPlaylist userId={userId} nftId={track.id} />
                                     <Favorite nftId={track?.id} userId={userId} />
-
                                 </div>
                             </div>
                         </div>
