@@ -143,7 +143,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                 <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
                     <div className="h-full w-full lg:px-8">
                         <Tabs defaultValue="music" className="h-full border-0 ">
-                            <div className="hidden md:flex items-center fixed py-5 space-x-4 justify-between w-full bg-[#111111] md:w-[67.5%] box-border">
+                            <div className="hidden md:flex items-center fixed py-5 space-x-4 justify-between w-full bg-[#111111] md:w-[67.5%] box-border z-50">
                                 <TabsList className="space-x-3 w-full hidden md:flex z-50">
                                     < DesktopTab artistesIds={whitelistedArtists} />
                                 </TabsList>

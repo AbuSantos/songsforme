@@ -38,7 +38,7 @@ const MarketPlace = () => {
 
     return (
         <Suspense fallback={<MarketSkeleton />}>
-            <div className="w-full">
+            <div className="w-full mt-10">
                 <Tracktable data={data.data} />
             </div>
         </Suspense>
