@@ -20,15 +20,13 @@ import { isConnected } from "@/atoms/session-atom"
 
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-    const [listModalOpen, setListModalOpen] = useState<boolean>(false)
     const userId = useRecoilValue(isConnected)?.userId;
     const userEmail = useRecoilValue(isConnected)?.userEmail
 
     const adminId = process.env.NEXT_PUBLIC_ADMIN_WALLET?.toLowerCase()!
 
     return (
-        <div className="md:fixed justify-between items-center p-3 hidden md:flex w-full bg-black">
+        <div className="md:fixed justify-between items-center p-3 hidden md:flex w-[95%] bg-black z-50">
             <Menubar className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
                 <MenubarMenu>
                     <MenubarTrigger className="font-bold text-xl">

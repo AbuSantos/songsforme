@@ -144,7 +144,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                     <div className="h-full w-full lg:px-8">
                         <Tabs defaultValue="music" className="h-full border-0 ">
                             <div className="hidden md:flex items-center fixed py-5 space-x-4 justify-between w-full bg-[#111111] md:w-[67.5%] box-border">
-                                <TabsList className="space-x-3 w-full hidden md:flex">
+                                <TabsList className="space-x-3 w-full hidden md:flex z-50">
                                     < DesktopTab artistesIds={whitelistedArtists} />
                                 </TabsList>
 
@@ -175,7 +175,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             </div>
                             <TabsContent
                                 value="music"
-                                className="border-none md:pt-24 pt-2 outline-none px-2 "
+                                className="border-none md:pt-24 pt-2 outline-none px-2 z-50"
                             >
                                 <div className="w-full ">
                                     <div className="w-[99%] md:hidden flex mb-4">
@@ -219,11 +219,11 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 className="w-full data-[state=active]:flex md:pt-16 pt-2 px-2"
                             >
                                 <div className="h-screen w-full flex-col border-none p-0 ">
-                                    <div className="md:flex space-x-2 justify-between bg-[#111111] fixed md:w-[90%] w-full m-auto">
+                                    <div className="md:grid grid-cols-2 space-x-2 justify-between bg-[#111111] fixed md:w-[65%] w-[98%] m-auto z-50">
                                         <div className="w-[98%] flex items-center m-auto ">
                                             <Search placeholder="Search songs..." />
                                         </div>
-                                        <div className="flex items-center w-[100%] space-x-2">
+                                        <div className="flex items-center space-x-2">
                                             <FilterPlace />
                                             <FilterByTime />
                                         </div>

@@ -23,7 +23,7 @@ export const FilterByTime = () => {
     };
 
     return (
-        <div className="flex p-2 space-x-1">
+        <div className="flex p-2 space-x-1 w-full">
             <Toggle
                 pressed={activeFilter === "6min"}
                 aria-label="10m hours filter"

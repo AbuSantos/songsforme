@@ -47,7 +47,7 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     }
 
     return (
-        <div>
+        <div className="z-10">
             <TransactionButton
                 className="w-[60px] p-2 bg-black"
                 // Function to prepare the contract call and create the transaction

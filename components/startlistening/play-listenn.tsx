@@ -33,7 +33,6 @@ export const Playlistenn = ({ userId, nftId, playlistId, nftContractAddress, tok
                     nftContractAddress,
                     tokenId
                 );
-                console.log(response, "from playlisten")
                 setNftData(response.raw.metadata)
             } catch (error) {
                 console.log(error)
@@ -47,6 +46,8 @@ export const Playlistenn = ({ userId, nftId, playlistId, nftContractAddress, tok
     useEffect(() => {
         if (nftData?.animation_url) {
             const formattedUrl = formatIpfsUrl(nftData.animation_url);
+
+            console.log(formattedUrl, "from audio")
 
             audioRef.current = new Audio(formattedUrl);
             const handleEnded = async () => {

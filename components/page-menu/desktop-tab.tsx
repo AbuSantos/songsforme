@@ -16,7 +16,7 @@ export const DesktopTab = ({ artistesIds }: DesktopTabType) => {
 
     const isWhitelisted = artistesIds.some((id: ArtistesId) => id.userId === userId)
     return (
-        <div className=" px-2 py-2 flex items-start ">
+        <div className=" px-2 py-2 flex items-start z-50">
             <TabsTrigger value="music" className="relative">
                 Home
             </TabsTrigger>

@@ -81,20 +81,22 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     return (
                         <div
                             key={track.id}
-                            className="flex items-center justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[var(--data-table-bg)] hover:bg-[var(--data-table-hover-bg)] hover:text-[var(--data-table-text)] px-1 py-2 w-full mt-2 text-start rounded-md"
+                            className="flex items-center justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#7B7B7B] bg-[var(--data-table-bg)] hover:bg-[var(--data-table-hover-bg)] hover:text-[var(--data-table-text)] px-1 py-2 w-full mt-2 text-start rounded-md z-10"
                         >
                             <Link href={`/dashboard/trackinfo/${track.contractAddress}?tokenId=${track.tokenId}`} className="flex w-6/12 items-center">
-                                <p className="w-10">{track?.tokenId}</p>
+                                <p className="w-10 hidden md:block">{track?.tokenId}</p>
                                 <div className="flex flex-col w-8/12">
-                                    <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.song_name || track?.Single?.artist_name || "Untitled Track"}  <Copy address={track?.contractAddress} mode="data" /></p>
+                                    <p className="text-[0.8rem] md:text-[1rem] capitalize">{track?.Single?.song_name || track?.Single?.artist_name || "Untitled Track"}
+                                        {/* <Copy address={track?.contractAddress} mode="data" /> */}
+                                    </p>
                                 </div>
                                 <div className="flex items-center justify-center w-4/12">
                                     <span>{track?.price}</span>
-                                    <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className="ml-1" />
+                                    <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-1" />
                                 </div>
                             </Link>
 
-                            <div>
+                            <div className="z-0">
                                 {userId && (track?.sold === true ?
                                     (<Badge className="bg-[teal] text-[0.7rem]">Sold</Badge>) : track?.seller === userId ?
                                         (
@@ -114,7 +116,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                         ))}
                             </div>
                             <div className="items-center space-x-2 flex ml-2">
-                                <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
+                                {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}
                                 <div className="block md:hidden">
 
                                     <Popover>

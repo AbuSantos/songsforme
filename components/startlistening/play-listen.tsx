@@ -46,8 +46,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         fetchMetadata();
     }, [nftContractAddress, tokenId]);
 
-    console.log(nftData, "set nft data")
-
     useEffect(() => {
         if (!audioUrl) return;
 
@@ -55,8 +53,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             try {
                 // Get optimal quality URL based on network
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
-                console.log(optimalUrl, "optimal url");
-
                 await engine.current.loadTrack(optimalUrl);
 
                 // Set up quality switching
