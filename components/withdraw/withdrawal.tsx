@@ -22,8 +22,7 @@ export const WithdrawRewards = () => {
         const fetchAccumulatedTime = async () => {
             setIsLoading(true);
             try {
-                //@ts-ignore
-                const time = await getUserAccumulatedTime(userId) as number;
+                const time = await getUserAccumulatedTime(userId || "") as number;
                 setTotalTime(time);
             } catch (error) {
                 console.error("Error fetching accumulated time:", error);
@@ -36,7 +35,7 @@ export const WithdrawRewards = () => {
         fetchAccumulatedTime();
     }, [userId]);
 
-  
+
 
     return (
         <div className='w-full mt-2'>
@@ -68,6 +67,7 @@ export const WithdrawRewards = () => {
                     }
                 }}
                 onError={(error) => {
+                    console.log(error)
                     const errorMessage = error.message.includes("Claim cooldown active")
                         ? "Withdrawal is limited to once per week."
                         : "An error occurred during withdrawal.";

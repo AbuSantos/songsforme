@@ -48,7 +48,7 @@ export class VolumeMonitor {
    */
   public static async validateListeningSession(
     engineRef: React.MutableRefObject<AudioEngine>,
-    threshold = 10
+    threshold = 5
   ) {
     const engine = engineRef.current;
 

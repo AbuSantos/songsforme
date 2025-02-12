@@ -109,17 +109,45 @@ export const Minter = () => {
 
     // Handle song upload
     const handleSongUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
+        console.log("Event:", event); // Debugging
+        console.log("Files:", event.target.files); // Debugging
 
-        setUploading(true);
+        const file = event.target.files?.[0];
+        if (!file) {
+            console.error("No file selected!");
+            return;
+        }
+
+        console.log("Uploading file:", file);
+        const formData = new FormData();
+        formData.append("file", file);
+
+
+        console.log("hello from form")
+
+
+
+        // setUploading(true);
         try {
-            const ipfsUrl = await uploadToIPFS(file);
-            setNftDetails((prev) => ({
-                ...prev,
-                animation_url: ipfsUrl,
-            }));
-            console.log("Song uploaded to IPFS:", ipfsUrl);
+
+            const response = await fetch("/api/analyze-audio", {
+                method: "POST",
+                body: formData,
+            });
+            console.log(response)
+            if (!response.ok) {
+                throw new Error(`Upload failed: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log("Extracted Features:", data);
+
+            // const ipfsUrl = await uploadToIPFS(file);
+            // setNftDetails((prev) => ({
+            //     ...prev,
+            //     animation_url: ipfsUrl,
+            // }));
+            // console.log("Song uploaded to IPFS:", ipfsUrl);
         } catch (error) {
             console.error("Song upload failed:", error);
         } finally {

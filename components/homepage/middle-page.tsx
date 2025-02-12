@@ -10,7 +10,7 @@ export const MiddlePage = () => {
             <Accordion type="single" collapsible className="w-full">
                 <div className='md:py-1 items-center justify-center text-center pb-4'>
                     <Button type="submit" size="lg" variant="outline" className="w-full bg-blue-400  text-gray-900  hover:bg-blue-500 border-none text-xl  transition" >
-                        <Link href="/dashboard">
+                        <Link href="/dashboard" prefetch>
                             Explore
                         </Link>
                     </Button>

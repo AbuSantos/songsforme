@@ -12,13 +12,11 @@ export const MyEarnings = ({ data }: { data: User }) => {
             <div className="w-full p-3 flex flex-col bg-[#191919] h-[14rem] rounded-md ">
                 <div className="flex flex-col items-start">
                     <h1 className="text-gray-50 text-2xl">
-
                         {earnings === 0 ?
                             <>
                                 < div className='flex items-center space-x-2'>
                                     0
                                     <Image src={"/base-logo.svg"} alt="base eth" width={20} height={20} className="ml-1" />
-
                                 </div>
                             </>
                             :

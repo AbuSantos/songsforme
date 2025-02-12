@@ -214,10 +214,10 @@ contract BullchordMarketPlaceListen is ReentrancyGuard {
         // if (signer != trustedSigner) revert InvalidSignature();
 
 
-         uint256 maxAccumulatedTime = 1 weeks;  
-            if (accumulatedTime > maxAccumulatedTime) {
-                revert("Accumulated time exceeds maximum allowed.");
-            }
+        //  uint256 maxAccumulatedTime = 1 weeks;  
+        //     if (accumulatedTime > maxAccumulatedTime) {
+        //         revert("Accumulated time exceeds maximum allowed.");
+        //     }
 
         uint256 amountReward = accumulatedTime * currentRate;
 
