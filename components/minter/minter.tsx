@@ -17,6 +17,7 @@ import { useRecoilValue } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { createSingleWithNFTs } from "@/actions/create-list";
 import { toast } from "sonner";
+import { classifyMood } from "@/lib/classify-moods";
 
 type NftState = {
     name: string;
@@ -27,6 +28,10 @@ type NftState = {
     attributes: { trait_type: string; value: string }[]; // Update this type
     royalty: string;
     royaltyRate: string;
+    mood: string,
+    tempo: GLfloat,
+    chroma: GLfloat,
+    spectralCentroid: GLfloat
 };
 
 export const Minter = () => {
@@ -43,6 +48,11 @@ export const Minter = () => {
         attributes: [],
         royalty: "",
         royaltyRate: "",
+        mood: "",
+        tempo: 0,
+        chroma: 0,
+        spectralCentroid: 0
+
     });
     const [localImage, setLocalImage] = useState("");
     const [tokenUri, setTokenUri] = useState("")
@@ -118,38 +128,49 @@ export const Minter = () => {
             return;
         }
 
+        // Validate that the file is an audio file
+        if (!file.type.startsWith("audio/")) {
+            console.error("File is not an audio file!");
+            toast.error("Please upload a valid audio file.");
+            return;
+        }
+
         console.log("Uploading file:", file);
         const formData = new FormData();
         formData.append("file", file);
 
-
-        console.log("hello from form")
-
-
-
-        // setUploading(true);
+        setUploading(true);
         try {
 
-            const response = await fetch("/api/analyze-audio", {
-                method: "POST",
-                body: formData,
-            });
-            console.log(response)
-            if (!response.ok) {
-                throw new Error(`Upload failed: ${response.statusText}`);
-            }
+            // Run the analyze API call and the IPFS upload in parallel
+            const [analyzeResponse, ipfsUrl] = await Promise.all([
+                fetch("/api/analyze-audio", {
+                    method: "POST",
+                    body: formData,
+                }).then(async (res) => {
+                    if (!res.ok) {
+                        throw new Error(`Upload failed: ${res.statusText}`);
+                    }
+                    return res.json();
+                }),
+                uploadToIPFS(file),
+            ]);
 
-            const data = await response.json();
-            console.log("Extracted Features:", data);
+            console.log("Extracted Features:", analyzeResponse);
+            const mood = classifyMood(analyzeResponse);
 
-            // const ipfsUrl = await uploadToIPFS(file);
-            // setNftDetails((prev) => ({
-            //     ...prev,
-            //     animation_url: ipfsUrl,
-            // }));
-            // console.log("Song uploaded to IPFS:", ipfsUrl);
-        } catch (error) {
+            // Update NFT details state with the new metadata and IPFS URL
+            setNftDetails((prev: any) => ({
+                ...prev,
+                mood: mood,
+                chroma: analyzeResponse.chroma,
+                tempo: analyzeResponse.tempo,
+                spectralCentroid: analyzeResponse.spectralCentroid,
+                animation_url: ipfsUrl,
+            }));
+        } catch (error: any) {
             console.error("Song upload failed:", error);
+            toast.error(error.message || "Song upload failed.");
         } finally {
             setUploading(false);
         }
