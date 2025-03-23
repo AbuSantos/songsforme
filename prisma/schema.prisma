@@ -213,6 +213,7 @@ model Single {
   uri             String?
   owner           String
   contractAddress String?     @unique
+  mood            String?
   tokenId         String?
   listednftId     String?
   listedNft       ListedNFT[]

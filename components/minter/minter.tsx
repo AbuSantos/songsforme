@@ -134,7 +134,7 @@ export const Minter = () => {
             toast.error("Please upload a valid audio file.");
             return;
         }
-
+ 
         console.log("Uploading file:", file);
         const formData = new FormData();
         formData.append("file", file);
