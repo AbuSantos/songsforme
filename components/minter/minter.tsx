@@ -28,6 +28,7 @@ type NftState = {
     attributes: { trait_type: string; value: string }[]; // Update this type
     royalty: string;
     royaltyRate: string;
+    price: string,
     mood: string,
     tempo: GLfloat,
     chroma: GLfloat,
@@ -46,6 +47,7 @@ export const Minter = () => {
         image: "",
         animation_url: "",
         attributes: [],
+        price: "",
         royalty: "",
         royaltyRate: "",
         mood: "",
@@ -119,8 +121,6 @@ export const Minter = () => {
 
     // Handle song upload
     const handleSongUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-        console.log("Event:", event); // Debugging
-        console.log("Files:", event.target.files); // Debugging
 
         const file = event.target.files?.[0];
         if (!file) {
@@ -134,7 +134,7 @@ export const Minter = () => {
             toast.error("Please upload a valid audio file.");
             return;
         }
- 
+
         console.log("Uploading file:", file);
         const formData = new FormData();
         formData.append("file", file);
@@ -158,6 +158,8 @@ export const Minter = () => {
 
             console.log("Extracted Features:", analyzeResponse);
             const mood = classifyMood(analyzeResponse);
+
+            console.log("Mood:", mood);
 
             // Update NFT details state with the new metadata and IPFS URL
             setNftDetails((prev: any) => ({
@@ -188,29 +190,79 @@ export const Minter = () => {
     };
 
     // Validate form completion
+    // const validateForm = () => {
+    //     const { name, symbol, image, animation_url, royalty, royaltyRate, price } = nftDetails;
+    //     return name && symbol && image && animation_url && royalty && royaltyRate && price;
+    // };
     const validateForm = () => {
-        const { name, symbol, image, animation_url, royalty, royaltyRate } = nftDetails;
-        return name && symbol && image && animation_url && royalty && royaltyRate;
+        const {
+            name,
+            symbol,
+            description,
+            image,
+            animation_url,
+            royalty,
+            royaltyRate,
+            price,
+            attributes
+        } = nftDetails;
+
+        // Log values for debugging
+        console.log({
+            name,
+            symbol,
+            description,
+            image,
+            animation_url,
+            royalty,
+            royaltyRate,
+            price,
+            attributes
+        });
+
+        // Check if any required field is empty or undefined
+        if (!name || !symbol || !image || !animation_url || !royalty || !royaltyRate || !price) {
+            const missingFields = [];
+            if (!name) missingFields.push('name');
+            if (!symbol) missingFields.push('symbol');
+            if (!image) missingFields.push('cover image');
+            if (!animation_url) missingFields.push('song file');
+            if (!royalty) missingFields.push('royalty address');
+            if (!royaltyRate) missingFields.push('royalty rate');
+            if (!price) missingFields.push('price');
+
+            toast.error(`Missing required fields: ${missingFields.join(', ')}`);
+            return false;
+        }
+
+        // Check if attributes array has genre
+        if (!attributes.some(attr => attr.trait_type === 'Genre')) {
+            toast.error('Please select a genre');
+            return false;
+        }
+
+        return true;
     };
 
     // Trigger the NFT minting process
     const handleMint = async () => {
+        console.log("Minting NFT with details:", nftDetails);
         if (!validateForm()) {
             alert("Please complete all fields before minting.");
             return;
         }
-        try {
-            const tokenUri = await storage.upload(nftDetails);
-            if (tokenUri) {
-                setTokenUri(tokenUri)
-                setIsDeployed(true)
-            }
-            setIsPreparedMint(true)
-            console.log("Minting NFT with details:", tokenUri);
-            // Replace this with blockchain minting logic
-        } catch (error) {
-            console.error("Minting failed:", error);
-        }
+        console.log(nftDetails)
+        // try {
+        //     const tokenUri = await storage.upload(nftDetails);
+        //     if (tokenUri) {
+        //         setTokenUri(tokenUri)
+        //         setIsDeployed(true)
+        //     }
+        //     setIsPreparedMint(true)
+        //     console.log("Minting NFT with details:", tokenUri);
+        // } catch (error) {
+        //     console.error("Minting failed:", error);
+        // }
     };
 
     const handleDeployedMint = async () => {
@@ -219,13 +271,24 @@ export const Minter = () => {
             contract: mintContract,
             method: "mintNFT",
         })
-
         return tx
     }
 
     const handleSaveToDatabase = async () => {
         startTransition(async () => {
-            const res = await createSingleWithNFTs((userId || ""), (username || ""), nftDetails.name, (userId || ""), nftDetails.image, "0", "1", deployedAddress, tokenUri, userEmail)
+            const res = await createSingleWithNFTs(
+                (userId || ""),
+                (username || ""),
+                nftDetails.name,
+                (userId || ""),
+                nftDetails.image,
+                "0",
+                nftDetails.price,
+                deployedAddress,
+                tokenUri,
+                userEmail
+            )
+
             //@ts-ignore
             if (res.status === "success") {
                 toast.success("NFT MINTED successfull")
@@ -295,7 +358,7 @@ export const Minter = () => {
                             />
                         </div>
 
-                        <div className="mb-4 grid grid-cols-2 gap-2 items-center">
+                        <div className="mb-4 grid grid-cols-3 gap-2 items-center">
                             <div>
                                 <Label htmlFor="symbol">Symbol</Label>
                                 <Input
@@ -309,6 +372,18 @@ export const Minter = () => {
                             <div>
                                 <Label htmlFor="genre">Select Song Genre</Label>
                                 <SelectGenre handleAttributeChange={handleAttributeChange} id="genre" />
+                            </div>
+                            <div>
+                                <Label htmlFor="price">Price</Label>
+                                <Input
+                                    type="text"
+                                    id="price"
+                                    value={nftDetails.price}
+                                    onChange={handleChange}
+                                    placeholder="0.001"
+                                    className="py-6 border-[0.7px] border-gray-700 outline-none text-gray-100"
+
+                                />
                             </div>
                         </div>
 
@@ -372,9 +447,7 @@ export const Minter = () => {
                 </div>
             </section>
 
-
-            {/* Confirm listing Now */}
-
+            {/* Confirm listing Now BUTTONS */}
             <div
                 className="mt-4 w-full px-5 py-2 flex items-center justify-center"
             >

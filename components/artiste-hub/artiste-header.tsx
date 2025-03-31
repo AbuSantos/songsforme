@@ -98,7 +98,7 @@ export const ArtisteHeader = ({
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
         console.log("hello header");
 
-      const file = event.target.files?.[0]
+        const file = event.target.files?.[0]
         if (!file) return;
         setUploading(true);
         try {
@@ -187,7 +187,7 @@ export const ArtisteHeader = ({
             <div>
                 <div className="flex  space-x-2">
                     <div>
-                        <h1 className="text-base md:text-xl font-semibold">Total Streams</h1>
+                        <h1 className="text-base md:text-lg font-semibold">Total Streams</h1>
                         <p className="text-center">{totalStreams}</p>
                     </div>
                     <Separator orientation="vertical" />
@@ -196,10 +196,10 @@ export const ArtisteHeader = ({
                         {
                             isArtist &&
                             <>
-                                <h1 className="text-base md:text-xl font-semibold">Total Earnings</h1>
+                                <h1 className="text-base md:text-lg font-semibold">Total Earnings</h1>
                                 <p className="text-center flex justify-center items-center gap-x-1">
                                     {analytics?.totalEarnings?.toFixed(3)}
-                                    <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className="ml-1" />
+                                    <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-1" />
                                 </p>
                             </>
                         }
@@ -208,7 +208,7 @@ export const ArtisteHeader = ({
                         {
                             isArtist ?
                                 <Popover>
-                                    <PopoverTrigger className="text-base md:text-xl font-semibold">Set up Ticketing</PopoverTrigger>
+                                    <PopoverTrigger className="text-base md:text-lg font-semibold">Set up Ticketing</PopoverTrigger>
                                     <PopoverContent >
                                         <div className="p-4 space-y-3">
                                             <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to setup ticketing.
