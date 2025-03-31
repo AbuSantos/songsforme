@@ -190,10 +190,6 @@ export const Minter = () => {
     };
 
     // Validate form completion
-    // const validateForm = () => {
-    //     const { name, symbol, image, animation_url, royalty, royaltyRate, price } = nftDetails;
-    //     return name && symbol && image && animation_url && royalty && royaltyRate && price;
-    // };
     const validateForm = () => {
         const {
             name,
@@ -207,18 +203,18 @@ export const Minter = () => {
             attributes
         } = nftDetails;
 
-        // Log values for debugging
-        console.log({
-            name,
-            symbol,
-            description,
-            image,
-            animation_url,
-            royalty,
-            royaltyRate,
-            price,
-            attributes
-        });
+        // // Log values for debugging
+        // console.log({
+        //     name,
+        //     symbol,
+        //     description,
+        //     image,
+        //     animation_url,
+        //     royalty,
+        //     royaltyRate,
+        //     price,
+        //     attributes
+        // });
 
         // Check if any required field is empty or undefined
         if (!name || !symbol || !image || !animation_url || !royalty || !royaltyRate || !price) {
@@ -252,17 +248,17 @@ export const Minter = () => {
             return;
         }
         console.log(nftDetails)
-        // try {
-        //     const tokenUri = await storage.upload(nftDetails);
-        //     if (tokenUri) {
-        //         setTokenUri(tokenUri)
-        //         setIsDeployed(true)
-        //     }
-        //     setIsPreparedMint(true)
-        //     console.log("Minting NFT with details:", tokenUri);
-        // } catch (error) {
-        //     console.error("Minting failed:", error);
-        // }
+        try {
+            const tokenUri = await storage.upload(nftDetails);
+            if (tokenUri) {
+                setTokenUri(tokenUri)
+                setIsDeployed(true)
+            }
+            setIsPreparedMint(true)
+            console.log("Minting NFT with details:", tokenUri);
+        } catch (error) {
+            console.error("Minting failed:", error);
+        }
     };
 
     const handleDeployedMint = async () => {
@@ -475,6 +471,7 @@ export const Minter = () => {
                             if (tx.status === "success") {
                                 setIsDeployedAddress(tx.logs[0].address)
                                 setIsDeployed(true)
+                                toast.success("NFT Contract Listed successfully")
                             }
                             console.log(tx, "transaction")
                         }}
