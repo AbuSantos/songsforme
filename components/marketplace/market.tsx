@@ -54,7 +54,7 @@ const MarketPlace = () => {
         }
     }, [data]);
 
-    const hasNextPage = data?.[data?.length - 1]?.metadata.hasNextPage;
+    const hasNextPage = data?.[data?.length - 1]?.metadata?.hasNextPage;
 
     if (error) {
         return <p className="mt-4">Failed to load marketplace data. Please try again later.</p>;
@@ -75,7 +75,6 @@ const MarketPlace = () => {
                         <MarketSkeleton />
                     </div>}
                 >
-
                     {/* @ts-ignore */}
                     <Tracktable data={aggregatedData} />
                 </InfiniteScroll>

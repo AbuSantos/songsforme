@@ -38,6 +38,8 @@ export const createSingleWithNFTs = async (
   price: string,
   nftAddress: string,
   uri: string,
+  moood: String,
+  genre: string,
   email?: string
 ): Promise<object> => {
   if (!userId || userId.trim() === "" || !songName || songName.trim() === "") {
