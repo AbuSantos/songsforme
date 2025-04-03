@@ -3,7 +3,7 @@ import { Skeleton } from '../ui/skeleton'
 
 export const MarketSkeleton = () => {
     return (
-        <div className='flex flex-col space-y-2 w-full'>
+        <div className='flex flex-col space-y-2 w-full mt-5'>
             {[...Array(3)].map((_, index) => (
                 <div
                     key={index}
