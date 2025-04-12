@@ -38,7 +38,7 @@ export const createSingleWithNFTs = async (
   price: string,
   nftAddress: string,
   uri: string,
-  moood: String,
+  mood: string,
   genre: string,
   email?: string
 ): Promise<object> => {
@@ -46,6 +46,7 @@ export const createSingleWithNFTs = async (
     return { status: "error", message: "User ID and song name are required." };
   }
 
+  console.log(mood, genre);
   // Explicitly define the types of the results object
   const results: {
     successes: SuccessResult[];
@@ -71,6 +72,8 @@ export const createSingleWithNFTs = async (
         song_cover: songCover,
         contractAddress: nftAddress,
         uri,
+        mood,
+        genre,
       },
     });
 

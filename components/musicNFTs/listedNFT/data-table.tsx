@@ -59,7 +59,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     // Restore toggle state from localStorage on mount
     useEffect(() => {
         const storedStates = data?.reduce((acc: Record<string, boolean>, track) => {
-            const storedState = window.localStorage.getItem(`sell_${track.id}`);
+            const storedState = window.localStorage?.getItem(`sell_${track.id}`);
             if (storedState) {
                 acc[track.id] = JSON.parse(storedState);
             }

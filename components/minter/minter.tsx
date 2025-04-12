@@ -243,7 +243,6 @@ export const Minter = () => {
     // Trigger the NFT minting process
     const handleMint = async () => {
         console.log("Minting NFT with details:", nftDetails);
-        console.log("genre", nftDetails.attributes.find(attr => attr.trait_type === "Genre")?.value)
         if (!validateForm()) {
             alert("Please complete all fields before minting.");
             return;

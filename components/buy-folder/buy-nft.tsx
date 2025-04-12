@@ -23,6 +23,9 @@ interface NFTProps {
 // BuyNFT Component for handling the purchase of an NFT on the blockchain
 export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname, email }: NFTProps) => {
 
+    // console.log("buyer", buyer, tokenId)
+
+
     const [isPending, startTransition] = useTransition();
     const transactionHash = "0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9"// This is a placeholder transaction hash for testing
 
@@ -74,6 +77,7 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                     toast.error("NFT Error", {
                         description: error.message, // Display the actual error message for debugging
                     });
+                    console.log(error); 
                 }}
             >
                 Buy
