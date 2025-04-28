@@ -25,6 +25,9 @@ import { Badge } from "@/components/ui/badge"
 import { getNFTMetadata } from "@/actions/helper/get-metadata";
 import { useRouter } from "next/navigation";
 import { SCopy } from "@/components/actions/s-copy";
+import { contractAddress, nftContract, nftMintingABI } from "@/lib/client";
+import { prepareContractCall } from "thirdweb";
+import { ethers } from "ethers";
 
 type TrackTableType = {
     data: ListedNFT[];
@@ -39,21 +42,132 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isPending, startTransition] = useTransition();
 
     // Toggle function to switch buy/sell mode for individual NFTs
-    const toggleBuySell = (nftId: string) => {
+    const toggleBuySell = async (nftId: string, tokenId: string, nftContractAddress: string) => {
         const newBuyingState = !isEnabled[nftId];
-        startTransition(async () => {
-            //@ts-ignore
-            const res = await toggleState(nftId, newBuyingState);
-            if (res.message) {
-                toast.success(res.message);
+
+        try {
+            // Check specifically for MetaMask
+            const isMetaMask = window.ethereum?.isMetaMask;
+
+            if (!isMetaMask) {
+                toast.error("Please install MetaMask");
+                return;
             }
-            setIsEnabled((prev) => ({
-                ...prev,
-                [nftId]: newBuyingState,
-            }));
-            // Store the updated state in localStorage
-            window.localStorage.setItem(`sell_${nftId}`, JSON.stringify(newBuyingState));
-        });
+
+            // Request MetaMask specifically
+            await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            }).catch((err: any) => {
+                if (err.code === 4001) {
+                    throw new Error('Please connect to MetaMask');
+                }
+                throw err;
+            });
+
+            // Force MetaMask as the provider
+            const provider = new ethers.providers.Web3Provider(window.ethereum, {
+                name: 'Sepolia',
+                chainId: 11155111
+            });
+
+            // Request network switch with proper parameters
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{
+                        chainId: '0xaa36a7'  // 11155111 in hex
+                    }]
+                });
+            } catch (switchError: any) {
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: '0xaa36a7',
+                            chainName: 'Sepolia',
+                            nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
+                            rpcUrls: ['https://sepolia.infura.io/v3/']
+                        }]
+                    });
+                }
+                throw switchError;
+            }
+
+            const signer = provider.getSigner();
+            const userAddress = await signer.getAddress();
+
+            console.log('Token ID:', tokenId);
+            console.log('User Address:', userAddress);
+
+            if (newBuyingState === true) {
+                try {
+                    // Validate contract
+                    if (!ethers.utils.isAddress(nftContractAddress)) {
+                        throw new Error("Invalid contract address");
+                    }
+
+                    const newContract = new ethers.Contract(
+                        nftContractAddress,
+                        nftMintingABI,
+                        signer
+                    );
+
+                    // Convert tokenId and verify contract methods
+                    const tokenIdBN = ethers.BigNumber.from(tokenId);
+
+                    // Check if contract has ownerOf method
+                    if (!newContract.ownerOf) {
+                        throw new Error("Invalid NFT contract - missing ownerOf method");
+                    }
+
+                    // Try getting token owner with timeout
+                    const ownerPromise = newContract.ownerOf(tokenIdBN);
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error("Owner check timed out")), 10000)
+                    );
+
+                    const owner = await Promise.race([ownerPromise, timeoutPromise]);
+
+                    console.log('Owner:', owner);
+
+                    if (!owner || owner.toLowerCase() !== userAddress.toLowerCase()) {
+                        toast.error("You don't own this NFT");
+                        return;
+                    }
+
+                    const tx = await newContract.approve(contractAddress, tokenIdBN);
+
+                    //await for the transaction to be mined
+                    const receipt = await tx.wait();
+
+                    if (receipt.status !== 1) {
+                        toast.error("Transaction failed");
+                        return;
+                    }
+                    toast.success("NFT approved successfully");
+                } catch (error: any) {
+                    console.error("Contract error:", error);
+                    toast.error(error.message || "Failed to verify ownership");
+                    return;
+                }
+            }
+
+            // Toggle sale state after successful approval
+            startTransition(async () => {
+                //@ts-ignore
+                const res = await toggleState(nftId, newBuyingState);
+                if (res.message) {
+                    toast.success(res.message);
+                    setIsEnabled((prev) => ({
+                        ...prev,
+                        [nftId]: newBuyingState,
+                    }));
+                    window.localStorage.setItem(`sell_${nftId}`, JSON.stringify(newBuyingState));
+                }
+            });
+        } catch (error: any) {
+            toast.error(error.message || "Failed to toggle sale state");
+        }
     };
 
     // Restore toggle state from localStorage on mount
@@ -104,7 +218,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                 {userId && (track?.sold === true ?
                                     (<Badge className="bg-[teal] text-[0.7rem]">Sold</Badge>) : track?.seller === userId ?
                                         (
-                                            <TogglingSell toggleBuySell={() => toggleBuySell(track.id)} isEnabled={isEnabled[track.id] || false} />
+                                            <TogglingSell toggleBuySell={() => toggleBuySell(track.id, track?.tokenId, track?.contractAddress)} isEnabled={isEnabled[track.id] || false} />
                                         ) : track?.isSaleEnabled ? (
                                             <BuyNFT
                                                 buyer={userId || ""}

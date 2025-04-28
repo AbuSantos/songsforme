@@ -468,6 +468,7 @@ export const Minter = () => {
                             });
                             return tx
                         }}
+
                         onTransactionConfirmed={(tx) => {
                             if (tx.status === "success") {
                                 setIsDeployedAddress(tx.logs[0].address)
