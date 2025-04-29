@@ -82,7 +82,7 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
                                 <span>
                                     {data?.listedNft?.price}
                                 </span>
-                                <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className='ml-1' />
+                                <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-1" />
                             </div>
                         </Link>
                         <div className="flex items-center space-x-3 ">
