@@ -96,6 +96,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
             const signer = provider.getSigner();
             const userAddress = await signer.getAddress();
 
+            console.log('Token ID:', tokenId);
+            console.log('User Address:', userAddress);
+
             if (newBuyingState === true) {
                 try {
                     // Validate contract
