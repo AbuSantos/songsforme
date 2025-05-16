@@ -9,7 +9,7 @@ import "./Royalty.sol";
 
 import "hardhat/console.sol";
 
-contract BullchordMarketPlace is ReentrancyGuard {
+contract BullchordMarketPlaceV2 is ReentrancyGuard {
     IERC721 public nftContract;
     uint256 private platformFee;
 

@@ -7,9 +7,11 @@ export const client = createThirdwebClient({
 
 // export const contractAddress = "0x12ccb2398E10EbBAD1E490857d891741039CE2B5";
 // export const contractAddress = "0x2A6F3F853ca5730ec85B0922b266D2D6C65e10Be";
-export const contractAddress = "0xFBeD084d2fF57B9d0d52Fa088B12C1972BE03DE2";
+// export const contractAddress = "0xFBeD084d2fF57B9d0d52Fa088B12C1972BE03DE2"; //sepolia
+export const contractAddress = "0xf6D4f95802543c17828dD0E0EE0c5E23e9bc1E29"; //base
 
-export const chain = defineChain(11155111);
+// export const chain = defineChain(11155111); //sepolia
+export const chain = defineChain(84532);  //base
 // export const chain = defineChain(97);
 export const contractABI = [
   {
@@ -1220,7 +1222,7 @@ export const contractABI = [
 export const contract = getContract({
   client,
   chain,
-  address: "0xFBeD084d2fF57B9d0d52Fa088B12C1972BE03DE2",
+  address: "0xf6D4f95802543c17828dD0E0EE0c5E23e9bc1E29",
   abi: contractABI,
 });
 
@@ -1500,7 +1502,7 @@ export const nftFactoryContractABI = [
 export const nftFactoryContract = getContract({
   client,
   chain,
-  address: "0x244bEf7C03418F9fe3Cea169d112bEE3687dE32B",
+  address: "0x9c291f04853b50ccb5d42b63686ea0a9b60a5faf",
   abi: nftFactoryContractABI,
 });
 

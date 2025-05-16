@@ -65,7 +65,7 @@ export const AddToWhitelist = ({ adminId, userId, email }: { adminId: string, us
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
 
-                    {/* <TransactionButton
+                    <TransactionButton
                         transaction={() => {
                             const tx = prepareContractCall({
                                 contract,
@@ -92,9 +92,9 @@ export const AddToWhitelist = ({ adminId, userId, email }: { adminId: string, us
                         }
                     >
                         Save
-                    </TransactionButton> */}
+                    </TransactionButton>
 
-                    <button className="bg-gray-200 px-4 py-2 rounded-md" onClick={handleAddToWhiteList}>Add to whitelist</button>
+                    {/* <button className="bg-gray-200 px-4 py-2 rounded-md" onClick={handleAddToWhiteList}>Add to whitelist</button> */}
                 </div>
             </PopoverContent>
 
