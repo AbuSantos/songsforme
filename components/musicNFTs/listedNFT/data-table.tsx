@@ -66,32 +66,34 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
 
             // Force MetaMask as the provider
             const provider = new ethers.providers.Web3Provider(window.ethereum, {
-                name: 'Sepolia',
-                chainId: 11155111
+                name: 'base-sepolia',
+                chainId: 84532
             });
+            
 
             // Request network switch with proper parameters
-            try {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{
-                        chainId: '0xaa36a7'  // 11155111 in hex
-                    }]
-                });
-            } catch (switchError: any) {
-                if (switchError.code === 4902) {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [{
-                            chainId: '0xaa36a7',
-                            chainName: 'Sepolia',
-                            nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
-                            rpcUrls: ['https://sepolia.infura.io/v3/']
-                        }]
-                    });
-                }
-                throw switchError;
-            }
+            // try {
+            //     await window.ethereum.request({
+            //         method: 'wallet_switchEthereumChain',
+            //         params: [{
+            //             chainId: 84532  // 11155111 in hex
+            //         }]
+            //     });
+            // } catch (switchError: any) {
+            //     if (switchError.code === 4902) {
+            //         await window.ethereum.request({
+            //             method: 'wallet_addEthereumChain',
+            //             params: [{
+            //                 chainId: 84532,
+            //                 chainName: 'base-sepolia',
+            //                 nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
+            //                 rpcUrls: ['https://sepolia.base.org']
+            //                 // rpcUrls: ['https://sepolia.infura.io/v3/']
+            //             }]
+            //         });
+            //     }
+            //     throw switchError;
+            // }
 
             const signer = provider.getSigner();
             const userAddress = await signer.getAddress();
