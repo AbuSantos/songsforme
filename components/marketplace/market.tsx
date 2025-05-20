@@ -67,17 +67,17 @@ const MarketPlace = () => {
     return (
         <Suspense fallback={<MarketSkeleton />}>
             <div className="w-full mt-10">
-                {/* <InfiniteScroll
+                <InfiniteScroll
                     pageStart={0}
                     loadMore={() => setSize(size + 1)}
                     hasMore={!!hasNextPage}
                     loader={<div key={0} className="flex justify-center py-4">
                         <MarketSkeleton />
                     </div>}
-                > */}
+                >
                     {/* @ts-ignore */}
                     <Tracktable data={aggregatedData} />
-                {/* </InfiniteScroll> */}
+                </InfiniteScroll>
             </div>
         </Suspense>
     );
