@@ -9,6 +9,7 @@ import { startListening } from '@/actions/startListening';
 import { AudioEngine } from '@/lib/audio-engine';
 import { QualityManager } from '@/lib/audio-quality-manager';
 import { VolumeMonitor } from '@/lib/volume-monitor';
+import { CacheManager } from '@/lib/cache-manager';
 
 type PlaylistIdTypes = {
     userId: string | undefined;
@@ -34,9 +35,21 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     useEffect(() => {
         const fetchMetadata = async () => {
             try {
+                const cacheKey = `nft-metadata-${nftContractAddress}-${tokenId}`;
+                const cachedData = CacheManager.get(cacheKey) as { animation_url: string };
+
+                if (cachedData) {
+                    setNftData(cachedData);
+                    const formattedUrl = formatIpfsUrl(cachedData.animation_url);
+                    setAudioUrl(formattedUrl);
+                    return;
+                }
+
                 const response = await getNFTMetadata(nftContractAddress, tokenId);
-                setNftData(response.raw.metadata);
-                const formattedUrl = formatIpfsUrl(response.raw.metadata.animation_url);
+                const metadata = response.raw.metadata;
+                CacheManager.set(cacheKey, metadata);
+                setNftData(metadata);
+                const formattedUrl = formatIpfsUrl(metadata.animation_url);
                 setAudioUrl(formattedUrl);
             } catch (error) {
                 console.error("NFT Metadata error:", error);
