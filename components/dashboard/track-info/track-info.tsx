@@ -27,13 +27,7 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
                     <p className="text-[1rem] uppercase font-medium flex items-center space-x-1 justify-center">
                         {data?.price || "N/A"}
                         {data?.price && (
-                            <Image
-                                src="https://tokenlogo.xyz/assets/chain/base.svg"
-                                alt="base eth"
-                                width={15}
-                                height={15}
-                                className="ml-2"
-                            />
+                            <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-2" />
                         )}
                     </p>
                 </div>
@@ -50,13 +44,7 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
                     <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">Amount Earned</small>
                     <p className="text-[1rem] uppercase font-medium flex items-center space-x-1 justify-center">
                         {amount || 0}
-                        <Image
-                            src="https://tokenlogo.xyz/assets/chain/base.svg"
-                            alt="base eth"
-                            width={15}
-                            height={15}
-                            className="ml-2"
-                        />
+                        <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-2" />
                     </p>
                 </div>
                 <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[1px] border-[#7B7B7B] rounded-md">

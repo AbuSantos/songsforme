@@ -46,56 +46,48 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
         const newBuyingState = !isEnabled[nftId];
 
         try {
-            // Check specifically for MetaMask
-            const isMetaMask = window.ethereum?.isMetaMask;
-
-            if (!isMetaMask) {
+            if (!window.ethereum) {
                 toast.error("Please install MetaMask");
                 return;
             }
 
-            // Request MetaMask specifically
+            // Request MetaMask connection first
             await window.ethereum.request({
                 method: 'eth_requestAccounts'
-            }).catch((err: any) => {
-                if (err.code === 4001) {
-                    throw new Error('Please connect to MetaMask');
+            });
+
+            // Try switching to Sepolia, if it fails, try adding the network
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0xaa36a7' }], // Sepolia chainId
+                });
+            } catch (switchError: any) {
+                // This error code means the chain has not been added to MetaMask
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: '0xaa36a7',
+                            chainName: 'Sepolia',
+                            rpcUrls: ['https://rpc.sepolia.org'],
+                            nativeCurrency: {
+                                name: 'Sepolia ETH',
+                                symbol: 'ETH',
+                                decimals: 18
+                            }
+                        }]
+                    });
+                } else {
+                    throw switchError;
                 }
-                throw err;
-            });
+            }
 
-            // Force MetaMask as the provider
-            const provider = new ethers.providers.Web3Provider(window.ethereum, {
-                name: 'base-sepolia',
-                chainId: 84532
-            });
-            
+            // Now initialize provider and signer
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []); // Ensure connection
+            const signer = await provider.getSigner();
 
-            // Request network switch with proper parameters
-            // try {
-            //     await window.ethereum.request({
-            //         method: 'wallet_switchEthereumChain',
-            //         params: [{
-            //             chainId: 84532  // 11155111 in hex
-            //         }]
-            //     });
-            // } catch (switchError: any) {
-            //     if (switchError.code === 4902) {
-            //         await window.ethereum.request({
-            //             method: 'wallet_addEthereumChain',
-            //             params: [{
-            //                 chainId: 84532,
-            //                 chainName: 'base-sepolia',
-            //                 nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
-            //                 rpcUrls: ['https://sepolia.base.org']
-            //                 // rpcUrls: ['https://sepolia.infura.io/v3/']
-            //             }]
-            //         });
-            //     }
-            //     throw switchError;
-            // }
-
-            const signer = provider.getSigner();
             const userAddress = await signer.getAddress();
 
             console.log('Token ID:', tokenId);
@@ -131,6 +123,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     const owner = await Promise.race([ownerPromise, timeoutPromise]);
 
                     console.log('Owner:', owner);
+
 
                     if (!owner || owner.toLowerCase() !== userAddress.toLowerCase()) {
                         toast.error("You don't own this NFT");
@@ -236,7 +229,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                         ))}
                             </div>
                             <div className="items-center space-x-2 flex ml-2">
-                                {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}
+                                <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
                                 <div className="block md:hidden">
 
                                     <Popover>

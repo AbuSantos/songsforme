@@ -16,7 +16,8 @@ export class AudioEngine {
   }
 
   private createAudioContext(): AudioContext {
-    const ctx = new ((window as any).AudioContext || (window as any).webkitAudioContext)();
+    const ctx = new ((window as any).AudioContext ||
+      (window as any).webkitAudioContext)();
     ctx.addEventListener("statechange", () =>
       console.debug("AudioContext state:", ctx.state)
     );
@@ -63,7 +64,7 @@ export class AudioEngine {
   }
 
   play(): void {
-    if (!this.source?.buffer) throw new Error("No track loaded");
+    if (!this.source?.buffer) throw new Error("Track is loading...");
 
     // Clean up previous playback
     if (this.isActivePlayback) {
@@ -204,7 +205,8 @@ export class AudioEngine {
     const data = new Uint8Array(this.analyticsNode.frequencyBinCount);
     this.analyticsNode.getByteFrequencyData(data);
     return {
-      dynamicRange: Math.max(...Array.from(data)) - Math.min(...Array.from(data)),
+      dynamicRange:
+        Math.max(...Array.from(data)) - Math.min(...Array.from(data)),
       frequencySpread: this.calculateFrequencySpread(data),
     };
   }

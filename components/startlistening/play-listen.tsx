@@ -71,22 +71,23 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         };
     }, [audioUrl]);
 
-    useEffect(() => {
-        const validateVolume = async () => {
-            if (isPlaying) {
-                const isValid = await VolumeMonitor.validateListeningSession(engine, 5);
-                if (!isValid) {
-                    engine.current.stop();
-                    await endListening(userId, playlistId, "true");
-                    toast.warning("Playback paused due to low volume.");
-                    setIsPlaying(false);
-                }
-            }
-        };
+    // useEffect(() => {
+    //     const validateVolume = async () => {
+    //         if (isPlaying) {
+    //             const isValid = await VolumeMonitor.validateListeningSession(engine);
+    //             if (!isValid) {
+    //                 engine.current.stop();
+    //                 await endListening(userId, playlistId, "true");
+    //                 toast.error("Please increase your volume or unmute your audio");
+    //                 setIsPlaying(false);
+    //             }
+    //         }
+    //     };
 
-        const interval = setInterval(validateVolume, 15000); // Check every 15 seconds
-        return () => clearInterval(interval);
-    }, [isPlaying, userId, playlistId]);
+    //     // Check volume after 3 seconds of starting playback
+    //     const timeout = setTimeout(validateVolume, 3000);
+    //     return () => clearTimeout(timeout);
+    // }, [isPlaying, userId, playlistId]);
 
 
     const handlePlayPause = async () => {
@@ -114,7 +115,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         }
     };
 
-
+    console.log(nftData, "nftData");
     // Reward validation system
     useEffect(() => {
         const interval = setInterval(async () => {
@@ -158,7 +159,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     );
 };
 
-// Reusable icon components
 const PlayIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EDEEF0" className="size-6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
