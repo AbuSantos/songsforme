@@ -17,12 +17,20 @@ export function AlbumArtwork({
 }: AlbumArtworkProps) {
     const [openTrack, setOpenTrack] = React.useState<boolean>(false);
 
+    const returnCorrectImage = (image: string | null | undefined) => {
+        if (image?.endsWith("webp")) {
+            // return image.replace(".webp", ".jpg");
+            return (`/images/playlisty.jpg`);
+        }
+        return image;
+    }
+
     return (
         <div className={cn("space-y-3", className)} {...props}>
             <Link className="space-y-1" href={`/dashboard/tracklist/${album.contractAddress}`}>
                 <div className="relative w-[190px] h-[120px] overflow-hidden rounded-md">
                     <Image
-                        src={album.song_cover || `/images/playlisty.jpg`}
+                        src={returnCorrectImage(album.song_cover) || `/images/playlisty.jpg`}
                         alt="Music"
                         className="absolute w-full h-full object-cover"
                         onClick={() => setOpenTrack(!openTrack)}

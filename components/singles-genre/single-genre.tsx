@@ -5,11 +5,15 @@ import { Single } from "@/types"
 export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
     try {
         // Filter songs by genre
-        const afrobeats = singleNft?.filter((track: Single) => track.genre === "afrobeats")
+        const afrobeats = singleNft?.filter((track: Single) => track.genre === "Afrobeat")
         const hiphop = singleNft?.filter((track: Single) => track.genre === "hiphop")
         const pop = singleNft?.filter((track: Single) => track.genre === "pop")
         const indie = singleNft?.filter((track: Single) => track.genre === "indie")
         const jazz = singleNft?.filter((track: Single) => track.genre === "jazz")
+
+        // console.log("Afrobeats", afrobeats)
+
+        // console.log("Hip Hop", singleNft)
 
         return (
             <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
