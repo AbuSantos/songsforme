@@ -32,12 +32,12 @@ export default function HomePage() {
       <div className="relative z-10 text-gray-100 flex items-center justify-center align-middle py-6 m-auto">
         <MiddlePage />
       </div>
-      <div className="relative z-40 pt-6 flex align-middle justify-center items-center m-auto text-white">
+      {/* <div className="relative z-40 pt-6 flex align-middle justify-center items-center m-auto text-white">
         <SongCount />
-      </div>
-      <footer className="relative z-10 w-screen">
+      </div> */}
+      {/* <footer className="relative z-10 w-screen">
         <Carousel />
-      </footer>
+      </footer> */}
     </div>
   )
 }

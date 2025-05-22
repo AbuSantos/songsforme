@@ -97,6 +97,7 @@ export interface BuyNFT {
   transactionHash?: string | null;
   status?: PurchaseStatus | null;
   relisted: boolean;
+  tokenId?: string ;
 }
 
 export interface Single {

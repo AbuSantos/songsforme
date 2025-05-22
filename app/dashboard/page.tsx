@@ -183,7 +183,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </div>
                                     <div className="flex items-center justify-between ">
                                         <div className="space-y-1">
-
                                             <h2 className="text-[1.5rem] md:text-2xl font-semibold tracking-normal">
                                                 Trending playlist
                                             </h2>

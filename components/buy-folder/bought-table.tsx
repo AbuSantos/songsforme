@@ -15,6 +15,11 @@ import { toast } from "sonner";
 import { toggleState } from "@/actions/toggle-buy-sell";
 import { mutate } from "swr";
 import { Playlisten } from "../startlistening/play-listen";
+import { toggleBuySell } from "@/lib/approve-for-sale";
+
+import { ethers } from "ethers";
+import { startTransition } from "react";
+import { contractAddress, nftMintingABI } from "@/lib/client";
 
 type TrackTableType = {
     data: BuyNFT
@@ -29,23 +34,123 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
 
 
     // Toggle function to switch buy/sell mode for individual NFTs
-    const toggleBuySell = (nftId: string) => {
+    // const toggleBuySell = (nftId: string) => {
+    //     const newBuyingState = !isEnabled[nftId];
+    //     startTransition(async () => {
+    //         //@ts-ignore
+    //         const res = await toggleState(nftId, newBuyingState);
+    //         if (res.message) {
+    //             toast.success(res.message);
+    //             mutate(`api/listednft`)
+    //         }
+    //         setIsEnabled((prev) => ({
+    //             ...prev,
+    //             [nftId]: newBuyingState,
+    //         }));
+    //         // Store the updated state in localStorage
+    //         window.localStorage.setItem(`buy_${nftId}`, JSON.stringify(newBuyingState));
+    //     });
+    // };
+
+    // Toggle function to switch buy/sell mode for individual NFTs
+    const toggleBuySell = async (nftId: string, tokenId: string, nftContractAddress: string) => {
         const newBuyingState = !isEnabled[nftId];
-        startTransition(async () => {
-            //@ts-ignore
-            const res = await toggleState(nftId, newBuyingState);
-            if (res.message) {
-                toast.success(res.message);
-                mutate(`api/listednft`)
+
+        try {
+            if (!window.ethereum) {
+                toast.error("Please install MetaMask");
+                return;
             }
-            setIsEnabled((prev) => ({
-                ...prev,
-                [nftId]: newBuyingState,
-            }));
-            // Store the updated state in localStorage
-            window.localStorage.setItem(`buy_${nftId}`, JSON.stringify(newBuyingState));
-        });
+
+            // Request MetaMask connection first
+            await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+
+            // Now initialize provider and signer
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []); // Ensure connection
+            const signer = await provider.getSigner();
+
+            const userAddress = await signer.getAddress();
+
+            console.log('User Address ccc:', userAddress);
+
+            console.log('Token ID:', tokenId);
+            console.log('User Address:', userAddress);
+
+            if (newBuyingState === true) {
+                try {
+                    // Validate contract
+                    if (!ethers.utils.isAddress(nftContractAddress)) {
+                        throw new Error("Invalid contract address");
+                    }
+
+                    const newContract = new ethers.Contract(
+                        nftContractAddress,
+                        nftMintingABI,
+                        signer
+                    );
+
+                    // Convert tokenId and verify contract methods
+                    const tokenIdBN = ethers.BigNumber.from(tokenId);
+
+                    // Check if contract has ownerOf method
+                    if (!newContract.ownerOf) {
+                        throw new Error("Invalid NFT contract - missing ownerOf method");
+                    }
+
+                    // Try getting token owner with timeout
+                    const ownerPromise = newContract.ownerOf(tokenIdBN);
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error("Owner check timed out")), 10000)
+                    );
+
+                    const owner = await Promise.race([ownerPromise, timeoutPromise]);
+
+                    console.log('Owner:', owner);
+
+
+                    if (!owner || owner.toLowerCase() !== userAddress.toLowerCase()) {
+                        toast.error("You don't own this NFT");
+                        return;
+                    }
+
+                    const tx = await newContract.approve(contractAddress, tokenIdBN);
+
+                    //await for the transaction to be mined
+                    const receipt = await tx.wait();
+
+                    if (receipt.status !== 1) {
+                        toast.error("Transaction failed");
+                        return;
+                    }
+                    toast.success("NFT approved successfully");
+                } catch (error: any) {
+                    console.error("Contract error:", error);
+                    toast.error(error.message || "Failed to verify ownership");
+                    return;
+                }
+            }
+
+            // Toggle sale state after successful approval
+            startTransition(async () => {
+                //@ts-ignore
+                const res = await toggleState(nftId, newBuyingState);
+                if (res.message) {
+                    toast.success(res.message);
+                    setIsEnabled((prev) => ({
+                        ...prev,
+                        [nftId]: newBuyingState,
+                    }));
+                    window.localStorage.setItem(`sell_${nftId}`, JSON.stringify(newBuyingState));
+                }
+            });
+        } catch (error: any) {
+            toast.error(error.message || "Failed to toggle sale state");
+        }
     };
+
 
     // Restore toggle state from localStorage on mount
     useEffect(() => {
@@ -66,6 +171,9 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
         });
         setIsEnabled(storedStates);
     }, [data]);
+
+
+    console.log(data, "data from bought table")
 
     try {
         return (
@@ -91,7 +199,7 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
                                     < RelistNft seller={userId} nft={data} email={email} /> :
                                     <CancelListing address={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} nftId={data?.listedNft?.id} userId={userId} nftBoughtId={data?.id} price={data?.price} />
                             }
-                            <TogglingSell toggleBuySell={() => toggleBuySell(data.listedNftId)} isEnabled={isEnabled[data.listedNftId] || false} />
+                            <TogglingSell toggleBuySell={() => toggleBuySell(data.listedNftId, (data?.tokenId || ""), data?.listedNft?.contractAddress)} isEnabled={isEnabled[data.listedNftId] || false} />
                         </div>
                         <div className="items-center space-x-2 flex ml-2">
                             <Playlisten userId={userId} nftId={data?.listedNftId} nftContractAddress={data?.listedNft?.contractAddress} tokenId={data?.listedNft?.tokenId} />

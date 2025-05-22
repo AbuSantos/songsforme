@@ -28,6 +28,7 @@ import { SCopy } from "@/components/actions/s-copy";
 import { contractAddress, nftContract, nftMintingABI } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 import { ethers } from "ethers";
+import { toggleBuySell } from "@/lib/approve-for-sale";
 
 type TrackTableType = {
     data: ListedNFT[];
@@ -57,31 +58,31 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
             });
 
             // Try switching to Sepolia, if it fails, try adding the network
-            try {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0xaa36a7' }], // Sepolia chainId
-                });
-            } catch (switchError: any) {
-                // This error code means the chain has not been added to MetaMask
-                if (switchError.code === 4902) {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [{
-                            chainId: '0xaa36a7',
-                            chainName: 'Sepolia',
-                            rpcUrls: ['https://rpc.sepolia.org'],
-                            nativeCurrency: {
-                                name: 'Sepolia ETH',
-                                symbol: 'ETH',
-                                decimals: 18
-                            }
-                        }]
-                    });
-                } else {
-                    throw switchError;
-                }
-            }
+            // try {
+            //     await window.ethereum.request({
+            //         method: 'wallet_switchEthereumChain',
+            //         params: [{ chainId: '0xaa36a7' }], // Sepolia chainId
+            //     });
+            // } catch (switchError: any) {
+            //     // This error code means the chain has not been added to MetaMask
+            //     if (switchError.code === 4902) {
+            //         await window.ethereum.request({
+            //             method: 'wallet_addEthereumChain',
+            //             params: [{
+            //                 chainId: '0xaa36a7',
+            //                 chainName: 'Sepolia',
+            //                 rpcUrls: ['https://rpc.sepolia.org'],
+            //                 nativeCurrency: {
+            //                     name: 'Sepolia ETH',
+            //                     symbol: 'ETH',
+            //                     decimals: 18
+            //                 }
+            //             }]
+            //         });
+            //     } else {
+            //         throw switchError;
+            //     }
+            // }
 
             // Now initialize provider and signer
             const provider = new ethers.providers.Web3Provider(window.ethereum);
