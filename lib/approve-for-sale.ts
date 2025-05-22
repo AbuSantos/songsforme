@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { contractAddress, nftMintingABI } from "./client";
 
 // Toggle function to switch buy/sell mode for individual NFTs
-export const toggleBuySell = async (
+export const ToggleBuySell = async (
   nftId: string,
   tokenId: string,
   nftContractAddress: string

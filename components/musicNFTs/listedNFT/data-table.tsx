@@ -28,7 +28,6 @@ import { SCopy } from "@/components/actions/s-copy";
 import { contractAddress, nftContract, nftMintingABI } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 import { ethers } from "ethers";
-import { toggleBuySell } from "@/lib/approve-for-sale";
 
 type TrackTableType = {
     data: ListedNFT[];
