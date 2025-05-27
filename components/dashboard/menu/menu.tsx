@@ -16,6 +16,7 @@ import NotificationFeed from "@/components/knock/notification-feed"
 import Link from "next/link"
 import { useRecoilValue } from "recoil"
 import { isConnected } from "@/atoms/session-atom"
+import { ConnectMenu } from "@/web3/connect-with-wagmi"
 
 
 export function Menu() {
@@ -41,8 +42,8 @@ export function Menu() {
                     userId && userId === adminId &&
                     <AddToWhitelist adminId={adminId} userId={userId} email={userEmail || ""} />
                 }
-
-                <ConnecttButton />
+                <ConnectMenu />
+                {/* <ConnecttButton /> */}
             </div>
 
             {

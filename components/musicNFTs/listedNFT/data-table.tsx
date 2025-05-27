@@ -29,6 +29,16 @@ import { contractAddress, nftContract, nftMintingABI } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 import { ethers } from "ethers";
 
+
+import {
+    type BaseError,
+    useAccount,
+    useSendTransaction,
+    useWaitForTransactionReceipt
+} from 'wagmi'
+
+
+
 type TrackTableType = {
     data: ListedNFT[];
 };
@@ -40,10 +50,14 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const usrname = useRecoilValue(isConnected)?.username
     const userEmail = useRecoilValue(isConnected)?.userEmail;
     const [isPending, startTransition] = useTransition();
+    const { address } = useAccount();
 
+    console.log(address, "address in toggleBuySell function");
     // Toggle function to switch buy/sell mode for individual NFTs
     const toggleBuySell = async (nftId: string, tokenId: string, nftContractAddress: string) => {
         const newBuyingState = !isEnabled[nftId];
+
+
 
         try {
             if (!window.ethereum) {
@@ -210,13 +224,13 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                             </Link>
 
                             <div className="z-0">
-                                {userId && (track?.sold === true ?
+                                {(address || userId) && (track?.sold === true ?
                                     (<Badge className="bg-[teal] text-[0.7rem]">Sold</Badge>) : track?.seller === userId ?
                                         (
                                             <TogglingSell toggleBuySell={() => toggleBuySell(track.id, track?.tokenId, track?.contractAddress)} isEnabled={isEnabled[track.id] || false} />
                                         ) : track?.isSaleEnabled ? (
                                             <BuyNFT
-                                                buyer={userId || ""}
+                                                buyer={(userId || address) || ""}
                                                 nftAddress={track.contractAddress}
                                                 tokenId={track.tokenId}
                                                 price={track.price}

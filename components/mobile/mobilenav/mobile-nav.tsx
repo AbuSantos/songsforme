@@ -22,6 +22,7 @@ import { useRecoilValue } from "recoil"
 import { isConnected } from "@/atoms/session-atom"
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD"
 import Link from "next/link"
+import { ConnectMenu } from "@/web3/connect-with-wagmi"
 
 export const MobileNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -56,7 +57,8 @@ export const MobileNav = () => {
                     </div>
 
                     <div className="mt-auto w-full absolute bottom-0  p-3">
-                        <ConnecttButton />
+                        {/* <ConnecttButton /> */}
+                        < ConnectMenu />
                     </div>
 
                     {isOpen && <AddMusicModal setIsOpen={setIsOpen} />}

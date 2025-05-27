@@ -5,12 +5,25 @@ import { ThirdwebProvider } from "thirdweb/react";
 import { Toaster } from "@/components/ui/sonner"
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
+import { sdk } from '@farcaster/frame-sdk';
+import { useEffect } from "react";
+import { WagmiProvider } from 'wagmi'
+import { config } from "@/config";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Initialize the Farcaster SDK
+  // This is necessary to ensure the SDK is ready before using it
+  useEffect(() => {
+    sdk.actions.ready();
+  }, []);
+
   return (
     <html lang="en"
     >
@@ -22,8 +35,15 @@ export default function RootLayout({
       <RecoilRoot>
         <ThirdwebProvider
         >
-          <body >{children}</body>
-          <Toaster />
+          <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+
+              <body >{children}</body>
+              <Toaster />
+
+            </QueryClientProvider>
+          </WagmiProvider>
+
         </ThirdwebProvider>
       </RecoilRoot>
     </html>

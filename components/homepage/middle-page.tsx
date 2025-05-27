@@ -9,11 +9,11 @@ export const MiddlePage = () => {
         <div>
             <Accordion type="single" collapsible className="w-full">
                 <div className='md:py-1 items-center justify-center text-center pb-4'>
-                    <Link href="/dashboard" prefetch>
-                        <Button type="submit" size="lg" variant="outline" className="w-full bg-blue-400 text-gray-900 hover:bg-blue-500 border-none text-xl transition">
+                    <Button type="submit" size="lg" variant="outline" className="w-full bg-blue-400  text-gray-900  hover:bg-blue-500 border-none text-xl  transition" >
+                        <Link href="/dashboard" prefetch>
                             Explore
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 </div>
                 <AccordionItem value="form" className="border-none md:border-b-[0.5px] md:border-b-[#2A2A2A] mt-4">
                     <AccordionTrigger className="md:py-1 bg-[##191919] px-3 rounded-md">

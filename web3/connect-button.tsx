@@ -12,6 +12,9 @@ import { isConnected, UserSession } from "@/atoms/session-atom";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 import { toast } from "sonner";
 
+
+import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
+
 // const privateKey = process.env.METAMASK_PRIVATE_KEY!
 // const thirdwebAuth = createAuth({
 //     domain: "localhost:3000",
@@ -27,6 +30,9 @@ export const ConnecttButton = () => {
     const [isOpen, setIsOpen] = useState<boolean>(true)
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
+
+    const { address } = useAccount();
+    console.log(address, "address in connect button component")
 
     const wallets = [
         inAppWallet({

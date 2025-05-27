@@ -38,8 +38,6 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     const { protocol, host } = window.location;
     const { address } = useAccount();
 
-    const currentUrl = `${protocol}//${host}/dashboard/trackinfo/${nftAddress}${tokenId ? `?tokenId=${tokenId}` : ""
-        }`;
 
     const { data: hash, isPending: transactionPending, sendTransaction } = useSendTransaction();
     const { data: estimatedFees } = useEstimateFeesPerGas({ chainId: baseSepolia.id });
@@ -66,9 +64,9 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     }
 
     // Custom gas settings for Base Sepolia
-    const CUSTOM_GAS_LIMIT = 300000n // Conservative gas limit
-    const CUSTOM_MAX_FEE = parseEther('0.00000001') // 0.00000001 ETH max fee
-    const CUSTOM_PRIORITY_FEE = parseEther('0.000000001') // 0.000000001 ETH priority fee
+    const CUSTOM_GAS_LIMIT = 300000n 
+    const CUSTOM_MAX_FEE = parseEther('0.00000001') 
+    const CUSTOM_PRIORITY_FEE = parseEther('0.000000001') 
 
     const handleWagmiTransaction = async () => {
         try {
@@ -79,14 +77,13 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                 maxPriorityFeePerGas: estimatedFees?.maxPriorityFeePerGas ?? CUSTOM_PRIORITY_FEE,
             }
 
-            // Log estimated costs for transparency
             console.log('Estimated transaction cost:', formatEther(gasFees.gas * (gasFees.maxFeePerGas)), 'ETH')
 
             await sendTransaction({
                 to: nftAddress as `0x${string}`,
                 value: BigInt(toWei(price.toString())),
-                chainId: baseSepolia.id
-                // ...gasFees,
+                chainId: baseSepolia.id,
+                ...gasFees,
             })
         } catch (error) {
             toast.error("Failed to send transaction")
@@ -104,48 +101,14 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     }, [isConfirmed, hash, transactionPending])
 
     return (
-        // <div>
-        //     {/* sending transaction using wagmi */}
+        <div>
 
-        //     <button onClick={() => handleWagmiTransaction()} disabled={isPending} className="bg-[var(--button-bg)] p-2 w-28 md:w-32 rounded-md">
-        //         {/* {isConfirming && <span>Waiting for confirmation...</span>}
-        //         {isConfirmed && <span>Transaction confirmed.</span>} */}
-        //         {isPending ? 'Confirming...' : 'Send'}
-        //     </button>
+            <button onClick={() => handleWagmiTransaction()} disabled={isPending} className="bg-[var(--button-bg)] p-2 w-28 md:w-32 rounded-md">
+                {/* {isConfirming && <span>Waiting for confirmation...</span>}
+                {isConfirmed && <span>Transaction confirmed.</span>} */}
+                {isPending ? 'Confirming...' : 'Send'}
+            </button>
 
-        //  </div>
-        <div className="z-10">
-            <TransactionButton
-                className="w-[60px] p-2 bg-black"
-                // Function to prepare the contract call and create the transaction
-                transaction={() => {
-                    // Prepare the contract call using the contract and method provided
-                    const tx = prepareContractCall({
-                        contract, // This is the blockchain contract reference
-                        //@ts-ignore
-                        method: "function buyBull(address _nftContract, uint256 _tokenId) payable", // The smart contract function for buying NFTs
-                        params: [nftAddress, tokenId], // Parameters required by the contract method (NFT contract address and tokenId)
-                        value: toWei(price.toString()), // Convert the price from Ether to Wei (smallest unit of Ether)
-                    });
-                    return tx; // Return the transaction object
-                }}
-                // Handle successful transaction confirmation
-                onTransactionConfirmed={(tx) => {
-                    if (tx.status === "success") {
-                        handleBuyNft(price, tx.transactionHash)
-                        toast.success("NFT purchased successfully!")
-                    }
-                }}
-                onError={(error) => {
-                    // Display an error toast notification using the `sonner` library
-                    toast.error("NFT Error", {
-                        description: error.message, // Display the actual error message for debugging
-                    });
-                    console.log(error);
-                }}
-            >
-                Buy
-            </TransactionButton>
         </div>
 
     );
