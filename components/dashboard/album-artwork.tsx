@@ -34,7 +34,7 @@ export function AlbumArtwork({
                         alt="Music"
                         className="absolute w-full h-full object-cover"
                         onClick={() => setOpenTrack(!openTrack)}
-                        width={190}
+                        width={170}
                         height={120}
                     />
                 </div>

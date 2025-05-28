@@ -42,8 +42,8 @@ export function Menu() {
                     userId && userId === adminId &&
                     <AddToWhitelist adminId={adminId} userId={userId} email={userEmail || ""} />
                 }
-                <ConnectMenu />
-                {/* <ConnecttButton /> */}
+                {/* <ConnectMenu /> */}
+                <ConnecttButton />
             </div>
 
             {

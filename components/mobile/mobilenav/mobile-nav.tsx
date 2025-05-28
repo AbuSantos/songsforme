@@ -57,8 +57,8 @@ export const MobileNav = () => {
                     </div>
 
                     <div className="mt-auto w-full absolute bottom-0  p-3">
-                        {/* <ConnecttButton /> */}
-                        < ConnectMenu />
+                        <ConnecttButton />
+                        {/* < ConnectMenu /> */}
                     </div>
 
                     {isOpen && <AddMusicModal setIsOpen={setIsOpen} />}

@@ -65,10 +65,6 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
         })
     }
 
-    // Custom gas settings for Base Sepolia
-    const CUSTOM_GAS_LIMIT = 300000n // Conservative gas limit
-    const CUSTOM_MAX_FEE = parseEther('0.00000001') // 0.00000001 ETH max fee
-    const CUSTOM_PRIORITY_FEE = parseEther('0.000000001') // 0.000000001 ETH priority fee
 
     const handleWagmiTransaction = async () => {
         try {
@@ -80,7 +76,12 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
             }
 
             // Log estimated costs for transparency
-            console.log('Estimated transaction cost:', formatEther(gasFees.gas * (gasFees.maxFeePerGas)), 'ETH')
+            console.log('Transaction details:', {
+                to: nftAddress,
+                value: formatEther(BigInt(toWei(price.toString()))),
+                estimatedGas: formatEther(gasFees.gas * (gasFees.maxFeePerGas)),
+                chainId: baseSepolia.id
+            })
 
             await sendTransaction({
                 to: nftAddress as `0x${string}`,
@@ -89,19 +90,19 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                 // ...gasFees,
             })
         } catch (error) {
-            toast.error("Failed to send transaction")
-            console.error(error)
+            // toast.error("Failed to send transaction")
+            console.log(error)
         }
     }
 
-    useEffect(() => {
-        if (isConfirmed && hash) {
-            handleBuyNft(price, hash)
-            toast.success("NFT purchased successfully!")
-        } else if (transactionPending) {
-            toast.loading("Transaction is pending...")
-        }
-    }, [isConfirmed, hash, transactionPending])
+    // useEffect(() => {
+    //     if (isConfirmed && hash) {
+    //         handleBuyNft(price, hash)
+    //         toast.success("NFT purchased successfully!")
+    //     } else if (transactionPending) {
+    //         toast.loading("Transaction is pending...")
+    //     }
+    // }, [isConfirmed, hash, transactionPending])
 
     return (
         // <div>
@@ -113,7 +114,8 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
         //         {isPending ? 'Confirming...' : 'Send'}
         //     </button>
 
-        //  </div>
+        // </div>
+        
         <div className="z-10">
             <TransactionButton
                 className="w-[60px] p-2 bg-black"

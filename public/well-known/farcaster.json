@@ -1,18 +1,18 @@
 {
-    "accountAssociation": {
-      "header": "eyJmaWQiOjEwODc1NDYsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhlNjcyN2JmOTM4ZDlEQmFhRmU5M0RmYjdGOTUyYzUyNWQxY0YzQjhjIn0",
-      "payload": "eyJkb21haW4iOiJhdy1kZWFsZXItb2NjdXJyZW5jZS13aW5kc29yLnRyeWNsb3VkZmxhcmUuY29tIn0",
-      "signature": "MHg2NDZkYWQ4Y2JkMjBkZWNlZmM5Njk1ZjE5NWNmMzBjNWE4NmNiMWM2MDFjNTFiODE4OGE1ZmI1NDQ5YjE2NDYwNDUyNGFhNWVkMTdhZDJiZjE0ZjdjMmExMTg5NzkwN2FjMTFkMTcxNTMyY2IzODQwZjUxY2NjZTliMzBlMDczOTFi"
-    },
-    "frame": {
-      "version": "1",
-      "name": "Example Frame",
-      "iconUrl": "https://aw-dealer-occurrence-windsor.trycloudflare.com/icon.png",
-      "homeUrl": "https://aw-dealer-occurrence-windsor.trycloudflare.com",
-      "imageUrl": "https://aw-dealer-occurrence-windsor.trycloudflare.com/image.png",
-      "buttonTitle": "Check this out",
-      "splashImageUrl": "https://aw-dealer-occurrence-windsor.trycloudflare.com/splash.png",
-      "splashBackgroundColor": "#eeccff",
-      "webhookUrl": "https://aw-dealer-occurrence-windsor.trycloudflare.com/api/webhook"
-    }
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEwODc1NDYsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhlNjcyN2JmOTM4ZDlEQmFhRmU5M0RmYjdGOTUyYzUyNWQxY0YzQjhjIn0",
+    "payload": "eyJkb21haW4iOiJwdW5jaC1zdGFnZS11bmNlcnRhaW50eS1zb21lLnRyeWNsb3VkZmxhcmUuY29tIn0",
+    "signature": "MHgyNmI4ZGRjMTBhYzNiZDAxNTc0OTc1NjAxZmZkNzM5MDdmZGE0NzhmMTAzMjQ1NThlZGI0MTE1YzVhOTYzNWFlNzI4NTQzODYyNGFhZTUxNzE2ZTM1OTNkMDlhZjUwZTFkNmU5ZTNmMGNhZDMwMDE5NDU2YzhlNmVjZGFiYzhkMjFj"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Example Frame",
+    "iconUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/icon.png",
+    "homeUrl": "https://punch-stage-uncertainty-some.trycloudflare.com",
+    "imageUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/image.png",
+    "buttonTitle": "Check this out",
+    "splashImageUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/splash.png",
+    "splashBackgroundColor": "#eeccff",
+    "webhookUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/api/webhook"
   }
+}

@@ -6,7 +6,9 @@ import { farcasterFrame as miniAppConnector } from "@farcaster/frame-wagmi-conne
 export const config = createConfig({
   chains: [baseSepolia, base, sepolia],
   transports: {
-    [baseSepolia.id]: http(),
+    [baseSepolia.id]: http(
+      "https://chain-proxy.wallet.coinbase.com?targetName=base-sepolia"
+    ),
     [base.id]: http(),
     [sepolia.id]: http(),
   },
