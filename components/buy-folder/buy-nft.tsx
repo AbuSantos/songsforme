@@ -4,17 +4,8 @@ import { TransactionButton } from "thirdweb/react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { contract } from "@/lib/client";
-import { useEffect, useTransition } from "react";
+import { useTransition } from "react";
 import { buyNFT } from "@/actions/buy-song";
-import { baseSepolia } from 'wagmi/chains'
-import {
-    type BaseError,
-    useAccount,
-    useSendTransaction,
-    useWaitForTransactionReceipt,
-    useEstimateFeesPerGas,
-} from 'wagmi'
-import { formatEther, parseEther } from "viem";
 
 // Interface defining the props for the BuyNFT component
 interface NFTProps {
@@ -36,19 +27,9 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
 
 
     const { protocol, host } = window.location;
-    const { address } = useAccount();
 
     const currentUrl = `${protocol}//${host}/dashboard/trackinfo/${nftAddress}${tokenId ? `?tokenId=${tokenId}` : ""
         }`;
-
-    const { data: hash, isPending: transactionPending, sendTransaction } = useSendTransaction();
-    const { data: estimatedFees } = useEstimateFeesPerGas({ chainId: baseSepolia.id });
-
-    const { isLoading: isConfirming, isSuccess: isConfirmed } =
-        useWaitForTransactionReceipt({
-            hash,
-        })
-
 
     const handleBuyNft = (price: number, transactionHash: string) => {
         startTransition(async () => {
@@ -66,59 +47,27 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     }
 
 
-    const handleWagmiTransaction = async () => {
-        try {
-
-            const gasFees = {
-                gas: CUSTOM_GAS_LIMIT,
-                maxFeePerGas: estimatedFees?.maxFeePerGas ?? CUSTOM_MAX_FEE,
-                maxPriorityFeePerGas: estimatedFees?.maxPriorityFeePerGas ?? CUSTOM_PRIORITY_FEE,
-            }
-
-            // Log estimated costs for transparency
-            console.log('Transaction details:', {
-                to: nftAddress,
-                value: formatEther(BigInt(toWei(price.toString()))),
-                estimatedGas: formatEther(gasFees.gas * (gasFees.maxFeePerGas)),
-                chainId: baseSepolia.id
-            })
-
-            await sendTransaction({
-                to: nftAddress as `0x${string}`,
-                value: BigInt(toWei(price.toString())),
-                chainId: baseSepolia.id
-                // ...gasFees,
-            })
-        } catch (error) {
-            // toast.error("Failed to send transaction")
-            console.log(error)
-        }
-    }
-
-    // useEffect(() => {
-    //     if (isConfirmed && hash) {
-    //         handleBuyNft(price, hash)
-    //         toast.success("NFT purchased successfully!")
-    //     } else if (transactionPending) {
-    //         toast.loading("Transaction is pending...")
-    //     }
-    // }, [isConfirmed, hash, transactionPending])
-
     return (
-        // <div>
-        //     {/* sending transaction using wagmi */}
-
-        //     <button onClick={() => handleWagmiTransaction()} disabled={isPending} className="bg-[var(--button-bg)] p-2 w-28 md:w-32 rounded-md">
-        //         {/* {isConfirming && <span>Waiting for confirmation...</span>}
-        //         {isConfirmed && <span>Transaction confirmed.</span>} */}
-        //         {isPending ? 'Confirming...' : 'Send'}
-        //     </button>
-
-        // </div>
-        
-        <div className="z-10">
+        <div className="z-10 w-[100%] ">
             <TransactionButton
-                className="w-[60px] p-2 bg-black"
+                unstyled={false}
+                style={{
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    width: '100%',
+                    paddingTop: '0.5rem',
+                    paddingBottom: '0.5rem',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem',
+                    border: '1px solid #2A2A2A',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.3s ease, color 0.3s ease',
+                    borderRadius: '0.375rem',
+                    minWidth: 'auto',
+                    fontSize: '1rem',
+
+                }}
                 // Function to prepare the contract call and create the transaction
                 transaction={() => {
                     // Prepare the contract call using the contract and method provided
@@ -129,8 +78,9 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                         params: [nftAddress, tokenId], // Parameters required by the contract method (NFT contract address and tokenId)
                         value: toWei(price.toString()), // Convert the price from Ether to Wei (smallest unit of Ether)
                     });
-                    return tx; // Return the transaction object
+                    return tx;
                 }}
+
                 // Handle successful transaction confirmation
                 onTransactionConfirmed={(tx) => {
                     if (tx.status === "success") {
@@ -146,7 +96,7 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                     console.log(error);
                 }}
             >
-                Buy
+                Buy NFT
             </TransactionButton>
         </div>
 
