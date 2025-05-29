@@ -52,20 +52,20 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
             <TransactionButton
                 unstyled={false}
                 style={{
-                    background: '#000000',
+                    background: "var(--button-bg)",
                     color: '#FFFFFF',
                     width: '100%',
-                    paddingTop: '0.5rem',
-                    paddingBottom: '0.5rem',
-                    paddingLeft: '1rem',
-                    paddingRight: '1rem',
+                    paddingTop: '0.4rem',
+                    paddingBottom: '0.4rem',
+                    paddingLeft: '0.8rem',
+                    paddingRight: '0.8rem',
                     border: '1px solid #2A2A2A',
                     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                     cursor: 'pointer',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     borderRadius: '0.375rem',
                     minWidth: 'auto',
-                    fontSize: '1rem',
+                    fontSize: '0.8rem',
 
                 }}
                 // Function to prepare the contract call and create the transaction

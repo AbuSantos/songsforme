@@ -153,10 +153,13 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 <Button
                     onClick={handlePlayPause}
                     disabled={!userId || isLoading}
-                    className='bg-[var(--button-bg)] shadow-md'
+                    className='bg-[var(--button-bg)] shadow-md 
+                    border-[1px] border-[#2A2A2A] hover:bg-[var(--button-bg-hover)]
+                    
+                    '
                 >
                     {isLoading ? (
-                        <Image src="/images/loader.svg" alt='loader' width={30} height={30} />
+                        <Image src="/images/loaderrr.svg" alt='loader' width={30} height={30} />
                     ) : isPlaying ? (
                         <PauseIcon />
                     ) : (
