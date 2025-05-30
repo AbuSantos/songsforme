@@ -31,6 +31,9 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
     const [isPending, startTransition] = useTransition();
 
+    // href={`/dashboard/trackinfo/${data.listedNft?.contractAddress}`}
+    console.log("Data in BoughtTable:", data.listedNft?.Single?.owner);
+
 
     // Toggle function to switch buy/sell mode for individual NFTs
     // const toggleBuySell = (nftId: string) => {
@@ -150,7 +153,6 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
         }
     };
 
-
     // Restore toggle state from localStorage on mount
     useEffect(() => {
         const storedStates: Record<string, boolean> = {};
@@ -172,26 +174,29 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
     }, [data]);
 
 
-    console.log(data, "data from bought table")
-
     try {
         return (
             <div>
                 {data &&
                     <div className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#EEEEEE] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
-                        <Link href={`/dashboard/trackinfo/${data.listedNftId}`} className="flex w-8/12 items-center ">
+                        <div className="flex w-8/12 items-center ">
                             <div className="flex flex-col w-8/12">
-                                <small className="uppercase text-[0.7rem] ">
+                                <div>
+                                    <span className="text-[0.8rem] font-semibold capitalize">
+                                        {data?.listedNft?.Single?.song_name}
+                                    </span>
+                                </div>
+                                <Link href={`/dashboard/artistehub/${data.listedNft?.Single?.owner}`} className="uppercase text-[0.6rem] hover:text-[#8E4EC6]">
                                     {data?.listedNft?.Single?.artist_name || "untitled track"}
-                                </small>
+                                </Link>
                             </div>
-                            <div className="flex items-center justify-center  w-4/12">
+                            <Link href={`/dashboard/trackinfo/${data.listedNft?.contractAddress}`} className="flex items-center justify-center  w-4/12">
                                 <span>
                                     {data?.listedNft?.price}
                                 </span>
                                 <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-1" />
-                            </div>
-                        </Link>
+                            </Link>
+                        </div>
                         <div className="flex items-center space-x-3 ">
                             {
                                 data?.status === "NONE" ?

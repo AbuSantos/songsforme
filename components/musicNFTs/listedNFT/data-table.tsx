@@ -223,7 +223,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                 </div>
                             </Link>
 
-                            <div className="z-0">
+                            <div className="z-0 ml-2">
                                 {(address || userId) && (track?.sold === true ?
                                     (<Badge className="bg-[teal] text-[0.7rem]">Sold</Badge>) : track?.seller === userId ?
                                         (
@@ -243,7 +243,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                         ))}
                             </div>
                             <div className="items-center space-x-2 flex ml-2">
-                                <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
+                                {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}
                                 <div className="block md:hidden">
                                     <Popover>
                                         <PopoverTrigger asChild>

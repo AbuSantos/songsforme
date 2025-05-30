@@ -128,7 +128,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         }
     };
 
-    console.log(nftData, "nftData");
+    // console.log(nftData, "nftData");
     // Reward validation system
     useEffect(() => {
         const interval = setInterval(async () => {

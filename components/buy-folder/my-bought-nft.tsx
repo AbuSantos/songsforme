@@ -101,9 +101,6 @@ const BoughtNFT = () => {
                         <AllOffer userId={userId} />
                     </TabsContent>
                 </Tabs>
-
-
-
             </div>
         );
     } catch (error: any) {

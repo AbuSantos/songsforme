@@ -37,6 +37,7 @@ export const GET = async (
                 artist_name: true,
                 song_cover: true,
                 song_name: true,
+                owner: true,
               },
             },
             seller: true,

@@ -317,7 +317,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                             </TabsContent>
 
                             <div className="mt-auto w-full fixed bottom-0  md:hidden h-20">
-                                <TabsList className="w-full py-5 h-20  rounded-none bg-black">
+                                <TabsList className="w-full py-5 h-20 rounded-none bg-black">
                                     < MobileTab artistesIds={whitelistedArtists} />
                                     <div className=" mobile absolute right-4 bottom-20 mb-2">
                                         <MobileNav />

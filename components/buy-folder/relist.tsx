@@ -60,7 +60,25 @@ export const RelistNft = ({ nft, seller, email }: listingProps) => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button className="bg-slate-100 text-black ">
+                <Button className="bg-slate-100 text-black "
+                    style={{
+                        background: "var(--button-bg)",
+                        color: '#FFFFFF',
+                        width: '100%',
+                        paddingTop: '0.3rem',
+                        paddingBottom: '0.3rem',
+                        paddingLeft: '0.7rem',
+                        paddingRight: '0.7rem',
+                        border: '1px solid #2A2A2A',
+                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.3s ease, color 0.3s ease',
+                        borderRadius: '0.375rem',
+                        minWidth: 'auto',
+                        fontSize: '0.8rem',
+
+                    }}
+                >
                     relist
                 </Button>
             </PopoverTrigger>
@@ -74,7 +92,7 @@ export const RelistNft = ({ nft, seller, email }: listingProps) => {
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
 
-                    {/* <TransactionButton
+                    <TransactionButton
                         transaction={() => {
                             const priceInWei = ethers.utils.parseEther(price);
                             const tx = prepareContractCall({
@@ -101,18 +119,16 @@ export const RelistNft = ({ nft, seller, email }: listingProps) => {
                             }
                         }}
                         onError={(error) =>
-
                             console.log(error)
-
                         }
                     >
                         Confirm Listing
-                    </TransactionButton> */}
-                    <Button
+                    </TransactionButton>
+                    {/* <Button
                         onClick={() => saveListing(price)}
                     >
-                        save listing
-                    </Button>
+                        save listing */}
+                    {/* </Button> */}
                 </div>
             </PopoverContent>
 
