@@ -26,15 +26,15 @@ export function AlbumArtwork({
     }
 
     return (
-        <div className={cn("space-y-3", className)} {...props}>
+        <div className={cn("space-y-3 ", className)} {...props}>
             <Link className="space-y-1" href={`/dashboard/tracklist/${album.contractAddress}`}>
-                <div className="relative w-[190px] h-[120px] overflow-hidden rounded-md">
+                <div className="relative w-[150px] h-[120px] overflow-hidden rounded-md">
                     <Image
                         src={returnCorrectImage(album.song_cover) || `/images/playlisty.jpg`}
                         alt="Music"
                         className="absolute w-full h-full object-cover"
                         onClick={() => setOpenTrack(!openTrack)}
-                        width={170}
+                        width={150}
                         height={120}
                     />
                 </div>

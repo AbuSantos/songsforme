@@ -47,7 +47,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
                                         <AlbumArtwork
                                             key={data.id}
                                             album={data}
-                                            className="w-[180px]"
+                                            className="w-[150px]"
                                         />
                                     ))}
                                 </div>
@@ -61,7 +61,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
                                         <AlbumArtwork
                                             key={data.id}
                                             album={data}
-                                            className="w-[180px]"
+                                            className="w-[150px]"
                                         />
                                     ))}
                                 </div>
@@ -75,7 +75,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
                                         <AlbumArtwork
                                             key={data.id}
                                             album={data}
-                                            className="w-[180px]"
+                                            className="w-[170px]"
                                         />
                                     ))}
                                 </div>
@@ -89,7 +89,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
                                         <AlbumArtwork
                                             key={data.id}
                                             album={data}
-                                            className="w-[180px]"
+                                            className="w-[170px]"
                                         />
                                     ))}
                                 </div>
@@ -103,7 +103,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
                                         <AlbumArtwork
                                             key={data.id}
                                             album={data}
-                                            className="w-[180px]"
+                                            className="w-[170px]"
                                         />
                                     ))}
                                 </div>
@@ -117,7 +117,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
                                         <AlbumArtwork
                                             key={data.id}
                                             album={data}
-                                            className="w-[180px]"
+                                            className="w-[170px]"
                                         />
                                     ))}
                                 </div>
