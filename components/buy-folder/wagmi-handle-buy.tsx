@@ -51,7 +51,8 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     const handleBuyNft = (price: number, transactionHash: string) => {
         startTransition(async () => {
             try {
-                const res = await buyNFT(buyer, price, listedNftId, transactionHash, usrname, email, currentUrl)
+                //@ts-ignore
+                const res = await buyNFT(buyer, price, listedNftId, transactionHash, usrname, email)
                 if (res.message) {
                     toast.success(res.message)
                 } else {
@@ -64,26 +65,26 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
     }
 
     // Custom gas settings for Base Sepolia
-    const CUSTOM_GAS_LIMIT = 300000n 
+    // const CUSTOM_GAS_LIMIT = 300000n 
     const CUSTOM_MAX_FEE = parseEther('0.00000001') 
     const CUSTOM_PRIORITY_FEE = parseEther('0.000000001') 
 
     const handleWagmiTransaction = async () => {
         try {
 
-            const gasFees = {
-                gas: CUSTOM_GAS_LIMIT,
-                maxFeePerGas: estimatedFees?.maxFeePerGas ?? CUSTOM_MAX_FEE,
-                maxPriorityFeePerGas: estimatedFees?.maxPriorityFeePerGas ?? CUSTOM_PRIORITY_FEE,
-            }
+            // const gasFees = {
+            //     gas: CUSTOM_GAS_LIMIT,
+            //     maxFeePerGas: estimatedFees?.maxFeePerGas ?? CUSTOM_MAX_FEE,
+            //     maxPriorityFeePerGas: estimatedFees?.maxPriorityFeePerGas ?? CUSTOM_PRIORITY_FEE,
+            // }
 
-            console.log('Estimated transaction cost:', formatEther(gasFees.gas * (gasFees.maxFeePerGas)), 'ETH')
+            // console.log('Estimated transaction cost:', formatEther(gasFees.gas * (gasFees.maxFeePerGas)), 'ETH')
 
             await sendTransaction({
                 to: nftAddress as `0x${string}`,
                 value: BigInt(toWei(price.toString())),
                 chainId: baseSepolia.id,
-                ...gasFees,
+                // ...gasFees,
             })
         } catch (error) {
             toast.error("Failed to send transaction")
