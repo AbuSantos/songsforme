@@ -117,7 +117,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
                 </div>
 
                 <TabsContent value="all">
-                    <div className="mx-4">
+                    <div className="mx-1 flex flex-wrap items-center justify-center md:justify-start mt-4">
                         {data &&
                             data?.map((single: Single) => (
                                 <AlbumArtwork key={single.id} album={single} className="w-[180px]" />
@@ -125,7 +125,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
                     </div>
                 </TabsContent>
                 <TabsContent value="new">
-                    <div className="mx-4">
+                    <div className="mx-1 flex flex-wrap items-center justify-center md:justify-start mt-4">
                         {data &&
                             sortedData?.map((single: Single) => (
                                 <AlbumArtwork key={single.id} album={single} className="w-[180px]" />
