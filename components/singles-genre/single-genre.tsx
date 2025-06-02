@@ -42,7 +42,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
 
                         <TabsContent value="all" className="border-none pt-4 outline-none px-2 mb-20">
                             <div className="relative w-full">
-                                <div className="flex flex-wrap space-x-2 pb-4 gap-2">
+                                <div className="flex justify-center md:justify-start flex-wrap space-x-2 pb-4 gap-2">
                                     {singleNft?.map((data: Single, index: number) => (
                                         <AlbumArtwork
                                             key={data.id}
