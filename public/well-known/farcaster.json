@@ -1,18 +1,18 @@
 {
   "accountAssociation": {
     "header": "eyJmaWQiOjEwODc1NDYsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhlNjcyN2JmOTM4ZDlEQmFhRmU5M0RmYjdGOTUyYzUyNWQxY0YzQjhjIn0",
-    "payload": "eyJkb21haW4iOiJwdW5jaC1zdGFnZS11bmNlcnRhaW50eS1zb21lLnRyeWNsb3VkZmxhcmUuY29tIn0",
-    "signature": "MHgyNmI4ZGRjMTBhYzNiZDAxNTc0OTc1NjAxZmZkNzM5MDdmZGE0NzhmMTAzMjQ1NThlZGI0MTE1YzVhOTYzNWFlNzI4NTQzODYyNGFhZTUxNzE2ZTM1OTNkMDlhZjUwZTFkNmU5ZTNmMGNhZDMwMDE5NDU2YzhlNmVjZGFiYzhkMjFj"
+    "payload": "eyJkb21haW4iOiJ3d3cuYnVsbGNob3JkLnh5eiJ9",
+    "signature": "MHhlNzQ3MzYyMTIzNjMyNDgzMzBkYWY4NjRmZGNkN2Q1ZDZlNGQ1YTZkMmJiOTNmNjhmNTljNTYzYjU5YjgwOGY0MzZlZjZlMmY3M2JlNjRhNDRmY2I5OTExMjU4NGIxZTM4N2Y1YzcyNTZiMDU1YTNlNTcwOGZjZGI3ZjM1ZmY2MzFj"
   },
   "frame": {
     "version": "1",
     "name": "Example Frame",
-    "iconUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/icon.png",
-    "homeUrl": "https://punch-stage-uncertainty-some.trycloudflare.com",
-    "imageUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/image.png",
+    "iconUrl": "https://www.bullchord.xyz/icon.png",
+    "homeUrl": "https://www.bullchord.xyz",
+    "imageUrl": "https://www.bullchord.xyz/image.png",
     "buttonTitle": "Check this out",
-    "splashImageUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/splash.png",
+    "splashImageUrl": "https://www.bullchord.xyz/splash.png",
     "splashBackgroundColor": "#eeccff",
-    "webhookUrl": "https://punch-stage-uncertainty-some.trycloudflare.com/api/webhook"
+    "webhookUrl": "https://www.bullchord.xyz/api/webhook"
   }
 }
