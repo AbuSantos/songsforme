@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { contract } from "@/lib/client";
 import { useTransition } from "react";
 import { buyNFT } from "@/actions/buy-song";
+import { useSWRConfig } from "swr";
 
 // Interface defining the props for the BuyNFT component
 interface NFTProps {
@@ -21,7 +22,7 @@ interface NFTProps {
 
 // BuyNFT Component for handling the purchase of an NFT on the blockchain
 export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname, email }: NFTProps) => {
-
+    const { mutate } = useSWRConfig()
     const [isPending, startTransition] = useTransition();
     const transactionHash = "0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9"// This is a placeholder transaction hash for testing
 
@@ -37,6 +38,9 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                 const res = await buyNFT(buyer, price, listedNftId, transactionHash, usrname, email, currentUrl)
                 if (res.message) {
                     toast.success(res.message)
+                    await mutate((key) => typeof key === "string" && key.startsWith('/api/listednft')); // Refresh the SWR cache for the buyer's NFTs
+                    await mutate(`/api/buynft/${buyer}`); // Refresh the SWR cache for the buyer's NFTs
+                    await mutate(`/api/listednft/${nftAddress}`); // Refresh the SWR cache for the listed NFTs
                 } else {
                     toast.error("Purchase failed, try again!")
                 }

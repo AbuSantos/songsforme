@@ -14,7 +14,9 @@ import {
     useWaitForTransactionReceipt,
     useEstimateFeesPerGas,
 } from 'wagmi'
-import { formatEther, parseEther } from "viem";
+import { formatEther, parseEther, http, createPublicClient } from "viem";
+import { estimateGas } from "viem/actions";
+// import { estimateGas } from 'viem/public'
 
 // Interface defining the props for the BuyNFT component
 interface NFTProps {
@@ -32,12 +34,12 @@ interface NFTProps {
 export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname, email }: NFTProps) => {
 
     const [isPending, startTransition] = useTransition();
-    const transactionHash = "0xCeC2f962377c87dee0CA277c6FcC762254a8Dcd9"// This is a placeholder transaction hash for testing
-
-
     const { protocol, host } = window.location;
-    const { address } = useAccount();
 
+    const client = createPublicClient({
+        chain: baseSepolia,
+        transport: http(),
+    })
 
     const { data: hash, isPending: transactionPending, sendTransaction } = useSendTransaction();
     const { data: estimatedFees } = useEstimateFeesPerGas({ chainId: baseSepolia.id });
@@ -64,28 +66,34 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
         })
     }
 
-    // Custom gas settings for Base Sepolia
-    // const CUSTOM_GAS_LIMIT = 300000n 
-    const CUSTOM_MAX_FEE = parseEther('0.00000001') 
-    const CUSTOM_PRIORITY_FEE = parseEther('0.000000001') 
+
+    // const gasFees = await estimateGas({
+    //     to: nftAddress as `0x${string}`,
+    //     value: BigInt(toWei(price.toString())),
+    //     chainId: baseSepolia.id,
+    // });
+
+    // const gasFees = await estimateGas(client, {
+    //     to: nftAddress as `0x${string}`,
+    //     value: BigInt(toWei(price.toString())),
+    // })
 
     const handleWagmiTransaction = async () => {
         try {
+            if (!nftAddress || !price || !tokenId) {
+                toast.error("Missing transaction parameters")
+                return
+            }
 
-            // const gasFees = {
-            //     gas: CUSTOM_GAS_LIMIT,
-            //     maxFeePerGas: estimatedFees?.maxFeePerGas ?? CUSTOM_MAX_FEE,
-            //     maxPriorityFeePerGas: estimatedFees?.maxPriorityFeePerGas ?? CUSTOM_PRIORITY_FEE,
-            // }
-
-            // console.log('Estimated transaction cost:', formatEther(gasFees.gas * (gasFees.maxFeePerGas)), 'ETH')
-
-            await sendTransaction({
+            const receipt = sendTransaction({
                 to: nftAddress as `0x${string}`,
-                value: BigInt(toWei(price.toString())),
+                value: parseEther(price.toString()),
                 chainId: baseSepolia.id,
-                // ...gasFees,
+                gas: estimatedFees?.maxFeePerGas,
+
             })
+
+            console.log("Transaction sent:", receipt)
         } catch (error) {
             toast.error("Failed to send transaction")
             console.error(error)

@@ -36,6 +36,7 @@ import {
     useSendTransaction,
     useWaitForTransactionReceipt
 } from 'wagmi'
+// import { BuyNFT } from "@/components/buy-folder/wagmi-handle-buy";
 
 
 
@@ -52,12 +53,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const [isPending, startTransition] = useTransition();
     const { address } = useAccount();
 
-    console.log(address, "address in toggleBuySell function");
     // Toggle function to switch buy/sell mode for individual NFTs
     const toggleBuySell = async (nftId: string, tokenId: string, nftContractAddress: string) => {
         const newBuyingState = !isEnabled[nftId];
-
-
 
         try {
             if (!window.ethereum) {
@@ -103,9 +101,6 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
             const signer = await provider.getSigner();
 
             const userAddress = await signer.getAddress();
-
-            console.log('Token ID:', tokenId);
-            console.log('User Address:', userAddress);
 
             if (newBuyingState === true) {
                 try {
@@ -243,7 +238,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                         ))}
                             </div>
                             <div className="items-center space-x-2 flex ml-2">
-                                <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
+                                {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}
                                 <div className="block md:hidden">
                                     <Popover>
                                         <PopoverTrigger asChild>

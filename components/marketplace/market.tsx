@@ -7,6 +7,7 @@ import { Tracktable } from "../musicNFTs/listedNFT/data-table";
 import InfiniteScroll from 'react-infinite-scroller';
 import useSWRInfinite from 'swr/infinite';
 import { fetcher } from "@/lib/utils";
+import { mutate } from "swr";
 
 interface NFTData {
     id: string;
@@ -44,6 +45,8 @@ const MarketPlace = () => {
         {
             revalidateFirstPage: false,
             persistSize: true,
+            revalidateOnFocus: true,
+            refreshInterval: 0,
         }
     );
 
@@ -53,6 +56,19 @@ const MarketPlace = () => {
             setAggregatedData(newData);
         }
     }, [data]);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                mutate(undefined);
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [mutate]);
 
     const hasNextPage = data?.[data?.length - 1]?.metadata?.hasNextPage;
 
@@ -67,17 +83,17 @@ const MarketPlace = () => {
     return (
         <Suspense fallback={<MarketSkeleton />}>
             <div className="w-full mt-10">
-                {/* <InfiniteScroll
+                <InfiniteScroll
                     pageStart={0}
                     loadMore={() => setSize(size + 1)}
                     hasMore={!!hasNextPage}
                     loader={<div key={0} className="flex justify-center py-4">
                         <MarketSkeleton />
                     </div>}
-                > */}
+                >
                     {/* @ts-ignore */}
                     <Tracktable data={aggregatedData} />
-                {/* </InfiniteScroll> */}
+                </InfiniteScroll>
             </div>
         </Suspense>
     );

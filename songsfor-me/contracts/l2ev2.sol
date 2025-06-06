@@ -76,7 +76,7 @@ contract BullchordMarketPlaceListen is ReentrancyGuard {
     Counters.Counter private _tokenIds;
 
     uint256 public platformFeeBasisPoints = 250;
-    uint256 public listingFee = 0.025 ether;
+    uint256 public listingFee = 0.0025 ether;
     uint256 private whitelistedListingFee = 0.0005 ether;
     uint256 private listingProceeds;
     // Array with all marketItem

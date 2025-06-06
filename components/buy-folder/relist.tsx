@@ -36,6 +36,7 @@ export const RelistNft = ({ nft, seller, email }: listingProps) => {
 
     const apiUrl = seller ? `/api/buynft/${seller}` : null;
 
+
     const saveListing = async (
         price: string,
     ) => {
@@ -95,13 +96,14 @@ export const RelistNft = ({ nft, seller, email }: listingProps) => {
                     <TransactionButton
                         transaction={() => {
                             const priceInWei = ethers.utils.parseEther(price);
+
                             const tx = prepareContractCall({
                                 contract,
                                 //@ts-ignore
                                 method: "function listBull(address _nftAddress, uint256 _tokenId, uint256 _price) payable",
                                 params: [nft?.listedNft?.contractAddress, nft?.listedNft?.tokenId, priceInWei],
                                 // value: toWei(price), 
-                                value: toWei("0.0005"),
+                                value: toWei("0.025"),// Adding listing fee to the price
                             });
 
                             return tx;
@@ -113,9 +115,12 @@ export const RelistNft = ({ nft, seller, email }: listingProps) => {
                                     saveListing(
                                         price,
                                     )
+                                    toast.success("NFT listed successfully!");
+
                                 }
                             } catch (error) {
                                 console.log(error, "error saving")
+                                toast.error("Failed to list NFT. Please try again.");
                             }
                         }}
                         onError={(error) =>

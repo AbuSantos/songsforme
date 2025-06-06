@@ -31,29 +31,6 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
     const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
     const [isPending, startTransition] = useTransition();
 
-    // href={`/dashboard/trackinfo/${data.listedNft?.contractAddress}`}
-    console.log("Data in BoughtTable:", data.listedNft?.Single?.owner);
-
-
-    // Toggle function to switch buy/sell mode for individual NFTs
-    // const toggleBuySell = (nftId: string) => {
-    //     const newBuyingState = !isEnabled[nftId];
-    //     startTransition(async () => {
-    //         //@ts-ignore
-    //         const res = await toggleState(nftId, newBuyingState);
-    //         if (res.message) {
-    //             toast.success(res.message);
-    //             mutate(`api/listednft`)
-    //         }
-    //         setIsEnabled((prev) => ({
-    //             ...prev,
-    //             [nftId]: newBuyingState,
-    //         }));
-    //         // Store the updated state in localStorage
-    //         window.localStorage.setItem(`buy_${nftId}`, JSON.stringify(newBuyingState));
-    //     });
-    // };
-
     // Toggle function to switch buy/sell mode for individual NFTs
     const toggleBuySell = async (nftId: string, tokenId: string, nftContractAddress: string) => {
         const newBuyingState = !isEnabled[nftId];
@@ -75,11 +52,6 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
             const signer = await provider.getSigner();
 
             const userAddress = await signer.getAddress();
-
-            console.log('User Address ccc:', userAddress);
-
-            console.log('Token ID:', tokenId);
-            console.log('User Address:', userAddress);
 
             if (newBuyingState === true) {
                 try {
@@ -109,9 +81,6 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
                     );
 
                     const owner = await Promise.race([ownerPromise, timeoutPromise]);
-
-                    console.log('Owner:', owner);
-
 
                     if (!owner || owner.toLowerCase() !== userAddress.toLowerCase()) {
                         toast.error("You don't own this NFT");
@@ -180,15 +149,21 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
                 {data &&
                     <div className="flex items-center justify-center md:justify-between border-b-[0.5px] border-b-[#2A2A2A] text-[#EEEEEE] bg-[#FFFFFF22] hover:bg-[#484848] hover:text-[#EEEEEE]   px-2 py-2 w-full mt-2 text-start rounded-md ">
                         <div className="flex w-8/12 items-center ">
-                            <div className="flex flex-col w-8/12">
-                                <div>
-                                    <span className="text-[0.8rem] font-semibold capitalize">
-                                        {data?.listedNft?.Single?.song_name}
-                                    </span>
+                            <div className="flex w-8/12 items-center justify-start">
+                                <span className="text-[0.7rem] font-semibold">
+                                    {data?.listedNft?.tokenId}
+                                </span>
+
+                                <div className=" flex flex-col ml-2 ">
+                                    <div>
+                                        <span className="text-[0.8rem] font-semibold capitalize">
+                                            {data?.listedNft?.Single?.song_name}
+                                        </span>
+                                    </div>
+                                    <Link href={`/dashboard/artistehub/${data.listedNft?.Single?.owner}`} className="uppercase text-[0.6rem] hover:text-[#8E4EC6]">
+                                        {data?.listedNft?.Single?.artist_name || "untitled track"}
+                                    </Link>
                                 </div>
-                                <Link href={`/dashboard/artistehub/${data.listedNft?.Single?.owner}`} className="uppercase text-[0.6rem] hover:text-[#8E4EC6]">
-                                    {data?.listedNft?.Single?.artist_name || "untitled track"}
-                                </Link>
                             </div>
                             <Link href={`/dashboard/trackinfo/${data.listedNft?.contractAddress}`} className="flex items-center justify-center  w-4/12">
                                 <span>
