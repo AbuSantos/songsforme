@@ -165,7 +165,7 @@ export const BoughtTable = ({ data, userId, email }: TrackTableType) => {
                                     </Link>
                                 </div>
                             </div>
-                            <Link href={`/dashboard/trackinfo/${data.listedNft?.contractAddress}`} className="flex items-center justify-center  w-4/12">
+                            <Link href={`/dashboard/trackinfo/${data.listedNft?.contractAddress}`} className="flex items-center justify-center  w-5/12">
                                 <span>
                                     {data?.listedNft?.price}
                                 </span>

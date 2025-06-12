@@ -122,7 +122,7 @@ export const MakeBid = ({
                     <Separator className=" border-t-[#606060] h-[0.7px] mt-3" />
 
 
-                    <TransactionButton
+                    {/* <TransactionButton
                         transaction={() => {
                             const tx = prepareContractCall({
                                 contract,
@@ -143,12 +143,12 @@ export const MakeBid = ({
                         onError={(error) => toast.error(error.message)}
                     >
                         Make Bid
-                    </TransactionButton>
+                    </TransactionButton> */}
 
                     {/* //FOR TESTING */}
-                    {/* <button onClick={() => handleBidBackEnd(transactionHash)} className="text-gray-200">
+                    <button onClick={() => handleBidBackEnd(transactionHash)} className="text-gray-200">
                         Bid
-                    </button> */}
+                    </button>
                 </div>
             </PopoverContent>
         </Popover>

@@ -55,8 +55,6 @@ export const metadata: Metadata = {
     description: "Earn songs as your listen to music.",
 }
 
-console.log("Music page loaded");
-
 export default async function MusicPage({ searchParams }: { searchParams: { filter?: string; q?: string } }) {
 
     const filter = searchParams.filter?.trim() || "ratio" || undefined;

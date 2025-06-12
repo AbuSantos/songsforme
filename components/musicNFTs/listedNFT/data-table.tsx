@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState, useTransition } from "react";
-import { BuyNFT } from "@/components/buy-folder/buy-nft";
+// import { BuyNFT } from "@/components/buy-folder/buy-nft";
 import { Text } from "@radix-ui/themes";
 import { ListedNFT } from "@/types";
 import Link from "next/link";
@@ -36,6 +36,7 @@ import {
     useSendTransaction,
     useWaitForTransactionReceipt
 } from 'wagmi'
+import { BuyNFT } from "@/components/buy-folder/wagmi-handle-buy";
 // import { BuyNFT } from "@/components/buy-folder/wagmi-handle-buy";
 
 
