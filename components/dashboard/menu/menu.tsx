@@ -7,7 +7,7 @@ import {
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import { AddMusicModal } from "../../modal/add-music"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ConnecttButton } from "@/web3/connect-button"
 import { AddToWhitelist } from "../../modal/add-to-whitelist"
 import { ListNFTForm } from "../../modal/list-nft"
@@ -17,7 +17,8 @@ import Link from "next/link"
 import { useRecoilValue } from "recoil"
 import { isConnected } from "@/atoms/session-atom"
 import { ConnectMenu } from "@/web3/connect-with-wagmi"
-
+import { getUserEmail } from "thirdweb/wallets/in-app";
+import { client } from "@/lib/client";
 
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -25,6 +26,20 @@ export function Menu() {
     const userEmail = useRecoilValue(isConnected)?.userEmail
 
     const adminId = process.env.NEXT_PUBLIC_ADMIN_WALLET?.toLowerCase()!
+
+    useEffect(() => {
+        const getUserEmails = async () => {
+            if (userId) {
+                const email = await getUserEmail({ client });
+                if (email) {
+                    console.log("User email:", email);
+                } else {
+                    console.log("No email found for user.");
+                }
+            }
+        }
+        getUserEmails();
+    }, [])
 
     return (
         <div className="md:fixed justify-between items-center p-2 hidden md:flex w-[95%] bg-transparent z-50">
@@ -42,8 +57,8 @@ export function Menu() {
                     userId && userId === adminId &&
                     <AddToWhitelist adminId={adminId} userId={userId} email={userEmail || ""} />
                 }
-                <ConnectMenu />
-                {/* <ConnecttButton /> */}
+                {/* <ConnectMenu /> */}
+                <ConnecttButton />
             </div>
 
             {

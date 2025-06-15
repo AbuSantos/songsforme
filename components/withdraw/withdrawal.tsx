@@ -17,7 +17,6 @@ export const WithdrawRewards = () => {
     const [totalTime, setTotalTime] = useState<number>(0);
     const userId = useRecoilValue(isConnected)?.userId;
 
-
     useEffect(() => {
         const fetchAccumulatedTime = async () => {
             setIsLoading(true);
@@ -34,7 +33,6 @@ export const WithdrawRewards = () => {
 
         fetchAccumulatedTime();
     }, [userId]);
-
 
 
     return (
