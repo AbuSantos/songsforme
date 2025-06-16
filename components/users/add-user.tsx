@@ -13,6 +13,7 @@ import React, {
     ChangeEvent,
     Dispatch,
     SetStateAction,
+    useEffect,
     useRef,
     useState,
 } from "react";
@@ -24,7 +25,10 @@ import { checkUserName } from "@/actions/check-username";
 import { FormSuccess } from "../errorsandsuccess/form-success";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 import { isConnected, UserSession } from "@/atoms/session-atom";
-import { useActiveAccount } from "thirdweb/react";
+import { TransactionButton, useActiveAccount } from "thirdweb/react";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { client, contractABI, contractAddress, contract } from "@/lib/client";
+import { prepareContractCall } from "thirdweb";
 
 interface UserProps {
     address: string;
@@ -40,17 +44,54 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
     const [checking, setChecking] = useState<boolean>(false);
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
-    const addUser = () => {
+    const {
+        data: hash,
+        isPending: wagmiPending,
+        error,
+        writeContract
+    } = useWriteContract()
+
+    const { isLoading: isConfirming, isSuccess: isConfirmed } =
+        useWaitForTransactionReceipt({
+            hash,
+            confirmations: 1,
+        })
+
+
+    const validateData = () => {
         if (!emailAddress.trim()) {
             toast.error("Email address is required!");
-            return;
+            return false;
         }
-
         if (!username.trim()) {
             toast.error("Username is required!");
+            return false;
+        }
+        return true;
+    }
+
+    // const registerUser = async () => {
+    //     if (!validateData()) {
+    //         return;
+    //     }
+    //     try {
+    //         writeContract({
+    //             address: contractAddress,
+    //             abi: contractABI,
+    //             functionName: "registerUser",
+    //         })
+
+    //     } catch (error) {
+    //         console.error("Error registering user:", error);
+    //         throw error;
+    //     }
+    // }
+
+
+    const addUser = () => {
+        if (!validateData()) {
             return;
         }
-
         startTransition(async () => {
             try {
                 const res = await createUser(address, username, emailAddress);
@@ -75,6 +116,12 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
             }
         });
     };
+
+    // useEffect(() => {
+    //     if (isConfirmed) {
+    //         addUser();
+    //     }
+    // }, [isConfirmed]);
 
     const handleCheckUserName = useDebouncedCallback(async (value: string) => {
         if (!value.trim()) {
@@ -140,8 +187,8 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
                     {checking && <p className="text-gray-400 text-sm">Checking...</p>}
-                    {isUsernameValid === true && <p className="text-[teal] ">Username available!</p>}
-                    {isUsernameValid === false && <p className="text-[#611623] ">Username already taken!</p>}
+                    {isUsernameValid === true && <p className="text-[teal] text-sm ">Username available!</p>}
+                    {isUsernameValid === false && <p className="text-[#611623] text-sm ">Username already taken!</p>}
                 </div>
 
                 <div className="flex flex-col space-y-3 mt-4">
@@ -158,15 +205,53 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
                         className="py-3 border-[0.7px] border-gray-700 outline-none h-12 text-gray-100"
                     />
                 </div>
+                <TransactionButton
+                    style={{
+                        marginTop: '1rem',
+                        width: '100%',
+                        border: '1px solid #2A2A2A',
+                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.3s ease, color 0.3s ease',
+                        borderRadius: '0.375rem',
+                        minWidth: 'auto',
+                        fontSize: '0.8rem',
 
-                <Button
+                    }}
+                    transaction={() => {
+                        const tx = prepareContractCall({
+                            contract,
+                            //@ts-ignore
+                            method: "function registerUser()",
+                        });
+                        return tx;
+                    }}
+                    
+                    onTransactionConfirmed={async (receipt) => {
+                        if (receipt.status === "success") {
+                            try {
+                                await addUser();
+                            } catch (error) {
+                                toast.error("Error adding user!");
+                            }
+                        }
+                    }}
+
+                    onError={(error) =>
+                        toast.error(error.message)
+                    }
+                >
+                    Create User
+                </TransactionButton>
+
+                {/* <Button
                     disabled={isPending}
-                    onClick={addUser}
+                    onClick={registerUser}
                     size="nav"
                     className="mt-3 w-full bg-slate-50 text-gray-950 hover:bg-slate-400"
                 >
                     {isPending ? "Creating..." : "Create user"}
-                </Button>
+                </Button> */}
             </div>
         </div >
     );

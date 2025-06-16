@@ -42,6 +42,7 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
             </div>
         );
     }
+    
     try {
         return (
             <Accordion type="single" collapsible className="w-full">

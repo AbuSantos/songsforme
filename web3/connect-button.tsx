@@ -13,7 +13,7 @@ import { isConnected, UserSession } from "@/atoms/session-atom";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 import { toast } from "sonner";
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
-import { useAccount, useDisconnect, useEnsAvatar, useEnsName, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { BaseError, useAccount, useDisconnect, useEnsAvatar, useEnsName, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { ethers } from "ethers";
 
 // const privateKey = process.env.METAMASK_PRIVATE_KEY!
@@ -32,37 +32,8 @@ export const ConnecttButton = () => {
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
-    const {
-        data: hash,
-        isPending,
-        writeContract
-    } = useWriteContract()
 
-    const { isLoading: isConfirming, isSuccess: isConfirmed } =
-        useWaitForTransactionReceipt({
-            hash,
-        })
-
-    const registerUser = async () => {
-        try {
-
-            // const provider = new ethers.providers.Web3Provider(window.ethereum);
-            // await provider.send("eth_requestAccounts", []);
-            // const signer = provider.getSigner();
-
-            writeContract({
-                address: contractAddress,
-                abi: contractABI,
-                functionName: "registerUser",
-            })
-
-
-        } catch (error) {
-            console.error("Error registering user:", error);
-            throw error;
-        }
-    }
-
+   
     const wallets = [
         inAppWallet({
             //@ts-ignore
@@ -77,10 +48,10 @@ export const ConnecttButton = () => {
     ];
     return (
         <>
+           
             <ConnectButton
                 client={client}
                 wallets={wallets}
-
 
                 connectButton={{
                     label: "Sign In"
@@ -138,19 +109,7 @@ export const ConnecttButton = () => {
                 <CreateUsername address={connectedAddress} setIsOpen={setIsOpen} isOpen={isOpen} />
             )}
 
-            <div>
-                <button
-                    disabled={isPending}
-                    onClick={() => {
-                        registerUser()
-                    }}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    {isPending ? 'Confirming...' : 'Register User'}
-                </button>
-                {isConfirming && <div>Waiting for confirmation...</div>}
-                {isConfirmed && <div>Transaction confirmed.</div>}
-            </div>
+           
         </>
     );
 };
