@@ -7,6 +7,7 @@ import Image from 'next/image';
 export const MyEarnings = ({ data }: { data: User }) => {
     const PAY_RATE = 0.001;
     const earnings = (data?.accumulatedTime || 0) * PAY_RATE;
+
     return (
         <div className="my-2 w-full">
             <div className="w-full p-3 flex flex-col bg-[#191919] h-[14rem] rounded-md ">
