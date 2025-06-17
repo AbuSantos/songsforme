@@ -11,9 +11,12 @@ import { useRecoilValue } from "recoil";
 export const TrackInfo = ({ data }: { data: ListedNFT }) => {
     const userId = useRecoilValue(isConnected)?.userId;
 
+
     if (!data) {
-        return <div>Loading...</div>; // Fallback for undefined `data`
+        return <div>Loading...</div>
     }
+
+    console.log("TrackInfo data", data);
 
 
     try {
@@ -50,7 +53,7 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
                 <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[1px] border-[#7B7B7B] rounded-md">
                     <div className="flex w-full">
                         <small className="flex-1 text-center uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">Check Bids</small>
-                        <span className="cursor-pointer text-[0.7rem] text-red-600">4</span>
+                        <span className="cursor-pointer text-[0.7rem] text-red-600">{data?.Bid?.length}</span>
                     </div>
                     <AllBids
                         tokenId={data?.tokenId || ""}

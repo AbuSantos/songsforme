@@ -46,6 +46,11 @@ const page = async ({ params, searchParams }: PageProps) => {
                         id: true
                     }
                 },
+                Bid: {
+                    select: {
+                        id: true
+                    }
+                },
                 Single: {
                     select: {
                         song_name: true

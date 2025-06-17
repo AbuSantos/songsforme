@@ -13,6 +13,8 @@ export const PlaylistInfo = ({ data }: { data: Playlist }) => {
         const amount = amountGenerated(data?.accumulatedTime!)
         const timeLine = totalPlayTime(data?.listednft?.length)
 
+        console.log("data", data)
+
         return (
             <div className=" justify-center p-2 items-center space-x-2 space-y-2 w-full grid  grid-cols-2 gap-1">
                 <div className="flex flex-col items-center justify-center p-2 space-x-2 border-[0.5px] w-full border-[#222222] rounded-md">
@@ -41,14 +43,14 @@ export const PlaylistInfo = ({ data }: { data: Playlist }) => {
                 </div>
                 <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[0.5px] border-[#222222] rounded-md">
                     <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">amount Earned</small>
-                    <p className="text-[1rem] uppercase font-medium flex items-center space-x-1 justify-center">
+                    <p className="text-[0.8rem] uppercase font-medium flex items-center space-x-1 justify-center">
                         {amount}
-                        <Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={15} height={15} className='ml-2' />
+                        <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-1" />
                     </p>
                 </div>
                 <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[0.5px] border-[#222222] rounded-md">
                     <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">owner</small>
-                    <p className="text-[1rem] uppercase font-medium"> {data?.owner?.username} </p>
+                    <p className="text-[0.8rem] uppercase font-medium"> {data?.owner?.username} </p>
                 </div>
                 <div className="flex flex-col items-center justify-center p-2 space-x-2 w-full border-[0.5px] border-[#222222] rounded-md">
                     <small className="uppercase text-[#7B7B7B] text-[0.6rem] tracking-wide">timeline</small>
