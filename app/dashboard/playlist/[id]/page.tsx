@@ -27,7 +27,19 @@ const page = async ({ params }: { params: { id: string } }) => {
                 id
             },
             include: {
-                listednft: true,
+                listednft: {
+                    include: {
+                        Single: {
+                            select: {
+                                song_name: true,
+                                song_cover: true,
+                                genre: true,
+                                contractAddress: true,
+                                owner: true
+                            }
+                        }
+                    }
+                },
                 owner: true
             }
         })
@@ -39,6 +51,8 @@ const page = async ({ params }: { params: { id: string } }) => {
                 </div>
             );
         }
+
+        console.log("Track", track)
 
         return (
             <div className='text-red-50 px-1 py-6'>

@@ -16,9 +16,6 @@ export const TrackInfo = ({ data }: { data: ListedNFT }) => {
         return <div>Loading...</div>
     }
 
-    console.log("TrackInfo data", data);
-
-
     try {
         const plays = countPlays(data?.totalAccumulatedTime || 0);
         const amount = amountGenerated(data?.totalAccumulatedTime || 0);
