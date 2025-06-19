@@ -8,6 +8,26 @@ import { isNewConnected, UserSession } from '@/atoms/session-atom'
 import { useEffect, useState } from 'react'
 import { CreateUsername } from '@/components/users/add-user'
 
+import {
+    ConnectWallet,
+    Wallet,
+    WalletDropdown,
+    WalletAdvancedAddressDetails,
+    WalletAdvancedTokenHoldings,
+    WalletAdvancedTransactionActions,
+    WalletAdvancedWalletActions,
+    WalletDropdownDisconnect,
+} from '@coinbase/onchainkit/wallet';
+
+import {
+    Address,
+    Avatar,
+    Name,
+    Identity,
+} from '@coinbase/onchainkit/identity';
+
+import { color } from '@coinbase/onchainkit/theme';
+
 export const ConnectMenu = () => {
     const { connectors, connect } = useConnect()
 
@@ -21,7 +41,6 @@ export const ConnectMenu = () => {
     // const normalizedAddress = address?.toLowerCase();
     const [isOpen, setIsOpen] = useState<boolean>(true)
     // const user = await getUserByAddress(normalizedAddress || "");
-
 
     useEffect(() => {
         const checkUser = async () => {
@@ -46,26 +65,22 @@ export const ConnectMenu = () => {
         }
         checkUser()
     }, [address, setSessionId])
-
-    // if (user) {
-    //     // User exists, set session
-    //     await setsession(normalizedAddress || "");
-    //     const session: UserSession = {
-    //         userId: normalizedAddress,
-    //         username: user?.username!,
-    //         userEmail: user?.email!,
-    //     }
-    //     setSessionId(session)
-
-    // } else {
-    //     // User does not exist, trigger user creation flow
-    //     setConnectedAddress(normalizedAddress);
-    //     setIsCreatingUser(true); // Trigger the CreateUsername component
-    // }
     return (
         <div>
+            <Wallet>
+                <ConnectWallet>
+                    <Avatar className="h-6 w-6" />
+                    <Name />
+                </ConnectWallet>
+                <WalletDropdown>
+                    <WalletAdvancedWalletActions />
+                    <WalletAdvancedAddressDetails />
+                    <WalletAdvancedTransactionActions />
+                    <WalletAdvancedTokenHoldings />
+                </WalletDropdown>
+            </Wallet>
 
-            {
+            {/* {
                 isConnected ?
 
                     <div className='flex items-center gap-2 bg-black rounded-lg w-4/6 p-4'>
@@ -96,7 +111,7 @@ export const ConnectMenu = () => {
             }
             {isCreatingUser && connectedAddress && isOpen && (
                 <CreateUsername address={connectedAddress} setIsOpen={setIsOpen} isOpen={isOpen} />
-            )}
+            )} */}
         </div >
 
     )

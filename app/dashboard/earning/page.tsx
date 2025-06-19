@@ -44,13 +44,13 @@ const MyEarnings = () => {
                                 <>
                                     < div className='flex items-center space-x-2'>
                                         0
-                                        < Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={20} height={20} className="ml-1" />
+                                        <Image src={"/base-logo.svg"} alt="base eth" width={20} height={15} className="ml-1" />
                                     </div>
                                 </>
                                 :
                                 < div className='flex items-center space-x-2'>
                                     {earnings.toFixed(4)}
-                                    < Image src={"https://tokenlogo.xyz/assets/chain/base.svg"} alt="base eth" width={20} height={20} className="ml-1" />
+                                    <Image src={"/base-logo.svg"} alt="base eth" width={20} height={15} className="ml-1" />
                                 </div>
                             }
                         </h1>

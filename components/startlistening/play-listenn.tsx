@@ -26,6 +26,8 @@ export const Playlistenn = ({ userId, nftId, playlistId, nftContractAddress, tok
         return url.replace("ipfs://", "https://ipfs.io/ipfs/");
     };
 
+    console.log(nftContractAddress, "from play-listenn")
+
     useEffect(() => {
         const fetchMetaData = async () => {
             try {

@@ -11,6 +11,9 @@ import { QualityManager } from '@/lib/audio-quality-manager';
 import { VolumeMonitor } from '@/lib/volume-monitor';
 import { CacheManager } from '@/lib/cache-manager';
 
+import { setOnchainKitConfig } from '@coinbase/onchainkit';
+import { getTokenDetails } from '@coinbase/onchainkit/api';
+
 type PlaylistIdTypes = {
     userId: string | undefined;
     playlistId?: string;
@@ -24,6 +27,28 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const [isLoading, setIsLoading] = useState(false);
     const [nftData, setNftData] = useState<any>();
     const [audioUrl, setAudioUrl] = useState<string>("");
+    const [nftmedia, setNftMedia] = useState<string>("");
+
+
+    console.log(nftContractAddress, "from play-listen");
+    console.log(tokenId, "from play-listen tokenId");
+
+    useEffect(() => {
+        const nftMedia = async () => {
+            const response = await getTokenDetails({
+                contractAddress: `0xfbe748e861462cdf119a0585927b4c0ae84d44f8`,
+                tokenId: "6",
+            });
+            setNftMedia(response)
+
+            console.log(response, "nftMedia response");
+
+        }
+
+        nftMedia();
+
+    }, [nftContractAddress, tokenId]);
+
 
     // Audio System Refs
     const engine = useRef<AudioEngine>(new AudioEngine());

@@ -237,8 +237,9 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                             < MakeBid tokenId={track?.tokenId} nftAddress={track?.contractAddress} nftId={track?.id} userId={userId || ""} />
                                         ))}
                             </div>
+
                             <div className="items-center space-x-2 flex ml-2">
-                                <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
+                                <Playlisten userId={userId || address} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
                                 <div className="block md:hidden">
                                     <Popover>
                                         <PopoverTrigger asChild>

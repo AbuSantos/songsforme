@@ -8,8 +8,12 @@ import { Theme } from '@radix-ui/themes';
 import { sdk } from '@farcaster/frame-sdk';
 import { useEffect } from "react";
 import { WagmiProvider } from 'wagmi'
-import { config } from "@/config";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { OnchainProviders } from "@/onchain/providers";
+import '@coinbase/onchainkit/styles.css';
+import { cookieToInitialState } from 'wagmi';
+import { getConfig } from "@/onchain/config";
+import { headers } from "next/headers";
 
 const queryClient = new QueryClient()
 
@@ -24,6 +28,11 @@ export default function RootLayout({
     sdk.actions.ready();
   }, []);
 
+  const initialState = cookieToInitialState(
+    getConfig(),
+    // headers().get('cookie')
+  );
+
   return (
     <html lang="en"
     >
@@ -35,14 +44,13 @@ export default function RootLayout({
       <RecoilRoot>
         <ThirdwebProvider
         >
-          <WagmiProvider config={config}>
-            <QueryClientProvider client={queryClient}>
+          <OnchainProviders initialState={initialState}>
 
+            <QueryClientProvider client={queryClient}>
               <body >{children}</body>
               <Toaster />
-
             </QueryClientProvider>
-          </WagmiProvider>
+          </OnchainProviders>
 
         </ThirdwebProvider>
       </RecoilRoot>
