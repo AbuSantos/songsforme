@@ -63,6 +63,7 @@ export const Aside = ({ className }: SidebarProps) => {
           {/* Tab Navigation */}
           <div className={`flex w-full ${userId ? "mt-[1rem]" : "mt-[0rem]"} items-center`}>
             <div className="flex items-center justify-center space-x-3 w-10/12">
+
               {/* Playlists Tab */}
               <h2
                 className={cn(

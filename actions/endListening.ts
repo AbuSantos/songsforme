@@ -39,8 +39,6 @@ export const endListening = async (
       },
     });
 
-    console.log(`[DB Query] User fetch time: ${Date.now() - userStartTime}ms`);
-
     if (!user) throw new Error("User not found.");
 
     if (!user.listeningSessionStartTime || !user.currentNftId) {

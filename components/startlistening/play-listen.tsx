@@ -30,26 +30,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const [nftmedia, setNftMedia] = useState<string>("");
 
 
-    console.log(nftContractAddress, "from play-listen");
-    console.log(tokenId, "from play-listen tokenId");
-
-    useEffect(() => {
-        const nftMedia = async () => {
-            const response = await getTokenDetails({
-                contractAddress: `0xfbe748e861462cdf119a0585927b4c0ae84d44f8`,
-                tokenId: "6",
-            });
-            setNftMedia(response)
-
-            console.log(response, "nftMedia response");
-
-        }
-
-        nftMedia();
-
-    }, [nftContractAddress, tokenId]);
-
-
     // Audio System Refs
     const engine = useRef<AudioEngine>(new AudioEngine());
     // const tracker = useRef<PlaytimeTracker>(new PlaytimeTracker());
@@ -83,6 +63,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         };
         fetchMetadata();
     }, [nftContractAddress, tokenId]);
+    
 
     useEffect(() => {
         if (!audioUrl) return;
@@ -180,7 +161,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                     disabled={!userId || isLoading}
                     className='bg-[var(--button-bg)] shadow-md 
                     border-[1px] border-[#2A2A2A] hover:bg-[var(--button-bg-hover)]
-                    
                     '
                 >
                     {isLoading ? (

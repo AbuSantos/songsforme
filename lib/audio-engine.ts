@@ -7,6 +7,11 @@ export class AudioEngine {
   private pausedTime = 0;
   private isActivePlayback = false;
   private currentSource: AudioBufferSourceNode | null = null;
+  private onEndedCallback?: () => void;
+
+  setOnEndedCallback(cb: () => void) {
+    this.onEndedCallback = cb;
+  }
 
   constructor() {
     this.context = this.createAudioContext();
@@ -14,6 +19,8 @@ export class AudioEngine {
     this.gainNode = this.context.createGain();
     this.configureNodes();
   }
+
+  
 
   private createAudioContext(): AudioContext {
     const ctx = new ((window as any).AudioContext ||
@@ -188,6 +195,9 @@ export class AudioEngine {
     this.isActivePlayback = false;
     this.pausedTime = 0;
     this.playbackStartTime = 0;
+    if (this.onEndedCallback) {
+      this.onEndedCallback();
+    }
   }
 
   // Additional features
