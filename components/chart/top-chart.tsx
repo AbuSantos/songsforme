@@ -8,8 +8,6 @@ import Tracktable from "../musicNFTs/listedNFT/data-table";
 export const TopChart = async () => {
     const chartData = await rankedSong()
 
-    console.log("Chart Data:", chartData);
-
     if (chartData.length === 0) {
         return (
             <div className="w-full mt-16">

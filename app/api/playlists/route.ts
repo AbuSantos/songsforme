@@ -13,11 +13,8 @@ export const GET = async (req: NextRequest) => {
 
   const searchParams = req.nextUrl.searchParams;
 
-  console.log(url, searchParams);
   const playtimeQuery = url.get("playtime");
   const ratioQuery = url.get("ratio");
-
-  console.log(ratioQuery, playtimeQuery, "ratio query");
 
   const page: number = (url.get("page") as unknown as number) || 1;
 

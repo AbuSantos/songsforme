@@ -32,8 +32,6 @@ export const rankedSong = async (page: number = 1, limit: number = 20) => {
     skip: offset,
   });
 
-  console.log("Listed Data:", listedData);
-
   const now = new Date();
   const today = now.toISOString().slice(0, 10);
   const todayStart = new Date(today);
@@ -45,16 +43,14 @@ export const rankedSong = async (page: number = 1, limit: number = 20) => {
   //CHANGE THE PLAYED TIME TO 8000
   const highPlayedSongs = listedData.filter(
     (song) =>
-      (song?.accumulatedTime !== null &&
-        song?.accumulatedTime !== undefined &&
-        song.accumulatedTime >= 8000)
+      song?.accumulatedTime !== null &&
+      song?.accumulatedTime !== undefined &&
+      song.accumulatedTime >= 8000
   );
 
   if (highPlayedSongs.length === 0) {
     return [];
   }
-
-  console.log("High Played Songs Data:", highPlayedSongs);
 
   // Process songs/filtered songs
   const processedSongs = highPlayedSongs.map((song) => {

@@ -29,7 +29,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const [audioUrl, setAudioUrl] = useState<string>("");
     const [nftmedia, setNftMedia] = useState<string>("");
 
-
     // Audio System Refs
     const engine = useRef<AudioEngine>(new AudioEngine());
     // const tracker = useRef<PlaytimeTracker>(new PlaytimeTracker());

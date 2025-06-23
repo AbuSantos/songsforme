@@ -52,8 +52,6 @@ const page = async ({ params }: { params: { id: string } }) => {
             );
         }
 
-        console.log("Track", track)
-
         return (
             <div className='text-red-50 px-1 py-6'>
                 <Return />

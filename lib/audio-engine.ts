@@ -8,10 +8,8 @@ export class AudioEngine {
   private isActivePlayback = false;
   private currentSource: AudioBufferSourceNode | null = null;
   private onEndedCallback?: () => void;
-
-  setOnEndedCallback(cb: () => void) {
-    this.onEndedCallback = cb;
-  }
+  private onPlayCallback?: () => void;
+  private onPauseCallback?: () => void;
 
   constructor() {
     this.context = this.createAudioContext();
@@ -19,8 +17,15 @@ export class AudioEngine {
     this.gainNode = this.context.createGain();
     this.configureNodes();
   }
-
-  
+  setOnPlayCallback(cb: (() => void) | undefined) {
+    this.onPlayCallback = cb;
+  }
+  setOnPauseCallback(cb: (() => void) | undefined) {
+    this.onPauseCallback = cb;
+  }
+  setOnEndedCallback(cb: (() => void) | undefined) {
+    this.onEndedCallback = cb;
+  }
 
   private createAudioContext(): AudioContext {
     const ctx = new ((window as any).AudioContext ||
@@ -104,6 +109,8 @@ export class AudioEngine {
       this.isActivePlayback = false;
       throw error;
     }
+
+    this.onPlayCallback?.();
   }
 
   stop(): void {
@@ -130,6 +137,7 @@ export class AudioEngine {
       }
       this.currentSource = null;
       this.isActivePlayback = false;
+      this.onPauseCallback?.();
     }
   }
 
@@ -197,6 +205,7 @@ export class AudioEngine {
     this.playbackStartTime = 0;
     if (this.onEndedCallback) {
       this.onEndedCallback();
+      this.onEndedCallback?.();
     }
   }
 
