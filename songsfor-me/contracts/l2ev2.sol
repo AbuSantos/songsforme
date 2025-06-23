@@ -199,8 +199,8 @@ contract BullchordMarketPlaceListen is ReentrancyGuard {
 
         function distributeRewards(
         address listener,
-        uint256 accumulatedTime
-        // bytes memory signature  
+        uint256 accumulatedTime,
+        bytes memory signature  
     ) public nonReentrant {
         uint256 currentTime = block.timestamp;
 
@@ -208,16 +208,16 @@ contract BullchordMarketPlaceListen is ReentrancyGuard {
         if (accumulatedTime <= 0) revert ListenerRewardMustBeGreaterThanZero();
         require(isUser[listener], "Invalid User ");
 
-        // bytes32 messageHash = keccak256(abi.encodePacked(listener, accumulatedTime));
-        // bytes32 ethSignedMessageHash = messageHash.toEthSignedMessageHash();
-        // address signer = ethSignedMessageHash.recover(signature);
-        // if (signer != trustedSigner) revert InvalidSignature();
+        bytes32 messageHash = keccak256(abi.encodePacked(listener, accumulatedTime));
+        bytes32 ethSignedMessageHash = messageHash.toEthSignedMessageHash();
+        address signer = ethSignedMessageHash.recover(signature);
+        if (signer != trustedSigner) revert InvalidSignature();
 
 
-        //  uint256 maxAccumulatedTime = 1 weeks;  
-        //     if (accumulatedTime > maxAccumulatedTime) {
-        //         revert("Accumulated time exceeds maximum allowed.");
-        //     }
+         uint256 maxAccumulatedTime = 1 weeks;  
+            if (accumulatedTime > maxAccumulatedTime) {
+                revert("Accumulated time exceeds maximum allowed.");
+            }
 
         uint256 amountReward = accumulatedTime * currentRate;
 

@@ -63,7 +63,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         };
         fetchMetadata();
     }, [nftContractAddress, tokenId]);
-    
+
 
     useEffect(() => {
         if (!audioUrl) return;
@@ -89,6 +89,20 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             // tracker.current.stop();
         };
     }, [audioUrl]);
+
+    useEffect(() => {
+        engine.current = new AudioEngine()
+
+        // Set the callback to update isPlaying when playback ends
+        engine.current.setOnEndedCallback(async () => {
+            await endListening(userId, playlistId);
+            setIsPlaying(false)
+        })
+
+        return () => {
+            engine.current?.destroy();
+        };
+    }, [])
 
     // useEffect(() => {
     //     const validateVolume = async () => {
