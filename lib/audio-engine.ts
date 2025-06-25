@@ -1,3 +1,6 @@
+import { currentPlaybackState } from "@/atoms/song-atom";
+import { useSetRecoilState } from "recoil";
+
 export class AudioEngine {
   private context: AudioContext;
   private source: AudioBufferSourceNode | null = null;
@@ -7,9 +10,12 @@ export class AudioEngine {
   private pausedTime = 0;
   private isActivePlayback = false;
   private currentSource: AudioBufferSourceNode | null = null;
+  private static instance: AudioEngine | null = null;
   private onEndedCallback?: () => void;
   private onPlayCallback?: () => void;
   private onPauseCallback?: () => void;
+  private setIsPlaying: (value: boolean) => void = () => {};
+  private playbackStateCallback?: (state: { isPlaying: boolean }) => void;
 
   constructor() {
     this.context = this.createAudioContext();
@@ -17,6 +23,7 @@ export class AudioEngine {
     this.gainNode = this.context.createGain();
     this.configureNodes();
   }
+
   setOnPlayCallback(cb: (() => void) | undefined) {
     this.onPlayCallback = cb;
   }
@@ -58,6 +65,8 @@ export class AudioEngine {
       return false;
     }
   }
+
+  private onPlaybackEnd = () => {};
 
   private async fetchAndDecodeAudio(url: string): Promise<AudioBuffer> {
     const response = await fetch(url);
@@ -111,6 +120,7 @@ export class AudioEngine {
     }
 
     this.onPlayCallback?.();
+    this.setIsPlaying?.(true);
   }
 
   stop(): void {
@@ -138,6 +148,7 @@ export class AudioEngine {
       this.currentSource = null;
       this.isActivePlayback = false;
       this.onPauseCallback?.();
+      this.setIsPlaying?.(false);
     }
   }
 
@@ -198,14 +209,24 @@ export class AudioEngine {
       dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length / 255
     );
   }
+  public setPlaybackStateCallback(
+    callback: (state: { isPlaying: boolean }) => void
+  ) {
+    this.playbackStateCallback = callback;
+  }
 
   private handlePlaybackEnd(): void {
     this.isActivePlayback = false;
     this.pausedTime = 0;
     this.playbackStartTime = 0;
+
     if (this.onEndedCallback) {
       this.onEndedCallback();
-      this.onEndedCallback?.();
+    }
+
+    // Use the callback instead of direct Recoil access
+    if (this.playbackStateCallback) {
+      this.playbackStateCallback({ isPlaying: false });
     }
   }
 
@@ -235,6 +256,27 @@ export class AudioEngine {
     const lows = data.slice(0, midPoint).reduce((a, b) => a + b);
     const highs = data.slice(midPoint).reduce((a, b) => a + b);
     return highs / (lows + highs);
+  }
+
+  private handleError(error: Error) {
+    console.error("AudioEngine error:", error);
+    this.setIsPlaying?.(false);
+  }
+
+  public static getInstance(setIsPlaying?: (value: boolean) => void) {
+    if (!AudioEngine.instance) {
+      AudioEngine.instance = new AudioEngine();
+    }
+
+    if (setIsPlaying) {
+      AudioEngine.instance.setIsPlaying = setIsPlaying;
+    }
+
+    return AudioEngine.instance;
+  }
+
+  isTrackLoaded(): boolean {
+    return !!this.source?.buffer;
   }
 
   // Cleanup method

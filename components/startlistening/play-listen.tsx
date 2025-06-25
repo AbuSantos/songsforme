@@ -6,13 +6,11 @@ import { getNFTMetadata } from '@/actions/helper/get-metadata';
 import { toast } from 'sonner';
 import { endListening } from '@/actions/endListening';
 import { startListening } from '@/actions/startListening';
-import { AudioEngine } from '@/lib/audio-engine';
+import { audioEngine } from "@/lib/audio-engine-singleton";
+import { useRecoilState } from 'recoil';
+import { currentPlaybackState } from '@/atoms/song-atom';
 import { QualityManager } from '@/lib/audio-quality-manager';
-import { VolumeMonitor } from '@/lib/volume-monitor';
 import { CacheManager } from '@/lib/cache-manager';
-
-import { setOnchainKitConfig } from '@coinbase/onchainkit';
-import { getTokenDetails } from '@coinbase/onchainkit/api';
 
 type PlaylistIdTypes = {
     userId: string | undefined;
@@ -23,19 +21,34 @@ type PlaylistIdTypes = {
 };
 
 export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, tokenId }: PlaylistIdTypes) => {
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [playback, setPlayback] = useRecoilState(currentPlaybackState);
     const [isLoading, setIsLoading] = useState(false);
-    const [nftData, setNftData] = useState<any>();
     const [audioUrl, setAudioUrl] = useState<string>("");
-    const [nftmedia, setNftMedia] = useState<string>("");
-
-    // Audio System Refs
-    const engine = useRef<AudioEngine>(new AudioEngine());
-    // const tracker = useRef<PlaytimeTracker>(new PlaytimeTracker());
+    const engine = useRef(audioEngine);
     const qualityManager = useRef<QualityManager>(new QualityManager());
+
+    const isPlaying = playback.trackId === nftId && playback.isPlaying;
 
     const formatIpfsUrl = (url: string) => url.replace("ipfs://", "https://ipfs.io/ipfs/");
 
+    // Initialize audio engine callbacks
+    useEffect(() => {
+        const updatePlaybackState = (state: { isPlaying: boolean, trackId?: string }) => {
+            setPlayback(prev => ({
+                ...prev,
+                ...state,
+                trackId: state.trackId || prev.trackId
+            }));
+        };
+
+        engine.current.setPlaybackStateCallback(updatePlaybackState);
+
+        return () => {
+            engine.current.setPlaybackStateCallback(null);
+        };
+    }, [setPlayback]);
+
+    // Fetch NFT metadata
     useEffect(() => {
         const fetchMetadata = async () => {
             try {
@@ -43,7 +56,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 const cachedData = CacheManager.get(cacheKey) as { animation_url: string };
 
                 if (cachedData) {
-                    setNftData(cachedData);
                     const formattedUrl = formatIpfsUrl(cachedData.animation_url);
                     setAudioUrl(formattedUrl);
                     return;
@@ -52,7 +64,6 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 const response = await getNFTMetadata(nftContractAddress, tokenId);
                 const metadata = response.raw.metadata;
                 CacheManager.set(cacheKey, metadata);
-                setNftData(metadata);
                 const formattedUrl = formatIpfsUrl(metadata.animation_url);
                 setAudioUrl(formattedUrl);
             } catch (error) {
@@ -63,20 +74,17 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         fetchMetadata();
     }, [nftContractAddress, tokenId]);
 
-
+    // Initialize audio when URL changes
     useEffect(() => {
         if (!audioUrl) return;
 
         const initializeAudio = async () => {
             try {
-                // Get optimal quality URL based on network
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
                 await engine.current.loadTrack(optimalUrl);
-
-                // Set up quality switching
                 qualityManager.current.initDynamicSwitching(engine.current, audioUrl);
             } catch (error) {
-                console.log("Audio initialization failed:", error);
+                console.error("Audio initialization failed:", error);
                 toast.error("Error loading audio track");
             }
         };
@@ -85,42 +93,24 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
 
         return () => {
             engine.current.stop();
-            // tracker.current.stop();
         };
     }, [audioUrl]);
 
+    // Playback validation
     useEffect(() => {
-        engine.current = new AudioEngine()
+        const interval = setInterval(async () => {
+            if (isPlaying) {
+                const isValid = await engine.current.validatePlayback();
+                if (!isValid) {
+                    engine.current.stop();
+                    await endListening(userId, playlistId);
+                    toast.warning("Playback paused - verification failed");
+                }
+            }
+        }, 15000);
 
-        // Set the callback to update isPlaying when playback ends
-        engine.current.setOnEndedCallback(async () => {
-            await endListening(userId, playlistId);
-            setIsPlaying(false)
-        })
-
-        return () => {
-            engine.current?.destroy();
-        };
-    }, [])
-
-    // useEffect(() => {
-    //     const validateVolume = async () => {
-    //         if (isPlaying) {
-    //             const isValid = await VolumeMonitor.validateListeningSession(engine);
-    //             if (!isValid) {
-    //                 engine.current.stop();
-    //                 await endListening(userId, playlistId, "true");
-    //                 toast.error("Please increase your volume or unmute your audio");
-    //                 setIsPlaying(false);
-    //             }
-    //         }
-    //     };
-
-    //     // Check volume after 3 seconds of starting playback
-    //     const timeout = setTimeout(validateVolume, 3000);
-    //     return () => clearTimeout(timeout);
-    // }, [isPlaying, userId, playlistId]);
-
+        return () => clearInterval(interval);
+    }, [isPlaying, userId, playlistId]);
 
     const handlePlayPause = async () => {
         if (!userId) {
@@ -133,12 +123,22 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             if (isPlaying) {
                 await engine.current.pause();
                 await endListening(userId, playlistId);
+                setPlayback({ trackId: null, isPlaying: false });
             } else {
-                // Queue system prevents overlapping requests
+                // Stop any currently playing track first
+                if (playback.isPlaying) {
+                    engine.current.stop();
+                    await endListening(userId, playlistId);
+                }
+                // Ensure track is loaded before playing
+                if (!engine.current.isTrackLoaded() || playback.trackId !== nftId) {
+                    await engine.current.loadTrack(audioUrl);
+                }
+
                 await engine.current.play();
+                setPlayback({ trackId: nftId, isPlaying: true });
                 await startListening(userId, nftId, playlistId);
             }
-            setIsPlaying(!isPlaying);
         } catch (error) {
             console.error("Playback error:", error);
             toast.error(error instanceof Error ? error.message : "Playback failed");
@@ -147,48 +147,21 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         }
     };
 
-    // console.log(nftData, "nftData");
-    // Reward validation system
-    useEffect(() => {
-        const interval = setInterval(async () => {
-            if (isPlaying) {
-                const isValid = await engine.current.validatePlayback();
-                if (!isValid) {
-                    engine.current.stop();
-                    // tracker.current.stop();
-                    await endListening(userId, playlistId);
-                    toast.warning("Playback paused - verification failed");
-                    setIsPlaying(false);
-                }
-            }
-        }, 15000);
-
-        return () => clearInterval(interval);
-    }, [isPlaying]);
-
     return (
         <div>
-            {nftData ? (
-                <Button
-                    onClick={handlePlayPause}
-                    disabled={!userId || isLoading}
-                    className='bg-[var(--button-bg)] shadow-md 
-                    border-[1px] border-[#2A2A2A] hover:bg-[var(--button-bg-hover)]
-                    '
-                >
-                    {isLoading ? (
-                        <Image src="/images/loaderrr.svg" alt='loader' width={30} height={30} />
-                    ) : isPlaying ? (
-                        <PauseIcon />
-                    ) : (
-                        <PlayIcon />
-                    )}
-                </Button>
-            ) : (
-                <Button disabled className='bg-[var(--button-bg)] shadow-md'>
-                    <Image src="/images/loader.svg" alt='loader' width={30} height={30} />
-                </Button>
-            )}
+            <Button
+                onClick={handlePlayPause}
+                disabled={!userId || isLoading}
+                className='bg-[var(--button-bg)] shadow-md border-[1px] border-[#2A2A2A] hover:bg-[var(--button-bg-hover)]'
+            >
+                {isLoading ? (
+                    <Image src="/images/loaderrr.svg" alt='loader' width={30} height={30} />
+                ) : isPlaying ? (
+                    <PauseIcon />
+                ) : (
+                    <PlayIcon />
+                )}
+            </Button>
         </div>
     );
 };

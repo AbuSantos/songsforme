@@ -1,70 +1,66 @@
 "use client";
 import { FaPause, FaPlay, FaStepBackward, FaStepForward } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
-import { useAudioPlayer } from "@/hooks/useAudioPlayer";
-import { useSetRecoilState } from "recoil";
-import { currentTrackIdState, isPlayingState } from "@/atoms/song-atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currentPlaybackState, currentTrackIdState } from "@/atoms/song-atom";
+import { audioEngine } from "@/lib/audio-engine-singleton";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
-interface Song {
-    artiste: string;
-    title: string;
-    url: string;
-    duration: string;
-}
+const MiddlePlayer = () => {
+    const [playback, setPlayback] = useRecoilState(currentPlaybackState);
+    const currentTrackId = useRecoilValue(currentTrackIdState);
 
-const MiddlePlayer: React.FC = () => {
-    const { audioRef, isPlaying, currentTrackId, togglePlayPause, setTrack } = useAudioPlayer();
-    const [songs, setSongs] = useState<Song[]>([]);
-    const setIsPlaying = useSetRecoilState(isPlayingState)
+    // Initialize the playback state callback
+    useEffect(() => {
+        const updateState = (state: { isPlaying?: boolean }) => {
+            setPlayback(prev => ({ ...prev, ...state }));
+        };
 
-    const fetchData = async () => {
+        audioEngine.setPlaybackStateCallback(updateState);
+
+        return () => {
+            audioEngine.setPlaybackStateCallback(null); // Cleanup
+        };
+    }, [setPlayback]);
+
+    const togglePlayPause = async () => {
+        if (!currentTrackId) {
+            toast.warning("No track selected");
+            return;
+        }
+
         try {
-            const response = await fetch("http://localhost:4000/songs");
-            const data = await response.json();
-            setSongs(data);
-
-            if (data.length > 0) {
-                setTrack(0);
+            if (playback.isPlaying) {
+                await audioEngine.pause();
+            } else {
+                // Ensure the track is loaded before playing
+                if (!audioEngine.isTrackLoaded()) {
+                    toast.warning("Track is still loading");
+                    return;
+                }
+                await audioEngine.play();
             }
         } catch (error) {
-            console.error("Error fetching songs:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const playNextTrack = () => {
-        if (songs.length > 0) {
-            //@ts-ignore
-            const nextTrackId = (currentTrackId + 1) % songs.length;
-            setTrack(nextTrackId);
-            setIsPlaying(true)
-        }
-    };
-
-    const playPreviousTrack = () => {
-        if (songs.length > 0) {
-            //@ts-ignore
-
-            const prevTrackId = (currentTrackId - 1 + songs.length) % songs.length;
-            setTrack(prevTrackId);
-            setIsPlaying(true)
-
+            toast.error(error instanceof Error ? error.message : "Playback failed");
         }
     };
 
     return (
         <div className="flex justify-center items-center space-x-6 text-xl cursor-pointer">
-            {/* @ts-ignore */}
-            <audio ref={audioRef} src={songs[currentTrackId]?.url || ""} />
-            <FaStepBackward onClick={playPreviousTrack} />
-            <Button variant="secondary" size="icon" className="rounded-full" onClick={togglePlayPause}>
-                {isPlaying ? <FaPause className="text-xl text-red-900" /> : <FaPlay className="text-xl text-red-900" />}
+            <FaStepBackward />
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={togglePlayPause}
+                disabled={!currentTrackId}
+            >
+                {playback.isPlaying ? <FaPause /> : <FaPlay />}
             </Button>
-            <FaStepForward onClick={playNextTrack} />
+            <FaStepForward />
+            {currentTrackId && (
+                <span className="text-sm ml-4">Now Playing: {currentTrackId}</span>
+            )}
         </div>
     );
 };

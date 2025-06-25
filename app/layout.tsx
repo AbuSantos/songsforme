@@ -14,6 +14,7 @@ import '@coinbase/onchainkit/styles.css';
 import { cookieToInitialState } from 'wagmi';
 import { getConfig } from "@/onchain/config";
 import { headers } from "next/headers";
+import { AudioProvider } from "@/lib/audio-provider";
 
 const queryClient = new QueryClient()
 
@@ -45,11 +46,13 @@ export default function RootLayout({
         <ThirdwebProvider
         >
           <OnchainProviders initialState={initialState}>
+            <AudioProvider>
 
-            <QueryClientProvider client={queryClient}>
-              <body >{children}</body>
-              <Toaster />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <body >{children}</body>
+                <Toaster />
+              </QueryClientProvider>
+            </AudioProvider>
           </OnchainProviders>
 
         </ThirdwebProvider>
