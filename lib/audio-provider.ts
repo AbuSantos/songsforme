@@ -1,37 +1,37 @@
+"use client";
 import { useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  isPlayingState,
-  currentTrackIdState,
-  currentPlaybackState,
-} from "@/atoms/song-atom";
-import { audioEngine } from "./audio-engine-singleton";
-import { AudioEngine } from "./audio-engine";
+import { useSetRecoilState } from "recoil";
+import { isPlayingState, currentPlaybackState } from "@/atoms/song-atom";
+import { getAudioEngineInstance } from "./audio-engine-singleton";
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const setIsPlaying = useSetRecoilState(isPlayingState);
-
-  const [playbackState, setPlaybackState] =
-    useRecoilState(currentPlaybackState);
+  const setPlaybackState = useSetRecoilState(currentPlaybackState);
 
   useEffect(() => {
-    const engine = AudioEngine.getInstance();
+    if (typeof window === "undefined") return;
+
+    const engine = getAudioEngineInstance();
+    if (!engine) return;
+
+    // Sync full playback state
     engine.setPlaybackStateCallback((state) => {
       setPlaybackState((prev) => ({ ...prev, ...state }));
+      if (typeof state.isPlaying === "boolean") setIsPlaying(state.isPlaying);
     });
-  }, [setPlaybackState]);
 
-  useEffect(() => {
-    audioEngine.setOnPlayCallback(() => setIsPlaying(true));
-    audioEngine.setOnPauseCallback(() => setIsPlaying(false));
-    audioEngine.setOnEndedCallback(() => setIsPlaying(false));
+    // Optionally, also set individual callbacks if your engine supports them
+    engine.setOnPlayCallback(() => setIsPlaying(true));
+    engine.setOnPauseCallback(() => setIsPlaying(false));
+    engine.setOnEndedCallback(() => setIsPlaying(false));
 
     return () => {
-      audioEngine.setOnPlayCallback(undefined);
-      audioEngine.setOnPauseCallback(undefined);
-      audioEngine.setOnEndedCallback(undefined);
+      engine.setPlaybackStateCallback(null);
+      engine.setOnPlayCallback(undefined);
+      engine.setOnPauseCallback(undefined);
+      engine.setOnEndedCallback(undefined);
     };
-  }, [setIsPlaying]);
+  }, [setIsPlaying, setPlaybackState]);
 
   return children;
 };

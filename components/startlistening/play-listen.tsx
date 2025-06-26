@@ -6,11 +6,13 @@ import { getNFTMetadata } from '@/actions/helper/get-metadata';
 import { toast } from 'sonner';
 import { endListening } from '@/actions/endListening';
 import { startListening } from '@/actions/startListening';
-import { audioEngine } from "@/lib/audio-engine-singleton";
+// import { audioEngine } from "@/lib/audio-engine-singleton";
 import { useRecoilState } from 'recoil';
 import { currentPlaybackState } from '@/atoms/song-atom';
 import { QualityManager } from '@/lib/audio-quality-manager';
 import { CacheManager } from '@/lib/cache-manager';
+import { AudioEngine } from '@/lib/audio-engine';
+import { getAudioEngineInstance } from '@/lib/audio-engine-singleton';
 
 type PlaylistIdTypes = {
     userId: string | undefined;
@@ -24,7 +26,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const [playback, setPlayback] = useRecoilState(currentPlaybackState);
     const [isLoading, setIsLoading] = useState(false);
     const [audioUrl, setAudioUrl] = useState<string>("");
-    const engine = useRef(audioEngine);
+    const engineRef = useRef<AudioEngine | null>(null);
     const qualityManager = useRef<QualityManager>(new QualityManager());
 
     const isPlaying = playback.trackId === nftId && playback.isPlaying;
@@ -41,10 +43,18 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             }));
         };
 
-        engine.current.setPlaybackStateCallback(updatePlaybackState);
+        if (typeof window === "undefined") return;
+
+        engineRef.current = getAudioEngineInstance();
+
+        if (engineRef.current) {
+            engineRef.current.setPlaybackStateCallback(updatePlaybackState);
+        }
 
         return () => {
-            engine.current.setPlaybackStateCallback(null);
+            if (engineRef.current) {
+                engineRef.current.setPlaybackStateCallback(null);
+            }
         };
     }, [setPlayback]);
 
@@ -98,11 +108,15 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
 
     // Playback validation
     useEffect(() => {
+        if (typeof window === "undefined") return;
         const interval = setInterval(async () => {
+            const engine = getAudioEngineInstance();
+            if (!engine) return;
+
             if (isPlaying) {
-                const isValid = await engine.current.validatePlayback();
+                const isValid = await engine.validatePlayback();
                 if (!isValid) {
-                    engine.current.stop();
+                    engine.stop();
                     await endListening(userId, playlistId);
                     toast.warning("Playback paused - verification failed");
                 }
@@ -120,26 +134,35 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
 
         setIsLoading(true);
         try {
+            // Ensure singleton instance
+            if (typeof window === "undefined") return;
+            if (!engineRef.current) {
+                engineRef.current = getAudioEngineInstance();
+            }
+
+            if (!engineRef.current) {
+                toast.error("Audio engine not available");
+                return;
+            }
+
             if (isPlaying) {
-                await engine.current.pause();
+                engineRef.current.pause();
                 await endListening(userId, playlistId);
                 setPlayback({ trackId: null, isPlaying: false });
-
             } else {
-
                 // Stop any currently playing track first
                 if (playback.isPlaying) {
-                    engine.current.stop();
+                    engineRef.current.stop();
                     await endListening(userId, playlistId);
                 }
                 // Ensure track is loaded before playing
-                if (!engine.current.isTrackLoaded() || playback.trackId !== nftId) {
-                    await engine.current.loadTrack(audioUrl);
+                if (!engineRef.current.isTrackLoaded() || playback.trackId !== nftId) {
+                    await engineRef.current.loadTrack(audioUrl);
                 }
 
-                engine.current.play();
-                setPlayback({ trackId: nftId, isPlaying: true });
+                engineRef.current.play();
                 await startListening(userId, nftId, playlistId);
+                setPlayback({ trackId: nftId, isPlaying: true });
             }
         } catch (error) {
             console.error("Playback error:", error);

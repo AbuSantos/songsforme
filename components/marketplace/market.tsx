@@ -80,6 +80,7 @@ const MarketPlace = () => {
         return <MarketSkeleton />;
     }
 
+
     return (
         <Suspense fallback={<MarketSkeleton />}>
             <div className="w-full mt-10">
@@ -91,8 +92,8 @@ const MarketPlace = () => {
                         <MarketSkeleton />
                     </div>}
                 > */}
-                    {/* @ts-ignore */}
-                    <Tracktable data={aggregatedData} />
+                {/* @ts-ignore */}
+                <Tracktable data={aggregatedData} />
                 {/* </InfiniteScroll> */}
             </div>
         </Suspense>

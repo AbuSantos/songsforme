@@ -1,96 +1,152 @@
 "use client";
 import { FaPause, FaPlay, FaStepBackward, FaStepForward } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { currentPlaybackState, currentTrackIdState } from "@/atoms/song-atom";
-import { audioEngine } from "@/lib/audio-engine-singleton";
 import { toast } from "sonner";
-import { useEffect } from "react";
-import { AudioEngine } from "@/lib/audio-engine";
-import { ListedNFT } from "@/types";
+import { useEffect, useRef } from "react";
 import { getNextTrack } from "@/lib/utils";
+import { ListedNFT } from "@/types";
+import { AudioEngine } from "@/lib/audio-engine";
+import { getAudioEngineInstance } from "@/lib/audio-engine-singleton";
 
-const MiddlePlayer = ({ tracks }: ListedNFT[]) => {
+const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
     const [playback, setPlayback] = useRecoilState(currentPlaybackState);
     const currentTrackId = useRecoilValue(currentTrackIdState);
+    const setCurrentTrackId = useSetRecoilState(currentTrackIdState);
+    const engineRef = useRef<AudioEngine | null>(null);
+
+    console.log("MiddlePlayer tracks:", tracks);
 
     // Initialize the playback state callback
     useEffect(() => {
-        const updateState = (state: { isPlaying?: boolean }) => {
+        engineRef.current = getAudioEngineInstance();
+        const updateState = (state: { isPlaying?: boolean; trackId?: string }) => {
             setPlayback(prev => ({ ...prev, ...state }));
         };
 
-        audioEngine.setPlaybackStateCallback(updateState);
+        if (engineRef.current) {
+            engineRef.current.setPlaybackStateCallback(updateState);
+        }
 
         return () => {
-            audioEngine.setPlaybackStateCallback(null);
+            if (engineRef.current) {
+                engineRef.current.setPlaybackStateCallback(null);
+            }
         };
     }, [setPlayback]);
 
+
+    const getUrl = (trackId: string | null) => {
+        if (!trackId) return '';
+        const track = tracks.find(t => t.id === trackId);
+        return track?.audioUrl || '';
+    };
+
+
     const handleNext = async () => {
         try {
-            const nextTrackId = getNextTrack(tracks, currentTrackId);
+            if (typeof window === "undefined") return;
+            if (!engineRef.current) {
+                engineRef.current = getAudioEngineInstance();
+            }
 
-            console.log("Next Track ID:", nextTrackId);
+            if (!engineRef.current) {
+                toast.error("Audio engine not available");
+                return;
+            }
+            if (!tracks.length) {
+                toast.warning("No tracks available");
+                return;
+            }
 
+            // If no current track, start with first track
+            const nextTrackId = currentTrackId
+                ? getNextTrack(tracks, currentTrackId)
+                : tracks[0]?.id;
 
-            // if (playback.isPlaying) {
-            //     audioEngine.stop();
-            // }
+            console.log("Next track ID:", nextTrackId);
 
-            // //update the global state
-            // setCurrentTrackId(nextTrackId);
-            // setPlayback(prev => ({
-            //     ...prev,
-            //     trackId: nextTrackId,
-            //     isPlaying: false
-            // }));
+            if (!nextTrackId) {
+                toast.warning("No tracks available");
+                return;
+            }
 
-            // // Load and play new track
-            // const trackUrl = getUrl(nextTrackId);
-            // await audioEngine.loadTrack(trackUrl);
-            // await audioEngine.play();
+            console.log("Switching from", currentTrackId, "to", nextTrackId);
 
-            // // Update state to playing
-            // setPlayback(prev => ({
-            //     ...prev,
-            //     isPlaying: true
-            // }));
+            // Stop current playback if any
+            if (playback.isPlaying) {
+                engineRef.current.stop();
+            }
+
+            // Update the global state
+            setCurrentTrackId(nextTrackId);
+            setPlayback({
+                trackId: nextTrackId,
+                isPlaying: false
+            });
+
+            // Load and play new track
+            const trackUrl = getUrl(nextTrackId);
+            if (!trackUrl) {
+                throw new Error("Track URL not found");
+            }
+
+            console.log("Loading track URL:", trackUrl);
+
+            await engineRef.current.loadTrack(trackUrl);
+            await engineRef.current.play();
+
+            // Update state to playing
+            setPlayback(prev => ({
+                ...prev,
+                isPlaying: true
+            }));
 
         } catch (error) {
             console.error('Track switch failed:', error);
             toast.error('Failed to play next track');
-
-            // Reset state on error
             setPlayback(prev => ({
                 ...prev,
-                isPlaying: false,
-                trackId: null
+                isPlaying: false
             }));
-
-
-
         }
     };
 
     const togglePlayPause = async () => {
-        if (!currentTrackId) {
-            toast.warning("No track selected");
-            return;
-        }
-
+        // If no track selected but we have tracks, play first track
         try {
-            if (playback.isPlaying) {
-                await audioEngine.pause();
-            } else {
-                // Ensure the track is loaded before playing
-                if (!audioEngine.isTrackLoaded()) {
-                    toast.warning("Track is still loading");
-                    return;
-                }
-                await audioEngine.play();
+            if (typeof window === "undefined") return;
+            if (!engineRef.current) {
+                engineRef.current = getAudioEngineInstance();
             }
+            if (!engineRef.current) {
+                toast.error("Audio engine not available");
+                return;
+            }
+
+            if (!currentTrackId && tracks.length) {
+                await handleNext();
+                return;
+            }
+
+            if (!currentTrackId) {
+                toast.warning("No track selected");
+                return;
+            }
+
+            if (playback.isPlaying) {
+                await engineRef.current.pause();
+            } else {
+                if (!engineRef.current.isTrackLoaded()) {
+                    const trackUrl = getUrl(currentTrackId);
+                    await engineRef.current.loadTrack(trackUrl);
+                }
+                await engineRef.current.play();
+            }
+
         } catch (error) {
+            console.error("Playback toggle error:", error);
             toast.error(error instanceof Error ? error.message : "Playback failed");
         }
     };
@@ -102,13 +158,22 @@ const MiddlePlayer = ({ tracks }: ListedNFT[]) => {
                 variant="ghost"
                 size="icon"
                 onClick={togglePlayPause}
-                disabled={!currentTrackId}
+                disabled={!tracks?.length}
             >
                 {playback.isPlaying ? <FaPause /> : <FaPlay />}
             </Button>
-            <FaStepForward onClick={handleNext} />
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleNext}
+                disabled={!tracks?.length}
+            >
+                <FaStepForward />
+            </Button>
             {currentTrackId && (
-                <span className="text-sm ml-4">Now Playing: {currentTrackId}</span>
+                <span className="text-sm ml-4">
+                    {tracks.find(t => t.id === currentTrackId)?.Single?.song_name || "Now Playing"}
+                </span>
             )}
         </div>
     );

@@ -1,32 +1,34 @@
+"use client"
 import React from 'react'
 import MiddlePlayer from '../mainplayer/middle-player'
 import PlayerDetails from '../mainplayer/player-details'
 import { VolumeControl } from '../mainplayer/volume-control'
-import { db } from '@/lib/db'
+import { fetcher } from '@/lib/utils'
+import useSWR from 'swr'
 
-const BottomNav = async () => {
-    const tracks = await db.listedNFT.findMany({
-        select: {
-            id: true,
-            tokenId: true,
-            listedAt: true,
-            seller: true,
-            price: true,
-            contractAddress: true,
-            isSaleEnabled: true,
-            Single: {
-                select: {
-                    song_name: true,
-                    artist_name: true,
-                    song_cover: true,
-                    genre: true,
-                },
-            },
-        }
-    })
+const BottomNav = () => {
+    // const tracks = await db.listedNFT.findMany({
+    //     select: {
+    //         id: true,
+    //         tokenId: true,
+    //         listedAt: true,
+    //         seller: true,
+    //         contractAddress: true,
+    //         isSaleEnabled: true,
+    //         Single: {
+    //             select: {
+    //                 song_name: true,
+    //                 artist_name: true,
+    //                 song_cover: true,
+    //                 genre: true,
+    //             },
+    //         },
+    //     }
+    // })
 
-    
+    const { data: tracks, error, isLoading } = useSWR('/api/listednft', fetcher)
 
+    console.log("BottomNav tracks:", tracks)
 
 
     return (
