@@ -124,7 +124,9 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 await engine.current.pause();
                 await endListening(userId, playlistId);
                 setPlayback({ trackId: null, isPlaying: false });
+
             } else {
+
                 // Stop any currently playing track first
                 if (playback.isPlaying) {
                     engine.current.stop();
@@ -135,7 +137,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                     await engine.current.loadTrack(audioUrl);
                 }
 
-                await engine.current.play();
+                engine.current.play();
                 setPlayback({ trackId: nftId, isPlaying: true });
                 await startListening(userId, nftId, playlistId);
             }

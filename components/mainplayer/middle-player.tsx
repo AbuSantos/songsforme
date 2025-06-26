@@ -6,8 +6,11 @@ import { currentPlaybackState, currentTrackIdState } from "@/atoms/song-atom";
 import { audioEngine } from "@/lib/audio-engine-singleton";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { AudioEngine } from "@/lib/audio-engine";
+import { ListedNFT } from "@/types";
+import { getNextTrack } from "@/lib/utils";
 
-const MiddlePlayer = () => {
+const MiddlePlayer = ({ tracks }: ListedNFT[]) => {
     const [playback, setPlayback] = useRecoilState(currentPlaybackState);
     const currentTrackId = useRecoilValue(currentTrackIdState);
 
@@ -20,9 +23,55 @@ const MiddlePlayer = () => {
         audioEngine.setPlaybackStateCallback(updateState);
 
         return () => {
-            audioEngine.setPlaybackStateCallback(null); // Cleanup
+            audioEngine.setPlaybackStateCallback(null);
         };
     }, [setPlayback]);
+
+    const handleNext = async () => {
+        try {
+            const nextTrackId = getNextTrack(tracks, currentTrackId);
+
+            console.log("Next Track ID:", nextTrackId);
+
+
+            // if (playback.isPlaying) {
+            //     audioEngine.stop();
+            // }
+
+            // //update the global state
+            // setCurrentTrackId(nextTrackId);
+            // setPlayback(prev => ({
+            //     ...prev,
+            //     trackId: nextTrackId,
+            //     isPlaying: false
+            // }));
+
+            // // Load and play new track
+            // const trackUrl = getUrl(nextTrackId);
+            // await audioEngine.loadTrack(trackUrl);
+            // await audioEngine.play();
+
+            // // Update state to playing
+            // setPlayback(prev => ({
+            //     ...prev,
+            //     isPlaying: true
+            // }));
+
+        } catch (error) {
+            console.error('Track switch failed:', error);
+            toast.error('Failed to play next track');
+
+            // Reset state on error
+            setPlayback(prev => ({
+                ...prev,
+                isPlaying: false,
+                trackId: null
+            }));
+
+
+
+        }
+    };
 
     const togglePlayPause = async () => {
         if (!currentTrackId) {
@@ -57,7 +106,7 @@ const MiddlePlayer = () => {
             >
                 {playback.isPlaying ? <FaPause /> : <FaPlay />}
             </Button>
-            <FaStepForward />
+            <FaStepForward onClick={handleNext} />
             {currentTrackId && (
                 <span className="text-sm ml-4">Now Playing: {currentTrackId}</span>
             )}

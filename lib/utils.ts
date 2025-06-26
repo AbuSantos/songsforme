@@ -1,3 +1,4 @@
+import { ListedNFT } from "@/types";
 import { toEther } from "@thirdweb-dev/sdk";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -60,4 +61,22 @@ export const getAddressOrName = (
 
   // Return undefined if neither address nor valid name
   return {};
+};
+
+export const getNextTrack = (tracks: ListedNFT[], currentId: string | null) => {
+  if (!tracks.length) return null;
+
+  // Handle no current track case
+  if (!currentId) return tracks[0].id;
+
+  const currentIndex = tracks.findIndex(
+    (t) => t.id.toString() === currentId.toString()
+  );
+
+  // If current track not found or is last, return first track
+  if (currentIndex === -1 || currentIndex === tracks.length - 1) {
+    return tracks[0].id;
+  }
+
+  return tracks[currentIndex + 1].id;
 };
