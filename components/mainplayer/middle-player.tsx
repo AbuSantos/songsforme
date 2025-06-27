@@ -4,19 +4,22 @@ import { Button } from "@/components/ui/button";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { currentPlaybackState, currentTrackIdState } from "@/atoms/song-atom";
 import { toast } from "sonner";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getNextTrack } from "@/lib/utils";
 import { ListedNFT } from "@/types";
 import { AudioEngine } from "@/lib/audio-engine";
 import { getAudioEngineInstance } from "@/lib/audio-engine-singleton";
+import { CacheManager } from '@/lib/cache-manager';
+import { getNFTMetadata } from "@/actions/helper/get-metadata";
 
 const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
     const [playback, setPlayback] = useRecoilState(currentPlaybackState);
     const currentTrackId = useRecoilValue(currentTrackIdState);
     const setCurrentTrackId = useSetRecoilState(currentTrackIdState);
     const engineRef = useRef<AudioEngine | null>(null);
+    const [audioUrl, setAudioUrl] = useState<string>("");
 
-    console.log("MiddlePlayer tracks:", tracks);
+    const formatIpfsUrl = (url: string) => url.replace("ipfs://", "https://ipfs.io/ipfs/");
 
     // Initialize the playback state callback
     useEffect(() => {
@@ -36,12 +39,40 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
         };
     }, [setPlayback]);
 
+    const fetchMetadata = async (trackId: string) => {
+        try {
+            if (!currentTrackId) return;
+            const nftContractAddress = tracks.find(t => t.id === trackId)?.contractAddress;
+            const tokenId = tracks.find(t => t.id === trackId)?.tokenId;
 
-    const getUrl = (trackId: string | null) => {
-        if (!trackId) return '';
-        const track = tracks.find(t => t.id === trackId);
-        return track?.audioUrl || '';
+            const cacheKey = `nft-metadata-${nftContractAddress}-${tokenId}`;
+            const cachedData = CacheManager.get(cacheKey) as { animation_url: string };
+
+            if (cachedData) {
+                const formattedUrl = formatIpfsUrl(cachedData.animation_url);
+                return (formattedUrl);
+            }
+
+            const response = await getNFTMetadata(nftContractAddress, tokenId);
+            const metadata = response.raw.metadata;
+            CacheManager.set(cacheKey, metadata);
+            const formattedUrl = formatIpfsUrl(metadata.animation_url);
+            return formattedUrl;
+            // setAudioUrl(formattedUrl);
+        } catch (error) {
+            console.error("NFT Metadata error:", error);
+            toast.error("Failed to load NFT audio");
+        }
     };
+
+    console.log("MiddlePlayer tracks:", audioUrl);
+
+
+    // const getUrl = (trackId: string | null) => {
+    //     if (!trackId) return '';
+    //     const track = tracks.find(t => t.id === trackId);
+    //     return track?.audioUrl || '';
+    // };
 
 
     const handleNext = async () => {
@@ -87,7 +118,8 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
             });
 
             // Load and play new track
-            const trackUrl = getUrl(nextTrackId);
+            // const trackUrl = getUrl(nextTrackId);
+            const trackUrl = await fetchMetadata(nextTrackId);
             if (!trackUrl) {
                 throw new Error("Track URL not found");
             }
@@ -136,13 +168,13 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
             }
 
             if (playback.isPlaying) {
-                await engineRef.current.pause();
+                engineRef.current.pause();
             } else {
                 if (!engineRef.current.isTrackLoaded()) {
-                    const trackUrl = getUrl(currentTrackId);
+                    const trackUrl = await fetchMetadata(currentTrackId);
                     await engineRef.current.loadTrack(trackUrl);
                 }
-                await engineRef.current.play();
+                engineRef.current.play();
             }
 
         } catch (error) {

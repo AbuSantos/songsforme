@@ -87,12 +87,16 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     // Initialize audio when URL changes
     useEffect(() => {
         if (!audioUrl) return;
+        if (typeof window === "undefined") return;
+        engineRef.current = getAudioEngineInstance();
 
         const initializeAudio = async () => {
             try {
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
-                await engine.current.loadTrack(optimalUrl);
-                qualityManager.current.initDynamicSwitching(engine.current, audioUrl);
+                if (engineRef.current) {
+                    await engineRef.current.loadTrack(optimalUrl);
+                    qualityManager.current.initDynamicSwitching(engineRef.current, audioUrl);
+                }
             } catch (error) {
                 console.error("Audio initialization failed:", error);
                 toast.error("Error loading audio track");
@@ -102,7 +106,9 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         initializeAudio();
 
         return () => {
-            engine.current.stop();
+            if (engineRef.current) {
+                engineRef.current.setPlaybackStateCallback(null);
+            }
         };
     }, [audioUrl]);
 
