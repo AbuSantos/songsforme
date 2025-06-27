@@ -65,8 +65,6 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
         }
     };
 
-    console.log("MiddlePlayer tracks:", audioUrl);
-
 
     // const getUrl = (trackId: string | null) => {
     //     if (!trackId) return '';
@@ -169,12 +167,16 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
 
             if (playback.isPlaying) {
                 engineRef.current.pause();
+                setPlayback({ trackId: null, isPlaying: false });
+
             } else {
                 if (!engineRef.current.isTrackLoaded()) {
                     const trackUrl = await fetchMetadata(currentTrackId);
                     await engineRef.current.loadTrack(trackUrl);
                 }
                 engineRef.current.play();
+                setPlayback({ trackId: currentTrackId, isPlaying: true });
+
             }
 
         } catch (error) {

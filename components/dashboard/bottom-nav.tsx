@@ -7,24 +7,6 @@ import { fetcher } from '@/lib/utils'
 import useSWR from 'swr'
 
 const BottomNav = () => {
-    // const tracks = await db.listedNFT.findMany({
-    //     select: {
-    //         id: true,
-    //         tokenId: true,
-    //         listedAt: true,
-    //         seller: true,
-    //         contractAddress: true,
-    //         isSaleEnabled: true,
-    //         Single: {
-    //             select: {
-    //                 song_name: true,
-    //                 artist_name: true,
-    //                 song_cover: true,
-    //                 genre: true,
-    //             },
-    //         },
-    //     }
-    // })
 
     const { data: tracks, error, isLoading } = useSWR('/api/listednft', fetcher)
 
@@ -33,7 +15,7 @@ const BottomNav = () => {
 
     return (
         <div className='hidden md:flex justify-between items-center text-[var(--text)] px-8 bg-black p-4 bottom-0 fixed w-full mt-20'>
-            <PlayerDetails />
+            <PlayerDetails tracks={tracks?.data} />
             <MiddlePlayer tracks={tracks?.data} />
             <VolumeControl />
         </div>
