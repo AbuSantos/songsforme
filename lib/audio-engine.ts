@@ -15,7 +15,11 @@ export class AudioEngine {
   private onPlayCallback?: () => void;
   private onPauseCallback?: () => void;
   private setIsPlaying: (value: boolean) => void = () => {};
-  private playbackStateCallback?: (state: { isPlaying: boolean }) => void;
+  private playbackStateCallback?: (state: {
+    isPlaying: boolean;
+    trackId?: string;
+  }) => void;
+  public currentTrackId: string | null = null;
 
   constructor() {
     this.context = this.createAudioContext();
@@ -55,10 +59,11 @@ export class AudioEngine {
     this.gainNode.connect(this.context.destination);
   }
 
-  async loadTrack(url: string): Promise<boolean> {
+  async loadTrack(url: string, trackId: string): Promise<boolean> {
     try {
       const buffer = await this.fetchAndDecodeAudio(url);
       this.recreateSourceNode(buffer);
+      this.currentTrackId = trackId;
       return true;
     } catch (error) {
       console.error("Audio loading failed:", error);
@@ -121,6 +126,13 @@ export class AudioEngine {
 
     this.onPlayCallback?.();
     this.setIsPlaying?.(true);
+
+    if (this.playbackStateCallback) {
+      this.playbackStateCallback({
+        isPlaying: true,
+        trackId: this.currentTrackId,
+      });
+    }
   }
 
   stop(): void {
@@ -209,6 +221,7 @@ export class AudioEngine {
       dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length / 255
     );
   }
+
   public setPlaybackStateCallback(
     callback: (state: { isPlaying: boolean }) => void
   ) {

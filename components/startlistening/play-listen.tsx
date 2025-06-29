@@ -7,8 +7,8 @@ import { toast } from 'sonner';
 import { endListening } from '@/actions/endListening';
 import { startListening } from '@/actions/startListening';
 // import { audioEngine } from "@/lib/audio-engine-singleton";
-import { useRecoilState } from 'recoil';
-import { currentPlaybackState } from '@/atoms/song-atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { currentPlaybackState, isPlayingState } from '@/atoms/song-atom';
 import { QualityManager } from '@/lib/audio-quality-manager';
 import { CacheManager } from '@/lib/cache-manager';
 import { AudioEngine } from '@/lib/audio-engine';
@@ -94,7 +94,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
             try {
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
                 if (engineRef.current) {
-                    await engineRef.current.loadTrack(optimalUrl);
+                    await engineRef.current.loadTrack(optimalUrl, nftId);
                     qualityManager.current.initDynamicSwitching(engineRef.current, audioUrl);
                 }
             } catch (error) {
@@ -156,14 +156,17 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 await endListening(userId, playlistId);
                 setPlayback({ trackId: null, isPlaying: false });
             } else {
+
                 // Stop any currently playing track first
-                if (playback.isPlaying) {
+                if (isPlaying) {
                     engineRef.current.stop();
                     await endListening(userId, playlistId);
+                    setPlayback({ trackId: null, isPlaying: false });
                 }
+
                 // Ensure track is loaded before playing
                 if (!engineRef.current.isTrackLoaded() || playback.trackId !== nftId) {
-                    await engineRef.current.loadTrack(audioUrl);
+                    await engineRef.current.loadTrack(audioUrl, nftId);
                 }
 
                 engineRef.current.play();

@@ -11,13 +11,16 @@ import { AudioEngine } from "@/lib/audio-engine";
 import { getAudioEngineInstance } from "@/lib/audio-engine-singleton";
 import { CacheManager } from '@/lib/cache-manager';
 import { getNFTMetadata } from "@/actions/helper/get-metadata";
+import { isPlayingState } from "@/atoms/song-atom";
 
 const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
     const [playback, setPlayback] = useRecoilState(currentPlaybackState);
+
     const currentTrackId = useRecoilValue(currentTrackIdState);
     const setCurrentTrackId = useSetRecoilState(currentTrackIdState);
     const engineRef = useRef<AudioEngine | null>(null);
     const [audioUrl, setAudioUrl] = useState<string>("");
+    const isPlaying = useRecoilValue(isPlayingState);
 
     const formatIpfsUrl = (url: string) => url.replace("ipfs://", "https://ipfs.io/ipfs/");
 
@@ -66,6 +69,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
     };
 
 
+
     // const getUrl = (trackId: string | null) => {
     //     if (!trackId) return '';
     //     const track = tracks.find(t => t.id === trackId);
@@ -94,14 +98,10 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
                 ? getNextTrack(tracks, currentTrackId)
                 : tracks[0]?.id;
 
-            console.log("Next track ID:", nextTrackId);
-
             if (!nextTrackId) {
                 toast.warning("No tracks available");
                 return;
             }
-
-            console.log("Switching from", currentTrackId, "to", nextTrackId);
 
             // Stop current playback if any
             if (playback.isPlaying) {
@@ -122,10 +122,8 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
                 throw new Error("Track URL not found");
             }
 
-            console.log("Loading track URL:", trackUrl);
-
             await engineRef.current.loadTrack(trackUrl);
-            await engineRef.current.play();
+            engineRef.current.play();
 
             // Update state to playing
             setPlayback(prev => ({
@@ -165,17 +163,17 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
                 return;
             }
 
-            if (playback.isPlaying) {
+            if (isPlaying) {
                 engineRef.current.pause();
-                setPlayback({ trackId: null, isPlaying: false });
+                // setPlayback({ trackId: null, isPlaying: false });
 
             } else {
                 if (!engineRef.current.isTrackLoaded()) {
                     const trackUrl = await fetchMetadata(currentTrackId);
-                    await engineRef.current.loadTrack(trackUrl);
+                    await engineRef.current.loadTrack(trackUrl, currentTrackId);
                 }
                 engineRef.current.play();
-                setPlayback({ trackId: currentTrackId, isPlaying: true });
+                // setPlayback({ trackId: currentTrackId, isPlaying: true });
 
             }
 
@@ -194,7 +192,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
                 onClick={togglePlayPause}
                 disabled={!tracks?.length}
             >
-                {playback.isPlaying ? <FaPause /> : <FaPlay />}
+                {isPlaying ? <FaPause /> : <FaPlay />}
             </Button>
             <Button
                 variant="ghost"
@@ -204,11 +202,6 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
             >
                 <FaStepForward />
             </Button>
-            {currentTrackId && (
-                <span className="text-sm ml-4">
-                    {tracks.find(t => t.id === currentTrackId)?.Single?.song_name || "Now Playing"}
-                </span>
-            )}
         </div>
     );
 };

@@ -10,9 +10,6 @@ const BottomNav = () => {
 
     const { data: tracks, error, isLoading } = useSWR('/api/listednft', fetcher)
 
-    console.log("BottomNav tracks:", tracks)
-
-
     return (
         <div className='hidden md:flex justify-between items-center text-[var(--text)] px-8 bg-black p-4 bottom-0 fixed w-full mt-20'>
             <PlayerDetails tracks={tracks?.data} />
