@@ -6,20 +6,18 @@ import { currentPlaybackState, currentTrackIdState } from "@/atoms/song-atom";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { getNextTrack } from "@/lib/utils";
-import { ListedNFT } from "@/types";
 import { AudioEngine } from "@/lib/audio-engine";
 import { getAudioEngineInstance } from "@/lib/audio-engine-singleton";
 import { CacheManager } from '@/lib/cache-manager';
 import { getNFTMetadata } from "@/actions/helper/get-metadata";
 import { isPlayingState } from "@/atoms/song-atom";
+import { ListedNFT } from "@/types";
 
 const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
     const [playback, setPlayback] = useRecoilState(currentPlaybackState);
-
     const currentTrackId = useRecoilValue(currentTrackIdState);
     const setCurrentTrackId = useSetRecoilState(currentTrackIdState);
     const engineRef = useRef<AudioEngine | null>(null);
-    const [audioUrl, setAudioUrl] = useState<string>("");
     const isPlaying = useRecoilValue(isPlayingState);
 
     const formatIpfsUrl = (url: string) => url.replace("ipfs://", "https://ipfs.io/ipfs/");
@@ -122,7 +120,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
                 throw new Error("Track URL not found");
             }
 
-            await engineRef.current.loadTrack(trackUrl);
+            await engineRef.current.loadTrack(trackUrl, currentTrackId);
             engineRef.current.play();
 
             // Update state to playing

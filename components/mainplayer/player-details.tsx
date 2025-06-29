@@ -3,10 +3,10 @@ import Image from 'next/image'
 import { useRecoilValue } from 'recoil'
 import { currentPlaybackState, currentTrackIdState, isPlayingState } from "@/atoms/song-atom";
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ListedNFT } from '@prisma/client';
 import { getAudioEngineInstance } from '@/lib/audio-engine-singleton';
 import { AudioEngine } from '@/lib/audio-engine';
 import { toast } from 'sonner';
+import { ListedNFT } from '@/types';
 
 interface Song {
     artist: string;
@@ -30,8 +30,6 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
         return image;
     }
 
-    console.log("Current Track ID:", currentPlaybackState);
-
     useEffect(() => {
         if (typeof window === "undefined") return;
         if (!engineRef.current) {
@@ -43,8 +41,7 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
                 const nftStateId = engineRef.current?.currentTrackId;
                 setNftId(nftStateId ?? null);
                 console.log("Audio initialization failed:");
-                toast.error("Error loading audio track");
-                
+
             } catch (error) {
                 console.error("Audio initialization failed:", error);
                 toast.error("Error initializing audio engine");
@@ -60,34 +57,26 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
         };
     }, [isPlaying]);
 
-    console.log("playing from play details:", playback.trackId);
-    console.log("Current Track ID:", currentTrackId, isPlaying);
-
-    const trackImageUrl = tracks?.find(track => track?.id === currentTrackId)?.Single?.song_cover || "";
-    const trackTitle = tracks?.find(track => track?.id === currentTrackId)?.Single?.song_name || "";
-    const trackArtist = tracks?.find(track => track?.id === currentTrackId)?.Single?.artist_name || "";
 
     const currentTrack = useMemo(() =>
-        tracks?.find(track => track?.id === currentTrackId),
-        [tracks, currentTrackId]
+        tracks?.find(track => track?.id === nftId || track?.id === currentTrackId) || null,
+        [tracks, nftId || currentTrackId]
     );
-
-    console.log("Current Track:", currentTrack);
 
     return (
         <div className='flex space-x-2 justify-center items-center cursor-pointer'>
             {isPlaying || currentTrackId ? (
                 <>
                     <Image
-                        src={returnCorrectImage(trackImageUrl) || `/images/playlisty.jpg`}
-                        alt={trackTitle}
+                        src={returnCorrectImage(currentTrack?.Single?.song_cover) || `/images/playlisty.jpg`}
+                        alt={currentTrack?.Single?.song_name || "No song selected"}
                         width={40}
                         height={30}
                         className="rounded-sm"
                     />
                     <div className='flex flex-col capitalize'>
-                        <small>{trackTitle}</small>
-                        <small className="text-xs text-muted-foreground ">{trackArtist}</small>
+                        <small>{currentTrack?.Single?.song_name}</small>
+                        <small className="text-xs text-muted-foreground ">{currentTrack?.Single?.artist_name}</small>
                     </div>
                 </>
             ) : (
