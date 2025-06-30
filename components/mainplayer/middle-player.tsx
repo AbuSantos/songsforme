@@ -92,9 +92,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
             }
 
             // If no current track, start with first track
-            const nextTrackId = currentTrackId
-                ? getNextTrack(tracks, currentTrackId)
-                : tracks[0]?.id;
+            const nextTrackId = currentTrackId ? getNextTrack(tracks, currentTrackId) : tracks[0]?.id;
 
             if (!nextTrackId) {
                 toast.warning("No tracks available");

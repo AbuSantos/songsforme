@@ -514,7 +514,7 @@ export const Minter = () => {
             </div>
 
             {/* Prepare listing*/}
-            <div>
+            <div className="">
                 {
                     !deployed && !isPreparedMint &&
                     <button

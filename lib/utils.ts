@@ -63,20 +63,31 @@ export const getAddressOrName = (
   return {};
 };
 
-export const getNextTrack = (tracks: ListedNFT[], currentId: string | null) => {
+export const getNextTrack = (tracks: ListedNFT[], currentId: string | null): string | null => {
   if (!tracks.length) return null;
-
-  // Handle no current track case
   if (!currentId) return tracks[0].id;
 
-  const currentIndex = tracks.findIndex(
-    (t) => t.id.toString() === currentId.toString()
-  );
+  const currentIndex = tracks.findIndex(t => t.id.toString() === currentId.toString());
+  if (currentIndex === -1) return tracks[0].id; // Current track not found? Start over.
 
-  // If current track not found or is last, return first track
-  if (currentIndex === -1 || currentIndex === tracks.length - 1) {
-    return tracks[0].id;
+  const currentContract = tracks[currentIndex].contractAddress;
+
+  // Search for the next track with a DIFFERENT contract address
+  for (let i = currentIndex + 1; i < tracks.length; i++) {
+    if (tracks[i].contractAddress !== currentContract) {
+      return tracks[i].id;
+    }
   }
 
-  return tracks[currentIndex + 1].id;
+  // If no different contract found, loop back to the start
+  for (let i = 0; i < currentIndex; i++) {
+    if (tracks[i].contractAddress !== currentContract) {
+      return tracks[i].id;
+    }
+  }
+
+  // If ALL tracks have the same contract, just return the next track (or loop)
+  return currentIndex < tracks.length - 1 
+    ? tracks[currentIndex + 1].id 
+    : tracks[0].id;
 };

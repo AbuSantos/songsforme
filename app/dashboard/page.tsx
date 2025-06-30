@@ -162,7 +162,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                                     <h1 className="text-2xl font-semibold">Check our FAQs</h1>
                                                     <small className="text-slate-600 capitalize" >Cant find help, please contact support@songsforme</small>
                                                 </div>
-                                                <HelpComponent />
+                                                {/* <HelpComponent /> */}
                                             </div>
                                         </SheetContent>
                                     </Sheet>
