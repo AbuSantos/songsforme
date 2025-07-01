@@ -63,12 +63,18 @@ export const getAddressOrName = (
   return {};
 };
 
-export const getNextTrack = (tracks: ListedNFT[], currentId: string | null): string | null => {
+export const getNextTrack = (
+  tracks: ListedNFT[],
+  currentId: string | null
+): string | null => {
   if (!tracks.length) return null;
   if (!currentId) return tracks[0].id;
 
-  const currentIndex = tracks.findIndex(t => t.id.toString() === currentId.toString());
-  if (currentIndex === -1) return tracks[0].id; // Current track not found? Start over.
+  // Current track not found? Start over.
+  const currentIndex = tracks.findIndex(
+    (t) => t.id.toString() === currentId.toString()
+  );
+  if (currentIndex === -1) return tracks[0].id;
 
   const currentContract = tracks[currentIndex].contractAddress;
 
@@ -87,7 +93,7 @@ export const getNextTrack = (tracks: ListedNFT[], currentId: string | null): str
   }
 
   // If ALL tracks have the same contract, just return the next track (or loop)
-  return currentIndex < tracks.length - 1 
-    ? tracks[currentIndex + 1].id 
+  return currentIndex < tracks.length - 1
+    ? tracks[currentIndex + 1].id
     : tracks[0].id;
 };

@@ -66,15 +66,6 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
         }
     };
 
-
-
-    // const getUrl = (trackId: string | null) => {
-    //     if (!trackId) return '';
-    //     const track = tracks.find(t => t.id === trackId);
-    //     return track?.audioUrl || '';
-    // };
-
-
     const handleNext = async () => {
         try {
             if (typeof window === "undefined") return;

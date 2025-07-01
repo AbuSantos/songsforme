@@ -14,6 +14,7 @@ import { getNFTMetadata } from "@/actions/helper/get-metadata"
 import { Skeleton } from "../ui/skeleton"
 import useSWR from "swr"
 import { fetcher } from "@/lib/utils"
+import PlaylistPlay from "../startlistening/play-listen-playlist"
 type PlaylistTypes = {
     data: Playlist[]
     userId: string | undefined
@@ -22,13 +23,15 @@ type PlaylistTypes = {
 }
 
 export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
-   
+
     const apiUrl = `/api/playlists?${new URLSearchParams({
         ratio: filter || "",
     })}`;
 
     const { data: playlists, error, isLoading } = useSWR(apiUrl, fetcher);
     const useData = mode === "aside" ? data : playlists
+
+    console.log("Playlists data:", useData);
 
     if (error) return <div>Failed to load playlists</div>;
 
@@ -43,7 +46,7 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
             </div>
         );
     }
-    
+
     try {
         return (
             <Accordion type="single" collapsible className="w-full">
@@ -62,6 +65,18 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
                                         <small>
                                             {item?.listednft?.length}
                                         </small>
+                                        <div>
+                                            <PlaylistPlay tracks={item?.listednft} playlistId={item?.id} />
+                                            {/* {
+                                                item?.listednft && item?.listednft?.map((song: ListedNFT) => {
+                                                    return (
+
+                                                        <Playlisten userId={userId} nftId={item?.id} playlistId={item.id} nftContractAddress={item?.contractAddress} tokenId={item?.tokenId} />
+                                                    )
+                                                })
+                                            } */}
+                                        </div>
+
                                     </div>
                                 </Link>
                             </AccordionTrigger>

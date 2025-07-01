@@ -29,6 +29,8 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const engineRef = useRef<AudioEngine | null>(null);
     const qualityManager = useRef<QualityManager>(new QualityManager());
 
+    console.log("Playlisten component initialized with:", playlistId);
+
     const isPlaying = playback.trackId === nftId && playback.isPlaying;
 
     const formatIpfsUrl = (url: string) => url.replace("ipfs://", "https://ipfs.io/ipfs/");
