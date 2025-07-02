@@ -62,7 +62,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                         <div className="text-gray-100 ">
                             <h1 className="text-2xl capitalize">{track?.name}</h1>
 
-                            <div className="text-[#7B7B7B] flex flex-col space-x-2 items-center ">
+                            <div className="text-[#7B7B7B] flex flex-col space-x-2 items-start ">
                                 <small className="">
                                     {track?.owner?.username}
                                 </small>

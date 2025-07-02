@@ -126,15 +126,16 @@ const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId:
     }, [currentTrackIndex, tracks]);
 
     return (
-        <div className="flex justify-center items-center space-x-6 text-xl cursor-pointer">
+        <div className="flex justify-center items-center space-x-6 text-2xl cursor-pointer">
             <Button
                 variant="ghost"
                 size="icon"
                 onClick={playPlaylist}
                 disabled={!tracks?.length}
                 aria-label={isPlaying ? "Pause playlist" : "Play playlist"}
+                className="ml-4"
             >
-                {isPlaying && currentTrackIndex !== -1 ? <FaPause /> : <FaPlay />}
+                {isPlaying && currentTrackIndex !== -1 ? <FaPause className="w-[1.3rem] h-[1.3rem]" /> : <FaPlay className="w-[1.3rem] h-[1.3rem]" />}
             </Button>
         </div>
     );
