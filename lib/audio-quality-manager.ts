@@ -32,20 +32,20 @@ export class QualityManager {
     return `${url}?quality=${quality}`;
   }
 
-  initDynamicSwitching(engine: AudioEngine, baseUrl: string) {
+  initDynamicSwitching(engine: AudioEngine, baseUrl: string, trackId: string) {
     if (this.onlineHandler) {
       window.removeEventListener("online", this.onlineHandler);
     }
 
     this.onlineHandler = async () => {
       const newUrl = await this.getOptimalURL(baseUrl);
-      engine.loadTrack(newUrl);
+      engine.loadTrack(newUrl, trackId);
     };
 
     window.addEventListener("online", this.onlineHandler);
     window.addEventListener("offline", () => {
       console.warn("Network disconnected. Switching to lowest quality.");
-      engine.loadTrack(this.qualityToURL(baseUrl, "64k"));
+      engine.loadTrack(this.qualityToURL(baseUrl, "64k"), trackId);
     });
   }
 

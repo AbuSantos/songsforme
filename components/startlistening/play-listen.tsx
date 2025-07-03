@@ -98,7 +98,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                 const optimalUrl = await qualityManager.current.getOptimalURL(audioUrl);
                 if (engineRef.current) {
                     await engineRef.current.loadTrack(optimalUrl, nftId);
-                    qualityManager.current.initDynamicSwitching(engineRef.current, audioUrl);
+                    qualityManager.current.initDynamicSwitching(engineRef.current, audioUrl, nftId);
                 }
             } catch (error) {
                 console.error("Audio initialization failed:", error);
