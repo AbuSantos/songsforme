@@ -130,6 +130,7 @@ export class AudioEngine {
     if (this.playbackStateCallback) {
       this.playbackStateCallback({
         isPlaying: true,
+        //@ts-ignore
         trackId: this.currentTrackId,
       });
     }

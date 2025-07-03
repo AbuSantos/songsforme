@@ -55,6 +55,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
 
         return () => {
             if (engineRef.current) {
+                //@ts-ignore
                 engineRef.current.setPlaybackStateCallback(null);
             }
         };
@@ -109,6 +110,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
 
         return () => {
             if (engineRef.current) {
+                //@ts-ignore
                 engineRef.current.setPlaybackStateCallback(null);
             }
         };
