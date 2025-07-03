@@ -26,7 +26,6 @@ export async function decrypt(session: string | undefined = "") {
 
 // Function to set a session using the wallet address
 export const setsession = async (address: string) => {
-  console.log(address, "from connect button");
   if (!address) {
     return {
       message:
