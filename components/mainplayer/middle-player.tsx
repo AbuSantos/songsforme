@@ -35,6 +35,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
 
         return () => {
             if (engineRef.current) {
+                //@ts-ignore
                 engineRef.current.setPlaybackStateCallback(null);
             }
         };
@@ -96,6 +97,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
             }
 
             // Update the global state
+            //@ts-ignore
             setCurrentTrackId(nextTrackId);
             setPlayback({
                 trackId: nextTrackId,
@@ -109,7 +111,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
                 throw new Error("Track URL not found");
             }
 
-            await engineRef.current.loadTrack(trackUrl, currentTrackId);
+            await engineRef.current.loadTrack(trackUrl, (currentTrackId ?? "") as string);
             engineRef.current.play();
 
             // Update state to playing
