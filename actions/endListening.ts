@@ -20,11 +20,11 @@ export const endListening = async (
 ) => {
   const startOverallTime = Date.now(); // Start overall timer
   try {
-    console.log(`[START] Ending listening session for user: ${userId}`);
+    // console.log(`[START] Ending listening session for user: ${userId}`);
     if (lowVolume === "true") {
-      console.log(
-        `[END] Listening session ended for user: ${userId} in ${Date.now() - startOverallTime}ms`
-      );
+      // console.log(
+      //   `[END] Listening session ended for user: ${userId} in ${Date.now() - startOverallTime}ms`
+      // );
       return { message: "Volume too low" };
     }
 
@@ -36,8 +36,11 @@ export const endListening = async (
         id: true,
         currentNftId: true,
         listeningSessionStartTime: true,
+        playlistId: true,
       },
     });
+
+    console.log(user, "user from end listening");
 
     if (!user) throw new Error("User not found.");
 
@@ -56,6 +59,7 @@ export const endListening = async (
       throw new Error("Listening duration is too short to calculate.");
     }
 
+    // console.log("playlsistId", playlistId);
     if (playlistId) {
       //@ts-ignore
       await playListTime(user, listeningDuration);
@@ -74,15 +78,15 @@ export const endListening = async (
           },
         },
       });
-      console.log(`[DB Query] NFT fetch time: ${Date.now() - nftStartTime}ms`);
+      // console.log(`[DB Query] NFT fetch time: ${Date.now() - nftStartTime}ms`);
 
       if (!nft) throw new Error(`NFT with id ${user.currentNftId} not found.`);
 
       const { listenerListeningTime, ownerListeningTime } =
         await calculateReward(listeningDuration, nft.rewardRatio || 0.2);
-      console.log(
-        `Owner Time: ${ownerListeningTime}, Listener Time: ${listenerListeningTime}, Total Duration: ${listeningDuration}`
-      );
+      // console.log(
+      //   `Owner Time: ${ownerListeningTime}, Listener Time: ${listenerListeningTime}, Total Duration: ${listeningDuration}`
+      // );
 
       // Step 4: Perform the updates using a Prisma transaction
       const transactionStartTime = Date.now(); // Start transaction timer
@@ -120,20 +124,20 @@ export const endListening = async (
         ]);
       }
 
-      console.log(
-        `[DB Transaction] Total transaction time: ${
-          Date.now() - transactionStartTime
-        }ms`
-      );
+      // console.log(
+      //   `[DB Transaction] Total transaction time: ${
+      //     Date.now() - transactionStartTime
+      //   }ms`
+      // );
     }
 
     // Move tracking outside transaction
 
-    console.log(
-      `[END] Listening session ended for user: ${userId} in ${
-        Date.now() - startOverallTime
-      }ms`
-    );
+    // console.log(
+    //   `[END] Listening session ended for user: ${userId} in ${
+    //     Date.now() - startOverallTime
+    //   }ms`
+    // );
     revalidateTag("track");
     return {
       message: "Listening session ended and times updated successfully.",

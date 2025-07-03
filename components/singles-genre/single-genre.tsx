@@ -11,10 +11,6 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
         const indie = singleNft?.filter((track: Single) => track.genre === "indie")
         const jazz = singleNft?.filter((track: Single) => track.genre === "jazz")
 
-        // console.log("Afrobeats", afrobeats)
-
-        // console.log("Hip Hop", singleNft)
-
         return (
             <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
                 <div className="h-full w-full ">

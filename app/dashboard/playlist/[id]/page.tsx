@@ -57,7 +57,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             <div className='text-red-50 px-1 py-6'>
                 <Return />
                 <header className="md:flex w-full ">
-                    <div className=" flex space-x-2 items-end px-4 w-full md:w-5/12 ">
+                    <div className=" flex space-x-6 items-end px-4 w-full md:w-5/12 ">
                         <Image src={track?.cover || "/images/playlist.jpg"} width={150} height={200} alt="cover" className="rounded-md" />
                         <div className="text-gray-100 ">
                             <h1 className="text-2xl capitalize">{track?.name}</h1>

@@ -7,6 +7,8 @@ import { useRecoilValue } from 'recoil'
 import { isConnected } from '@/atoms/session-atom'
 
 export const PlaylistInfo = ({ data }: { data: Playlist }) => {
+
+    console.log("PlaylistInfo component initialized with data:", data);
     const userId = useRecoilValue(isConnected)?.userId;
     try {
         const plays = countPlays(data?.accumulatedTime || 0)

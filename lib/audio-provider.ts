@@ -26,6 +26,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     engine.setOnEndedCallback(() => setIsPlaying(false));
 
     return () => {
+      //@ts-ignore
       engine.setPlaybackStateCallback(null);
       engine.setOnPlayCallback(undefined);
       engine.setOnPauseCallback(undefined);

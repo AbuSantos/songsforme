@@ -11,11 +11,11 @@ type Plays = {
 export const updateStream = async (artisteId: string) => {
   try {
     const now = new Date();
-    const today = now.toISOString().split("T")[0]; 
+    const today = now.toISOString().split("T")[0];
 
     // Fetch the existing record for the user
     const existingAnalytics = await db.artisteAnalytics.findUnique({
-      where: { userId: artisteId.toLowerCase() },
+      where: { userId: artisteId?.toLowerCase() },
     });
 
     let updatedStreams: Plays = [];
@@ -45,7 +45,7 @@ export const updateStream = async (artisteId: string) => {
 
     // Use upsert to update or create the analytics record
     await db.artisteAnalytics.upsert({
-      where: { userId: artisteId.toLowerCase() },
+      where: { userId: artisteId?.toLowerCase() },
       update: {
         totalStreams: updatedStreams,
       },

@@ -10,6 +10,9 @@ import { getAudioEngineInstance } from "@/lib/audio-engine-singleton";
 import { CacheManager } from '@/lib/cache-manager';
 import { getNFTMetadata } from "@/actions/helper/get-metadata";
 import { ListedNFT } from "@/types";
+import { endListening } from "@/actions/endListening";
+import { startListening } from "@/actions/startListening";
+import { isConnected } from "@/atoms/session-atom";
 
 const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId: string }) => {
     const [playback, setPlayback] = useRecoilState(currentPlaybackState);
@@ -18,6 +21,10 @@ const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId:
     const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
     const engineRef = useRef<AudioEngine | null>(null);
     const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(-1);
+    const userId = useRecoilValue(isConnected)?.userId;
+
+
+    console.log("playlistId:", playlistId);
 
     // Initialize audio engine and track index
     useEffect(() => {
@@ -73,7 +80,7 @@ const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId:
 
             const trackUrl = await fetchMetadata(trackId);
             await engineRef.current.loadTrack(trackUrl, trackId);
-            await engineRef.current.play();
+            engineRef.current.play();
 
             setCurrentTrackId(trackId);
             setIsPlaying(true);
@@ -84,6 +91,8 @@ const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId:
         }
     };
 
+    console.log("Current track id:", currentTrackId);
+
     const playPlaylist = async () => {
         if (!tracks.length) {
             toast.warning("Playlist is empty");
@@ -93,12 +102,18 @@ const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId:
         // If already playing this playlist, just toggle pause/play
         if (isPlaying && currentTrackIndex !== -1) {
             engineRef.current?.pause();
+            await endListening(userId, playlistId);
+            console.log("Paused playback for playlist:", playlistId);
+
             return;
         }
 
         // If paused on a track in this playlist, resume playback
         if (!isPlaying && currentTrackIndex !== -1) {
             engineRef.current?.play();
+            await startListening(userId, currentTrackId, playlistId);
+            console.log("Resumed playback for track:", currentTrackId, "in playlist:", playlistId);
+
             return;
         }
 

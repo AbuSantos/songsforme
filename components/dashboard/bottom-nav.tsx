@@ -14,7 +14,7 @@ const BottomNav = () => {
         <div className='hidden md:flex justify-between items-center text-[var(--text)] px-8 bg-black p-4 bottom-0 fixed w-full mt-32'>
             <PlayerDetails tracks={tracks?.data} />
             <MiddlePlayer tracks={tracks?.data} />
-            <VolumeControl />
+            {/* <VolumeControl /> */}
         </div>
     )
 }
