@@ -52,6 +52,7 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
 
         return () => {
             if (engineRef.current) {
+                //@ts-ignore
                 engineRef.current.setPlaybackStateCallback(null);
             }
         };
