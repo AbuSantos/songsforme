@@ -24,8 +24,6 @@ const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId:
     const userId = useRecoilValue(isConnected)?.userId;
 
 
-    console.log("playlistId:", playlistId);
-
     // Initialize audio engine and track index
     useEffect(() => {
         engineRef.current = getAudioEngineInstance();
@@ -154,7 +152,7 @@ const PlaylistPlay = ({ tracks, playlistId }: { tracks: ListedNFT[], playlistId:
                 onClick={playPlaylist}
                 disabled={!tracks?.length}
                 aria-label={isPlaying ? "Pause playlist" : "Play playlist"}
-                className="ml-4"
+                className=" ml-4"
             >
                 {isPlaying && currentTrackIndex !== -1 ? <FaPause className="w-[1.3rem] h-[1.3rem]" /> : <FaPlay className="w-[1.3rem] h-[1.3rem]" />}
             </Button>

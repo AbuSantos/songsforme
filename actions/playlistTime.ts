@@ -56,9 +56,6 @@ export const playListTime = async (user: User, listeningDuration: number) => {
   const listenerListeningTime =
     listeningDuration - (nftRewardRatio + playlistRewardRatio); // Listener's share
 
-  console.log("playlist time", playlist);
-  console.log("playlist time from playlist timer", playlisterTime);
-
   try {
     // Start a transaction to ensure row-level consistency
     if (listeningDuration < 30) {

@@ -54,31 +54,26 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
                     useData && useData?.map((item: any, index: number) => (
                         <AccordionItem key={item.id} value={String(index)} className="border-none md:border-b-[0.5px] md:border-b-[#2A2A2A]">
                             <AccordionTrigger className="md:py-1 ">
-                                <Link href={`/dashboard/playlist/${item.id}`} className="w-full">
-                                    <div className="flex justify-between text-[#7B7B7B] items-center  md:bg-[#222222] md:hover:bg-[#353232] hover:text-[#EEEEEE]  px-2 md:py-4 w-full text-start rounded-md ">
-                                        <div className="flex spacee-x-3 items-center justify-center">
-                                            <Image src="/images/playlisty.jpg" width={45} height={105} alt="playlist" className="rounded-sm" />
-                                            <p className="text-[1rem] capitalize ml-2">
-                                                {item.name}
-                                            </p>
-                                        </div>
-                                        <small>
-                                            {item?.listednft?.length}
-                                        </small>
-                                        <div>
-                                            <PlaylistPlay tracks={item?.listednft} playlistId={item?.id} />
-                                            {/* {
-                                                item?.listednft && item?.listednft?.map((song: ListedNFT) => {
-                                                    return (
+                                <div className="flex items-center text-[#7B7B7B]  md:bg-[#222222]  hover:text-[#EEEEEE] px-2 w-full text-start rounded-md">
 
-                                                        <Playlisten userId={userId} nftId={item?.id} playlistId={item.id} nftContractAddress={item?.contractAddress} tokenId={item?.tokenId} />
-                                                    )
-                                                })
-                                            } */}
-                                        </div>
+                                    <Link href={`/dashboard/playlist/${item.id}`} className="w-full">
+                                        <div className="flex justify-between text-[#7B7B7B] items-center  md:bg-[#222222] md:hover:bg-[#353232] hover:text-[#EEEEEE]  px-2 md:py-4 w-full text-start rounded-md ">
+                                            <div className="flex spacee-x-3 items-center justify-center">
+                                                <Image src="/images/playlisty.jpg" width={45} height={105} alt="playlist" className="rounded-sm" />
+                                                <p className="text-[1rem] capitalize ml-2">
+                                                    {item.name}
+                                                </p>
+                                            </div>
+                                            <small>
+                                                {item?.listednft?.length}
+                                            </small>
 
+                                        </div>
+                                    </Link>
+                                    <div>
+                                        <PlaylistPlay tracks={item?.listednft} playlistId={item?.id} />
                                     </div>
-                                </Link>
+                                </div>
                             </AccordionTrigger>
                             <AccordionContent className="px-4 hidden md:block">
                                 {
