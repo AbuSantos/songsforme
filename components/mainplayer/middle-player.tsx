@@ -54,7 +54,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
                 return (formattedUrl);
             }
 
-            const response = await getNFTMetadata(nftContractAddress, tokenId);
+            const response = await getNFTMetadata(nftContractAddress as string, tokenId as string);
             const metadata = response.raw.metadata;
             CacheManager.set(cacheKey, metadata);
             const formattedUrl = formatIpfsUrl(metadata.animation_url);
@@ -157,7 +157,7 @@ const MiddlePlayer = ({ tracks }: { tracks: ListedNFT[] }) => {
             } else {
                 if (!engineRef.current.isTrackLoaded()) {
                     const trackUrl = await fetchMetadata(currentTrackId);
-                    await engineRef.current.loadTrack(trackUrl, currentTrackId);
+                    await engineRef.current.loadTrack(trackUrl as string, currentTrackId);
                 }
                 engineRef.current.play();
                 // setPlayback({ trackId: currentTrackId, isPlaying: true });
