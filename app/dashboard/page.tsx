@@ -148,24 +148,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 </TabsList>
 
                                 <div className=" space-x-2 md:flex hidden z-20">
-                                    <Sheet >
-                                        <SheetTrigger asChild>
-                                            <Button variant="outline" size="nav" className="text-gray-950">Help</Button>
-                                        </SheetTrigger>
-                                        <SheetContent>
-                                            <SheetHeader>
-                                                <SheetTitle>List Music</SheetTitle>
-                                            </SheetHeader>
-                                            <MusicAccordion />
-                                            <div className="mt-8">
-                                                <div>
-                                                    <h1 className="text-2xl font-semibold">Check our FAQs</h1>
-                                                    <small className="text-slate-600 capitalize" >Cant find help, please contact support@songsforme</small>
-                                                </div>
-                                                {/* <HelpComponent /> */}
-                                            </div>
-                                        </SheetContent>
-                                    </Sheet>
                                     {/* <div className="bg-white"  >
                                         < NotificationFeed />
                                     </div> */}

@@ -39,7 +39,7 @@ export function Menu() {
             }
         }
         getUserEmails();
-    }, [])
+    }, [userId])
 
     return (
         <div className="md:fixed justify-between items-center p-2 hidden md:flex w-[95%] bg-transparent z-50">

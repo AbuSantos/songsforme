@@ -1,12 +1,18 @@
 "use client"
 import { listedNFT } from '@/actions/listNFT';
-import { Playlisten } from '@/components/startlistening/play-listen';
+// import { Playlisten } from '@/components/startlistening/play-listen';
 import { fetcher } from '@/lib/utils';
 import { Favorites, ListedNFT } from '@/types';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import useSWR from 'swr';
+
+const Playlisten = dynamic(
+    () => import("../../../components/startlistening/play-listen").then((mod) => mod.Playlisten),
+    { ssr: false, loading: () => <div className="w-6 h-6" /> }
+);
 
 export const MyFavorite = ({ userId }: { userId: string | undefined }) => {
 

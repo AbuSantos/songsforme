@@ -10,7 +10,7 @@ import { useRecoilValue } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { toggleState } from "@/actions/toggle-buy-sell";
 import { toast } from "sonner";
-import { Playlisten } from "@/components/startlistening/play-listen";
+// import { Playlisten } from "@/components/startlistening/play-listen";
 import { SelectPlaylist } from "@/components/playlists/selectplaylist";
 import { Favorite } from "../favorite/fav";
 import { MakeBid } from "@/components/bids/make-bid";
@@ -29,6 +29,11 @@ import { contractAddress, nftContract, nftMintingABI } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 import { ethers } from "ethers";
 
+const Playlisten = dynamic(
+    () => import("../../../components/startlistening/play-listen").then((mod) => mod.Playlisten),
+    { ssr: false, loading: () => <div className="w-6 h-6" /> }
+);
+
 
 import {
     type BaseError,
@@ -36,6 +41,7 @@ import {
     useSendTransaction,
     useWaitForTransactionReceipt
 } from 'wagmi'
+import dynamic from "next/dynamic";
 // import { BuyNFT } from "@/components/buy-folder/wagmi-handle-buy";
 
 

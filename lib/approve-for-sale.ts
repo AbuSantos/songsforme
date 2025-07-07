@@ -1,138 +1,102 @@
 "use client";
 import { ethers } from "ethers";
-import { startTransition, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { contractAddress, nftMintingABI } from "./client";
 
-// Toggle function to switch buy/sell mode for individual NFTs
-export const ToggleBuySell = async (
-  nftId: string,
-  tokenId: string,
-  nftContractAddress: string
-) => {
-    const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
-  const newBuyingState = !isEnabled[nftId];
+export const useToggleBuySell = () => {
+  const [isEnabled, setIsEnabled] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
 
-  try {
-    if (!window.ethereum) {
-      toast.error("Please install MetaMask");
-      return;
-    }
+  const toggleBuySell = async (
+    nftId: string,
+    tokenId: string,
+    nftContractAddress: string
+  ) => {
+    setIsLoading((prev) => ({ ...prev, [nftId]: true }));
 
-    // Request MetaMask connection first
-    await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-
-    // Try switching to Sepolia, if it fails, try adding the network
     try {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0xaa36a7" }], // Sepolia chainId
-      });
-    } catch (switchError: any) {
-      // This error code means the chain has not been added to MetaMask
-      if (switchError.code === 4902) {
-        await window.ethereum.request({
-          method: "wallet_addEthereumChain",
-          params: [
-            {
-              chainId: "0xaa36a7",
-              chainName: "Sepolia",
-              rpcUrls: ["https://rpc.sepolia.org"],
-              nativeCurrency: {
-                name: "Sepolia ETH",
-                symbol: "ETH",
-                decimals: 18,
-              },
-            },
-          ],
-        });
-      } else {
-        throw switchError;
+      if (!window.ethereum) {
+        throw new Error("Please install MetaMask");
       }
-    }
 
-    // Now initialize provider and signer
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []); // Ensure connection
-    const signer = await provider.getSigner();
+      // Request account access
+      await window.ethereum.request({ method: "eth_requestAccounts" });
 
-    const userAddress = await signer.getAddress();
-
-    console.log("Token ID:", tokenId);
-    console.log("User Address:", userAddress);
-
-    if (newBuyingState === true) {
+      // Network handling
       try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0xaa36a7" }], // Sepolia
+        });
+      } catch (switchError: any) {
+        if (switchError.code === 4902) {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: "0xaa36a7",
+                chainName: "Sepolia",
+                rpcUrls: ["https://rpc.sepolia.org"],
+                nativeCurrency: {
+                  name: "Sepolia ETH",
+                  symbol: "ETH",
+                  decimals: 18,
+                },
+              },
+            ],
+          });
+        } else {
+          throw switchError;
+        }
+      }
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const userAddress = await signer.getAddress();
+
+      const newBuyingState = !isEnabled[nftId];
+
+      if (newBuyingState) {
         // Validate contract
         if (!ethers.utils.isAddress(nftContractAddress)) {
           throw new Error("Invalid contract address");
         }
 
-        const newContract = new ethers.Contract(
+        const nftContract = new ethers.Contract(
           nftContractAddress,
           nftMintingABI,
           signer
         );
 
-        // Convert tokenId and verify contract methods
-        const tokenIdBN = ethers.BigNumber.from(tokenId);
-
-        // Check if contract has ownerOf method
-        if (!newContract.ownerOf) {
-          throw new Error("Invalid NFT contract - missing ownerOf method");
+        // Ownership check
+        const owner = await nftContract.ownerOf(tokenId);
+        if (owner.toLowerCase() !== userAddress.toLowerCase()) {
+          throw new Error("You don't own this NFT");
         }
 
-        // Try getting token owner with timeout
-        const ownerPromise = newContract.ownerOf(tokenIdBN);
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Owner check timed out")), 10000)
-        );
-
-        const owner = await Promise.race([ownerPromise, timeoutPromise]);
-
-        console.log("Owner:", owner);
-
-        if (!owner || owner.toLowerCase() !== userAddress.toLowerCase()) {
-          toast.error("You don't own this NFT");
-          return;
-        }
-
-        const tx = await newContract.approve(contractAddress, tokenIdBN);
-
-        //await for the transaction to be mined
+        // Approval
+        const tx = await nftContract.approve(contractAddress, tokenId);
         const receipt = await tx.wait();
 
         if (receipt.status !== 1) {
-          toast.error("Transaction failed");
-          return;
+          throw new Error("Approval transaction failed");
         }
-        toast.success("NFT approved successfully");
-      } catch (error: any) {
-        console.error("Contract error:", error);
-        toast.error(error.message || "Failed to verify ownership");
-        return;
       }
-    }
 
-    // Toggle sale state after successful approval
-    startTransition(async () => {
-      //@ts-ignore
-      const res = await toggleState(nftId, newBuyingState);
-      if (res.message) {
-        toast.success(res.message);
-        setIsEnabled((prev) => ({
-          ...prev,
-          [nftId]: newBuyingState,
-        }));
-        window.localStorage.setItem(
-          `sell_${nftId}`,
-          JSON.stringify(newBuyingState)
-        );
-      }
-    });
-  } catch (error: any) {
-    toast.error(error.message || "Failed to toggle sale state");
-  }
+      // Update state after successful transaction
+      setIsEnabled((prev) => ({ ...prev, [nftId]: newBuyingState }));
+      localStorage.setItem(`sell_${nftId}`, JSON.stringify(newBuyingState));
+      toast.success(
+        `NFT ${newBuyingState ? "listed" : "unlisted"} successfully`
+      );
+    } catch (error: any) {
+      console.error("Toggle error:", error);
+      toast.error(error.message || "Transaction failed");
+    } finally {
+      setIsLoading((prev) => ({ ...prev, [nftId]: false }));
+    }
+  };
+
+  return { toggleBuySell, isEnabled, isLoading };
 };

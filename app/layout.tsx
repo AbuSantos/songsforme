@@ -15,7 +15,7 @@ import { cookieToInitialState } from 'wagmi';
 import { getConfig } from "@/onchain/config";
 import { headers } from "next/headers";
 import { AudioProvider } from "@/lib/audio-provider";
-
+import { Suspense } from 'react';
 const queryClient = new QueryClient()
 
 export default function RootLayout({
@@ -47,9 +47,10 @@ export default function RootLayout({
         >
           <OnchainProviders initialState={initialState}>
             <AudioProvider>
-
               <QueryClientProvider client={queryClient}>
-                <body >{children}</body>
+                <body>
+                  {children}
+                </body>
                 <Toaster />
               </QueryClientProvider>
             </AudioProvider>

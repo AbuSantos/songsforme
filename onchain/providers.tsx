@@ -6,7 +6,6 @@ import { type ReactNode, useState } from 'react';
 import { type State, WagmiProvider } from 'wagmi';
 import { getConfig } from './config';
 
-// Extend the Window interface to include ENV
 declare global {
     interface Window {
         ENV?: {

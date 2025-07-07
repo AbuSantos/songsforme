@@ -19,11 +19,6 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                 <div className="border-t border-gray-700 flex flex-col md:pt-[65px] h-screen">
                     <div className="flex-1 h-full bg-[#111111]">
                         <div className="grid lg:grid-cols-7 h-full">
-                            {/* <div className="hidden lg:block  bg-[#111111] text-[var(--text)] rounded-lg">
-                                <ScrollArea>
-                                    <Sidebar playlists={playlists} />
-                                </ScrollArea>
-                            </div> */}
                             <div className="col-span-3 lg:col-span-5 lg:border-l text-[var(--text)] h-full overflow-y-auto">
                                 {children}
                             </div>
@@ -33,7 +28,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                         </div>
                     </div>
                 </div>
-                {/* <BottomNav /> */}
+                <BottomNav />
             </div>
 
         </div>
