@@ -151,7 +151,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     {/* <div className="bg-white"  >
                                         < NotificationFeed />
                                     </div> */}
-
                                 </div>
                             </div>
                             <TabsContent
@@ -213,7 +212,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                         <Suspense fallback={<MarketSkeleton />}>
                                             <div className="flex flex-wrap space-x-4 md:pb-4 pb-14">
                                                 < MarketPlace />
-                                                {/* < MarketPlace filter={filter} /> */}
                                             </div>
                                         </Suspense>
                                     </div>
@@ -277,7 +275,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                     </Suspense>
                                 </div>
                             </TabsContent>
-
                             <TabsContent
                                 value="artiste_hub"
                                 className="border-none p-0 md:pt-24 pt-2 outline-none"
@@ -295,7 +292,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 <Separator className="my-4 " />
                                 <MyArtisteHub />
                             </TabsContent>
-
                             <div className="mt-auto w-full fixed bottom-0  md:hidden h-20">
                                 <TabsList className="w-full py-5 h-20 rounded-none bg-black">
                                     < MobileTab artistesIds={whitelistedArtists} />
@@ -305,7 +301,6 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
                                 </TabsList>
 
                             </div>
-
                         </Tabs>
                     </div>
                 </div >

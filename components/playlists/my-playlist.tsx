@@ -60,14 +60,14 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
 
     return (
         <Accordion type="single" collapsible className="w-full space-y-3">
-            {useData.map((item: PlaylistTypes) => (
+            {useData?.map((item: PlaylistTypes) => (
                 <div key={item.id} className="border-none md:border-b-[0.5px] md:border-b-[#2A2A2A]">
                     <div className="flex items-center text-[#7B7B7B] md:bg-[#222222] hover:text-[#EEEEEE] px-2 w-full text-start rounded-md">
                         <Link
                             href={`/dashboard/playlist/${item.id}`}
                             className="w-full hover:no-underline"
                         >
-                            <div className="flex justify-between items-center md:bg-[#222222] md:hover:bg-[#353232] hover:text-[#EEEEEE] px-2 md:py-4 w-full text-start rounded-md">
+                            <div className="flex justify-between items-center md:bg-[#222222] md:hover:bg-[#353232] hover:text-[#EEEEEE] px-2 md:py-3 w-full text-start rounded-md">
                                 <div className="flex items-center gap-3">
                                     <Image
                                         src="/images/playlisty.jpg"
@@ -86,10 +86,13 @@ export const MyPlaylist = ({ data, userId, filter, mode }: PlaylistTypes) => {
                             </div>
                         </Link>
                         <div className="ml-2">
-                            <PlaylistPlay
-                                tracks={item.listednft || []}
-                                playlistId={item.id || ""}
-                            />
+                            {
+                                item.listednft && item?.listednft?.length > 0 &&
+                                <PlaylistPlay
+                                    tracks={item.listednft || []}
+                                    playlistId={item.id || ""}
+                                />
+                            }
                         </div>
                     </div>
                 </div>

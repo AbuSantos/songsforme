@@ -4,7 +4,6 @@ import { RecoilRoot } from "recoil";
 import { ThirdwebProvider } from "thirdweb/react";
 import { Toaster } from "@/components/ui/sonner"
 import '@radix-ui/themes/styles.css';
-import { Theme } from '@radix-ui/themes';
 import { sdk } from '@farcaster/frame-sdk';
 import { useEffect } from "react";
 import { WagmiProvider } from 'wagmi'
@@ -42,22 +41,22 @@ export default function RootLayout({
         <title>Bullchord</title>
         <meta name="description" content="Listen to your favorite songs on chain and earn rewards" />
       </head>
-      <RecoilRoot>
-        <ThirdwebProvider
-        >
-          <OnchainProviders initialState={initialState}>
-            <AudioProvider>
-              <QueryClientProvider client={queryClient}>
-                <body>
+      <body>
+        <RecoilRoot>
+          <ThirdwebProvider
+          >
+            <OnchainProviders initialState={initialState}>
+              <AudioProvider>
+                <QueryClientProvider client={queryClient}>
                   {children}
-                </body>
-                <Toaster />
-              </QueryClientProvider>
-            </AudioProvider>
-          </OnchainProviders>
+                  <Toaster />
+                </QueryClientProvider>
+              </AudioProvider>
+            </OnchainProviders>
 
-        </ThirdwebProvider>
-      </RecoilRoot>
+          </ThirdwebProvider>
+        </RecoilRoot>
+      </body>
     </html>
   );
 }

@@ -1,3 +1,4 @@
+"use client";
 // @noErrors: 2307 2580 2339 2554 - cannot find 'process', cannot find './wagmi', cannot find 'import.meta'
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

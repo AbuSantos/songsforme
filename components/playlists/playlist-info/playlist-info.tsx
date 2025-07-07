@@ -6,7 +6,7 @@ import { EditRatio } from './edit-ratio'
 import { useRecoilValue } from 'recoil'
 import { isConnected } from '@/atoms/session-atom'
 
-export const PlaylistInfo = ({ data }: { data: Playlist }) => {
+export default function ({ data }: { data: Playlist }) {
 
     const userId = useRecoilValue(isConnected)?.userId;
     try {

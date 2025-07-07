@@ -1,3 +1,4 @@
+"use client";
 import { Poppins } from "next/font/google";
 import { Menu } from "@/components/dashboard/menu/menu";
 import BottomNav from "@/components/dashboard/bottom-nav";
@@ -5,13 +6,12 @@ import { Sidebar } from "@/components/dashboard/sidebar";
 import { playlists } from "@/data/playlists";
 import { Aside } from "@/components/aside/my-playlist";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getSession } from "@/lib/helper";
 import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
 
 
 const poppins = Poppins({ weight: "500", subsets: ["latin"] });
 
-const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className={`h-screen w-full bg-[var(--bg-root)] ${poppins.className}`}>
             <div className="md:block h-screen max-h-screen top-0 left-0 right-0 ">

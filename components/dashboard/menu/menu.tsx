@@ -24,7 +24,6 @@ export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const userId = useRecoilValue(isConnected)?.userId;
     const userEmail = useRecoilValue(isConnected)?.userEmail
-
     const adminId = process.env.NEXT_PUBLIC_ADMIN_WALLET?.toLowerCase()!
 
     useEffect(() => {
@@ -40,6 +39,7 @@ export function Menu() {
         }
         getUserEmails();
     }, [userId])
+
 
     return (
         <div className="md:fixed justify-between items-center p-2 hidden md:flex w-[95%] bg-transparent z-50">
