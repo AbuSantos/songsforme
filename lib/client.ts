@@ -2,7 +2,7 @@ import { createThirdwebClient, defineChain } from "thirdweb";
 import { getContract } from "thirdweb";
 
 export const client = createThirdwebClient({
-  clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
+  clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || 'placeholder-client-id',
 });
 
 // export const contractAddress = "0x12ccb2398E10EbBAD1E490857d891741039CE2B5";
