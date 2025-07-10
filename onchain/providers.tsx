@@ -23,14 +23,13 @@ export function OnchainProviders(props: {
 }) {
     const [config] = useState(() => getConfig());
     const [queryClient] = useState(() => new QueryClient());
-    const apiKey =
-        process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY
+    const apiKey = process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY;
 
     return (
         <WagmiProvider config={config} initialState={props.initialState}>
             <QueryClientProvider client={queryClient}>
                 <OnchainKitProvider
-                    apiKey={apiKey}
+                    apiKey={apiKey || ''} // Provide empty string if API key is not available
                     chain={baseSepolia} // add baseSepolia for testing
                 >
                     {props.children}

@@ -25,13 +25,15 @@ export default function RootLayout({
   // Initialize the Farcaster SDK
   // This is necessary to ensure the SDK is ready before using it
   useEffect(() => {
-    sdk.actions.ready();
+    if (typeof window !== 'undefined') {
+      sdk.actions.ready();
+    }
   }, []);
 
-  const initialState = cookieToInitialState(
+  const initialState = typeof window !== 'undefined' ? cookieToInitialState(
     getConfig(),
     // headers().get('cookie')
-  );
+  ) : undefined;
 
   return (
     <html lang="en"

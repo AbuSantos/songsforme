@@ -46,8 +46,8 @@ export const ArtisteHeader = ({
     const apiUrl = `/api/follow/${userId}?artisteId=${artisteId}`;
 
     const storage = new ThirdwebStorage({
-        clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
-        secretKey: process.env.THIRDWEB_NEW_API!,
+        clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || 'placeholder-client-id',
+        secretKey: process.env.THIRDWEB_NEW_API || 'placeholder-secret-key',
     });
 
     // Fetch follow status using SWR
