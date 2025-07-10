@@ -7,12 +7,14 @@ import { getAudioEngineInstance } from "./audio-engine-singleton";
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const setIsPlaying = useSetRecoilState(isPlayingState);
   const setPlaybackState = useSetRecoilState(currentPlaybackState);
-  const [isReady, setIsReady] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    setIsReady(true);
+    // Only set up audio engine after hydration
     if (typeof window === "undefined") return;
-
+    
+    setIsHydrated(true);
+    
     const engine = getAudioEngineInstance();
     if (!engine) return;
 
@@ -34,5 +36,5 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [setIsPlaying, setPlaybackState]);
 
-  return children
+  return <>{children}</>;
 }

@@ -1,11 +1,16 @@
 // hooks/usePersistedRecoilState.ts
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RecoilState, useRecoilState } from 'recoil';
 
 export const usePersistedRecoilState = <T>(atom: RecoilState<T>, key: string ): [T, React.Dispatch<React.SetStateAction<T>>] => {
   const [value, setValue] = useRecoilState(atom);
+  const [isHydrated, setIsHydrated] = useState(false);
 
+  // Load from localStorage after hydration
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    setIsHydrated(true);
     const storedValue = localStorage.getItem(key);
 
     if (storedValue !== null) {
@@ -18,13 +23,16 @@ export const usePersistedRecoilState = <T>(atom: RecoilState<T>, key: string ): 
     }
   }, [key, setValue]);
 
+  // Save to localStorage when value changes (only after hydration)
   useEffect(() => {
+    if (!isHydrated || typeof window === 'undefined') return;
+    
     if (value !== null && value !== undefined) {
       localStorage.setItem(key, JSON.stringify(value));
     } else {
       localStorage.removeItem(key);
     }
-  }, [key, value]);
+  }, [key, value, isHydrated]);
 
   return [value, setValue];
 };
