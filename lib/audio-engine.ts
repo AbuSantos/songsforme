@@ -39,11 +39,16 @@ export class AudioEngine {
   }
 
   private createAudioContext(): AudioContext {
+    // if (typeof window === "undefined") {
+    //   throw new Error("AudioContext cannot be created on the server");
+    // }
+
     const ctx = new ((window as any).AudioContext ||
       (window as any).webkitAudioContext)();
     ctx.addEventListener("statechange", () =>
       console.debug("AudioContext state:", ctx.state)
     );
+    
     return ctx;
   }
 

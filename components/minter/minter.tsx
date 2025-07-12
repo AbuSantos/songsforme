@@ -65,8 +65,8 @@ export const Minter = () => {
     const [isPending, startTransition] = useTransition();
 
     const storage = new ThirdwebStorage({
-        clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
-        secretKey: process.env.THIRDWEB_NEW_API!,
+        clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || "",
+        secretKey: process.env.THIRDWEB_NEW_API || "",
     });
 
     // Update NFT details for non-file inputs

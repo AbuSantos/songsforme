@@ -1,4 +1,5 @@
 "use client";
+
 import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
 import { Playlist } from "@/types";

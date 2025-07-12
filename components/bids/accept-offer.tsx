@@ -1,3 +1,4 @@
+"use client";
 import { z } from "zod";
 import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import { AcceptBidSchema } from "@/schemas"; // Make sure to define this schema

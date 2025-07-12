@@ -1,3 +1,4 @@
+"use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AlbumArtwork } from "../dashboard/album-artwork"
 import { Single } from "@/types"

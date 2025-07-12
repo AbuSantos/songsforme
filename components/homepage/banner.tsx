@@ -1,3 +1,4 @@
+"use client"
 export const Header = () => {
     return (
         <header className='flex items-center justify-center align-middle w-full text-gray-200'>

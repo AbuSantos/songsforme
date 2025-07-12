@@ -1,3 +1,4 @@
+"use client";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import { contract } from "@/lib/client";
@@ -17,9 +18,6 @@ type modalTypes = {
 export const RemoveFromWiteList = ({ setBidModal }: modalTypes) => {
 
     const address = "0xD776Bd26eC7F05Ba1C470d2366c55f0b1aF87B30"
-
-
-
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">

@@ -1,3 +1,4 @@
+"use client";
 import { client, contractABI, contractAddress } from "@/lib/client";
 import { createThirdwebClient } from "thirdweb";
 import { ConnectButton } from "thirdweb/react";
@@ -6,7 +7,7 @@ import { createWallet, inAppWallet, privateKeyToAccount } from "thirdweb/wallets
 import { deleteSession, setsession } from "@/actions/set-sessions";
 import { CreateUsername } from "@/components/users/add-user";
 import { getUserByAddress } from "@/data/user";
-import { useState } from "react"; // Import useState to handle state
+import { useMemo, useState } from "react"; // Import useState to handle state
 import { createAuth } from "thirdweb/auth";
 import { useSetRecoilState } from "recoil";
 import { isConnected, UserSession } from "@/atoms/session-atom";
@@ -15,6 +16,7 @@ import { toast } from "sonner";
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
 import { BaseError, useAccount, useDisconnect, useEnsAvatar, useEnsName, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { ethers } from "ethers";
+import { ClientOnly } from "@/lib/client-wrap";
 
 // const privateKey = process.env.METAMASK_PRIVATE_KEY!
 // const thirdwebAuth = createAuth({
@@ -33,22 +35,32 @@ export const ConnecttButton = () => {
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
 
-   
-    const wallets = [
+
+    // const wallets = [
+    //     inAppWallet({
+    //         auth: {
+    //             options: ["passkey"]
+    //         }
+    //     }),
+    //     createWallet("io.metamask"),
+    //     createWallet("com.coinbase.wallet"),
+    //     createWallet("me.rainbow"),
+    //     // Farcaster wallet integration removed because 'farcasterWallet' is not exported from the package
+    // ];
+    // Only create this once
+    const wallets = useMemo(() => [
         inAppWallet({
             //@ts-ignore
-            providers: [
-                "passkey"
-            ]
+            options: ["passkey"]
         }),
         createWallet("io.metamask"),
         createWallet("com.coinbase.wallet"),
         createWallet("me.rainbow"),
-        // Farcaster wallet integration removed because 'farcasterWallet' is not exported from the package
-    ];
+    ], []);
+
     return (
-        <>
-           
+        <ClientOnly>
+
             <ConnectButton
                 client={client}
                 wallets={wallets}
@@ -109,7 +121,7 @@ export const ConnecttButton = () => {
                 <CreateUsername address={connectedAddress} setIsOpen={setIsOpen} isOpen={isOpen} />
             )}
 
-           
-        </>
+
+        </ClientOnly>
     );
 };

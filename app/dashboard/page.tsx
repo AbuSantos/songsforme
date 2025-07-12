@@ -1,54 +1,105 @@
 import { Metadata } from "next"
-import { Button } from "@/components/ui/button"
-import { AlbumArtwork } from "@/components/dashboard/album-artwork"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
-import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
-import { HelpComponent } from "@/components/dashboard/addnft/help"
-import { MusicAccordion } from "@/components/dashboard/addnft/music-type"
 import { db } from "@/lib/db"
 import { revalidateTag } from "next/cache"
-import { Filter } from "@/components/marketplace/filter"
-import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
+// import { Filter } from "@/components/marketplace/filter"
+// import { FilterByName } from "@/components/marketplace/filter/filter-by-name"
 import { ListedNFT, Playlist, PlaylistListedNFT, Single } from "@/types"
-import { AllPlaylist } from "@/components/playlists/all-playlist"
-import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
-import { getSession } from "@/lib/helper"
-import { TrendingPlaylist } from "@/components/playlists/trending-playlist"
+// import { AllPlaylist } from "@/components/playlists/all-playlist"
+// import { MobileNav } from "@/components/mobile/mobilenav/mobile-nav";
+
+// import { TrendingPlaylist } from "@/components/playlists/trending-playlist"
 import { FilterPlace } from "@/components/playlists/filter-playlist"
-import { Search } from "@/components/dashboard/search/search-songs"
+// import { Search } from "@/components/dashboard/search/search-songs"
 import { MarketSkeleton } from "@/components/marketplace/marketplace-skeleton"
 import { Suspense } from "react"
 import { FilterByTime } from "@/components/marketplace/filter/filter-by-time"
-import { Ratio } from "@/components/marketplace/filter/filter-by-ratio"
 import dynamic from "next/dynamic"
-import { TopChart } from "@/components/chart/top-chart"
-import { Minter } from "@/components/minter/minter"
-import { SingleGenre } from "@/components/singles-genre/single-genre"
-import { getAddressOrName, getTimeThreshold } from "@/lib/utils"
-import { Prisma } from "@prisma/client"
-import NotificationFeed from "@/components/knock/notification-feed"
-import { ArtisteHub } from "@/components/artiste-hub/artiste-hub"
-import { MyArtisteHub } from "@/components/artiste-hub/my-artiste-hub"
-import { DesktopTab } from "@/components/page-menu/desktop-tab"
-import { MobileTab } from "@/components/page-menu/mobile-tab"
+// import { TopChart } from "@/components/chart/top-chart"
+// import { SingleGenre } from "@/components/singles-genre/single-genre"
+// import { MyArtisteHub } from "@/components/artiste-hub/my-artiste-hub"
+// import { DesktopTab } from "@/components/page-menu/desktop-tab"
+// import { MobileTab } from "@/components/page-menu/mobile-tab"
 
-const MarketPlace = dynamic(() => import("@/components/marketplace/market"), {
-    suspense: true,
-});
 
-const BoughtNFT = dynamic(() => import("@/components/buy-folder/my-bought-nft"), {
-    suspense: true,
-});
+
+
+
+const MobileNav = dynamic(
+    () => import("@/components/mobile/mobilenav/mobile-nav").then(mod => mod.MobileNav),
+    {
+        ssr: false,
+    }
+);
+const TrendingPlaylist = dynamic(
+    () => import("@/components/playlists/trending-playlist").then(mod => mod.TrendingPlaylist),
+    {
+        ssr: false,
+    }
+);
+const TopChart = dynamic(
+    () => import("@/components/chart/top-chart").then(mod => mod.TopChart),
+    {
+        ssr: false,
+    }
+);
+const SingleGenre = dynamic(
+    () => import("@/components/singles-genre/single-genre").then(mod => mod.SingleGenre),
+    {
+        ssr: false,
+    }
+);
+const MyArtisteHub = dynamic(
+    () => import("@/components/artiste-hub/my-artiste-hub").then(mod => mod.MyArtisteHub),
+    {
+        ssr: false,
+    }
+);
+const MarketPlace = dynamic(
+    () => import("@/components/marketplace/market").then(mod => mod.default),
+    {
+        ssr: false,
+        loading: () => <MarketSkeleton />
+    }
+);
+const DesktopTab = dynamic(
+    () => import("@/components/page-menu/desktop-tab").then(mod => mod.DesktopTab),
+    {
+        ssr: false,
+        // loading: () => <MarketSkeleton />
+    }
+);
+const MobileTab = dynamic(
+    () => import("@/components/page-menu/mobile-tab").then(mod => mod.MobileTab),
+    {
+        ssr: false,
+        // loading: () => <MarketSkeleton />
+    }
+);
+
+const BoughtNFT = dynamic(
+    () => import("@/components/buy-folder/my-bought-nft").then(mod => mod.default),
+    {
+        ssr: false,
+        // loading: () => <MarketSkeleton />
+    }
+);
+const AllPlaylist = dynamic(
+    () => import("@/components/playlists/all-playlist").then(mod => mod.AllPlaylist),
+    {
+        ssr: false,
+        // loading: () => <MarketSkeleton />
+    }
+);
+const Search = dynamic(
+    () => import("@/components/dashboard/search/search-songs").then(mod => mod.Search),
+    {
+        ssr: false,
+    }
+);
+
 
 export const metadata: Metadata = {
     title: "songs for me",

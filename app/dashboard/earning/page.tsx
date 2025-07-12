@@ -3,12 +3,14 @@
 import { isConnected } from "@/atoms/session-atom";
 import { Return } from "@/components/actions/return";
 import { Separator } from "@/components/ui/separator";
-import { WithdrawRewards } from "@/components/withdraw/withdrawal";
+// import { WithdrawRewards } from "@/components/withdraw/withdrawal";
 import { fetcher } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import useSWR from "swr";
+const WithdrawRewards = dynamic(() => import("@/components/withdraw/withdrawal").then(mod => mod.WithdrawRewards), { ssr: false });
 
 
 //CHANGE PER RATE LATER

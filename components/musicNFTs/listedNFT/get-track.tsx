@@ -1,3 +1,5 @@
+"use client";
+
 import { client } from "@/lib/client"
 import { getContract } from "thirdweb";
 import { polygonAmoy } from "thirdweb/chains"

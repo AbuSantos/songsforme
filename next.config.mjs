@@ -1,4 +1,5 @@
-/** @type {import('next').NextConfig} */
+// next.config.js
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -9,18 +10,22 @@ const nextConfig = {
     ],
   },
   webpack: (config) => {
-    config.externals.push("pino-pretty", "encoding");
-
-    config.module.rules.push({
-      test: /HeartbeatWorker\.js$/,
-      loader: "string-replace-loader",
-      options: {
-        search: "export {};",
-        replace: "",
-        flags: "g",
-      },
+    // Prevent SSR from bundling browser-only libs
+    config.externals.push({
+      "@walletconnect/ethereum-provider":
+        "commonjs @walletconnect/ethereum-provider",
     });
+    config.externals.push("pino-pretty");
+    config.externals.push("encoding");
+
     return config;
+  },
+  experimental: {
+    esmExternals: "loose",
+    serverComponentsExternalPackages: [
+      "@walletconnect/ethereum-provider",
+      "@wagmi/connectors",
+    ],
   },
   reactStrictMode: true,
 };

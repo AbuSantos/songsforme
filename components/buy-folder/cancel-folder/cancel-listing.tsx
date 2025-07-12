@@ -1,3 +1,5 @@
+"use client";
+
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import { contract } from "@/lib/client";

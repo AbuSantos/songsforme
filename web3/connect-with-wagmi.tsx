@@ -7,7 +7,6 @@ import { deleteSession, setsession } from "@/actions/set-sessions";
 import { isNewConnected, UserSession } from '@/atoms/session-atom'
 import { useEffect, useState } from 'react'
 import { CreateUsername } from '@/components/users/add-user'
-
 import {
     ConnectWallet,
     Wallet,

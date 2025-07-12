@@ -1,3 +1,5 @@
+"use client";
+
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
