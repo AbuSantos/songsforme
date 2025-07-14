@@ -4,7 +4,6 @@ import { AddToWhitelist } from "@/components/modal/add-to-whitelist"
 import { ListNFTForm } from "@/components/modal/list-nft"
 import { Button } from "@/components/ui/button"
 import { WithdrawRewards } from "@/components/withdraw/withdrawal"
-import { ConnecttButton } from "@/web3/connect-button"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { useEffect, useState } from "react"
 import {
@@ -22,7 +21,13 @@ import { useRecoilValue } from "recoil"
 import { isConnected } from "@/atoms/session-atom"
 import { DesktopNFTForm } from "@/components/musicNFTs/listedNFT/list-NFTD"
 import Link from "next/link"
-import { ConnectMenu } from "@/web3/connect-with-wagmi"
+import dynamic from "next/dynamic"
+
+const ConnecttButton = dynamic(
+    () => import("@/web3/connect-button").then(mod => mod.ConnecttButton),
+    { ssr: false }
+);
+
 
 export const MobileNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)

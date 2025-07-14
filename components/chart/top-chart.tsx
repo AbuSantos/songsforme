@@ -1,19 +1,41 @@
-"use server"
+"use client"
 
-import { db } from "@/lib/db";
+import { useEffect, useState } from "react";
 import { ListedNFT } from "@/types";
 import { rankedSong } from "./ranked-song";
-import Tracktable from "../musicNFTs/listedNFT/data-table";
+import dynamic from "next/dynamic";
+// import Tracktable from "../musicNFTs/listedNFT/data-table";
 
-export const TopChart = async () => {
-    const chartData = await rankedSong()
+const Tracktable = dynamic(
+    () => import("../musicNFTs/listedNFT/data-table").then(mod => mod.Tracktable),
+    { ssr: false }
+);
 
-    if (chartData.length === 0) {
+export const TopChart = () => {
+    const [chartData, setChartData] = useState<ListedNFT[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await rankedSong();
+                setChartData(data);
+            } catch (error) {
+                console.error("Error fetching chart data:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (isLoading) {
         return (
             <div className="w-full mt-16">
-                <p>There currently no songs on the chart</p>
+                <p>Loading chart data...</p>
             </div>
-        )
+        );
     }
 
     return (

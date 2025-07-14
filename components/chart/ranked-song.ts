@@ -11,8 +11,7 @@ type PriceDatType = {
 export const rankedSong = async (page: number = 1, limit: number = 20) => {
   const offset = (page - 1) * limit;
 
-  //@ts-ignore
-  const listedData: ListedNFT[] = await db.listedNFT.findMany({
+  const listedData = (await db.listedNFT.findMany({
     select: {
       id: true,
       tokenId: true,
@@ -30,7 +29,7 @@ export const rankedSong = async (page: number = 1, limit: number = 20) => {
     },
     // take: limit,
     skip: offset,
-  });
+  })) as unknown as ListedNFT[];
 
   const now = new Date();
   const today = now.toISOString().slice(0, 10);

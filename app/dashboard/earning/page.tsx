@@ -7,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { fetcher } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import React from "react";
 import { useRecoilValue } from "recoil";
 import useSWR from "swr";
 const WithdrawRewards = dynamic(() => import("@/components/withdraw/withdrawal").then(mod => mod.WithdrawRewards), { ssr: false });
@@ -28,7 +27,6 @@ const MyEarnings = () => {
 
     if (error) {
         return <p className="text-red-500 text-center">Failed to load data</p>;
-
     }
 
     const earnings = (data?.accumulatedTime || 0) * PAY_RATE;

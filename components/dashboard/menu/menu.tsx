@@ -22,9 +22,7 @@ import dynamic from "next/dynamic"
 const ConnecttButton = dynamic(() => import("@/web3/connect-button").then((mod) => mod.ConnecttButton), {
     ssr: false,
 });
-const ConnectMenu = dynamic(() => import("@/web3/connect-with-wagmi").then((mod) => mod.ConnectMenu), {
-    ssr: false,
-});
+
 export function Menu() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const userId = useRecoilValue(isConnected)?.userId;
@@ -50,14 +48,12 @@ export function Menu() {
     if (!mounted) return null; // ← avoid hydration mismatches
 
     return (
-        <div className="md:fixed justify-between items-center p-2 hidden md:flex w-[95%] bg-transparent z-50">
-            <Menubar className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
-                <MenubarMenu>
-                    <MenubarTrigger className="font-bold text-xl">
-                        <Link href="/dashboard">Bullchord Music</Link>
-                    </MenubarTrigger>
-                </MenubarMenu>
-            </Menubar>
+        <div className="md:fixed justify-between items-center p-2 hidden md:!flex w-[95%] bg-transparent z-50">
+            <div className="rounded-none border-b border-none p-4 lg:px-4 bg-[var(--bg-root)] text-[var(--text)]">
+                <div className="font-bold text-xl">
+                    <Link href="/dashboard">Bullchord Music</Link>
+                </div>
+            </div>
             <div className="ml-auto flex mr-4 justify-end space-x-2">
                 {userId === adminId && (
                     <AddToWhitelist adminId={adminId} userId={userId} email={userEmail || ""} />

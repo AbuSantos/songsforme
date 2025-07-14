@@ -4,30 +4,20 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
 import React, {
     ChangeEvent,
     Dispatch,
     SetStateAction,
-    useEffect,
-    useRef,
     useState,
 } from "react";
 import { createUser } from "@/actions/create-user";
 import { Label } from "../ui/label";
-import { FormError } from "../errorsandsuccess/form-error";
 import { useDebouncedCallback } from "use-debounce";
 import { checkUserName } from "@/actions/check-username";
-import { FormSuccess } from "../errorsandsuccess/form-success";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 import { isConnected, UserSession } from "@/atoms/session-atom";
-import { TransactionButton, useActiveAccount } from "thirdweb/react";
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { client, contractABI, contractAddress, contract } from "@/lib/client";
+import { TransactionButton } from "thirdweb/react";
+import { contract } from "@/lib/client";
 import { prepareContractCall } from "thirdweb";
 
 interface UserProps {
@@ -44,18 +34,6 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
     const [checking, setChecking] = useState<boolean>(false);
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
 
-    const {
-        data: hash,
-        isPending: wagmiPending,
-        error,
-        writeContract
-    } = useWriteContract()
-
-    const { isLoading: isConfirming, isSuccess: isConfirmed } =
-        useWaitForTransactionReceipt({
-            hash,
-            confirmations: 1,
-        })
 
 
     const validateData = () => {
@@ -69,23 +47,6 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
         }
         return true;
     }
-
-    // const registerUser = async () => {
-    //     if (!validateData()) {
-    //         return;
-    //     }
-    //     try {
-    //         writeContract({
-    //             address: contractAddress,
-    //             abi: contractABI,
-    //             functionName: "registerUser",
-    //         })
-
-    //     } catch (error) {
-    //         console.error("Error registering user:", error);
-    //         throw error;
-    //     }
-    // }
 
 
     const addUser = () => {
@@ -116,12 +77,6 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
             }
         });
     };
-
-    // useEffect(() => {
-    //     if (isConfirmed) {
-    //         addUser();
-    //     }
-    // }, [isConfirmed]);
 
     const handleCheckUserName = useDebouncedCallback(async (value: string) => {
         if (!value.trim()) {
@@ -226,7 +181,7 @@ export const CreateUsername = ({ address, isOpen, setIsOpen }: UserProps) => {
                         });
                         return tx;
                     }}
-                    
+
                     onTransactionConfirmed={async (receipt) => {
                         if (receipt.status === "success") {
                             try {

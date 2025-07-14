@@ -4,7 +4,7 @@ import { getTimeThreshold } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 5;
 // const ITEMS_PER_PAGE = 15;  //Change to 15 for production
 
 const buildWhereClause = (query?: string | null, filter?: string | null) => {

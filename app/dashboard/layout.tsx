@@ -5,8 +5,12 @@ import BottomNav from "@/components/dashboard/bottom-nav";
 import { Aside } from "@/components/aside/my-playlist";
 import { ClientOnly } from "@/lib/client-wrap";
 import AudioWrapper from "@/lib/audio-wrapper";
+import "@/style/styles.css";
+
+
 
 const poppins = Poppins({ weight: "500", subsets: ["latin"] });
+
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -21,7 +25,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                 <div className="col-span-3 lg:col-span-5 lg:border-l text-[var(--text)] h-full overflow-y-auto">
                                     {children}
                                 </div>
-                                <div className="hidden lg:block lg:col-span-2 text-[var(--text)] overflow-y-auto scrollbar-none rounded-lg border-l-8 border-black h-[100%] mt-2">
+                                <div className="hidden lg:!block lg:col-span-2 text-[var(--text)] overflow-y-auto scrollbar-none rounded-lg border-l-8 border-black h-[100%] mt-2"
+                                >
                                     <Aside />
                                 </div>
                             </div>
@@ -30,7 +35,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                     <BottomNav />
                 </div>
             </div>
-        </ClientOnly>
+        </ClientOnly >
     );
 };
 

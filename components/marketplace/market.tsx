@@ -3,11 +3,16 @@
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { MarketSkeleton } from "./marketplace-skeleton";
-import { Tracktable } from "../musicNFTs/listedNFT/data-table";
 import InfiniteScroll from 'react-infinite-scroller';
 import useSWRInfinite from 'swr/infinite';
 import { fetcher } from "@/lib/utils";
 import { mutate } from "swr";
+import dynamic from "next/dynamic";
+
+const Tracktable = dynamic(
+    () => import("../musicNFTs/listedNFT/data-table").then(mod => mod.Tracktable),
+    { ssr: false }
+);
 
 interface NFTData {
     id: string;

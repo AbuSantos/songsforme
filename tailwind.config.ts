@@ -8,6 +8,11 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
+  safelist: [
+    {
+      pattern: /^lg:block$/, 
+    },
+  ],
   prefix: "",
   theme: {
     container: {

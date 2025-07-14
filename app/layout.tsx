@@ -1,7 +1,6 @@
 import "./globals.css";
 // import { ClientProviders } from "@/lib/client-providers";
-import { cookieToInitialState } from 'wagmi';
-import { getConfig } from "@/onchain/config";
+// import { cookieToInitialState } from 'wagmi';
 import { headers } from "next/headers";
 import dynamic from "next/dynamic";
 
@@ -22,9 +21,9 @@ export default function RootLayout({
   // This is necessary to ensure the SDK is ready before using it
 
 
-  const initialState = typeof window !== 'undefined' ? cookieToInitialState(
-    getConfig(),
-  ) : undefined;
+  // const initialState = typeof window !== 'undefined' ? cookieToInitialState(
+  //   getConfig(),
+  // ) : undefined;
 
   return (
     <html lang="en"
@@ -35,7 +34,7 @@ export default function RootLayout({
         <meta name="description" content="Listen to your favorite songs on chain and earn rewards" />
       </head>
       <body>
-        <ClientProviders initialState={initialState}>
+        <ClientProviders >
           {children}
         </ClientProviders>
       </body>

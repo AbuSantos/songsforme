@@ -7,15 +7,11 @@ import { createWallet, inAppWallet, privateKeyToAccount } from "thirdweb/wallets
 import { deleteSession, setsession } from "@/actions/set-sessions";
 import { CreateUsername } from "@/components/users/add-user";
 import { getUserByAddress } from "@/data/user";
-import { useMemo, useState } from "react"; // Import useState to handle state
-import { createAuth } from "thirdweb/auth";
+import { useMemo, useState } from "react"; 
 import { useSetRecoilState } from "recoil";
 import { isConnected, UserSession } from "@/atoms/session-atom";
 import { usePersistedRecoilState } from "@/hooks/usePersistedRecoilState";
 import { toast } from "sonner";
-import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
-import { BaseError, useAccount, useDisconnect, useEnsAvatar, useEnsName, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { ethers } from "ethers";
 import { ClientOnly } from "@/lib/client-wrap";
 
 // const privateKey = process.env.METAMASK_PRIVATE_KEY!
@@ -33,8 +29,6 @@ export const ConnecttButton = () => {
     const [isOpen, setIsOpen] = useState<boolean>(true)
     const setIsConnected = useSetRecoilState(isConnected)
     const [sessionId, setSessionId] = usePersistedRecoilState(isConnected, 'session-id');
-
-
 
     // const wallets = [
     //     inAppWallet({
@@ -120,7 +114,6 @@ export const ConnecttButton = () => {
             {isCreatingUser && connectedAddress && isOpen && (
                 <CreateUsername address={connectedAddress} setIsOpen={setIsOpen} isOpen={isOpen} />
             )}
-
 
         </ClientOnly>
     );
