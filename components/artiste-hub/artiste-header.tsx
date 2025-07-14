@@ -125,7 +125,7 @@ export const ArtisteHeader = ({
     const isArtist = userId === artisteId;
 
     return (
-        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-end md:justify-between space-x-4 bg-gradient-to-tl from-[#111113] via-[#54346B] to-[#6E56FF] py-6 px-2 ">
+        <div className="flex flex-col space-y-4 md:!space-y-0 md:!flex-row md:!items-end md:!justify-between space-x-4 bg-gradient-to-tl from-[#111113] via-[#54346B] to-[#6E56FF] py-6 px-2 ">
             <div className="flex items-end space-x-2">
                 <div
                     className="image flex flex-col overflow-hidden items-center justify-center  cursor-pointer "
@@ -187,7 +187,7 @@ export const ArtisteHeader = ({
             <div>
                 <div className="flex  space-x-2">
                     <div>
-                        <h1 className="text-base md:text-lg font-semibold">Total Streams</h1>
+                        <h1 className="text-base md:!text-lg font-semibold">Total Streams</h1>
                         <p className="text-center">{totalStreams}</p>
                     </div>
                     <Separator orientation="vertical" />
@@ -196,7 +196,7 @@ export const ArtisteHeader = ({
                         {
                             isArtist &&
                             <>
-                                <h1 className="text-base md:text-lg font-semibold">Total Earnings</h1>
+                                <h1 className="text-base md:!text-lg font-semibold">Total Earnings</h1>
                                 <p className="text-center flex justify-center items-center gap-x-1">
                                     {analytics?.totalEarnings?.toFixed(3)}
                                     <Image src={"/base-logo.svg"} alt="base eth" width={15} height={15} className="ml-1" />
@@ -208,7 +208,7 @@ export const ArtisteHeader = ({
                         {
                             isArtist ?
                                 <Popover>
-                                    <PopoverTrigger className="text-base md:text-lg font-semibold">Set up Ticketing</PopoverTrigger>
+                                    <PopoverTrigger className="text-base md:!text-lg font-semibold">Set up Ticketing</PopoverTrigger>
                                     <PopoverContent >
                                         <div className="p-4 space-y-3">
                                             <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to setup ticketing.
@@ -229,7 +229,7 @@ export const ArtisteHeader = ({
 
                                     </PopoverContent>
                                 </Popover> : <Popover>
-                                    <PopoverTrigger className="text-base md:text-xl font-semibold"> Purchase Ticket</PopoverTrigger>
+                                    <PopoverTrigger className="text-base md:!text-xl font-semibold"> Purchase Ticket</PopoverTrigger>
                                     <PopoverContent >
                                         <div className="p-4 space-y-3">
                                             <small className="py-3 text-blue-700"> You&apos;re about to be redirected to Momentify to purchase this artiste concert ticket.   <span className="font-bold text-gray-200">

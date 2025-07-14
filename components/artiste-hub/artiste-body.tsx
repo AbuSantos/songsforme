@@ -60,7 +60,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
                     </TabsList>
                 </div>
                 <TabsContent value="analytics">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 md:!grid-cols-2 gap-2">
                         <div className="stream border-gray-50 border-1">
                             {/* @ts-ignore */}
                             <ArtisteChart streams={analytics?.totalStreams} label="stream" />
@@ -85,7 +85,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
                 >
                     <div className=" bg-[#111111] space-x-2 ">
                         <div className="space-y-1">
-                            <h2 className="text-xl md:text-2xl font-semibold tracking-tight py-3">
+                            <h2 className="text-xl md:!text-2xl font-semibold tracking-tight py-3">
                                 MINTER
                             </h2>
                             <p className="text-sm text-muted-foreground">
@@ -117,7 +117,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
                 </div>
 
                 <TabsContent value="all">
-                    <div className="mx-1 flex flex-wrap items-center justify-center md:justify-start mt-4">
+                    <div className="mx-1 flex flex-wrap items-center justify-center md:!justify-start mt-4">
                         {data &&
                             data?.map((single: Single) => (
                                 <AlbumArtwork key={single.id} album={single} className="w-[180px]" />
@@ -125,7 +125,7 @@ export const ArtisteBody = ({ artisteId, analytics }: ArtisteBodyTypes) => {
                     </div>
                 </TabsContent>
                 <TabsContent value="new">
-                    <div className="mx-1 flex flex-wrap items-center justify-center md:justify-start mt-4">
+                    <div className="mx-1 flex flex-wrap items-center justify-center md:!justify-start mt-4">
                         {data &&
                             sortedData?.map((single: Single) => (
                                 <AlbumArtwork key={single.id} album={single} className="w-[180px]" />

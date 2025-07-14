@@ -72,14 +72,14 @@ export const SelectPlaylist = ({ nftId, userId, mode }: SelectProps) => {
     return (
         <Select onValueChange={handleAddToPlaylist}>
             <SelectTrigger className="px-0">
-                <div className="text-gray-950 hidden md:block bg-[var(--button-bg)] justify-center text-center items-center shadow-md py-2 px-4 rounded-md ">
+                <div className="text-gray-950 hidden md:!block bg-[var(--button-bg)] justify-center text-center items-center shadow-md py-2 px-4 rounded-md ">
                     {added ? (
                         <CheckCircledIcon className='cursor-pointer w-6 h-6 text-[teal]' />
                     ) : (
                         <PlusCircledIcon className='cursor-pointer w-6 h-6 text-[#EDEEF0]' />
                     )}
                 </div>
-                <div className="text-gray-50 block md:hidden bg-[var(--button-bg)] justify-start  items-start shadow-md py-2 px-4 rounded-md ">
+                <div className="text-gray-50 block md:!hidden bg-[var(--button-bg)] justify-start  items-start shadow-md py-2 px-4 rounded-md ">
                     {added ? (
                         <span className="flex items-center justify-start space-x-2 capitalize text-gray-100">
                             <CheckCircledIcon className='cursor-pointer w-6 h-6 text-[teal] mr-2' />

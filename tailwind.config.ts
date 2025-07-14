@@ -8,15 +8,23 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  safelist: ["lg:block", "hidden", "block"],
+  // safelist: ["lg:block", "hidden", "block"],
+  safelist: [
+    { pattern: /^hidden$/ }, // Safelist all `hidden` variants
+    { pattern: /^block$/ }, // Safelist all `block` variants
+    { pattern: /^lg:block$/ }, // Explicitly safelist responsive
+  ],
   prefix: "",
   theme: {
     container: {
       //@ts-ignore
-
       center: "true",
       padding: "2rem",
       screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
         "2xl": "1400px",
       },
     },

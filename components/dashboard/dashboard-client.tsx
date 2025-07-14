@@ -83,7 +83,7 @@ export function DashboardClient({
     whitelistedArtists
 }: DashboardClientProps) {
     return (
-        <div className="w-full md:max-w-full lg:!block md:!block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
+        <div className="w-full md:!max-w-full lg:!block md:!block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
             <div className="h-full w-full lg:px-8">
                 <Tabs defaultValue="music" className="h-full border-0 ">
                     <div className="fixed  inset-x-0  ml-10 w-full max-w-6xl z-50">
@@ -103,7 +103,7 @@ export function DashboardClient({
                             </div>
                             <div className="flex items-center justify-between ">
                                 <div className="space-y-1">
-                                    <h2 className="text-[1.5rem] md:text-2xl font-semibold tracking-normal">
+                                    <h2 className="text-[1.5rem] md:!text-2xl font-semibold tracking-normal">
                                         Trending playlist
                                     </h2>
 
@@ -135,7 +135,7 @@ export function DashboardClient({
                         className="w-full data-[state=active]:flex md:!pt-16 pt-2 px-2"
                     >
                         <div className="h-screen w-full flex-col border-none p-0 ">
-                            <div className="md:grid grid-cols-2 space-x-2 justify-between bg-[#111111] fixed md:w-[65%] w-[98%] -mt-4 md:-mt-0 z-50">
+                            <div className="md:grid grid-cols-2 space-x-2 justify-between bg-[#111111] fixed md:w-[65%] w-[98%] -mt-4 md:!-mt-0 z-50">
                                 <div className="w-[98%] flex items-center m-auto ">
                                     <Search placeholder="Search songs..." />
                                 </div>
@@ -144,9 +144,9 @@ export function DashboardClient({
                                     <FilterByTime />
                                 </div>
                             </div>
-                            <div className="w-full pt-20 md:pt-[2rem] pb-10 overflow-y-auto scroll-smooth scrollbar-none">
+                            <div className="w-full pt-20 md:!pt-[2rem] pb-10 overflow-y-auto scroll-smooth scrollbar-none">
                                 <Suspense fallback={<MarketSkeleton />}>
-                                    <div className="flex flex-wrap space-x-4 md:pb-4 pb-14">
+                                    <div className="flex flex-wrap space-x-4 md:!pb-4 pb-14">
                                         <MarketPlace />
                                     </div>
                                 </Suspense>
@@ -165,13 +165,13 @@ export function DashboardClient({
                         value="trendingPlaylist"
                         className="border-none p-0 md:!pt-24 pt-2 px-2 outline-none"
                     >
-                        <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
+                        <div className="fixed md!:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
                             <div className="flex items-center justify-between ">
                                 <div className="space-y-1">
-                                    <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+                                    <h2 className="text-xl md:!text-2xl font-semibold tracking-tight">
                                         All Playlist
                                     </h2>
-                                    <p className="text-sm text-muted-foreground hidden md:block">
+                                    <p className="text-sm text-muted-foreground hidden md:!block">
                                         Top picks for you. Updated daily.
                                     </p>
                                 </div>
@@ -191,9 +191,9 @@ export function DashboardClient({
                         value="chart"
                         className="border-none md:!pt-[4.8rem] pt-8 outline-none px-2 "
                     >
-                        <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
+                        <div className="fixed md:!w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
                             <div className="space-y-1">
-                                <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+                                <h2 className="text-xl md:!text-2xl font-semibold tracking-tight">
                                     Top songs
                                 </h2>
                                 <p className="text-sm text-muted-foreground">
@@ -205,7 +205,7 @@ export function DashboardClient({
                             </div>
                         </div>
 
-                        <div className="w-full pt-20 md:pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
+                        <div className="w-full pt-20 md:!pt-[2rem] pb-6 overflow-y-auto scroll-smooth scrollbar-none">
                             <Suspense fallback={<MarketSkeleton />}>
                                 <TopChart />
                             </Suspense>
@@ -228,7 +228,7 @@ export function DashboardClient({
                         <Separator className="my-4 " />
                         <MyArtisteHub />
                     </TabsContent>
-                    <div className="mt-auto w-full fixed bottom-0  md:hidden h-20">
+                    <div className="mt-auto w-full fixed bottom-0  md:!hidden h-20">
                         <TabsList className="w-full py-5 h-20 rounded-none bg-black">
                             <MobileTab artistesIds={whitelistedArtists} />
                             <div className=" mobile absolute right-4 bottom-20 mb-2">
