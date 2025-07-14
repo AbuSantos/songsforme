@@ -132,7 +132,7 @@ export function DashboardClient({
                     </TabsContent>
                     <TabsContent
                         value="podcasts"
-                        className="w-full data-[state=active]:flex md:pt-16 pt-2 px-2"
+                        className="w-full data-[state=active]:flex md:!pt-16 pt-2 px-2"
                     >
                         <div className="h-screen w-full flex-col border-none p-0 ">
                             <div className="md:grid grid-cols-2 space-x-2 justify-between bg-[#111111] fixed md:w-[65%] w-[98%] -mt-4 md:-mt-0 z-50">
@@ -155,7 +155,7 @@ export function DashboardClient({
                     </TabsContent>
                     <TabsContent
                         value="mynft"
-                        className="border-none p-0 md:pt-24 pt-2 outline-none"
+                        className="border-none p-0 md:!pt-24 pt-2 outline-none"
                     >
                         <Suspense fallback={<MarketSkeleton />}>
                             <BoughtNFT />
@@ -163,7 +163,7 @@ export function DashboardClient({
                     </TabsContent>
                     <TabsContent
                         value="trendingPlaylist"
-                        className="border-none p-0 md:pt-24 pt-2 px-2 outline-none"
+                        className="border-none p-0 md:!pt-24 pt-2 px-2 outline-none"
                     >
                         <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
                             <div className="flex items-center justify-between ">
@@ -189,7 +189,7 @@ export function DashboardClient({
                     </TabsContent>
                     <TabsContent
                         value="chart"
-                        className="border-none md:pt-[4.8rem] pt-8 outline-none px-2 "
+                        className="border-none md:!pt-[4.8rem] pt-8 outline-none px-2 "
                     >
                         <div className="fixed md:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
                             <div className="space-y-1">
@@ -213,7 +213,7 @@ export function DashboardClient({
                     </TabsContent>
                     <TabsContent
                         value="artiste_hub"
-                        className="border-none p-0 md:pt-24 pt-2 outline-none"
+                        className="border-none p-0 md:!pt-24 pt-2 outline-none"
                     >
                         <div className="space-y-1">
 

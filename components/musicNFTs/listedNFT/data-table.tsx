@@ -175,7 +175,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                     return (
                         <div key={track.id} className="flex border-b-[0.5px] border-b-[#2A2A2A] justify-between items-center py-2 px-1 hover:bg-[#1A1A1A] transition-colors">
                             <Link href={`/dashboard/trackinfo/${track.contractAddress}?tokenId=${track.tokenId}`} className="flex w-6/12 items-center">
-                                <p className="w-10 hidden md:block">{track?.tokenId}</p>
+                                <p className="w-10 hidden md:!block">{track?.tokenId}</p>
                                 <div className="flex flex-col w-8/12">
                                     <p className="flex space-x-2 items-center">
                                         <span className="text-[0.8rem] md:text-[1rem] capitalize">
@@ -212,8 +212,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                             </div>
 
                             <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} />
-                            <div className="block md:hidden">
-
+                            <div className="block md:!hidden">
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button variant="outline" className="bg-transparent p-0 hover:bg-transparent border-none" size="nav">
@@ -228,7 +227,7 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
                                 </Popover>
                             </div>
 
-                            <div className="items-start hidden md:flex space-x-2 ">
+                            <div className="items-start hidden md:!flex space-x-2 ">
                                 {/* <Playlisten userId={userId} nftId={track.id} nftContractAddress={track?.contractAddress} tokenId={track?.tokenId} /> */}
                                 <SelectPlaylist userId={userId} nftId={track.id} />
                                 <Favorite nftId={track?.id} userId={userId} />
