@@ -87,17 +87,17 @@ export function DashboardClient({
             <div className="h-full w-full lg:px-8">
                 <Tabs defaultValue="music" className="h-full border-0 ">
                     <div className="fixed  inset-x-0  ml-10 w-full max-w-6xl z-50">
-                        <div className="hidden md:flex items-center py-5 space-x-4 justify-between bg-[#111111] w-full box-border">
-                            <TabsList className="space-x-3 md:w-[67.5%] hidden md:flex z-50">
+                        <div className="hidden md:!flex items-center py-5 space-x-4 justify-between bg-[#111111] w-full box-border">
+                            <TabsList className="space-x-3 md:w-[67.5%] hidden md:!flex z-50">
                                 <DesktopTab artistesIds={whitelistedArtists} />
                             </TabsList>
                         </div>
                     </div>
                     <TabsContent
                         value="music"
-                        className="border-none md:pt-24 pt-2 outline-none px-2 z-50"
+                        className="border-none md:!pt-24 pt-2 outline-none px-2 z-50"
                     >
-                        <div className="w-full ">
+                        <div className="w-full">
                             <div className="w-[99%] md:!hidden flex mb-4">
                                 <Search placeholder="Search songs..." />
                             </div>
