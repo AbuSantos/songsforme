@@ -94,12 +94,14 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
         }
 
         return (
+            // <div className="w-full md:max-w-full lg:!block md:!block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
             <DashboardClient
                 listedData={listedData}
                 singleNft={singleNft}
                 sortedPlaylists={sortedPlaylists}
                 whitelistedArtists={whitelistedArtists}
             />
+            // </div>
         )
     } catch (error) {
         console.log(error, "from dashboard page")
@@ -107,6 +109,7 @@ export default async function MusicPage({ searchParams }: { searchParams: { filt
             <div className="text-center pt-5">
                 <h2 className="text-red-500">Failed to load the page.</h2>
                 <p>Please refresh</p>
-            </div>)
+            </div>
+        )
     }
 }

@@ -13,6 +13,9 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
         const jazz = singleNft?.filter((track: Single) => track.genre === "jazz")
 
         return (
+
+
+
             <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
                 <div className="h-full w-full ">
                     <Tabs defaultValue="all" className="h-full border-0">
@@ -39,7 +42,7 @@ export const SingleGenre = ({ singleNft }: { singleNft: Single[] }) => {
 
                         <TabsContent value="all" className="border-none pt-4 outline-none px-2 mb-20">
                             <div className="relative w-full">
-                                <div className="flex md:justify-start flex-wrap space-x-2 pb-4 gap-2">
+                                <div className="flex  md:justify-start flex-wrap space-x-2 pb-4 gap-2">
                                     {singleNft?.map((data: Single, index: number) => (
                                         <AlbumArtwork
                                             key={data.id}
