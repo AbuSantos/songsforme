@@ -86,7 +86,7 @@ export function DashboardClient({
         <div className="w-full md:max-w-full lg:!block md:!block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
             <div className="h-full w-full lg:px-8">
                 <Tabs defaultValue="music" className="h-full border-0 ">
-                    <div className="fixed  inset-x-0  w-full max-w-6xl z-50">
+                    <div className="fixed  inset-x-0  ml-10 w-full max-w-6xl z-50">
                         <div className="hidden md:flex items-center py-5 space-x-4 justify-between bg-[#111111] w-full box-border">
                             <TabsList className="space-x-3 md:w-[67.5%] hidden md:flex z-50">
                                 <DesktopTab artistesIds={whitelistedArtists} />
