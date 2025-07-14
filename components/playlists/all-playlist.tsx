@@ -41,14 +41,14 @@ export const AllPlaylist = () => {
 
         return (
             <div>
-                <div className="md:hidden mt-4">
+                <div className="md:!hidden mt-4">
                     {
                         playlists &&
                         <MyPlaylist data={playlists} userId={userId} filter={filter} />
                     }
                 </div>
 
-                <div className="hidden md:flex flex-wrap space-x-2 pb-4 mt-4">
+                <div className="hidden md:!flex flex-wrap space-x-2 pb-4 mt-4">
                     {playlists && playlists?.map((playlist: Playlist) => (
                         <TrendingPlaylist
                             album={playlist}

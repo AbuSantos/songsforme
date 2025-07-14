@@ -165,7 +165,8 @@ export function DashboardClient({
                         value="trendingPlaylist"
                         className="border-none p-0 md:!pt-24 pt-2 px-2 outline-none"
                     >
-                        <div className="fixed md!:w-[67.2%] w-[95%] bg-[#111111] space-x-2 ">
+                        <div className="fixed md:!w-[67.2%]  w-[95%] bg-[#111111] space-x-2 ">
+                            {/* <div className="fixed     w-full max-w-6xl "></div> */}
                             <div className="flex items-center justify-between ">
                                 <div className="space-y-1">
                                     <h2 className="text-xl md:!text-2xl font-semibold tracking-tight">
