@@ -8,11 +8,7 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  safelist: [
-    {
-      pattern: /^lg:block$/, 
-    },
-  ],
+  safelist: ["lg:block", "hidden", "block"],
   prefix: "",
   theme: {
     container: {
@@ -91,7 +87,6 @@ const config = {
             height: "var(--radix-accordion-content-height)",
           },
         },
-        
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",

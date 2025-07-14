@@ -83,10 +83,10 @@ export function DashboardClient({
     whitelistedArtists
 }: DashboardClientProps) {
     return (
-        <div className="w-full md:max-w-full lg:block md:block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
+        <div className="w-full md:max-w-full lg:!block md:!block col-span-3 lg:col-span-4 rounded-lg text-[var(--text)] p-0">
             <div className="h-full w-full lg:px-8">
                 <Tabs defaultValue="music" className="h-full border-0 ">
-                    <div className="hidden md:flex items-center fixed py-5 space-x-4 justify-between w-full bg-[#111111] md:w-[67.5%] box-border z-50">
+                    <div className="hidden md:!flex items-center fixed py-5 space-x-4 justify-between w-full bg-[#111111] md:w-[67.5%] box-border z-50">
                         <TabsList className="space-x-3 w-full hidden md:!flex z-50">
                             <DesktopTab artistesIds={whitelistedArtists} />
                         </TabsList>
@@ -102,7 +102,7 @@ export function DashboardClient({
                         className="border-none md:pt-24 pt-2 outline-none px-2 z-50"
                     >
                         <div className="w-full ">
-                            <div className="w-[99%] md:hidden flex mb-4">
+                            <div className="w-[99%] md:!hidden flex mb-4">
                                 <Search placeholder="Search songs..." />
                             </div>
                             <div className="flex items-center justify-between ">
@@ -129,8 +129,6 @@ export function DashboardClient({
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between">
-                            </div>
                             <Separator className="my-4 " />
                             <SingleGenre singleNft={singleNft} />
                         </div>
