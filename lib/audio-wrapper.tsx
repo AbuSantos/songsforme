@@ -17,15 +17,15 @@ const AudioWrapper = () => {
             console.error("AudioEngine initialization failed:", error);
         }
 
-        return () => {
-            if (engineRef.current) {
-                try {
-                    engineRef.current.destroy();
-                } catch (cleanupError) {
-                    console.error("AudioEngine cleanup failed:", cleanupError);
-                }
-            }
-        };
+        // return () => {
+        //     if (engineRef.current) {
+        //         try {
+        //             engineRef.current.destroy();
+        //         } catch (cleanupError) {
+        //             console.error("AudioEngine cleanup failed:", cleanupError);
+        //         }
+        //     }
+        // };
     }, []);
 
     return null;

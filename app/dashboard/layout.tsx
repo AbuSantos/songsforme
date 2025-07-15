@@ -16,7 +16,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <ClientOnly>
             <div className={`h-screen w-full bg-[var(--bg-root)] ${poppins.className}`}>
-                <AudioWrapper />
+                {/* <AudioWrapper /> */}
                 <div className="md:block h-screen max-h-screen top-0 left-0 right-0">
                     <Menu />
                     <div className="border-t border-gray-700 flex flex-col md:pt-[65px] h-screen">

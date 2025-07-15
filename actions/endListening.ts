@@ -123,21 +123,7 @@ export const endListening = async (
           }),
         ]);
       }
-
-      // console.log(
-      //   `[DB Transaction] Total transaction time: ${
-      //     Date.now() - transactionStartTime
-      //   }ms`
-      // );
     }
-
-    // Move tracking outside transaction
-
-    // console.log(
-    //   `[END] Listening session ended for user: ${userId} in ${
-    //     Date.now() - startOverallTime
-    //   }ms`
-    // );
     revalidateTag("track");
     return {
       message: "Listening session ended and times updated successfully.",

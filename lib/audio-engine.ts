@@ -94,7 +94,7 @@ export class AudioEngine {
     this.source.onended = () => this.handlePlaybackEnd();
   }
 
-  play(): void {
+  async play(): Promise<void> {
     if (!this.source?.buffer) throw new Error("Track is loading...");
 
     // Clean up previous playback
@@ -121,7 +121,7 @@ export class AudioEngine {
       this.playbackStartTime = this.context.currentTime - startOffset;
       this.isActivePlayback = true;
 
-      this.resumeContext();
+     await this.resumeContext();
     } catch (error) {
       console.error("Playback start failed:", error);
       this.currentSource = null;

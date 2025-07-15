@@ -40,7 +40,6 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
             try {
                 const nftStateId = engineRef.current?.currentTrackId;
                 setNftId(nftStateId ?? null);
-                console.log("Audio initialization failed:");
 
             } catch (error) {
                 console.error("Audio initialization failed:", error);

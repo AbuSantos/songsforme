@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 
 // Add global type for window.ethereum
 declare global {
@@ -37,7 +37,7 @@ import { prepareContractCall } from "thirdweb";
 import { ethers } from "ethers";
 
 const Playlisten = dynamic(
-    () => import("../../../components/startlistening/play-listen").then((mod) => mod.Playlisten),
+    () => import("@/components/startlistening/play-listen").then((mod) => mod.Playlisten),
     { ssr: false, loading: () => <div className="w-6 h-6" /> }
 );
 
@@ -55,6 +55,8 @@ export const Tracktable: React.FC<TrackTableType> = ({ data }) => {
     const usrname = useRecoilValue(isConnected)?.username
     const userEmail = useRecoilValue(isConnected)?.userEmail;
     const [isPending, startTransition] = useTransition();
+
+
 
     // Toggle function to switch buy/sell mode for individual NFTs
     const toggleBuySell = async (nftId: string, tokenId: string, nftContractAddress: string) => {

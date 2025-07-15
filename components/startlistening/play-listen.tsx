@@ -32,7 +32,8 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
     const engineRef = useRef<AudioEngine | null>(null);
     const qualityManager = useRef<QualityManager>(new QualityManager());
 
-    console.log("Playlisten component initialized with:", playlistId);
+
+    const engine = getAudioEngineInstance();
 
     const isPlaying = playback.trackId === nftId && playback.isPlaying;
 
@@ -121,7 +122,7 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
 
     // Playback validation
     useEffect(() => {
-        if (typeof window === "undefined") return;
+        //  if (typeof window === "undefined") return;
         const interval = setInterval(async () => {
             const engine = getAudioEngineInstance();
             if (!engine) return;
@@ -176,9 +177,12 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
                     await engineRef.current.loadTrack(audioUrl, nftId);
                 }
 
-                engineRef.current.play();
+                await engineRef.current.play();
                 await startListening(userId, nftId, playlistId);
                 setPlayback({ trackId: nftId, isPlaying: true });
+
+                // console.log("AudioContext state before play:", this?.context.state);
+                // console.log("Source buffer duration:", this?.source?.buffer?.duration);
             }
         } catch (error) {
             console.error("Playback error:", error);
@@ -188,9 +192,25 @@ export const Playlisten = ({ userId, nftId, playlistId, nftContractAddress, toke
         }
     };
 
+
+    const handlePlay = async () => {
+        if (!engineRef.current) {
+            engineRef.current = getAudioEngineInstance();
+        }
+
+        if (!engineRef.current) {
+            toast.error("Audio engine not available");
+            return;
+        }
+        const testUrl = "https://ipfs.io/ipfs/bafybeiedtkgkyjcgmrih33rrc6nn6tjorc3hosnlxyyu4ffoe5lrs5y2ji/salt.mp3";
+        await engineRef.current.loadTrack(testUrl, "test");
+        engineRef.current.play();
+    }
+
     return (
         <div>
             <Button
+                // onClick={handlePlay}
                 onClick={handlePlayPause}
                 disabled={!userId || isLoading}
                 className='bg-[var(--button-bg)] shadow-md border-[1px] border-[#2A2A2A] hover:bg-[var(--button-bg-hover)]'
