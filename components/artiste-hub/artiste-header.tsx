@@ -96,7 +96,6 @@ export const ArtisteHeader = ({
     };
 
     const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-        console.log("hello header");
 
         const file = event.target.files?.[0]
         if (!file) return;

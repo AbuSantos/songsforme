@@ -21,6 +21,8 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
     const [nftId, setNftId] = useState<string | null>(null);
     const isPlaying = useRecoilValue(isPlayingState);
     const engineRef = useRef<AudioEngine | null>(null);
+    const [currentTime, setCurrentTime] = useState(0)
+    const [duration, setDuration] = useState(0)
 
     const returnCorrectImage = (image: string | null | undefined) => {
         if (image?.endsWith("webp")) {
@@ -57,6 +59,25 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
         };
     }, [isPlaying]);
 
+    // useEffect(() => {
+    //     engineRef.current = getAudioEngineInstance();
+    //     // if (!engine) return
+
+
+    //     // Safely get duration from the engineRef's current buffer
+    //     setDuration(engineRef.current?.source?.buffer?.duration || 0);
+
+    //     const interval = setInterval(() => {
+
+    //         if (engine && engineRef.isActivePlayback && engine.context && engine.playbackStartTime) {
+    //             const time = engine.context.currentTime - engine.playbackStartTime;
+    //             setCurrentTime(time);
+    //         }
+    //     }, 500);
+    //     return () => clearInterval(interval);
+
+    // }, [engineRef.current])
+
 
     const currentTrack = useMemo(() =>
         tracks?.find(track => track?.id === nftId || track?.id === currentTrackId) || null,
@@ -82,6 +103,15 @@ const PlayerDetails = ({ tracks }: { tracks: ListedNFT[] }) => {
             ) : (
                 <div>No song selected</div>
             )}
+            <div className='flex items-center justify-center'>
+                <input
+                    type="range"
+                    className='w-72'
+                    max={100}
+                    min={0}
+                    value={20}
+                />
+            </div>
         </div>
     );
 }

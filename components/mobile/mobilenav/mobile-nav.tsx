@@ -42,8 +42,8 @@ export const MobileNav = () => {
     return (
         <Sheet >
             <SheetTrigger asChild>
-                <button className=" rounded-full size-16 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style={{ fill: "#000", transform: "msFilter", marginLeft: "2px" }}>
+                <button className="flex items-center justify-center rounded-full size-16 border border-input bg-background shadow-sm hover:bg-accent  md:hidden   hover:text-accent-foreground ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" style={{ fill: "#000", transform: "msFilter", marginLeft: "2px" }}>
                         <path d="M4 6h16v2H4zm4 5h12v2H8zm5 5h7v2h-7z"></path>
                     </svg>
                 </button>

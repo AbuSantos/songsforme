@@ -10,7 +10,6 @@ export const updateEarnings = async (
     throw new Error("Details not provided");
   }
   try {
-    console.log(singleId, "from artiste");
 
     // Fetch the single with listed NFTs and the owner
     const single = await db.single.findUnique({
@@ -46,8 +45,6 @@ export const updateEarnings = async (
     const amount = nftPrice.isRelisted
       ? nftPrice.price * 0.2 // Royalty for relisted NFTs (2%)
       : nftPrice.price;
-
-    console.log(`Calculated amount: ${amount}`);
 
     // Update ArtisteAnalytics: Accumulate the earnings
     await db.artisteAnalytics.update({
