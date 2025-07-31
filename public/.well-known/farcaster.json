@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjEwODc1NDYsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhCYjdGZENDMkE4MTc1MEI1MTY1OTFlNzhEQWQyODI0QWYwNkRjQTQ3In0",
-    "payload": "eyJkb21haW4iOiJodHRwczovL2J1bGxjaG9yZC54eXoifQ",
-    "signature": "1H8tHpnGTH1LfZC/1C+6VyMmz0F/848qESuB/olncT13A0A3AcVHreu07Fi2Fg/UDwLZ3i80q5VOFJTIUXrdWxs="
+    "header": "eyJmaWQiOjEwODc1NDYsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhlNjcyN2JmOTM4ZDlEQmFhRmU5M0RmYjdGOTUyYzUyNWQxY0YzQjhjIn0",
+    "payload": "eyJkb21haW4iOiJidWxsY2hvcmQueHl6In0",
+    "signature": "MHgwODQzYmRmNTI3ZjFiMmNjNWNhNzkyNGRhYzM1NzllZjc4NjBkNmZmZDgzNDY5MWQ1NmYwZWU5NThkMjU1MDUxNGI0NmQ3NWNiNGIwMTg1MTI2MWQxMDFkNzQwM2QxNGY4MjdjYzJjMDE5MGY4ZTk5YmQzMDI2MDYyZWVkNzg4NzFj"
   },
   "frame": {
     "name": "Bullchord",
