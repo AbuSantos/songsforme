@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { OnchainProviders } from "@/onchain/providers";
 import '@coinbase/onchainkit/styles.css';
 import { AudioProvider } from "@/lib/audio-provider";
+import { config } from "@/config";
+import { WagmiProvider } from "wagmi";
 
 const queryClient = new QueryClient();
 
@@ -28,12 +30,15 @@ export function ClientProviders({ children }: ClientProvidersProps) {
         <RecoilRoot>
             <ThirdwebProvider>
                 {/* <OnchainProviders> */}
-                <AudioProvider>
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                        <Toaster />
-                    </QueryClientProvider>
-                </AudioProvider>
+                <WagmiProvider config={config}>
+
+                    <AudioProvider>
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                            <Toaster />
+                        </QueryClientProvider>
+                    </AudioProvider>
+                </WagmiProvider>
                 {/* </OnchainProviders> */}
             </ThirdwebProvider>
         </RecoilRoot>
