@@ -1,18 +1,28 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjEwODc1NDYsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhlNjcyN2JmOTM4ZDlEQmFhRmU5M0RmYjdGOTUyYzUyNWQxY0YzQjhjIn0",
-    "payload": "eyJkb21haW4iOiJ3d3cuYnVsbGNob3JkLnh5eiJ9",
-    "signature": "MHhlNzQ3MzYyMTIzNjMyNDgzMzBkYWY4NjRmZGNkN2Q1ZDZlNGQ1YTZkMmJiOTNmNjhmNTljNTYzYjU5YjgwOGY0MzZlZjZlMmY3M2JlNjRhNDRmY2I5OTExMjU4NGIxZTM4N2Y1YzcyNTZiMDU1YTNlNTcwOGZjZGI3ZjM1ZmY2MzFj"
+    "header": "eyJmaWQiOjEwODc1NDYsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhCYjdGZENDMkE4MTc1MEI1MTY1OTFlNzhEQWQyODI0QWYwNkRjQTQ3In0",
+    "payload": "eyJkb21haW4iOiJodHRwczovL2J1bGxjaG9yZC54eXoifQ",
+    "signature": "1H8tHpnGTH1LfZC/1C+6VyMmz0F/848qESuB/olncT13A0A3AcVHreu07Fi2Fg/UDwLZ3i80q5VOFJTIUXrdWxs="
   },
   "frame": {
+    "name": "Bullchord",
     "version": "1",
-    "name": "Example Frame",
-    "iconUrl": "https://www.bullchord.xyz/icon.png",
-    "homeUrl": "https://www.bullchord.xyz",
-    "imageUrl": "https://www.bullchord.xyz/image.png",
-    "buttonTitle": "Check this out",
-    "splashImageUrl": "https://www.bullchord.xyz/splash.png",
-    "splashBackgroundColor": "#eeccff",
-    "webhookUrl": "https://www.bullchord.xyz/api/webhook"
+    "iconUrl": "https://https://bullchord.xyz/icon.png",
+    "homeUrl": "https://https://bullchord.xyz",
+    "imageUrl": "https://bullchord.xyz/image.png",
+    "buttonTitle": "Explore Bullchord",
+    "splashImageUrl": "https://https://bullchord.xyz/splash.png",
+    "splashBackgroundColor": "#60A5FA",
+    "webhookUrl": "https://bullchord.xyz/api/webhook",
+    "screenshotUrls": ["https://bullchord.xyz/screenshot1.PNG"],
+    "heroImageUrl": "https://bullchord.xyz/hero.PNG",
+    "primaryCategory": "music",
+    "subtitle": "Listen, Earn and Trade",
+    "description": "Bullchord is a decentralized music platform that transforms listening into earning. Artists can mint their songs as Music NFTs, which can be bought, sold, or collected by fans.",
+    "tags": ["music", "nft", "trade", "musicnft", "songcoin"],
+    "tagline": "Listen, Earn and Trade",
+    "ogTitle": "Bullchord- Listen, earn Trade",
+    "ogDescription": "Listen to your fav music and Earn",
+    "ogImageUrl": "https://https://bullchord.xyz/icon.png"
   }
 }
