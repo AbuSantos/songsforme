@@ -72,11 +72,9 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                     fontSize: '0.8rem',
 
                 }}
-                // Function to prepare the contract call and create the transaction
                 transaction={() => {
-                    // Prepare the contract call using the contract and method provided
                     const tx = prepareContractCall({
-                        contract, // This is the blockchain contract reference
+                        contract, 
                         //@ts-ignore
                         method: "function buyBull(address _nftContract, uint256 _tokenId) payable", // The smart contract function for buying NFTs
                         params: [nftAddress, tokenId], // Parameters required by the contract method (NFT contract address and tokenId)
@@ -85,7 +83,6 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                     return tx;
                 }}
 
-                // Handle successful transaction confirmation
                 onTransactionConfirmed={(tx) => {
                     if (tx.status === "success") {
                         handleBuyNft(price, tx.transactionHash)
@@ -93,7 +90,6 @@ export const BuyNFT = ({ buyer, nftAddress, tokenId, price, listedNftId, usrname
                     }
                 }}
                 onError={(error) => {
-                    // Display an error toast notification using the `sonner` library
                     toast.error("NFT Error", {
                         description: error.message, // Display the actual error message for debugging
                     });

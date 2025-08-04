@@ -189,7 +189,6 @@ export const Minter = () => {
         }));
     };
 
-    // Validate form completion
     const validateForm = () => {
         const {
             name,

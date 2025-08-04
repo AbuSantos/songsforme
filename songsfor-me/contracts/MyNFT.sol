@@ -12,8 +12,7 @@ contract BullchordNFT is ERC721A, Ownable {
     bool public mintEnabled = true;
     uint256 public constant i_MAX_SUPPLY = 10;
 
-    // Royalty information
-    uint256 public royaltyBasisPoints = 500; // 5% royalty
+    uint256 public royaltyBasisPoints = 500; 
     address public royaltyRecipient;
 
     constructor(
@@ -35,12 +34,10 @@ contract BullchordNFT is ERC721A, Ownable {
             totalSupply() + 10 <= i_MAX_SUPPLY,
             "Total Supply is maxed out"
         );
-        // Mint 10 tokens at once
         _mint(msg.sender, 10);
         mintEnabled = false;
     }
 
-    // Royalty implementation
     function royaltyInfo(
         uint256 tokenId,
         uint256 salePrice

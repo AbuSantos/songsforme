@@ -244,14 +244,12 @@ contract BullchordMarketPlace is ReentrancyGuard {
             : listingFee;
         require(msg.value >= actualListingFee, "Insufficient listing fee");
 
-        // Check if NFT is approved for the marketplace
         nftContract = IERC721(_nftAddress);
         require(
             nftContract.getApproved(_tokenId) == address(this),
             "Not Approved For Marketplace"
         );
 
-        // Add the MarketItem to the mapping (avoid duplicate array storage)
         idToMarketItem[_tokenId] = MarketItem({
             tokenId: _tokenId,
             seller: msg.sender,
@@ -260,10 +258,8 @@ contract BullchordMarketPlace is ReentrancyGuard {
             sold: false
         });
 
-        // Track ownership using the mapping
         marketItemsOwner[msg.sender].push(_tokenId);
 
-        // Emit the NFTListed event
         emit NFTListed(_nftAddress, _tokenId, _price, msg.sender);
     }
 
@@ -314,16 +310,14 @@ contract BullchordMarketPlace is ReentrancyGuard {
             finalPrice -= royalty; // Deduct royalty from final price
         }
 
-        // Update state before making external calls
         marketItem.sold = true;
         isSold[_tokenId] = true;
 
-        // Deduct platform fee from finalPrice after royalty deduction
         uint256 _platformFee = calculatePlatformFee(finalPrice);
         finalPrice -= _platformFee;
         listingProceeds += _platformFee;
-
-        // Transfer funds to the seller and royalty recipient
+       
+        //if we use split address for seller, anytime the nft is sold, the proceeds will be sent to the split address.
         (bool success,)= payable(seller).call{
             value:finalPrice
         }("");
@@ -331,7 +325,7 @@ contract BullchordMarketPlace is ReentrancyGuard {
         require(success,"Sending failed!");
         // proceeds[seller] += finalPrice;
 
-         // Handle royalty transfer
+         
         if (royalty > 0) {
             (bool royaltySuccess, ) = payable(royaltyRecipient).call{value: royalty}("");
             if (!royaltySuccess) {
@@ -341,7 +335,7 @@ contract BullchordMarketPlace is ReentrancyGuard {
             }
         }
 
-        // Transfer NFT to the buyer
+       
         nftContract.transferFrom(seller, msg.sender, _tokenId);
 
         emit NFTBought(
@@ -400,14 +394,13 @@ contract BullchordMarketPlace is ReentrancyGuard {
             previousBidAmount = lastBid.amount;
             console.log("Previous Bid Amount:", previousBidAmount);
 
-            // Ensure new bid is higher than the last bid
+           
             require(bidAmount > previousBidAmount, "bid amount too low");
 
-            // Instead of refunding immediately, store the amount in withdrawableBalance
             withdrawableBalance[lastBid.from] += lastBid.amount;
-            console.log(
-                "Previous bidder's refund stored in withdrawable balance"
-            );
+            // console.log(
+            //     "Previous bidder's refund stored in withdrawable balance"
+            // );
         }
 
         // Record the new bid
