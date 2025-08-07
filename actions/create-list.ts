@@ -46,7 +46,7 @@ export const createSingleWithNFTs = async (
     return { status: "error", message: "User ID and song name are required." };
   }
 
-  console.log(mood, genre);
+  // console.log(mood, genre);
   // Explicitly define the types of the results object
   const results: {
     successes: SuccessResult[];

@@ -57,7 +57,6 @@ export const RelistNft = ({ nft, seller, email }: listingProps) => {
         });
     };
 
-
     return (
         <Popover>
             <PopoverTrigger asChild>

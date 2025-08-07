@@ -17,9 +17,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export const Aside = ({ className }: SidebarProps) => {
   const userId = useRecoilValue(isConnected)?.userId;
-  console.log("Aside userId", userId);
-
-
+  // console.log("Aside userId", userId);
 
   const [fav, setFav] = useState<"playlist" | "fav">("playlist");
 

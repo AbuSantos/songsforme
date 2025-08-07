@@ -13,7 +13,7 @@ export const MiddlePage = () => {
 
     const handleExplore = async () => {
         setIsLoading(true)
-        await router.push('/dashboard');
+        router.push('/dashboard');
         setIsLoading(false)
     };
     return (
@@ -22,7 +22,7 @@ export const MiddlePage = () => {
                 <div className='md:py-1 items-center justify-center text-center pb-4'>
                     <Button
                         onClick={handleExplore}
-                        type="submit" size="lg" variant="outline" className="w-full bg-blue-400  text-gray-900  hover:bg-blue-500 border-none text-xl  transition" >
+                        type="submit" size="lg" variant="outline" className="w-full bg-blue-400  text-gray-900  hover:bg-blue-500 border-none text-xl py-4 px-4   transition" >
                         {/* <Link href="/dashboard" prefetch>
                             Explore
                         </Link> */}

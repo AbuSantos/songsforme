@@ -47,6 +47,7 @@
     "@thirdweb-dev/storage": "^2.0.15",
     "@types/js-cookie": "^3.0.6",
     "@wagmi/connectors": "^5.8.5",
+    "@zoralabs/coins-sdk": "^0.2.10",
     "@zoralabs/protocol-sdk": "^0.13.10",
     "@zoralabs/zdk": "^2.4.0",
     "alchemy-sdk": "^3.4.7",

@@ -32,8 +32,6 @@ const BoughtNFT = () => {
         }
     );
 
-    
-
     if (!userId) {
         return (
             <p className="text-center p-2">

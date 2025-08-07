@@ -4,10 +4,8 @@ import { calculateDecayedPlayCount } from "./helper/decayed-count";
 //@ts-ignore
 export const calculateDynamicPrice = async (
   //@ts-ignore
-
   basePrice,
   //@ts-ignore
-
   recentPlays,
   // recentPlaylists,
   //@ts-ignore
@@ -15,26 +13,23 @@ export const calculateDynamicPrice = async (
   recentListeners
 ) => {
   console.log(basePrice, recentPlays, recentListeners, "from dynamic price");
-  const k = 0.005; // Growth rate for decayed play count
-  const alpha = 0.0002; // Weight of playlist factor
-  const beta = 0.03; // Weight of unique listeners factor
-  const decayRate = 0.001; // Decay rate for play influence
+  const k = 0.005;
+  const alpha = 0.0002;
+  const beta = 0.03;
+  const decayRate = 0.001;
 
-  // Decayed play count based on recent plays and decay rate
-  const currentTime = Date.now() / 1000; // Current time in seconds
+  const currentTime = Date.now() / 1000;
   const decayedPlayCount = calculateDecayedPlayCount(
     recentPlays,
     decayRate,
     currentTime
   );
 
-  console.log(decayedPlayCount, recentPlays, "decayed coubt");
+  // console.log(decayedPlayCount, recentPlays, "decayed coubt");
 
-  // Logarithmic growth modifiers for playlists and unique listeners
   // const playlistFactor = 1 + alpha * Math.sqrt(recentPlaylists);
   const listenerFactor = 1 + beta * Math.log(1 + recentListeners);
 
-  // Calculate final price with all factors
   const dynamicPrice =
     basePrice *
     Math.exp(k * decayedPlayCount) *

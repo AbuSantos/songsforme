@@ -31,7 +31,6 @@ export function ClientProviders({ children }: ClientProvidersProps) {
             <ThirdwebProvider>
                 {/* <OnchainProviders> */}
                 <WagmiProvider config={config}>
-
                     <AudioProvider>
                         <QueryClientProvider client={queryClient}>
                             {children}
