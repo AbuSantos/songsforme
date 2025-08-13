@@ -10,9 +10,6 @@ import { SelectGenre } from "./select-genre";
 import { TransactionButton } from "thirdweb/react";
 import { prepareContractCall, toWei } from "thirdweb";
 import { nftContract, nftFactoryContract, nftMintingABI } from "@/lib/client"
-import { prepareEvent } from "thirdweb";
-import { useContractEvents } from "thirdweb/react";
-import { useContract } from "@thirdweb-dev/react";
 import { useRecoilValue } from "recoil";
 import { isConnected } from "@/atoms/session-atom";
 import { createSingleWithNFTs } from "@/actions/create-list";
@@ -123,6 +120,7 @@ export const Minter = () => {
     const handleSongUpload = async (event: ChangeEvent<HTMLInputElement>) => {
 
         const file = event.target.files?.[0];
+
         if (!file) {
             console.error("No file selected!");
             return;
@@ -130,12 +128,12 @@ export const Minter = () => {
 
         // Validate that the file is an audio file
         if (!file.type.startsWith("audio/")) {
-            console.error("File is not an audio file!");
+            // console.error("File is not an audio file!");
             toast.error("Please upload a valid audio file.");
             return;
         }
 
-        console.log("Uploading file:", file);
+        // console.log("Uploading file:", file);
         const formData = new FormData();
         formData.append("file", file);
 
@@ -156,10 +154,8 @@ export const Minter = () => {
                 uploadToIPFS(file),
             ]);
 
-            console.log("Extracted Features:", analyzeResponse);
+            // console.log("Extracted Features:", analyzeResponse);
             const mood = classifyMood(analyzeResponse);
-
-            console.log("Mood:", mood);
 
             // Update NFT details state with the new metadata and IPFS URL
             setNftDetails((prev: any) => ({
@@ -170,8 +166,9 @@ export const Minter = () => {
                 spectralCentroid: analyzeResponse.spectralCentroid,
                 animation_url: ipfsUrl,
             }));
+
         } catch (error: any) {
-            console.error("Song upload failed:", error);
+            // console.error("Song upload failed:", error);
             toast.error(error.message || "Song upload failed.");
         } finally {
             setUploading(false);
@@ -242,11 +239,12 @@ export const Minter = () => {
 
     // Trigger the NFT minting process
     const handleMint = async () => {
-        console.log("Minting NFT with details:", nftDetails);
+        // console.log("Minting NFT with details:", nftDetails);
         if (!validateForm()) {
             alert("Please complete all fields before minting.");
             return;
         }
+
         try {
             const tokenUri = await storage.upload(nftDetails);
             if (tokenUri) {
@@ -254,7 +252,7 @@ export const Minter = () => {
                 setIsDeployed(true)
             }
             setIsPreparedMint(true)
-            console.log("Minting NFT with details:", tokenUri);
+
         } catch (error) {
             console.error("Minting failed:", error);
         }
@@ -475,7 +473,7 @@ export const Minter = () => {
                                 setIsDeployed(true)
                                 toast.success("NFT Contract Listed successfully")
                             }
-                            console.log(tx, "transaction")
+                            // console.log(tx, "transaction")
                         }}
                         onError={(error: any) =>
                             toast.error("Something went wrong", error.message)
@@ -500,7 +498,7 @@ export const Minter = () => {
                             if (tx.status === "success") {
                                 handleSaveToDatabase()
                             }
-                            console.log(tx, "transaction")
+                            // console.log(tx, "transaction")
                         }}
                         onError={(error: any) =>
                             toast.error("Something went wrong", error.message)
