@@ -11,6 +11,7 @@ import '@coinbase/onchainkit/styles.css';
 import { AudioProvider } from "@/lib/audio-provider";
 import { config } from "@/config";
 import { WagmiProvider } from "wagmi";
+import { MiniKitContextProvider } from "@/onchain/providers";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,9 @@ export function ClientProviders({ children }: ClientProvidersProps) {
                 <WagmiProvider config={config}>
                     <AudioProvider>
                         <QueryClientProvider client={queryClient}>
-                            {children}
+                            <MiniKitContextProvider>
+                                {children}
+                            </MiniKitContextProvider>
                             <Toaster />
                         </QueryClientProvider>
                     </AudioProvider>
