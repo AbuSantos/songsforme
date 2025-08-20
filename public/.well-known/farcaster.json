@@ -24,5 +24,8 @@
     "ogTitle": "Bullchord- Listen, earn Trade",
     "ogDescription": "Listen to your fav music and Earn",
     "ogImageUrl": "https://bullchord.xyz/icon.png"
+  },
+  "baseBuilder": {
+    "allowedAddresses": ["0x6B65c378BDE4102fD9C86955e80CEFE611820d51"]
   }
 }
