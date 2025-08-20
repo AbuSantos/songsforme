@@ -3,7 +3,8 @@ import { RecoilRoot } from "recoil";
 import { ThirdwebProvider } from "thirdweb/react";
 import { Toaster } from "@/components/ui/sonner";
 import '@radix-ui/themes/styles.css';
-import { sdk } from '@farcaster/frame-sdk';
+// import { sdk } from '@farcaster/frame-sdk';
+import { sdk } from '@farcaster/miniapp-sdk'
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { OnchainProviders } from "@/onchain/providers";
@@ -22,8 +23,12 @@ interface ClientProvidersProps {
 export function ClientProviders({ children }: ClientProvidersProps) {
     // Initialize the Farcaster SDK
     useEffect(() => {
+        const initializeFarcasterSDK = async () => {
+            await sdk.actions.ready()
+        }
+
         if (typeof window !== 'undefined') {
-            sdk.actions.ready();
+            initializeFarcasterSDK()
         }
     }, []);
 
