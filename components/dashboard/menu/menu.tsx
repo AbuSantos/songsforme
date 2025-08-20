@@ -19,6 +19,7 @@ import { getUserEmail } from "thirdweb/wallets/in-app";
 import { client } from "@/lib/client";
 import dynamic from "next/dynamic"
 import Deploy1155 from "@/zora/create-token"
+import AuthButton from "./coinbase-auth"
 
 const ConnecttButton = dynamic(() => import("@/web3/connect-button").then((mod) => mod.ConnecttButton), {
     ssr: false,
@@ -61,7 +62,8 @@ export function Menu() {
                 {userId === adminId && (
                     <AddToWhitelist adminId={adminId} userId={userId} email={userEmail || ""} />
                 )}
-                <ConnecttButton />
+                {/* <ConnecttButton /> */}
+                <AuthButton />
             </div>
 
             {isOpen && <AddMusicModal setIsOpen={setIsOpen} />}

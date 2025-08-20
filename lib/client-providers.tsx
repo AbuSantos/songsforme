@@ -29,20 +29,20 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 
     return (
         <RecoilRoot>
-            <ThirdwebProvider>
-                {/* <OnchainProviders> */}
-                <WagmiProvider config={config}>
-                    <AudioProvider>
-                        <QueryClientProvider client={queryClient}>
-                            <MiniKitContextProvider>
+            <MiniKitContextProvider>
+                <ThirdwebProvider>
+                    {/* <OnchainProviders> */}
+                    <WagmiProvider config={config}>
+                        <AudioProvider>
+                            <QueryClientProvider client={queryClient}>
                                 {children}
-                            </MiniKitContextProvider>
-                            <Toaster />
-                        </QueryClientProvider>
-                    </AudioProvider>
-                </WagmiProvider>
-                {/* </OnchainProviders> */}
-            </ThirdwebProvider>
+                                <Toaster />
+                            </QueryClientProvider>
+                        </AudioProvider>
+                    </WagmiProvider>
+                    {/* </OnchainProviders> */}
+                </ThirdwebProvider>
+            </MiniKitContextProvider>
         </RecoilRoot>
     );
 }
